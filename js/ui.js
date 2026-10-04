@@ -214,7 +214,7 @@ UI.dataCard = function (host, o) {
   const id = o.id;
   const srcs = mk('div', { class: 'src-row' });
   const exSel = mk('select', { id: id + 'Ex', 'aria-label': T('Ejemplo', 'Example') });
-  const fillEx = () => { exSel.innerHTML = (o.examples || []).map(e => `<option value="${e.id}">${esc(T(e.es, e.en))}</option>`).join(''); };
+  const fillEx = () => { exSel.innerHTML = (o.examples || []).map(e => `<option value="${e.id}"${optL(e.es, e.en)}</option>`).join(''); };
   fillEx();
   const exBtn = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cargar ejemplo', 'Load example'));
   const fileIn = mk('input', { type: 'file', accept: '.csv,.txt,.tsv,.xlsx,.xlsm,.ods', class: 'sr-only', id: id + 'File' });
@@ -279,7 +279,7 @@ UI.dataCard = function (host, o) {
       const f = mk('div', { class: 'field' });
       f.appendChild(mk('label', { for: fid }, L2(fd.es, fd.en) + (fd.req ? ' *' : '')));
       const s = mk('select', { id: fid });
-      s.innerHTML = `<option value="-1">${esc(T('— ninguna —', '— none —'))}</option>` + tab.names.map((nm, j) => `<option value="${j}">${esc(nm)}</option>`).join('');
+      s.innerHTML = `<option value="-1"${optL('— ninguna —', '— none —')}</option>` + tab.names.map((nm, j) => `<option value="${j}">${esc(nm)}</option>`).join('');
       s.value = String(DataIO.findColumn(tab.names, [fd.key, fd.es, fd.en].concat(fd.aliases || [])));
       sels[fd.key] = s;
       f.appendChild(s); grid.appendChild(f);

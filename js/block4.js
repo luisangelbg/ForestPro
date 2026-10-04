@@ -38,7 +38,7 @@ function build() {
   const a = UI.section(root, ['Datos y ecuaciones', 'Data and equations'],
     ['Usa el inventario cargado en el Bloque 3 o carga un ejemplo aquí. Elige la ecuación por omisión y las reglas que asignan ecuaciones propias a ciertas especies o géneros.', 'Use the inventory loaded in Block 3 or load an example here. Choose the default equation and the rules that give certain species or genera their own equation.']);
   const src = mk('div', { class: 'src-row' });
-  src.innerHTML = `<select id="b4ex" aria-label="${esc(T('Ejemplo', 'Example'))}"><option value="cafetal">${esc(T('Cafetal bajo sombra', 'Shaded coffee farm'))}</option><option value="mesofilo">${esc(T('Bosque mesófilo', 'Cloud forest'))}</option></select>`;
+  src.innerHTML = `<select id="b4ex" aria-label="${esc(T('Ejemplo', 'Example'))}"><option value="cafetal"${optL('Cafetal bajo sombra', 'Shaded coffee farm')}</option><option value="mesofilo"${optL('Bosque mesófilo', 'Cloud forest')}</option></select>`;
   const exB = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cargar ejemplo', 'Load example'));
   const invB = mk('button', { type: 'button', class: 'btn btn-secondary btn-sm' }, L2('Usar el inventario del Bloque 3', 'Use the Block 3 inventory'));
   exB.addEventListener('click', () => loadExample(el('b4ex').value));
@@ -57,7 +57,7 @@ function build() {
   a.appendChild(fg);
   fillEqSelect(el('b4def'), 'chave14_h');
   const rs = el('b4rootSel');
-  rs.innerHTML = BM().IPCC_RS.map(z => `<option value="${z.id}">${esc(T('IPCC 2006: ', 'IPCC 2006: ') + T(z.es, z.en))}</option>`).join('') + `<option value="cairns">${esc(T('Cairns et al. 1997 (por hectárea)', 'Cairns et al. 1997 (per hectare)'))}</option><option value="const">${esc(T('Razón constante', 'Constant ratio'))}</option>`;
+  rs.innerHTML = BM().IPCC_RS.map(z => `<option value="${z.id}"${optL('IPCC 2006: ' + z.es, 'IPCC 2006: ' + z.en)}</option>`).join('') + `<option value="cairns"${optL('Cairns et al. 1997 (por hectárea)', 'Cairns et al. 1997 (per hectare)')}</option><option value="const"${optL('Razón constante', 'Constant ratio')}</option>`;
   rs.value = 'trop_mount';
   ['b4def', 'b4E', 'b4rootSel', 'b4rs', 'b4cf', 'b4dead'].forEach(id => el(id).addEventListener('change', () => { if (S.res) compute(); }));
   a.appendChild(mk('h3', null, L2('Reglas: ecuación por especie o género', 'Rules: equation by species or genus')));
@@ -82,7 +82,7 @@ function build() {
   UI.grid(R.densGrid, [{ key: 'especie', label: ['Especie', 'Species'], w: 190 }, { key: 'densidad', label: ['Densidad (g/cm³)', 'Density (g/cm³)'], num: true }, { key: 'nivel', label: ['Nivel', 'Level'], w: 90 }, { key: 'fuente', label: ['Fuente', 'Source'], w: 200 }], S.dens, { onChange: () => { if (S.res) compute(); } });
   const gw = mk('div', { class: 'src-row' });
   gw.innerHTML = `<input type="file" id="b4gwdd" class="sr-only" accept=".csv,.txt,.xlsx,.xls,.ods"><label class="btn btn-secondary btn-sm" for="b4gwdd" tabindex="0" role="button">${L2('Cargar la base mundial (archivo de la GWDD)…', 'Load the global database (GWDD file)…')}</label>` +
-    `<label class="inline-label">${L2('Región', 'Region')} <select id="b4region"><option value="World">${esc(T('Mundo', 'World'))}</option></select></label>`;
+    `<label class="inline-label">${L2('Región', 'Region')} <select id="b4region"><option value="World"${optL('Mundo', 'World')}</option></select></label>`;
   b.appendChild(gw);
   el('b4gwdd').addEventListener('change', loadGWDD);
   el('b4region').addEventListener('change', () => { if (S.gwddRows) { buildGWDD(); if (S.res) compute(); } });
@@ -101,7 +101,7 @@ function build() {
     ['Repite el cálculo cientos de veces con diámetros, alturas y densidades perturbados por su error y con el error residual de cada ecuación. Da la incertidumbre de las mediciones y del modelo, que se suma a la del muestreo.', 'Repeats the computation hundreds of times with diameters, heights and densities perturbed by their error and with the residual error of each equation. It gives the uncertainty of measurements and model, which adds to that of sampling.']);
   const mf = mk('div', { class: 'form-grid' });
   mf.innerHTML = `<div class="field"><label for="b4n">${L2('Iteraciones', 'Iterations')}</label><select id="b4n"><option>500</option><option selected>1000</option><option>2000</option><option>5000</option></select></div>` +
-    `<div class="field"><label for="b4dErr">${L2('Error del diámetro', 'Diameter error')}</label><select id="b4dErr"><option value="chave2004">${esc(T('Chave et al. 2004 (95 % pequeño, 5 % grande)', 'Chave et al. 2004 (95 % small, 5 % large)'))}</option><option value="cv1">CV 1 %</option><option value="cv2">CV 2 %</option><option value="none">${esc(T('Sin error', 'No error'))}</option></select></div>` +
+    `<div class="field"><label for="b4dErr">${L2('Error del diámetro', 'Diameter error')}</label><select id="b4dErr"><option value="chave2004"${optL('Chave et al. 2004 (95 % pequeño, 5 % grande)', 'Chave et al. 2004 (95 % small, 5 % large)')}</option><option value="cv1">CV 1 %</option><option value="cv2">CV 2 %</option><option value="none"${optL('Sin error', 'No error')}</option></select></div>` +
     `<div class="field"><label for="b4hCv">${L2('Error de la altura medida (CV %)', 'Error of measured height (CV %)')}</label><input type="number" id="b4hCv" value="5" step="any"></div>` +
     `<div class="field"><label for="b4hCvEst">${L2('Error de la altura estimada (CV %)', 'Error of estimated height (CV %)')}</label><input type="number" id="b4hCvEst" value="15" step="any"></div>` +
     `<label class="checkbox-label"><input type="checkbox" id="b4resid" checked> ${L2('Error residual de la ecuación', 'Residual error of the equation')}</label>`;
@@ -238,7 +238,7 @@ async function loadGWDD() {
       S.gwddRows.push({ family: fi >= 0 ? String(tab.cols[fi].v[i]) : '', genus: nm.genus, species: nm.species, wd, region: ri >= 0 ? String(tab.cols[ri].v[i]) : '' });
     }
     const regions = [...new Set(S.gwddRows.map(r => r.region).filter(Boolean))].sort();
-    el('b4region').innerHTML = `<option value="World">${esc(T('Mundo', 'World'))}</option>` + regions.map(r => `<option>${esc(r)}</option>`).join('');
+    el('b4region').innerHTML = `<option value="World"${optL('Mundo', 'World')}</option>` + regions.map(r => `<option>${esc(r)}</option>`).join('');
     buildGWDD();
     if (window.LABG) LABG.toast(T(`Base cargada: ${S.gwddRows.length} registros`, `Database loaded: ${S.gwddRows.length} records`));
     if (S.res) compute();

@@ -75,7 +75,7 @@ function build() {
   /* B. lumber */
   const b = UI.section(root, ['Madera aserrada', 'Sawn lumber'], ['Pies tabla y metros cúbicos de una lista de piezas.', 'Board feet and cubic metres of a list of pieces.']);
   const br = mk('div', { class: 'btn-row' });
-  br.innerHTML = `<label for="b9unit" class="sr-only">${L2('Unidades', 'Units')}</label><select id="b9unit"><option value="in">${esc(T('Pulgadas y pies', 'Inches and feet'))}</option><option value="cm">${esc(T('Centímetros y metros', 'Centimetres and metres'))}</option></select>`;
+  br.innerHTML = `<label for="b9unit" class="sr-only">${L2('Unidades', 'Units')}</label><select id="b9unit"><option value="in"${optL('Pulgadas y pies', 'Inches and feet')}</option><option value="cm"${optL('Centímetros y metros', 'Centimetres and metres')}</option></select>`;
   const exB = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cargar ejemplo: lo aserrado de las 12 trozas', 'Load example: the lumber from the 12 logs'));
   exB.addEventListener('click', () => { el('b9unit').value = 'in'; S.pieces = EX_PIECES.map(p => ({ name: T(p[0], p[1]), t: p[2], w: p[3], L: p[4], n: p[5] })); drawPieceGrid(); tallyLumber(); });
   br.appendChild(exB);
@@ -127,7 +127,7 @@ function build() {
   /* E. units */
   const e = UI.section(root, ['Conversión de unidades', 'Unit conversion'], ['Del sistema inglés al métrico y al revés, con las definiciones exactas.', 'From imperial to metric and back, with the exact definitions.']);
   const eg = mk('div', { class: 'form-grid' });
-  eg.innerHTML = `<div class="field"><label for="b9kind">${L2('Magnitud', 'Quantity')}</label><select id="b9kind">${Object.entries(UNITS).map(([k, v]) => `<option value="${k}">${esc(T(v[0][0], v[0][1]))}</option>`).join('')}</select></div>` +
+  eg.innerHTML = `<div class="field"><label for="b9kind">${L2('Magnitud', 'Quantity')}</label><select id="b9kind">${Object.entries(UNITS).map(([k, v]) => `<option value="${k}"${optL(v[0][0], v[0][1])}</option>`).join('')}</select></div>` +
     `<div class="field"><label for="b9val">${L2('Valor', 'Value')}</label><input type="number" id="b9val" value="1" step="any"></div>` +
     `<div class="field"><label for="b9from">${L2('De', 'From')}</label><select id="b9from"></select></div>`;
   e.appendChild(eg);
@@ -276,7 +276,7 @@ function formCalc() {
 /* ---------------- E ---------------- */
 function fillUnits() {
   const k = el('b9kind').value, sel = el('b9from'), cur = sel.value;
-  sel.innerHTML = UNITS[k][1].map(u => `<option value="${u[0]}">${esc(T(u[1], u[2]))}</option>`).join('');
+  sel.innerHTML = UNITS[k][1].map(u => `<option value="${u[0]}"${optL(u[1], u[2])}</option>`).join('');
   if (UNITS[k][1].some(u => u[0] === cur)) sel.value = cur;
 }
 function convert() {
@@ -342,5 +342,7 @@ function econ() {
 
 ExampleHooks['pino:9'] = () => { build(); [...el('b9root').querySelectorAll('.btn-primary')].filter(b => /ejemplo|example/i.test(b.textContent)).forEach(b => b.click()); [...el('b9root').querySelectorAll('button')].find(b => /Calcular el rendimiento/.test(b.textContent)).click(); };
 document.addEventListener('DOMContentLoaded', build);
-document.addEventListener('langchange', () => { if (!el('b9root') || !el('b9root').dataset.built) return; const k = el('b9kind').value; fillUnits(); el('b9kind').value = k; convert(); });
+document.addEventListener('langchange', () => { if (!el('b9root') || !el('b9root').dataset.built) return; const k = el('b9kind').value; fillUnits(); el('b9kind').value = k; convert();
+  /* the results carry words of the language they were drawn in */
+  if (S.logRes) scaleLogs(); if (S.lumRes) tallyLumber(); if (R.yield.childElementCount) sawYield(); if (R.form.childElementCount) formCalc(); if (R.econ.childElementCount) econ(); });
 })();

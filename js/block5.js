@@ -37,7 +37,7 @@ function build() {
     examples: [{ id: 'pino', es: 'Pino: análisis troncal de 6 árboles', en: 'Pine: stem analysis of 6 trees', d: ['Diámetro y altura de cada árbol a cada edad, reconstruidos de sus anillos.', 'Diameter and height of each tree at each age, rebuilt from its rings.'], rows: () => FPData.rows('pino_analisis_troncal') }],
     onData: rows => { S.series = rows; drawInc(); runModels(); } });
   const af = mk('div', { class: 'form-grid' });
-  af.innerHTML = `<div class="field"><label for="b5var">${L2('Variable', 'Variable')}</label><select id="b5var">${Object.keys(VARS).map(k => `<option value="${k}"${k === 'volumen' ? ' selected' : ''}>${esc(T(VARS[k][0], VARS[k][1]))}</option>`).join('')}</select></div>` +
+  af.innerHTML = `<div class="field"><label for="b5var">${L2('Variable', 'Variable')}</label><select id="b5var">${Object.keys(VARS).map(k => `<option value="${k}"${k === 'volumen' ? ' selected' : ''}${optL(VARS[k][0], VARS[k][1])}</option>`).join('')}</select></div>` +
     `<div class="field"><label for="b5ff">${L2('Coeficiente mórfico (si falta el volumen)', 'Form factor (if volume is missing)')}</label><input type="number" id="b5ff" value="0.45" step="0.01"></div>` +
     `<div class="field"><label for="b5tree">${L2('Árbol para los modelos', 'Tree for the models')}</label><select id="b5tree"></select></div>`;
   a.appendChild(af);
@@ -70,7 +70,7 @@ function build() {
     onData: rows => { S.rem = rows; runSite(); runClutter(); } });
   const cf = mk('div', { class: 'form-grid' });
   cf.innerHTML = `<div class="field"><label for="b5tb">${L2('Edad base (años)', 'Base age (years)')}</label><input type="number" id="b5tb" value="20" step="1"></div>` +
-    `<div class="field"><label for="b5sm">${L2('Familia de curvas', 'Family of curves')}</label><select id="b5sm">${Object.keys(GR().SITE).map(k => `<option value="${k}"${k === 'chapADA' ? ' selected' : ''}>${esc(T(GR().SITE[k].es, GR().SITE[k].en))}</option>`).join('')}</select></div>` +
+    `<div class="field"><label for="b5sm">${L2('Familia de curvas', 'Family of curves')}</label><select id="b5sm">${Object.keys(GR().SITE).map(k => `<option value="${k}"${k === 'chapADA' ? ' selected' : ''}${optL(GR().SITE[k].es, GR().SITE[k].en)}</option>`).join('')}</select></div>` +
     `<div class="field"><label for="b5nc">${L2('Clases de sitio', 'Site classes')}</label><select id="b5nc"><option>3</option><option selected>4</option><option>5</option></select></div>`;
   c.appendChild(cf);
   ['b5tb', 'b5sm', 'b5nc'].forEach(id => el(id).addEventListener('change', () => { if (S.rem) { runSite(); runClutter(); } }));

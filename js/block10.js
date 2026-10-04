@@ -477,5 +477,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => { nameButtons(); wrapHooks(); pendingProject(); }, 0);
 });
 document.addEventListener('stepchange', e => { if (e.detail.step === 10) { const has = BLOCKS.some(n => state.report[n]); if (has && R.frame && R.frame.hidden === false) preview(); } });
+document.addEventListener('langchange', () => { if (R.frame && !R.frame.hidden) preview(); });
 window.FPProject = { log: () => P.log, replay, build: buildReport };
 })();

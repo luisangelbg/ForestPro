@@ -323,7 +323,7 @@ function drawVol() {
     { key: 'bias', label: ['Sesgo (m³)', 'Bias (m³)'], num: true, fmt: v => fmtNum(v, 5) }, { key: 'fi', label: ['Índice de Furnival', "Furnival's index"], num: true, fmt: v => fmtNum(v, 5) },
   ], rows: cmp, note: ['Resaltado: el menor índice de Furnival.', 'Highlighted: the smallest Furnival index.'] });
   const pick = mk('div', { class: 'form-grid' });
-  pick.innerHTML = `<div class="field"><label for="b2vPick">${L2('Ver el modelo', 'Show the model')}</label><select id="b2vPick">${res.map(m => `<option value="${m.key}"${m.key === volKey ? ' selected' : ''}>${esc(T(m.model.es, m.model.en))}</option>`).join('')}</select></div>`;
+  pick.innerHTML = `<div class="field"><label for="b2vPick">${L2('Ver el modelo', 'Show the model')}</label><select id="b2vPick">${res.map(m => `<option value="${m.key}"${m.key === volKey ? ' selected' : ''}${optL(m.model.es, m.model.en)}</option>`).join('')}</select></div>`;
   R.vol.appendChild(pick);
   el('b2vPick').addEventListener('change', e => { volKey = e.target.value; drawVol(); });
   const m = res.find(x => x.key === volKey);
@@ -402,7 +402,7 @@ function runHD() {
   const spp = [...new Set(all.map(r => r.especie).filter(Boolean))];
   const sel = el('b2hSp');
   const prev = sel.value;
-  sel.innerHTML = `<option value="">${esc(T('Todas', 'All'))}</option>` + spp.map(s => `<option${s === prev ? ' selected' : ''}>${esc(s)}</option>`).join('');
+  sel.innerHTML = `<option value=""${optL('Todas', 'All')}</option>` + spp.map(s => `<option${s === prev ? ' selected' : ''}>${esc(s)}</option>`).join('');
   hdSp = sel.value;
   const rows = hdSp ? all.filter(r => r.especie === hdSp) : all;
   const data = rows.filter(r => r.dap > 0 && r.altura > 1.3).map(r => ({ d: r.dap, h: r.altura }));

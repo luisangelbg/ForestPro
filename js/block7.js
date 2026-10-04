@@ -50,8 +50,8 @@ function build() {
   b.appendChild(bf);
   el('b7img').addEventListener('change', loadPhoto);
   const bg = mk('div', { class: 'form-grid' });
-  bg.innerHTML = `<div class="field"><label for="b7proj">${L2('Tipo de foto', 'Kind of photo')}</label><select id="b7proj"><option value="hemi">${esc(T('Hemisférica (ojo de pez)', 'Hemispherical (fisheye)'))}</option><option value="normal">${esc(T('Normal hacia arriba', 'Ordinary upward'))}</option></select></div>` +
-    `<div class="field"><label for="b7ch">${L2('Canal', 'Channel')}</label><select id="b7ch"><option value="blue">${esc(T('Azul (recomendado)', 'Blue (recommended)'))}</option><option value="luma">${esc(T('Luminancia', 'Luminance'))}</option></select></div>` +
+  bg.innerHTML = `<div class="field"><label for="b7proj">${L2('Tipo de foto', 'Kind of photo')}</label><select id="b7proj"><option value="hemi"${optL('Hemisférica (ojo de pez)', 'Hemispherical (fisheye)')}</option><option value="normal"${optL('Normal hacia arriba', 'Ordinary upward')}</option></select></div>` +
+    `<div class="field"><label for="b7ch">${L2('Canal', 'Channel')}</label><select id="b7ch"><option value="blue"${optL('Azul (recomendado)', 'Blue (recommended)')}</option><option value="luma"${optL('Luminancia', 'Luminance')}</option></select></div>` +
     `<div class="field"><label for="b7thr">${L2('Umbral (vacío = Otsu)', 'Threshold (empty = Otsu)')}</label><input type="number" id="b7thr" min="0" max="255" step="1"></div>` +
     `<div class="field"><label for="b7r">${L2('Radio del círculo (% del lado menor)', 'Circle radius (% of the short side)')}</label><input type="number" id="b7r" value="100" min="10" max="100" step="1"></div>`;
   b.appendChild(bg);
@@ -80,7 +80,7 @@ function build() {
   /* D */
   const d = UI.section(root, ['Diseño de plantación', 'Planting layout'], ['Cuántos árboles caben y cómo se acomodan en un terreno rectangular.', 'How many trees fit and how they are laid out in a rectangular field.']);
   const dg = mk('div', { class: 'form-grid' });
-  dg.innerHTML = `<div class="field"><label for="b7kind">${L2('Arreglo', 'Layout')}</label><select id="b7kind">` + [['square', 'Marco real (cuadro)', 'Square'], ['tri', 'Tresbolillo (triángulo)', 'Triangular'], ['rect', 'Rectángulo', 'Rectangular'], ['alley', 'Cultivo en callejones', 'Alley cropping'], ['fence', 'Cerco vivo (perímetro)', 'Live fence (perimeter)'], ['boundary', 'Linderos (dos lados)', 'Boundary rows (two sides)']].map(([v, es, en]) => `<option value="${v}">${esc(T(es, en))}</option>`).join('') + `</select></div>` +
+  dg.innerHTML = `<div class="field"><label for="b7kind">${L2('Arreglo', 'Layout')}</label><select id="b7kind">` + [['square', 'Marco real (cuadro)', 'Square'], ['tri', 'Tresbolillo (triángulo)', 'Triangular'], ['rect', 'Rectángulo', 'Rectangular'], ['alley', 'Cultivo en callejones', 'Alley cropping'], ['fence', 'Cerco vivo (perímetro)', 'Live fence (perimeter)'], ['boundary', 'Linderos (dos lados)', 'Boundary rows (two sides)']].map(([v, es, en]) => `<option value="${v}"${optL(es, en)}</option>`).join('') + `</select></div>` +
     [['b7W', 'Ancho del terreno (m)', 'Field width (m)', 100], ['b7L', 'Largo del terreno (m)', 'Field length (m)', 100], ['b7a', 'Distancia entre árboles (m)', 'Spacing between trees (m)', 6], ['b7b', 'Distancia entre hileras (m)', 'Spacing between rows (m)', 8], ['b7alley', 'Ancho del callejón (m)', 'Alley width (m)', 12],
       ['b7crop', 'Cultivo: distancia (m)', 'Crop: spacing (m)', 2], ['b7cropRow', 'Cultivo: entre hileras (m)', 'Crop: between rows (m)', 1.5], ['b7cost', 'Costo por árbol plantado', 'Cost per tree planted', 25]]
       .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('');

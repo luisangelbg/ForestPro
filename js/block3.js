@@ -85,7 +85,7 @@ function build() {
   const dg = mk('details', { class: 'method-box' });
   dg.innerHTML = `<summary>${L2('Diseño por omisión y superficie del predio', 'Default design and area of the property')}</summary>`;
   const fg = mk('div', { class: 'form-grid method-body' });
-  fg.innerHTML = `<div class="field"><label for="b3shape">${L2('Forma', 'Shape')}</label><select id="b3shape"><option value="circle">${esc(T('Circular', 'Circular'))}</option><option value="square">${esc(T('Cuadrada', 'Square'))}</option><option value="rect">${esc(T('Rectangular', 'Rectangular'))}</option><option value="nested">${esc(T('Circular anidada', 'Nested circular'))}</option></select></div>` +
+  fg.innerHTML = `<div class="field"><label for="b3shape">${L2('Forma', 'Shape')}</label><select id="b3shape"><option value="circle"${optL('Circular', 'Circular')}</option><option value="square"${optL('Cuadrada', 'Square')}</option><option value="rect"${optL('Rectangular', 'Rectangular')}</option><option value="nested"${optL('Circular anidada', 'Nested circular')}</option></select></div>` +
     [['b3r', 'Radio (m)', 'Radius (m)', 17.84], ['b3side', 'Lado (m)', 'Side (m)', 31.62], ['b3a', 'Largo (m)', 'Length (m)', 50], ['b3b', 'Ancho (m)', 'Width (m)', 20], ['b3rs', 'Radio de la subparcela (m)', 'Subplot radius (m)', 5.64], ['b3cut', 'DAP de corte (cm)', 'Cut DBH (cm)', 10], ['b3area', 'Superficie total (ha)', 'Total area (ha)', 100]]
       .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('');
   dg.appendChild(fg);
@@ -97,7 +97,7 @@ function build() {
   const b = UI.section(root, ['Expansión a la hectárea', 'Expansion to the hectare'],
     ['Cada árbol representa 10 000/a árboles por hectárea, con a la superficie de la parcela (o de la subparcela que le toca por su diámetro).', 'Each tree stands for 10,000/a trees per hectare, with a the area of the plot (or of the subplot its diameter belongs to).']);
   const bf = mk('div', { class: 'form-grid' });
-  bf.innerHTML = `<div class="field"><label for="b3vol">${L2('Volumen de cada árbol', 'Volume of each tree')}</label><select id="b3vol"><option value="ff">${esc(T('g · H · coeficiente mórfico', 'g · H · form factor'))}</option><option value="eq">${esc(T('Ecuación ajustada en el Bloque 2', 'Equation fitted in Block 2'))}</option></select></div>` +
+  bf.innerHTML = `<div class="field"><label for="b3vol">${L2('Volumen de cada árbol', 'Volume of each tree')}</label><select id="b3vol"><option value="ff"${optL('g · H · coeficiente mórfico', 'g · H · form factor')}</option><option value="eq"${optL('Ecuación ajustada en el Bloque 2', 'Equation fitted in Block 2')}</option></select></div>` +
     `<div class="field"><label for="b3ff">${L2('Coeficiente mórfico', 'Form factor')}</label><input type="number" id="b3ff" value="0.5" step="0.01"></div>` +
     `<label class="checkbox-label"><input type="checkbox" id="b3fillH" checked> ${L2('Estimar las alturas faltantes (Näslund)', 'Estimate the missing heights (Näslund)')}</label>`;
   b.appendChild(bf);
@@ -112,8 +112,8 @@ function build() {
   const c = UI.section(root, ['Estimación y error de muestreo', 'Estimation and sampling error'],
     ['La media por hectárea, su error estándar, el intervalo de confianza, el error de muestreo en % y el total del predio, según el diseño con que se tomaron las parcelas.', 'The mean per hectare, its standard error, the confidence interval, the sampling error in % and the total of the property, according to the design with which the plots were taken.']);
   const cf = mk('div', { class: 'form-grid' });
-  cf.innerHTML = `<div class="field"><label for="b3var">${L2('Variable', 'Variable')}</label><select id="b3var">${Object.keys(VARS).map(k => `<option value="${k}">${esc(T(VARS[k].es, VARS[k].en))}</option>`).join('')}</select></div>` +
-    `<div class="field"><label for="b3design">${L2('Diseño', 'Design')}</label><select id="b3design"><option value="srs">${esc(T('Muestreo aleatorio simple', 'Simple random sampling'))}</option><option value="strat">${esc(T('Estratificado', 'Stratified'))}</option><option value="sys">${esc(T('Sistemático (diferencias sucesivas)', 'Systematic (successive differences)'))}</option><option value="cluster">${esc(T('En conglomerados', 'Cluster'))}</option></select></div>` +
+  cf.innerHTML = `<div class="field"><label for="b3var">${L2('Variable', 'Variable')}</label><select id="b3var">${Object.keys(VARS).map(k => `<option value="${k}"${optL(VARS[k].es, VARS[k].en)}</option>`).join('')}</select></div>` +
+    `<div class="field"><label for="b3design">${L2('Diseño', 'Design')}</label><select id="b3design"><option value="srs"${optL('Muestreo aleatorio simple', 'Simple random sampling')}</option><option value="strat"${optL('Estratificado', 'Stratified')}</option><option value="sys"${optL('Sistemático (diferencias sucesivas)', 'Systematic (successive differences)')}</option><option value="cluster"${optL('En conglomerados', 'Cluster')}</option></select></div>` +
     `<div class="field"><label for="b3conf">${L2('Confianza', 'Confidence')}</label><select id="b3conf"><option value="0.9">90 %</option><option value="0.95" selected>95 %</option><option value="0.99">99 %</option></select></div>` +
     `<label class="checkbox-label"><input type="checkbox" id="b3fpc"> ${L2('Corrección por población finita', 'Finite-population correction')}</label>`;
   c.appendChild(cf);
@@ -131,7 +131,7 @@ function build() {
   df.innerHTML = [['b3cv', 'Coeficiente de variación (%)', 'Coefficient of variation (%)', 40], ['b3err', 'Error permisible (%)', 'Permissible error (%)', 10], ['b3Nplots', 'Parcelas posibles N (vacío = infinita)', 'Possible plots N (empty = infinite)', '']]
     .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('') +
     `<div class="field"><label for="b3conf2">${L2('Confianza', 'Confidence')}</label><select id="b3conf2"><option value="0.9">90 %</option><option value="0.95" selected>95 %</option><option value="0.99">99 %</option></select></div>` +
-    `<div class="field"><label for="b3alloc">${L2('Asignación por estrato', 'Allocation by stratum')}</label><select id="b3alloc"><option value="neyman">${esc(T('Óptima (Neyman)', 'Optimum (Neyman)'))}</option><option value="prop">${esc(T('Proporcional', 'Proportional'))}</option></select></div>`;
+    `<div class="field"><label for="b3alloc">${L2('Asignación por estrato', 'Allocation by stratum')}</label><select id="b3alloc"><option value="neyman"${optL('Óptima (Neyman)', 'Optimum (Neyman)')}</option><option value="prop"${optL('Proporcional', 'Proportional')}</option></select></div>`;
   d.appendChild(df);
   const useCv = mk('button', { type: 'button', class: 'btn btn-secondary btn-sm' }, L2('Tomar el CV del inventario cargado', 'Take the CV of the loaded inventory'));
   useCv.addEventListener('click', () => { if (!S.per) return; const v = el('b3var').value, e = IV().srs(S.per.map(p => p[v])); el('b3cv').value = e.cv.toFixed(1); drawSize(); });
@@ -168,7 +168,7 @@ function build() {
     ['Distribución diamétrica con su modelo de Weibull, tabla de rodal, índice de valor de importancia e índices de densidad y competencia.', 'Diameter distribution with its Weibull model, stand table, importance value index and density and competition indices.']);
   const ff = mk('div', { class: 'form-grid' });
   ff.innerHTML = `<div class="field"><label for="b3w">${L2('Ancho de clase (cm)', 'Class width (cm)')}</label><input type="number" id="b3w" value="5" step="any"></div>` +
-    `<div class="field"><label for="b3wb">${L2('Weibull', 'Weibull')}</label><select id="b3wb"><option value="2">${esc(T('2 parámetros', '2 parameters'))}</option><option value="3">${esc(T('3 parámetros', '3 parameters'))}</option></select></div>` +
+    `<div class="field"><label for="b3wb">${L2('Weibull', 'Weibull')}</label><select id="b3wb"><option value="2"${optL('2 parámetros', '2 parameters')}</option><option value="3"${optL('3 parámetros', '3 parameters')}</option></select></div>` +
     `<div class="field"><label for="b3st">${L2('Estrato', 'Stratum')}</label><select id="b3st"></select></div>` +
     `<div class="field"><label for="b3hegR">${L2('Radio de Hegyi (m)', 'Hegyi radius (m)')}</label><input type="number" id="b3hegR" value="6" step="any"></div>`;
   f.appendChild(ff);
@@ -224,7 +224,7 @@ function assemble() {
   const strata = [...new Set(per.map(p => p.stratum).filter(Boolean))];
   if (!S.designSet) { el('b3design').value = strata.length > 1 && per.every(p => p.stratumArea > 0) ? 'strat' : 'srs'; S.designSet = true; }
   const sel = el('b3st');
-  sel.innerHTML = `<option value="">${esc(T('Todos', 'All'))}</option>` + strata.map(s => `<option>${esc(s)}</option>`).join('');
+  sel.innerHTML = `<option value=""${optL('Todos', 'All')}</option>` + strata.map(s => `<option>${esc(s)}</option>`).join('');
   drawInv(); drawExp(); drawEst(); drawStruct();
   state.inventory = { n: per.length, strata: strata.length };
   Report.set(3, true); refreshStepMarks();

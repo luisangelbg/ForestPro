@@ -62,6 +62,9 @@ function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 /* bilingual inline HTML: both spans are written, CSS shows the active one */
+/* an <option> in both languages: I18N.apply() swaps its text when the language changes.
+   Used as `<option value="v"${optL('texto', 'text')}</option>` (it closes the opening tag itself). */
+function optL(es, en) { return ` data-es="${esc(es)}" data-en="${esc(en == null ? es : en)}">${esc(T(es, en))}`; }
 function L2(es, en) { return `<span data-l="es">${es}</span><span data-l="en">${en == null ? es : en}</span>`; }
 function showMessage(container, type, text) {
   if (typeof container === 'string') container = el(container);

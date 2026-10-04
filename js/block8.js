@@ -29,7 +29,7 @@ function build() {
   /* A. the map */
   const a = UI.section(root, ['El mapa', 'The map'], ['Arrastra para moverte; rueda, botones o teclas + y − para acercarte. Las parcelas se dibujan con su radio real; los árboles aparecen al acercarte.', 'Drag to move; wheel, buttons or + and − keys to zoom. Plots are drawn with their true radius; trees appear as you zoom in.']);
   const src = mk('div', { class: 'src-row' });
-  src.innerHTML = `<select id="b8ex" aria-label="${esc(T('Ejemplo', 'Example'))}"><option value="mesofilo">${esc(T('Bosque mesófilo: parcelas y predio', 'Cloud forest: plots and property'))}</option><option value="cafetal">${esc(T('Cafetal: parcelas de 5 fincas', 'Coffee farm: plots of 5 farms'))}</option></select>`;
+  src.innerHTML = `<select id="b8ex" aria-label="${esc(T('Ejemplo', 'Example'))}"><option value="mesofilo"${optL('Bosque mesófilo: parcelas y predio', 'Cloud forest: plots and property')}</option><option value="cafetal"${optL('Cafetal: parcelas de 5 fincas', 'Coffee farm: plots of 5 farms')}</option></select>`;
   const exB = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cargar ejemplo', 'Load example'));
   exB.addEventListener('click', () => loadExample(el('b8ex').value));
   const invB = mk('button', { type: 'button', class: 'btn btn-secondary btn-sm' }, L2('Usar el inventario del Bloque 3', 'Use the Block 3 inventory'));
@@ -78,7 +78,7 @@ function build() {
   const c = UI.section(root, ['Cuadrícula de muestreo', 'Sampling grid'], ['Los centros de parcela de un muestreo sistemático (o aleatorio) dentro de un polígono, listos para el GPS.', 'The plot centres of a systematic (or random) sample inside a polygon, ready for the GPS.']);
   const cg = mk('div', { class: 'form-grid' });
   cg.innerHTML = `<div class="field"><label for="b8poly">${L2('Polígono', 'Polygon')}</label><select id="b8poly"></select></div>` +
-    `<div class="field"><label for="b8kind">${L2('Diseño', 'Design')}</label><select id="b8kind"><option value="grid">${esc(T('Sistemático (cuadrícula)', 'Systematic (grid)'))}</option><option value="random">${esc(T('Aleatorio', 'Random'))}</option></select></div>` +
+    `<div class="field"><label for="b8kind">${L2('Diseño', 'Design')}</label><select id="b8kind"><option value="grid"${optL('Sistemático (cuadrícula)', 'Systematic (grid)')}</option><option value="random"${optL('Aleatorio', 'Random')}</option></select></div>` +
     [['b8sp', 'Distancia entre puntos (m)', 'Spacing between points (m)', 500], ['b8rot', 'Rotación (°)', 'Rotation (°)', 0], ['b8n', 'Puntos al azar', 'Random points', 30], ['b8rad', 'Radio de la parcela (m)', 'Plot radius (m)', 17.84]]
       .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('') +
     `<label class="checkbox-label"><input type="checkbox" id="b8rstart"> ${L2('Arranque aleatorio de la malla', 'Random start of the grid')}</label>`;
@@ -103,8 +103,8 @@ function build() {
   const e = UI.section(root, ['Interpolación entre parcelas', 'Interpolation among plots'], ['Un mapa continuo de una variable medida en las parcelas: por distancia inversa o por kriging, con el variograma y la validación cruzada.', 'A continuous map of a variable measured in the plots: by inverse distance or by kriging, with the variogram and cross-validation.']);
   const eg = mk('div', { class: 'form-grid' });
   eg.innerHTML = `<div class="field"><label for="b8var">${L2('Variable', 'Variable')}</label><select id="b8var"></select></div>` +
-    `<div class="field"><label for="b8meth">${L2('Método', 'Method')}</label><select id="b8meth"><option value="ok">${esc(T('Kriging ordinario', 'Ordinary kriging'))}</option><option value="sk">${esc(T('Kriging simple', 'Simple kriging'))}</option><option value="idw">${esc(T('Distancia inversa (IDW)', 'Inverse distance (IDW)'))}</option></select></div>` +
-    `<div class="field"><label for="b8vm">${L2('Modelo del variograma', 'Variogram model')}</label><select id="b8vm"><option value="sph">${esc(T('Esférico', 'Spherical'))}</option><option value="exp">${esc(T('Exponencial', 'Exponential'))}</option><option value="gau">${esc(T('Gaussiano', 'Gaussian'))}</option></select></div>` +
+    `<div class="field"><label for="b8meth">${L2('Método', 'Method')}</label><select id="b8meth"><option value="ok"${optL('Kriging ordinario', 'Ordinary kriging')}</option><option value="sk"${optL('Kriging simple', 'Simple kriging')}</option><option value="idw"${optL('Distancia inversa (IDW)', 'Inverse distance (IDW)')}</option></select></div>` +
+    `<div class="field"><label for="b8vm">${L2('Modelo del variograma', 'Variogram model')}</label><select id="b8vm"><option value="sph"${optL('Esférico', 'Spherical')}</option><option value="exp"${optL('Exponencial', 'Exponential')}</option><option value="gau"${optL('Gaussiano', 'Gaussian')}</option></select></div>` +
     [['b8pow', 'Potencia de IDW', 'IDW power', 2], ['b8cut', 'Distancia máxima del variograma (m, vacío = automática)', 'Variogram cutoff (m, empty = automatic)', ''], ['b8res', 'Celdas en el lado largo', 'Cells on the long side', 60]]
       .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('') +
     `<label class="checkbox-label"><input type="checkbox" id="b8mask" checked> ${L2('Recortar al primer polígono', 'Clip to the first polygon')}</label>`;
@@ -120,8 +120,8 @@ function build() {
     onData: (rows, meta) => {
       const ex = meta && meta.example;
       S.pts = rows.map(r => ({ lat: r.lat, lon: r.lon, z: r.valor, name: r.nombre }));
-      const lab = ex === 'rend' ? T('Rendimiento de café (kg/ha)', 'Coffee yield (kg/ha)') : ex === 'sombra' ? T('Sombra (%)', 'Shade (%)') : T('Tabla cargada', 'Loaded table');
-      el('b8var').innerHTML = `<option value="custom">${esc(lab)}</option>`;
+      const lab = ex === 'rend' ? ['Rendimiento de café (kg/ha)', 'Coffee yield (kg/ha)'] : ex === 'sombra' ? ['Sombra (%)', 'Shade (%)'] : ['Tabla cargada', 'Loaded table'];
+      el('b8var').innerHTML = `<option value="custom"${optL(lab[0], lab[1])}</option>`;
       /* the points on the map, so the interpolation has its place */
       if (!S.plots.length || ex) { S.plots = S.pts.map(p => ({ name: p.name, lat: p.lat, lon: p.lon, r: ex ? 17.84 : 0 })); S.trees = []; S.grid = []; S.raster = null; if (ex) S.polygons = []; drawPolys(); refresh(true); }
     } });
@@ -146,7 +146,7 @@ function fromInventory() {
   const ctr = new Map(S.plots.map(p => [p.name, GE().toUTM(p.lat, p.lon)]));
   S.trees = state.inv.trees.filter(t => t.alive && isFinite(t.x) && isFinite(t.y) && ctr.has(t.plot)).map(t => { const u = ctr.get(t.plot), ll = GE().fromUTM(u.E + t.x, u.N + t.y, u.zone, u.south); return { lat: ll.lat, lon: ll.lon, sp: t.especie, d: t.dap }; });
   const vars = [['G', 'Área basal (m²/ha)', 'Basal area (m²/ha)'], ['N', 'Densidad (árb/ha)', 'Density (trees/ha)'], ['V', 'Volumen (m³/ha)', 'Volume (m³/ha)'], ['agb', 'Biomasa aérea (Mg/ha)', 'Aboveground biomass (Mg/ha)'], ['c', 'Carbono (Mg C/ha)', 'Carbon (Mg C/ha)']].filter(([k]) => S.plots.some(p => isFinite(p[k])));
-  el('b8var').innerHTML = vars.map(([k, es, en]) => `<option value="${k}">${esc(T(es, en))}</option>`).join('');
+  el('b8var').innerHTML = vars.map(([k, es, en]) => `<option value="${k}"${optL(es, en)}</option>`).join('');
   S.pts = null;
   return true;
 }
@@ -353,5 +353,5 @@ function saved() { document.dispatchEvent(new CustomEvent('fp:op', { detail: { b
 ExampleHooks['mesofilo:8'] = () => { build(); loadExample('mesofilo'); };
 document.addEventListener('DOMContentLoaded', build);
 document.addEventListener('stepchange', e => { if (e.detail.step === 8 && map) setTimeout(() => map.redraw(), 30); });
-document.addEventListener('langchange', () => { if (!el('b8root')) return; drawPolys(); drawStatic(); });
+document.addEventListener('langchange', () => { if (!el('b8root')) return; drawPolys(); drawStatic(); if (S.raster && R.interp.childElementCount) runInterp(); });
 })();

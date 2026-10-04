@@ -368,7 +368,7 @@ UI.dataCard = function (host, o) {
     download(DataIO.toCSV(header, ex), 'forestpro_' + id + '_plantilla.csv', 'text/csv;charset=utf-8');
   });
   document.addEventListener('langchange', () => { const v = exSel.value; fillEx(); exSel.value = v; showExNote(); });
-  const api = { load: exId => { if (exId) exSel.value = exId; exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box };
+  const api = { load: exId => { if (exId) exSel.value = exId; exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box, fields: o.fields, examples: (o.examples || []).map(e => e.id) };
   UI.cards[id] = api;
   return api;
 };

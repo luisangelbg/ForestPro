@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry"
+abstract: >-
+  ForestPro is a self-contained web application that carries a forest or agroforestry inventory from the
+  field sheet to the report in the browser, with no installation and no server-side computation. It covers
+  tree mensuration (basal area, log and stem volume by Huber, Smalian and Newton, form factor, volume
+  equations, segmented taper and height–diameter models fitted by nonlinear least squares), inventory and
+  sampling (simple random, stratified, systematic and cluster designs, nested and point sampling, sample size,
+  stand tables, Weibull diameter distributions, importance value, stand density and competition indices),
+  biomass and carbon (an editable catalogue of allometric equations, wood density from the Global Wood
+  Density Database, root-to-shoot ratios, deadwood, litter and soil carbon, Monte Carlo propagation of error
+  and stock change), growth and yield (increments, growth models, site index, a whole-stand projection),
+  diversity (Shannon, Simpson, Fisher, Chao, Hill numbers, rarefaction, dissimilarity, ordination,
+  vertical structure, Clark–Evans and Ripley's K), agroforestry (shade from the inventory or a hemispherical
+  photograph, shade–yield response, planting layouts, carbon budget), maps (own map with optional
+  OpenStreetMap background, polygon areas, sampling grids, GPX/KML/GeoJSON export, IDW and kriging) and
+  forestry tools (log rules, lumber, sawmill yield, unit conversions, plantation economics). Every block is
+  validated against R with stated tolerances.
+type: software
+authors:
+  - given-names: "Luis Ángel"
+    family-names: "Barrera-Guzmán"
+    orcid: "https://orcid.org/0000-0001-8057-2583"
+version: "1.0.0"
+date-released: "2026-10-04"
+repository-code: "https://github.com/luisangelbg/ForestPro"
+url: "https://luisangelbg.github.io/ForestPro/"
+license: GPL-3.0-or-later
+keywords:
+  - forest inventory
+  - forest mensuration
+  - sampling design
+  - allometry
+  - aboveground biomass
+  - carbon stocks
+  - wood density
+  - site index
+  - growth and yield
+  - biodiversity
+  - agroforestry
+  - shade coffee
+  - kriging
+  - log scaling

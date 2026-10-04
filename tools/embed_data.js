@@ -21,7 +21,7 @@ function parse(text) {
   return rows.filter(r => r.some(v => v !== ''));
 }
 const out = {};
-fs.readdirSync(dir).filter(f => f.endsWith('.csv')).sort().forEach(f => {
+fs.readdirSync(dir).filter(f => f.endsWith('.csv') && f !== 'ecuaciones_alometricas.csv').sort().forEach(f => {
   const rows = parse(fs.readFileSync(path.join(dir, f), 'utf8'));
   const cols = rows[0];
   const num = cols.map((_, j) => rows.slice(1).every(r => r[j] === '' || !isNaN(Number(r[j]))));

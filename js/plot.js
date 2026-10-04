@@ -277,7 +277,7 @@ Plot.bars = function (o) {
   const leg = (S.length > 1 || o.legendAlways ? S.map((s, k) => ({ label: s.label, color: s.color || Plot.color(k), kind: 'bar' })) : [])
     .concat((o.curves || []).filter(c => c.label).map(c => ({ label: c.label, color: c.color || 'var(--fig-ink)', kind: 'ln', dash: c.dash })));
   const legW = legendWidth(leg);
-  const longCat = !hist && Math.max(...o.cats.map(c => String(c).length)) * 6 > (W - 80) / K;
+  const longCat = !hist && Math.max(...o.cats.map(c => String(c).length)) * 6.2 + 8 > (W - 80) / K;
   const m = { l: o.ml || 62, r: legW ? legW + 18 : 16, t: o.title ? 32 : 14, b: longCat ? 86 : 48 };
   const x0 = m.l, x1 = W - m.r, y0 = H - m.b, y1 = m.t;
   let top = 0, bot = 0;

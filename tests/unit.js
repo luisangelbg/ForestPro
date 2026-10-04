@@ -54,5 +54,16 @@ t(2, 'Näslund recupera una curva sin ruido', E => {
   near(f.fit.coef[0], 1.6, 1e-6); near(f.fit.coef[1], 0.17, 1e-6);
 });
 
+/* ---------- Block 3 ---------- */
+t(3, 'Factor de expansión de una parcela circular de 17.84 m ≈ 10 árb/ha', E => near(E.Invent.expansion({ shape: 'circle', r: 17.84 }, 20), 10000 / (Math.PI * 17.84 * 17.84), 1e-12));
+t(3, 'Parcela anidada: el árbol delgado usa la subparcela', E => { const p = { shape: 'nested', r: 17.84, rSmall: 5.64, dCut: 10 }; near(E.Invent.expansion(p, 8), 10000 / (Math.PI * 5.64 * 5.64), 1e-12); near(E.Invent.expansion(p, 12), 10000 / (Math.PI * 17.84 * 17.84), 1e-12); });
+t(3, 'Reineke: 1 000 árb/ha con Dq = 20 cm → 698.6', E => near(E.Invent.reineke(1000, 20), 1000 * Math.pow(0.8, 1.605), 1e-12));
+t(3, 'Hart–Becking: 400 árb/ha (5 m) y 20 m de altura → 25 %', E => near(E.Invent.hartBecking(400, 20), 25, 1e-12));
+t(3, 'Tamaño de muestra: converge y cumple n = t²CV²/E² con t de n − 1 gl', E => { const r = E.Invent.sampleSize({ cv: 40, err: 10 }); const t = E.Num.qt(0.975, r.n - 1); ok(r.n >= t * t * 16 - 1e-9 && r.n - 1 < E.Num.qt(0.975, r.n - 2) ** 2 * 16 + 1, 'n = ' + r.n); });
+t(3, 'MAS: el error estándar es s/√n', E => { const r = E.Invent.srs([10, 12, 14, 16]); near(r.se, E.Num.sd([10, 12, 14, 16]) / 2, 1e-12); });
+t(3, 'Estratificado con un estrato igual al MAS', E => { const r = E.Invent.strat([{ name: 'A', y: [3, 5, 7, 9], area: 10 }]); near(r.se, E.Invent.srs([3, 5, 7, 9]).se, 1e-12); });
+t(3, 'Weibull recupera forma y escala de una muestra grande', E => { const rng = E.Num.rng(7), x = []; for (let i = 0; i < 20000; i++) x.push(25 * Math.pow(-Math.log(1 - rng()), 1 / 2.2)); const w = E.Invent.weibull(x); near(w.c, 2.2, 0.03); near(w.b, 25, 0.02); });
+t(3, 'Relascopía: un árbol contado con FAB 2 representa 2/g árboles', E => { const r = E.Invent.relascope([{ point: 1, trees: [{ d: 20, v: NaN }] }, { point: 2, trees: [{ d: 20, v: NaN }] }], 2); near(r.N.mean, 2 / (Math.PI * 0.04 / 4), 1e-12); near(r.G.mean, 2, 1e-12); });
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

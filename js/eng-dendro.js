@@ -173,6 +173,15 @@ const VOL = {
   },
 };
 D.VOL = VOL;
+/* the volume of a tree with a fitted equation (coefficients and, for the log forms, the Meyer factor) */
+D.volPredict = function (key, coef, meyer, d, h) {
+  const b = coef, m = meyer || 1;
+  if (key === 'schumacher') return b[0] * pow(d, b[1]) * pow(h, b[2]);
+  if (key === 'schumacherLog') return m * exp(b[0] + b[1] * log(d) + b[2] * log(h));
+  if (key === 'spurr') return b[0] + b[1] * d * d * h;
+  if (key === 'spurrLog') return m * exp(b[0] + b[1] * log(d * d * h));
+  return NaN;
+};
 /* every model fitted, with the statistics on the volume scale that make them comparable */
 D.fitVolumeModels = function (data, keys) {
   const ok = data.filter(r => r.d > 0 && r.h > 0 && r.v > 0);

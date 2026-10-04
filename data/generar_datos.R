@@ -138,6 +138,17 @@ hm <- 1.3 + (sp_mes$hmax[spm] - 1.3) * (1 - exp(-0.045 * dm))^1.25 * exp(rnorm(n
 mapeada <- data.frame(arbol = seq_len(nn), especie = sp_mes$especie[spm], dap = r1(dm), altura = r1(hm),
   x = round(xy[, 1], 2), y = round(xy[, 2], 2), dosel = tipo)
 w(mapeada, "mesofilo_mapeada.csv")
+# relascopía en el bosque conservado: 15 puntos con factor de área basal 2 m²/ha. En el muestreo puntual un árbol
+# entra con probabilidad proporcional a su área basal, así que los diámetros contados se sortean con peso d²
+grandes <- mesofilo_arboles[mesofilo_arboles$estrato == "Conservado" & mesofilo_arboles$subparcela == "1000 m2" & mesofilo_arboles$estado == "vivo", ]
+rel <- list()
+for (p in 1:15) {
+  m <- rpois(1, 33 / 2)
+  i <- sample(nrow(grandes), m, replace = TRUE, prob = grandes$dap^2)
+  rel[[p]] <- data.frame(punto = sprintf("R%02d", p), arbol = seq_len(m), especie = grandes$especie[i],
+    dap = r1(grandes$dap[i] * exp(rnorm(m, 0, 0.04))), altura = r1(grandes$altura[i] * exp(rnorm(m, 0, 0.05))))
+}
+w(do.call(rbind, rel), "mesofilo_relascopio.csv")
 # polígono del predio (vértices en sentido antihorario) alrededor de las parcelas
 pol <- data.frame(vertice = 1:9,
   lat = c(19.462, 19.471, 19.503, 19.539, 19.548, 19.536, 19.519, 19.488, 19.468),

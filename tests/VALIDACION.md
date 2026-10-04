@@ -10,4 +10,5 @@ node tests/compare.js
 | Bloque | Tema | Comparaciones | Desacuerdos |
 |---|---|---:|---:|
 | 2 | Dasometría | 287 | 0 |
-| | **Total** | **287** | **0** |
+| 3 | Inventario y muestreo | 430 | 0 |
+| | **Total** | **717** | **0** |

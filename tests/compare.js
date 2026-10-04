@@ -116,6 +116,89 @@ blocks[2] = () => {
   ]);
 };
 
+/* ================= Block 3 ================= */
+blocks[3] = () => {
+  const R = ref(3); if (!R) return;
+  const { rows, check, vec } = make(3);
+  const I = E.Invent, g = d => Math.PI * d * d / 40000;
+  /* expansion of the cloud forest, as the app does it (nested plots, live trees, V = g·H·0.5) */
+  const P = new Map(E.FPData.rows('mesofilo_parcelas').map(p => [p.parcela, p]));
+  const trees = E.FPData.rows('mesofilo_arboles').map(r => ({ plot: r.parcela, d: r.dap, h: r.altura, v: g(r.dap) * r.altura * 0.5, alive: r.estado === 'vivo', stratum: r.estrato }));
+  const plotOf = k => { const p = P.get(k); return { shape: 'nested', r: p.radio_grande_m, rSmall: p.radio_chico_m, dCut: p.dap_corte_cm }; };
+  const per = I.perPlot(trees, plotOf, { plots: [...P.keys()].sort() });
+  R.perPlot.parcela.forEach((k, i) => {
+    const p = per.find(x => x.plot === k);
+    check(`${k}: N/ha`, p.N, R.perPlot.N[i], 1e-10); check(`${k}: G/ha`, p.G, R.perPlot.G[i], 1e-10); check(`${k}: V/ha`, p.V, R.perPlot.V[i], 1e-10);
+    check(`${k}: Dq`, p.dq, R.perPlot.dq[i], 1e-10); check(`${k}: altura dominante`, p.hdom, R.perPlot.hdom[i], 1e-10);
+  });
+  const y = R.perPlot.parcela.map(k => per.find(x => x.plot === k).G);
+  const s = I.srs(y, { conf: 0.95 });
+  check('MAS: media', s.mean, R.srs.mean, 1e-12); check('MAS: error estándar', s.se, R.srs.se, 1e-12); check('MAS: t', s.t, R.srs.t, 1e-10); check('MAS: error de muestreo %', s.errPct, R.srs.errPct, 1e-10);
+  check('MAS: media (forestmangr sprs)', s.mean, R.srs.forestmangr.mean, 1e-8); check('MAS: error estándar (sprs)', s.se, R.srs.forestmangr.se, 1e-8);
+  check('MAS: error absoluto t·EE (sprs)', s.half, R.srs.forestmangr.abserr, 1e-8); check('MAS: error % (sprs)', s.errPct, R.srs.forestmangr.errPct, 1e-8);
+  const strata = new Map();
+  R.perPlot.parcela.forEach((k, i) => { const p = P.get(k); if (!strata.has(p.estrato)) strata.set(p.estrato, { name: p.estrato, y: [], area: p.area_estrato_ha }); strata.get(p.estrato).y.push(y[i]); });
+  const st = I.strat([...strata.values()], { conf: 0.95 });
+  check('Estratificado: media', st.mean, R.strat.mean, 1e-12); check('Estratificado: error estándar (Cochran)', st.se, R.strat.se, 1e-12);
+  check('Estratificado: gl de Satterthwaite', st.df, R.strat.df, 1e-10); check('Estratificado: error de muestreo %', st.errPct, R.strat.errPct, 1e-9);
+  check('Estratificado: eficiencia frente a MAS', st.efficiency, R.strat.efficiency, 1e-10);
+  check('Estratificado: EE con asignación de Neyman', st.seNeyman, R.strat.seNeyman, 1e-12);
+  check('Estratificado: media (forestmangr strs)', st.mean, R.strat.forestmangr.mean, 1e-8);
+  check('Estratificado: EE de Neyman = Sy de strs', st.seNeyman, R.strat.forestmangr.se, 1e-8);
+  const sy = I.systematic(y, { conf: 0.95, N: 10000 });
+  check('Sistemático: error estándar', sy.se, R.sys.se, 1e-12); check('Sistemático: EE (forestmangr ss_diffs)', sy.se, R.sys.forestmangr.se, 1e-8);
+  /* clusters: farms of the coffee example */
+  const cp = E.FPData.rows('cafetal_parcelas'), ca = E.FPData.rows('cafetal_arboles').filter(r => r.estado === 'vivo');
+  const G = new Map(); ca.forEach(r => G.set(r.parcela, (G.get(r.parcela) || 0) + g(r.dap) * 10));
+  const cl = new Map(); cp.forEach(p => { if (!cl.has(p.finca)) cl.set(p.finca, { id: p.finca, y: [] }); cl.get(p.finca).y.push(G.get(p.parcela)); });
+  const c = I.cluster([...cl.values()], { conf: 0.95 });
+  check('Conglomerados: media (razón)', c.mean, R.cluster.mean, 1e-12); check('Conglomerados: error estándar', c.se, R.cluster.se, 1e-12); check('Conglomerados: efecto del diseño', c.deff, R.cluster.deff, 1e-10);
+  /* sample size */
+  check('n: CV 40 %, E 10 %', I.sampleSize({ cv: 40, err: 10 }).n, R.sampleSize.c40e10, 0, 'abs');
+  check('n: CV 40 %, E 10 %, N = 200', I.sampleSize({ cv: 40, err: 10, N: 200 }).n, R.sampleSize.c40e10N200, 0, 'abs');
+  check('n: CV 25 %, E 5 %', I.sampleSize({ cv: 25, err: 5 }).n, R.sampleSize.c25e5, 0, 'abs');
+  check('n: CV 60 %, E 15 %, 90 %', I.sampleSize({ cv: 60, err: 15, conf: 0.90 }).n, R.sampleSize.c60e15c90, 0, 'abs');
+  /* relascope */
+  const by = new Map();
+  E.FPData.rows('mesofilo_relascopio').forEach(r => { if (!by.has(r.punto)) by.set(r.punto, []); by.get(r.punto).push({ d: r.dap, h: r.altura, v: g(r.dap) * r.altura * 0.5 }); });
+  const rl = I.relascope([...by.entries()].map(([point, trees]) => ({ point, trees })), 2, { conf: 0.95 });
+  check('Relascopía: G/ha', rl.G.mean, R.relascope.G, 1e-12); check('Relascopía: EE de G', rl.G.se, R.relascope.Gse, 1e-12);
+  check('Relascopía: N/ha', rl.N.mean, R.relascope.N, 1e-12); check('Relascopía: EE de N', rl.N.se, R.relascope.Nse, 1e-12);
+  check('Relascopía: V/ha', rl.V.mean, R.relascope.V, 1e-12); check('Relascopía: EE de V', rl.V.se, R.relascope.Vse, 1e-12);
+  /* Weibull and K–S on the DBH of the live trees */
+  const d = trees.filter(t => t.alive).map(t => t.d);
+  const w2 = I.weibull(d);
+  check('Weibull 2p: forma', w2.c, R.weibull2.shape, 1e-6); check('Weibull 2p: escala', w2.b, R.weibull2.scale, 1e-6); check('Weibull 2p: log-verosimilitud', w2.ll, R.weibull2.loglik, 1e-9);
+  const ks = I.ks(d, w2.cdf);
+  check('Kolmogorov–Smirnov: D', ks.D, R.ks.D, 1e-6); check('Kolmogorov–Smirnov: p asintótico', ks.p, R.ks.p, 1e-4);
+  const w3 = I.weibull(d, { three: true });
+  check('Weibull 3p: ubicación', w3.a, R.weibull3.a, 1e-3); check('Weibull 3p: forma', w3.c, R.weibull3.shape, 1e-3);
+  check('Weibull 3p: escala', w3.b, R.weibull3.scale, 1e-3); check('Weibull 3p: log-verosimilitud', w3.ll, R.weibull3.loglik, 1e-7);
+  /* IVI of the coffee shade trees (plots of 1 000 m²: ef = 10) */
+  const ivi = I.ivi(ca.map(r => ({ plot: r.parcela, sp: r.especie, d: r.dap, ef: 10 })), 25);
+  R.ivi.sp.forEach((sp, i) => {
+    const x = ivi.find(r => r.sp === sp);
+    check(`${sp}: frecuencia absoluta (%)`, 100 * x.F, R.ivi.AF[i], 1e-9); check(`${sp}: densidad (árb/ha)`, x.N, R.ivi.AD[i], 1e-9);
+    check(`${sp}: densidad relativa`, x.Nr, R.ivi.DR[i], 1e-5); check(`${sp}: dominancia (m²/ha)`, x.G, R.ivi.ADo[i], 1e-5);
+    check(`${sp}: dominancia relativa`, x.Gr, R.ivi.RDo[i], 1e-5); check(`${sp}: frecuencia relativa`, x.Fr, R.ivi.RF[i], 1e-5);
+    check(`${sp}: IVI (%)`, x.iviPct, R.ivi.IVI[i], 1e-5);
+  });
+  const p1 = per.find(x => x.plot === R.perPlot.parcela[0]);
+  check('Reineke IDR (parcela 1)', I.reineke(p1.N, p1.dq), R.density.sdi, 1e-10);
+  check('Hart–Becking en cuadro (parcela 1)', I.hartBecking(p1.N, p1.hdom), R.density.hbSq, 1e-10);
+  check('Hart–Becking en tresbolillo (parcela 1)', I.hartBecking(p1.N, p1.hdom, 'tri'), R.density.hbTri, 1e-10);
+  const mp = E.FPData.rows('mesofilo_mapeada');
+  const hg = I.hegyi(mp.map(r => ({ x: r.x, y: r.y, d: r.dap })), 6, [0, 50, 0, 50]);
+  vec('Hegyi (parcela mapeada, R = 6 m)', hg.map(h => h.ci), R.hegyi.ci, 1e-10);
+  check('Hegyi: árboles marcados en el borde', hg.filter(h => h.edge).length, R.hegyi.edge.reduce((a, b) => a + b, 0), 0, 'abs');
+  report(3, 'Inventario y muestreo', rows, [
+    'Referencias: R 4.4.2; forestmangr (sprs, strs, ss_diffs, forest_structure), fitdistrplus::fitdist, stats::ks.test y fórmulas de Cochran (1977) escritas aparte en R.',
+    'forestmangr::strs calcula el error estándar con (Σ Pⱼ Sⱼ)²/n, que solo es la varianza del estimador estratificado con la asignación de Neyman. La app usa la varianza de Cochran con la asignación realizada y da la de Neyman aparte; se compara cada una con su fórmula.',
+    'forestmangr redondea sus salidas a 9 decimales como máximo: por eso la tolerancia contra sus valores es 1e-8. La forma y la escala de Weibull se comparan a 1e-6 porque los dos optimizadores se detienen en puntos ligeramente distintos; la log-verosimilitud coincide a 1e-9.',
+    'Datos: los ejemplos simulados del bosque mesófilo (24 parcelas anidadas, relascopía de 15 puntos, parcela mapeada) y del cafetal (25 parcelas en 5 fincas).',
+  ]);
+};
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

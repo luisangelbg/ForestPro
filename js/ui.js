@@ -96,6 +96,7 @@ UI.table = function (host, o) {
     bar.append(csv, xl);
     wrap.appendChild(bar);
   }
+  wrap._fp = { title: tx(o.title), file: o.file, data: () => UI.tableData(o.columns, o.rows) };
   host.appendChild(wrap);
   return wrap;
 };
@@ -148,6 +149,8 @@ UI.grid = function (host, fields, rows, o) {
   o = o || {};
   if (typeof host === 'string') host = el(host);
   host.innerHTML = '';
+  const gkey = () => { const p = host.closest('.step-panel'); return p && !host.closest('.data-card') ? p.id + ':' + fields.map(fd => fd.key).join(',') : null; };
+  const changed = () => { const k = gkey(); if (k) document.dispatchEvent(new CustomEvent('fp:grid', { detail: { key: k, rows } })); };
   const wrap = mk('div', { class: 'table-scroll grid-wrap' });
   const table = mk('table', { class: 'edit-grid' });
   const draw = () => {
@@ -171,6 +174,7 @@ UI.grid = function (host, fields, rows, o) {
         }
         inp.addEventListener('change', () => {
           r[fd.key] = fd.num ? (inp.value === '' ? NaN : +inp.value) : inp.value;
+          changed();
           if (o.onChange) o.onChange(rows, i, fd.key);
         });
         td.appendChild(inp); trr.appendChild(td);
@@ -178,7 +182,7 @@ UI.grid = function (host, fields, rows, o) {
       if (o.removable !== false) {
         const td = mk('td');
         const b = mk('button', { type: 'button', class: 'icon-btn grid-del', title: T('Quitar fila', 'Remove row'), 'aria-label': T('Quitar fila ', 'Remove row ') + (i + 1) }, '×');
-        b.addEventListener('click', () => { rows.splice(i, 1); draw(); if (o.onChange) o.onChange(rows, -1); });
+        b.addEventListener('click', () => { rows.splice(i, 1); draw(); changed(); if (o.onChange) o.onChange(rows, -1); });
         td.appendChild(b); trr.appendChild(td);
       }
       tb.appendChild(trr);
@@ -190,12 +194,15 @@ UI.grid = function (host, fields, rows, o) {
   host.appendChild(wrap);
   if (o.addable !== false) {
     const add = mk('button', { type: 'button', class: 'btn btn-ghost btn-sm' }, L2('+ Agregar fila', '+ Add row'));
-    add.addEventListener('click', () => { const nr = {}; fields.forEach(fd => { nr[fd.key] = fd.def != null ? fd.def : (fd.num ? NaN : ''); }); rows.push(nr); draw(); if (o.onChange) o.onChange(rows, rows.length - 1); });
+    add.addEventListener('click', () => { const nr = {}; fields.forEach(fd => { nr[fd.key] = fd.def != null ? fd.def : (fd.num ? NaN : ''); }); rows.push(nr); draw(); changed(); if (o.onChange) o.onChange(rows, rows.length - 1); });
     host.appendChild(mk('div', { class: 'btn-row' })).appendChild(add);
   }
   document.addEventListener('langchange', () => { if (host.isConnected) draw(); });
+  const k0 = gkey();
+  if (k0) UI.grids[k0] = { rows, draw, o };
   return { redraw: draw, rows };
 };
+UI.grids = {};
 
 /* ---------------- the data card ----------------
    o: { id, fields: [{ key, es, en, aliases, num, req }], examples: [{ id, es, en, d: [es, en], rows: () => [...] }],
@@ -244,7 +251,10 @@ UI.dataCard = function (host, o) {
     const good = rows.filter(r => !bad.includes(r));
     status.innerHTML = `<b>${esc(meta.name || '')}</b> · ${L2(good.length + ' filas', good.length + ' rows')}` + (meta.note ? ' · ' + tt(meta.note) : '');
     preview(good);
-    o.onData(good, meta);
+    /* the project of Block 10 records the loads the user makes, not those a block makes from inside another */
+    document.dispatchEvent(new CustomEvent('fp:data', { detail: { id, rows: good, meta, nested: UI.dataDepth > 0 } }));
+    UI.dataDepth++;
+    try { o.onData(good, meta); } finally { UI.dataDepth--; }
   };
   const preview = rows => {
     area.innerHTML = '';
@@ -358,8 +368,12 @@ UI.dataCard = function (host, o) {
     download(DataIO.toCSV(header, ex), 'forestpro_' + id + '_plantilla.csv', 'text/csv;charset=utf-8');
   });
   document.addEventListener('langchange', () => { const v = exSel.value; fillEx(); exSel.value = v; showExNote(); });
-  return { load: exId => { if (exId) exSel.value = exId; exBtn.click(); }, box };
+  const api = { load: exId => { if (exId) exSel.value = exId; exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box };
+  UI.cards[id] = api;
+  return api;
 };
+UI.cards = {};
+UI.dataDepth = 0;
 
 /* ---------------- table of a fitted model: estimate, SE, t, p ---------------- */
 UI.coefRows = (fit, names) => (names || fit.names).map((nm, i) => ({ par: nm, est: fit.coef[i], se: fit.se[i], t: fit.t[i], p: fit.p[i] }));

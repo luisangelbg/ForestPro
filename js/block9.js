@@ -340,7 +340,7 @@ function econ() {
   Report.set(9, true); refreshStepMarks();
 }
 
-ExampleHooks['pino:9'] = () => { build(); [...el('b9root').querySelectorAll('.btn-primary')].filter(b => /ejemplo|example/i.test(b.textContent)).forEach(b => b.click()); sawYield(); };
+ExampleHooks['pino:9'] = () => { build(); [...el('b9root').querySelectorAll('.btn-primary')].filter(b => /ejemplo|example/i.test(b.textContent)).forEach(b => b.click()); [...el('b9root').querySelectorAll('button')].find(b => /Calcular el rendimiento/.test(b.textContent)).click(); };
 document.addEventListener('DOMContentLoaded', build);
 document.addEventListener('langchange', () => { if (!el('b9root') || !el('b9root').dataset.built) return; const k = el('b9kind').value; fillUnits(); el('b9kind').value = k; convert(); });
 })();

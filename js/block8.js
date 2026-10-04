@@ -48,7 +48,7 @@ function build() {
   el('b8tiles').addEventListener('change', e => { map.setTiles(e.target.checked); if (e.target.checked) { clearMessages(R.msgA); showMessage(R.msgA, 'info', L2('Fondo encendido: el navegador pide las teselas del área visible a los servidores de OpenStreetMap. Tus datos no se envían. Si abriste la app con doble clic, algunos servidores pueden negar las teselas; en línea funciona.', 'Background on: the browser requests the tiles of the visible area from the OpenStreetMap servers. Your data are not sent. If you opened the app with a double click, some servers may refuse the tiles; online it works.')); } });
   R.msgA = mk('div', { class: 'messages' }); a.appendChild(R.msgA);
   const mh = mk('div'); a.appendChild(mh);
-  map = MapView.create(mh, { center: [19.5, -97.03], zoom: 11, onDrawEnd: ring => { if (ring) { S.polygons.push({ name: T('Polígono ', 'Polygon ') + (S.polygons.length + 1), ring }); drawPolys(); refresh(); } el('b8draw').hidden = false; el('b8end').hidden = true; } });
+  map = MapView.create(mh, { center: [19.5, -97.03], zoom: 11, onDrawEnd: ring => { if (ring) { S.polygons.push({ name: T('Polígono ', 'Polygon ') + (S.polygons.length + 1), ring }); drawPolys(); refresh(); saved(); } el('b8draw').hidden = false; el('b8end').hidden = true; } });
   const dr = mk('div', { class: 'btn-row' });
   dr.innerHTML = `<button type="button" class="btn btn-secondary btn-sm" id="b8draw">${L2('Dibujar un polígono', 'Draw a polygon')}</button><button type="button" class="btn btn-primary btn-sm" id="b8end" hidden>${L2('Terminar el polígono', 'Finish the polygon')}</button><span class="hint" style="margin:0">${L2('Clic para cada vértice; doble clic o «Terminar» para cerrarlo; Esc cancela.', 'Click for each vertex; double click or «Finish» to close it; Esc cancels.')}</span>`;
   a.appendChild(dr);
@@ -165,7 +165,7 @@ async function importFile() {
     res.polygons.forEach(p => S.polygons.push(p));
     res.points.forEach(p => S.plots.push({ name: p.name, lat: p.lat, lon: p.lon, r: 0 }));
     clearMessages(R.msgA); showMessage(R.msgA, 'success', L2(`${res.polygons.length} polígonos y ${res.points.length} puntos importados.`, `${res.polygons.length} polygons and ${res.points.length} points imported.`));
-    drawPolys(); refresh(true);
+    drawPolys(); refresh(true); saved();
   } catch (err) { clearMessages(R.msgA); showMessage(R.msgA, 'danger', L2('No se pudo leer el archivo como GPX, KML o GeoJSON.', 'The file could not be read as GPX, KML or GeoJSON.')); }
   el('b8imp').value = '';
 }
@@ -231,7 +231,7 @@ function drawPolys() {
     { key: 'perimUTM', label: ['Perímetro (m)', 'Perimeter (m)'], num: true, fmt: n1 }, { key: 'zone', label: ['Zona UTM', 'UTM zone'], get: r => r.zone + (r.south ? 'S' : 'N') },
     { key: 'cen', label: ['Centroide', 'Centroid'], get: r => r.centroid.lat.toFixed(5) + ', ' + r.centroid.lon.toFixed(5) }], rows });
   const del = mk('button', { type: 'button', class: 'btn btn-ghost btn-sm' }, L2('Quitar el último polígono', 'Remove the last polygon'));
-  del.addEventListener('click', () => { S.polygons.pop(); drawPolys(); refresh(); });
+  del.addEventListener('click', () => { S.polygons.pop(); drawPolys(); refresh(); saved(); });
   R.polys.appendChild(mk('div', { class: 'btn-row' })).appendChild(del);
   const p0 = rows[0];
   UI.interp(R.polys, [`«${esc(p0.name)}» mide ${fmtNum(p0.areaUTM / 10000, 2)} ha en UTM (zona ${p0.zone}) y ${fmtNum(p0.areaSphere / 10000, 2)} ha sobre la esfera: la diferencia de ${fmtPct(100 * (p0.areaSphere / p0.areaUTM - 1), 2)} viene de usar una esfera en vez del elipsoide y del factor de escala de la proyección. Para el inventario usa el área UTM.`,
@@ -347,6 +347,9 @@ async function runInterp() {
   state.map = Object.assign(state.map || {}, { interp: { method: meth, n: pts.length, rmse: cv ? cv.rmse : cvI.rmse } });
 }
 
+/* the layers drawn or imported by hand go into the project of Block 10 */
+function saved() { document.dispatchEvent(new CustomEvent('fp:op', { detail: { block: 8, op: 'layers', data: { polygons: S.polygons, plots: S.plots } } })); }
+(window.ProjectOps = window.ProjectOps || {})[8] = { layers: d => { build(); S.polygons = d.polygons || []; S.plots = d.plots || []; drawPolys(); refresh(true); } };
 ExampleHooks['mesofilo:8'] = () => { build(); loadExample('mesofilo'); };
 document.addEventListener('DOMContentLoaded', build);
 document.addEventListener('stepchange', e => { if (e.detail.step === 8 && map) setTimeout(() => map.redraw(), 30); });

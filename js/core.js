@@ -186,11 +186,15 @@ function paintCommonBar() {
    (LABGfx.loading: the growth rings of ForestPro over the results panel) */
 async function runWork(title, task, o) {
   o = o || {};
-  if (window.LABGfx && LABGfx.loading) {
-    return LABGfx.loading.run({ titulo: title, mensaje: o.message || '', pasos: o.steps || 0 }, async step => task(step));
-  }
-  await new Promise(r => setTimeout(r, 0));
-  return task(() => {});
+  /* the project of Block 10 waits for the work in course before its next step */
+  window.FP_BUSY = (window.FP_BUSY || 0) + 1;
+  try {
+    if (window.LABGfx && LABGfx.loading && !window.FP_REPLAY) {
+      return await LABGfx.loading.run({ titulo: title, mensaje: o.message || '', pasos: o.steps || 0 }, async step => task(step));
+    }
+    await new Promise(r => setTimeout(r, 0));
+    return await task(() => {});
+  } finally { window.FP_BUSY--; }
 }
 
 /* Persisted preferences */
@@ -220,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hb) hb.addEventListener('click', () => LABG.showShortcuts());
     LABG.shortcuts([]);
     LABG.bindStepKeys(goStep);
-    LABG.guardUnload(() => !!state.inv || Object.keys(STEP_RESULT).some(k => !!state[STEP_RESULT[k]]));
+    LABG.guardUnload(() => !window.FP_NO_GUARD && (!!state.inv || Object.keys(STEP_RESULT).some(k => !!state[STEP_RESULT[k]])));
     LABG.setCurrentStep((document.querySelector('.step-btn.active') || {}).dataset?.step || '1');
     document.addEventListener('themechange', paintCommonBar);
     document.addEventListener('langchange', () => { paintCommonBar(); refreshStepFooters(); });

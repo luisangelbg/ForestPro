@@ -85,5 +85,12 @@ t(4, 'Monte Carlo sin errores de medición: la media iguala al cálculo directo 
 });
 t(4, 'CO₂ equivalente: 44/12 del carbono', E => near(E.Biomass.CO2 * 12, 44, 1e-12));
 
+/* ---------- Block 5 ---------- */
+t(5, 'ICA e IMA de una serie lineal: ICA constante e IMA que se le acerca', E => { const r = E.Growth.increments([1, 2, 3, 4].map(t => ({ t, y: 2 * t + 1 }))); near(r.rows[3].ica, 2); near(r.rows[3].ima, 9 / 4); });
+t(5, 'Chapman–Richards: la inflexión está en t = ln(p)/k', E => { const f = t => 30 * Math.pow(1 - Math.exp(-0.05 * t), 2.5); const c = E.Growth.criticalAges(f, 40, 1); near(c.tICA, Math.log(2.5) / 0.05, 1e-4); });
+t(5, 'Schumacher: el IMA máximo está en t = b', E => { const f = t => 40 * Math.exp(-12 / t); near(E.Growth.criticalAges(f, 30, 1).tIMA, 12, 1e-6); });
+t(5, 'Índice de sitio ADA: la curva de un sitio pasa por (edad base, IS)', E => { const sf = { si: null }; const A = 40, p = 1.3, tb = 20; const proj = (h1, t1, t2) => { const u = 1 - Math.pow(h1 / A, 1 / p); return A * Math.pow(1 - Math.pow(u, t2 / t1), p); }; near(proj(proj(22, tb, 35), 35, tb), 22, 1e-10); void sf; });
+t(5, 'Clutter: proyectar a la misma edad deja el área basal igual', E => { const c = { alpha: [4, -0.01], beta: [-1.7, -7.7, 0.04, 1.9] }; near(E.Growth.clutterProject(c, 25, 10, 30, [10])[0].G, 30, 1e-12); });
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

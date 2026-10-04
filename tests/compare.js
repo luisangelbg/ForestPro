@@ -324,6 +324,73 @@ blocks[4] = () => {
 };
 const Num_mean = a => a.reduce((s, v) => s + v, 0) / a.length;
 
+/* ================= Block 5 ================= */
+blocks[5] = () => {
+  const R = ref(5); if (!R) return;
+  const { rows, check, vec } = make(5);
+  const G = E.Growth;
+  const at = E.FPData.rows('pino_analisis_troncal');
+  const trees = [...new Set(at.map(r => r.arbol))].sort();
+  trees.forEach((t, k) => {
+    const s = at.filter(r => r.arbol === t).map(r => ({ t: r.edad, y: Math.PI * r.diametro * r.diametro / 40000 * r.altura * 0.45 }));
+    const inc = G.increments(s), ref5 = R.inc[k];
+    vec(`${t}: ICA`, inc.rows.map(x => x.ica).slice(1), ref5.ica.slice(1), 1e-10);
+    vec(`${t}: IMA`, inc.rows.map(x => x.ima), ref5.ima, 1e-12);
+    check(`${t}: edad del IMA máximo`, inc.tMaxIMA, ref5.tMaxIMA, 0, 'abs');
+    check(`${t}: IMA máximo`, inc.maxIMA, ref5.maxIMA, 1e-12);
+    if (ref5.tCross != null) check(`${t}: cruce ICA = IMA`, inc.tCross, ref5.tCross, 1e-10);
+  });
+  const d = at.filter(r => r.arbol === 'T1').map(r => ({ t: r.edad, y: Math.PI * r.diametro * r.diametro / 40000 * r.altura * 0.45 }));
+  G.fitGrowth(d).forEach(m => {
+    const r = R.models[m.key];
+    vec(`${m.key}: coeficientes`, m.fit.coef, r.coef, 2e-4);
+    check(`${m.key}: suma de cuadrados residual`, m.fit.rss, r.rss, 1e-6);
+    check(`${m.key}: AIC`, m.fit.aic, r.aic, 1e-6);
+    vec(`${m.key}: errores estándar`, m.fit.se, r.se, 5e-3);
+    if (r.tICA != null) { check(`${m.key}: edad del ICA máximo`, m.crit.tICA, r.tICA, 1e-3); check(`${m.key}: edad del IMA máximo`, m.crit.tIMA, r.tIMA, 1e-3); }
+  });
+  const rem = E.FPData.rows('pino_remediciones').map(r => ({ plot: r.parcela, t: r.edad, h: r.hdom, g: r.g_ha, v: r.v_ha }));
+  const sites = {};
+  ['schum', 'chapAna', 'chapADA'].forEach(k => {
+    const sf = G.siteFit(rem, 20, k), r = R.site[k];
+    sites[k] = sf;
+    vec(`${k}: coeficientes`, sf.fit.coef, r.coef, k === 'schum' ? 1e-10 : 2e-4);
+    check(`${k}: σ residual`, sf.fit.sigma, r.sigma, k === 'schum' ? 1e-10 : 1e-6);
+    vec(`${k}: errores estándar`, sf.fit.se, r.se, k === 'schum' ? 1e-9 : 5e-3);
+  });
+  check('Pares de remediciones', sites.chapADA.pairs.length, R.site.npairs, 0, 'abs');
+  const by = (sf) => { const cl = G.classify(rem, sf, 4); return new Map(cl.plots.map(p => [p.plot, p])); };
+  const ps = by(sites.schum), pa = by(sites.chapAna), pd = by(sites.chapADA);
+  R.site.plot.forEach((p, i) => {
+    check(`${p}: IS anamórfico de Schumacher`, ps.get(p).si, R.site.si_schum[i], 1e-10);
+    check(`${p}: IS anamórfico de Chapman–Richards`, pa.get(p).si, R.site.si_chapAna[i], 2e-5);
+    check(`${p}: IS polimórfico (ADA)`, pd.get(p).si, R.site.si_ada[i], 2e-5);
+    check(`${p}: clase de sitio (4 clases, ADA)`, pd.get(p).cls, R.site.cls_ada4[i], 0, 'abs');
+  });
+  check('Curva ADA: IS 25 a los 40 años', sites.chapADA.curve(25, 40), R.site.curve_ada_25_40, 2e-5);
+  check('Curva guía de Schumacher a la edad base', sites.schum.guide(20), R.site.guideAtTb, 1e-10);
+  /* Clutter with the polymorphic site index of each plot */
+  const sMap = new Map(R.site.plot.map((p, i) => [p, pd.get(p).si]));
+  const c = G.clutter(rem.map(r => Object.assign({}, r, { s: sMap.get(r.plot) })));
+  const fm = R.clutter.forestmangr;
+  vec('Clutter: β (fit_clutter de forestmangr)', c.beta, [fm.b0, fm.b1, fm.b2, fm.b3], 1e-5);
+  vec('Clutter: α (fit_clutter de forestmangr)', c.alpha, [fm.a0, fm.a1], 1e-5);
+  vec('Clutter: β (systemfit 2SLS)', c.beta, R.clutter.systemfit.coef.slice(0, 4), 1e-5);
+  vec('Clutter: EE de β (2SLS de una ecuación)', c.seBeta, R.clutter.single.seBeta, 1e-4);
+  vec('Clutter: EE de α (mínimos cuadrados restringidos)', c.seAlpha, R.clutter.single.seAlpha, 1e-4);
+  check('Clutter: σ de ln V₂', c.sigmaV, R.clutter.single.sigmaV, 1e-4); check('Clutter: σ de ln G₂', c.sigmaG, R.clutter.single.sigmaG, 1e-4);
+  check('Clutter: pares', c.n, R.clutter.systemfit.n, 0, 'abs');
+  const pj = G.clutterProject({ alpha: R.clutter.systemfit.coef.slice(6, 8), beta: R.clutter.systemfit.coef.slice(0, 4) }, 25, 8, 20, R.clutter.proj.t);
+  vec('Proyección de G con los coeficientes de la referencia', pj.map(x => x.G), R.clutter.proj.G, 1e-10);
+  vec('Proyección de V con los coeficientes de la referencia', pj.map(x => x.V), R.clutter.proj.V, 1e-10);
+  report(5, 'Crecimiento y rendimiento', rows, [
+    'Referencias: R 4.4.2 con minpack.lm (Levenberg–Marquardt con tolerancias estrictas), lm, forestmangr::fit_clutter y systemfit (2SLS); edades críticas con optimize sobre una malla fina.',
+    'Coeficientes de modelos no lineales a 2e-4 y suma de cuadrados a 1e-6 (el mismo mínimo); el modelo de Schumacher linealizado y la curva guía son mínimos cuadrados ordinarios y coinciden a 1e-10.',
+    'Errores estándar de Clutter: la app usa los de una sola ecuación (2SLS del volumen; mínimos cuadrados del área basal con las restricciones sustituidas), que coinciden con systemfit sin restricciones y con lm. El sistema restringido que estima fit_clutter da los mismos coeficientes pero mezcla la covarianza entre ecuaciones en las varianzas (por ejemplo 0.554 frente a 0.626 en β₀).',
+    'Datos: los ejemplos simulados del pino (análisis troncal de 6 árboles y 30 parcelas con 6 remediciones).',
+  ]);
+};
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

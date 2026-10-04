@@ -30,6 +30,7 @@ const FT = [
   { key: 'familia', es: 'Familia', en: 'Family', aliases: ['family'] },
   { key: 'dap', es: 'DAP (cm)', en: 'DBH (cm)', num: true, req: true, aliases: ['dbh', 'd130', 'diametro', 'd'] },
   { key: 'altura', es: 'Altura total (m)', en: 'Total height (m)', num: true, aliases: ['ht', 'h', 'height'] },
+  { key: 'copa', es: 'Diámetro de copa (m)', en: 'Crown diameter (m)', num: true, aliases: ['crown', 'diametro de copa', 'dc'] },
   { key: 'estado', es: 'Estado (vivo / muerto)', en: 'Status (alive / dead)', aliases: ['status', 'condicion'] },
   { key: 'x', es: 'x (m)', en: 'x (m)', num: true, aliases: ['coordx', 'xm'] },
   { key: 'y', es: 'y (m)', en: 'y (m)', num: true, aliases: ['coordy', 'ym'] },
@@ -50,8 +51,8 @@ const FP = [
   { key: 'lon', es: 'Longitud', en: 'Longitude', num: true, aliases: ['longitude', 'long', 'x'] },
 ];
 const exTrees = id => {
-  if (id === 'cafetal') return FPData.rows('cafetal_arboles').map(r => ({ parcela: r.parcela, estrato: '', especie: r.especie, familia: r.familia, dap: r.dap, altura: r.altura, estado: r.estado, x: r.x, y: r.y }));
-  return FPData.rows('mesofilo_arboles').map(r => ({ parcela: r.parcela, estrato: r.estrato, especie: r.especie, familia: r.familia, dap: r.dap, altura: r.altura, estado: r.estado, x: r.x, y: r.y }));
+  if (id === 'cafetal') return FPData.rows('cafetal_arboles').map(r => ({ parcela: r.parcela, estrato: '', especie: r.especie, familia: r.familia, dap: r.dap, altura: r.altura, copa: r.copa, estado: r.estado, x: r.x, y: r.y }));
+  return FPData.rows('mesofilo_arboles').map(r => ({ parcela: r.parcela, estrato: r.estrato, especie: r.especie, familia: r.familia, dap: r.dap, altura: r.altura, copa: NaN, estado: r.estado, x: r.x, y: r.y }));
 };
 const exPlots = id => {
   if (id === 'cafetal') return FPData.rows('cafetal_parcelas').map(r => ({ parcela: r.parcela, estrato: r.manejo, area_estrato_ha: NaN, conglomerado: r.finca, radio_m: r.radio_m, radio_chico_m: NaN, dap_corte_cm: NaN, lado_m: NaN, largo_m: NaN, ancho_m: NaN, area_m2: r.area_m2, lat: r.lat, lon: r.lon }));

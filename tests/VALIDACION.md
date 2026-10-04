@@ -14,4 +14,5 @@ node tests/compare.js
 | 4 | Biomasa y carbono | 4974 | 0 |
 | 5 | Crecimiento y rendimiento | 616 | 0 |
 | 6 | Diversidad y ecología | 1222 | 0 |
-| | **Total** | **7529** | **0** |
+| 7 | Sistemas agroforestales | 211 | 0 |
+| | **Total** | **7740** | **0** |

@@ -101,5 +101,18 @@ t(6, 'Clark–Evans de una malla cuadrada ≈ 2 (regular)', E => { const p = [];
 t(6, 'UPGMA de tres puntos: alturas 1 y (2 + 3)/2', E => { const D = [[0, 1, 2], [1, 0, 3], [2, 3, 0]]; const u = E.Divers.upgma(D); near(u.heights[0], 1, 1e-12); near(u.heights[1], 2.5, 1e-12); });
 t(6, 'Escalamiento clásico recupera distancias euclidianas', E => { const P = [[0, 0], [3, 0], [0, 4], [3, 4]]; const D = P.map(a => P.map(b => Math.hypot(a[0] - b[0], a[1] - b[1]))); const X = E.Divers.cmdscale(D, 2).X; near(Math.hypot(X[0][0] - X[3][0], X[0][1] - X[3][1]), 5, 1e-9); });
 
+/* ---------- Block 7 ---------- */
+t(7, 'Apertura de un casquete de cielo de 30°: ponderada ≈ 1 − cos 30°, fracción de huecos ≈ 1/9', E => {
+  const w = 600, h = 600, R = 300, g = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const r = Math.hypot(x + 0.5 - 300, y + 0.5 - 300); g[y * w + x] = r <= R / 3 ? 230 : 40; }
+  const o = E.Agro.openness(g, w, h, { threshold: 128 });
+  near(o.weighted, 1 - Math.cos(Math.PI / 6), 2e-3); near(o.gap, 1 / 9, 2e-3);
+});
+t(7, 'Otsu separa dos poblaciones de grises', E => { const hst = new Array(256).fill(0); for (let i = 0; i < 50; i++) { hst[40 + (i % 10)] += 10; hst[200 + (i % 10)] += 10; } const t0 = E.Agro.otsu(hst); ok(t0 >= 49 && t0 < 200, 'umbral ' + t0); });
+t(7, 'Marco real de 10 m en 100 × 100 m: 100 árboles; tresbolillo: 15.5 % más por hectárea', E => { near(E.Agro.layout({ kind: 'square', W: 100, L: 100, a: 10 }).n, 100); near(E.Agro.densityOf({ kind: 'tri', a: 10 }) / E.Agro.densityOf({ kind: 'square', a: 10 }), 2 / Math.sqrt(3), 1e-12); });
+t(7, 'Cerco vivo de 400 m de perímetro con un árbol cada 5 m: 80 árboles', E => near(E.Agro.layout({ kind: 'fence', W: 100, L: 100, a: 5 }).n, 80));
+t(7, 'Cobertura con traslape: copas que suman la superficie de la parcela cubren 1 − 1/e', E => { const r = Math.sqrt(1000 / Math.PI); near(E.Agro.shadeOfPlot([{ sp: 'a', d: 20, h: 10, crown: 2 * r }], 1000).cover, 100 * (1 - Math.exp(-1)), 1e-12); });
+t(7, 'Presupuesto: la diferencia en CO₂e es 44/12 de la de carbono', E => { const b = E.Agro.budget({ a: 10, b: 5 }, { a: 2 }); near(b.diff, 13); near(b.diffCO2, 13 * 44 / 12, 1e-12); });
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

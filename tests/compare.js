@@ -456,6 +456,40 @@ blocks[6] = () => {
   ]);
 };
 
+/* ================= Block 7 ================= */
+blocks[7] = () => {
+  const R = ref(7); if (!R) return;
+  const { rows, check, vec } = make(7);
+  const A = E.Agro;
+  const a = E.FPData.rows('cafetal_arboles').filter(r => r.estado === 'vivo');
+  R.shade.parcela.forEach((p, i) => {
+    const s = A.shadeOfPlot(a.filter(r => r.parcela === p).map(r => ({ sp: r.especie, d: r.dap, h: r.altura, crown: r.copa })), 1000);
+    check(`${p}: árboles/ha`, s.N, R.shade.N[i], 1e-12); check(`${p}: área basal`, s.G, R.shade.G[i], 1e-12); check(`${p}: especies`, s.S, R.shade.S[i], 0, 'abs');
+    check(`${p}: suma de copas (%)`, s.raw, R.shade.raw[i], 1e-12); check(`${p}: cobertura con traslape (%)`, s.cover, R.shade.cover[i], 1e-12);
+    check(`${p}: altura media`, s.hMean, R.shade.h[i], 1e-12); check(`${p}: complejidad de Holdridge`, s.ic, R.shade.ic[i], 1e-12);
+  });
+  const ph = R.photo, grey = Uint8Array.from(ph.data);
+  const geo = { cx: ph.w / 2, cy: ph.h / 2, R: ph.w / 2, hemi: true };
+  const thr = A.otsu(A.histogram(grey, ph.w, ph.h, geo));
+  check('Umbral de Otsu', thr, ph.threshold, 0, 'abs');
+  const op = A.openness(grey, ph.w, ph.h, Object.assign({ threshold: ph.threshold }, geo));
+  check('Fracción de huecos', op.gap, ph.gap, 1e-12); check('Apertura ponderada por ángulo sólido', op.weighted, ph.weighted, 1e-12);
+  vec('Apertura por anillos de 15°', op.rings.map(r => r.open), ph.rings, 1e-12);
+  const p = E.FPData.rows('cafetal_parcelas');
+  const sy = A.shadeYield(p.map(r => r.sombra_pct), p.map(r => r.rend_cafe)), Q = R.shadeYield;
+  vec('Lineal: coeficientes', sy.lin.coef, Q.lin.coef, 1e-10); check('Lineal: R²', sy.lin.r2, Q.lin.r2, 1e-10); check('Lineal: AIC', sy.lin.aic, Q.lin.aic, 1e-10);
+  vec('Cuadrático: coeficientes', sy.quad.coef, Q.quad.coef, 1e-9); vec('Cuadrático: errores estándar', sy.quad.se, Q.quad.se, 1e-9);
+  check('Cuadrático: R²', sy.quad.r2, Q.quad.r2, 1e-10); check('Cuadrático: AIC', sy.quad.aic, Q.quad.aic, 1e-10);
+  check('F del término cuadrático', sy.F, Q.F, 1e-9); check('p de F', sy.pF, Q.pF, 1e-7);
+  check('Sombra del rendimiento máximo', sy.opt, Q.opt, 1e-10); check('Su error estándar (método delta)', sy.se, Q.se, 1e-9);
+  check('Límite inferior del óptimo', sy.lo, Q.lo, 1e-9); check('Límite superior del óptimo', sy.hi, Q.hi, 1e-9);
+  Q.band.x.forEach((x, i) => { const b = sy.bandQuad(x); check(`Banda de confianza en ${x} %: media`, b.m, Q.band.fit[i], 1e-10); check(`Banda en ${x} %: inferior`, b.lo, Q.band.lwr[i], 1e-9); check(`Banda en ${x} %: superior`, b.hi, Q.band.upr[i], 1e-9); });
+  report(7, 'Sistemas agroforestales', rows, [
+    'Referencias: R 4.4.2 con las fórmulas de sombra, cobertura con traslape y complejidad de Holdridge escritas aparte; Otsu y la apertura del dosel programados aparte en R sobre una imagen sintética construida en el mismo guion; lm, anova, vcov y predict para la regresión sombra–rendimiento.',
+    'Imagen de prueba: 160 × 160 píxeles con cielo en un casquete de 40° de ángulo cenital y en una franja vertical, niveles de gris con ruido normal. El método delta del óptimo de sombra se calculó en R con el gradiente y la matriz de covarianzas de lm.',
+  ]);
+};
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

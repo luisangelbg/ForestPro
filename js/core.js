@@ -192,7 +192,8 @@ async function runWork(title, task, o) {
   /* the project of Block 10 waits for the work in course before its next step */
   window.FP_BUSY = (window.FP_BUSY || 0) + 1;
   try {
-    if (window.LABGfx && LABGfx.loading && !window.FP_REPLAY) {
+    /* the wait waits for a painted frame: in a hidden tab there are none, so the work runs without it */
+    if (window.LABGfx && LABGfx.loading && !window.FP_REPLAY && document.visibilityState !== 'hidden') {
       return await LABGfx.loading.run({ titulo: title, mensaje: o.message || '', pasos: o.steps || 0 }, async step => task(step));
     }
     await new Promise(r => setTimeout(r, 0));

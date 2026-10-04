@@ -74,7 +74,7 @@
   /* T('texto', 'text') → the active language. An object {es, en} is also accepted. */
   function T(es, en) {
     if (es && typeof es === 'object' && !Array.isArray(es)) return I18N.lang === 'en' ? es.en : es.es;
-    return I18N.lang === 'en' ? en : es;
+    return I18N.lang === 'en' ? (en == null ? es : en) : es;
   }
 
   /* ---------------- theme ---------------- */

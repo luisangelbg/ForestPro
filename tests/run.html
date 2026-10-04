@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- ForestPro — Copyright (C) 2026 Luis Ángel Barrera-Guzmán. GPL-3.0-or-later; see LICENSE. -->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ForestPro — pruebas unitarias</title>
+<link rel="stylesheet" href="../css/labg-base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body { padding: 20px; }
+  main { max-width: 980px; }
+  .sum { font-size: 1.1rem; font-weight: 700; margin: 10px 0 16px; }
+  td.ok { color: var(--success-text); font-weight: 700; } td.bad { color: var(--danger-text); font-weight: 700; }
+  td.err { font-family: var(--mono); font-size: .8rem; color: var(--danger-text); }
+</style>
+</head>
+<body>
+<main>
+  <h1>ForestPro · pruebas unitarias</h1>
+  <p class="hint">Ejemplos con respuesta conocida (valores de libro, formas cerradas, casos límite) para cada motor. Las mismas pruebas corren en node con <code>node tests/run_node.js</code>. La comparación contra R está en <code>tests/VALIDACION.md</code>.</p>
+  <div class="sum" id="sum">…</div>
+  <div class="table-scroll"><table><thead><tr><th>Bloque</th><th>Prueba</th><th>Resultado</th><th>Detalle</th></tr></thead><tbody id="rows"></tbody></table></div>
+</main>
+<script>window.T = es => es;</script>
+<script src="../js/num.js"></script>
+<script src="../js/nls.js"></script>
+<script src="../js/dataio.js"></script>
+<script src="../js/datasets.js"></script>
+<script src="../js/eng-dendro.js"></script>
+<script src="../js/eng-invent.js" onerror="this.remove()"></script>
+<script src="../js/eng-biomass.js" onerror="this.remove()"></script>
+<script src="../js/eng-growth.js" onerror="this.remove()"></script>
+<script src="../js/eng-divers.js" onerror="this.remove()"></script>
+<script src="../js/eng-agro.js" onerror="this.remove()"></script>
+<script src="../js/eng-geo.js" onerror="this.remove()"></script>
+<script src="../js/eng-tools.js" onerror="this.remove()"></script>
+<script src="unit.js"></script>
+<script>
+(function () {
+  let pass = 0, fail = 0;
+  const tb = document.getElementById('rows');
+  (window.FP_UNIT || []).forEach(u => {
+    let ok = true, msg = '';
+    try { u.fn(window); } catch (e) { ok = false; msg = e.message; }
+    if (ok) pass++; else fail++;
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + (u.block || 'núcleo') + '</td><td></td><td class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'pasa' : 'falla') + '</td><td class="err"></td>';
+    tr.children[1].textContent = u.name; tr.children[3].textContent = msg;
+    tb.appendChild(tr);
+  });
+  const s = document.getElementById('sum');
+  s.textContent = (pass + fail) + ' pruebas: ' + pass + ' pasan, ' + fail + ' fallan';
+  s.className = 'sum ' + (fail ? 'bad-t' : 'ok-t');
+  document.title = 'ForestPro — ' + s.textContent;
+})();
+</script>
+</body>
+</html>

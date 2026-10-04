@@ -1,0 +1,5 @@
+# Comparaciones internas de la validación que se regeneran con los guiones (las tablas de resultados sí se guardan)
+tests/r/tmp/
+*.tmp
+# Investigación interna (fuentes consultadas, notas de trabajo): no se distribuye
+research/

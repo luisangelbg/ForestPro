@@ -1,0 +1,52 @@
+<!-- ==================== BLOCK 1 · HOME ==================== -->
+<section class="step-panel active" id="panel-1">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow"><span data-l="es">Inventario forestal · dasometría · biomasa y carbono · agroforestería</span><span data-l="en">Forest inventory · mensuration · biomass and carbon · agroforestry</span></div>
+        <h1><span data-l="es">Del <span class="verde">árbol medido</span> a la <span class="oro">tonelada de carbono</span></span><span data-l="en">From the <span class="verde">measured tree</span> to the <span class="oro">tonne of carbon</span></span></h1>
+        <p class="lead"><span data-l="es">Cubica árboles y trozas, ajusta ecuaciones de volumen, ahusamiento y altura, diseña y expande el <b>inventario</b> con su error de muestreo, estima la <b>biomasa y el carbono</b> con su incertidumbre, proyecta el <b>crecimiento</b> y el índice de sitio, mide la <b>diversidad</b> y el patrón espacial, caracteriza <b>cafetales y sistemas agroforestales</b> y lleva tus parcelas a un <b>mapa</b>. Todo en tu navegador, sin instalar nada y sin que tus datos salgan de tu computadora.</span><span data-l="en">Scale trees and logs, fit volume, taper and height equations, design and expand the <b>inventory</b> with its sampling error, estimate <b>biomass and carbon</b> with their uncertainty, project <b>growth</b> and site index, measure <b>diversity</b> and spatial pattern, characterise <b>shaded coffee and agroforestry systems</b> and put your plots on a <b>map</b>. All in your browser, nothing to install, and your data never leave your computer.</span></p>
+        <div class="hero-cta">
+          <button type="button" class="btn btn-primary btn-lg" id="startBtn"><span data-l="es">Empezar con un ejemplo →</span><span data-l="en">Start with an example →</span></button>
+          <button type="button" class="btn btn-secondary btn-lg" id="modulesBtn"><span data-l="es">Ver los módulos</span><span data-l="en">See the modules</span></button>
+          <button type="button" class="btn btn-ghost btn-lg" id="citeBtn"><span data-l="es">Cómo citar</span><span data-l="en">How to cite</span></button>
+        </div>
+        <div class="badge-row">
+          <span class="badge ok"><span data-l="es">Funciona completo en tu navegador</span><span data-l="en">Runs entirely in your browser</span></span>
+          <span class="badge ok"><span data-l="es">Comparado contra implementaciones de referencia en R</span><span data-l="en">Checked against reference implementations in R</span></span>
+          <span class="badge ok"><span data-l="es">Cada método con su fuente</span><span data-l="en">Every method with its source</span></span>
+          <span class="badge ok"><span data-l="es">Español e inglés</span><span data-l="en">Spanish and English</span></span>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt" role="img" data-es-title="Sección de un tronco: los anillos de crecimiento crecen desde la médula y los exteriores salen del tronco como curvas de nivel de un mapa con parcelas de inventario" data-en-title="End of a log: the growth rings grow from the pith and the outer ones leave the trunk as the contour lines of a map with inventory plots" aria-label="Sección de un tronco: los anillos de crecimiento crecen desde la médula y los exteriores salen del tronco como curvas de nivel de un mapa con parcelas de inventario"></div>
+    </div>
+  </div>
+
+  <div class="messages" id="homeMessages"></div>
+
+  <h2 class="section-title"><span data-l="es">Cómo funciona</span><span data-l="en">How it works</span></h2>
+  <p class="section-sub"><span data-l="es">El orden es el de un trabajo forestal: medir los árboles, muestrear el rodal, expandir a la hectárea, convertir en biomasa y carbono, proyectar y reportar. Los módulos también se usan sueltos: cada uno acepta su propia tabla.</span><span data-l="en">The order is that of a forestry job: measure the trees, sample the stand, expand to the hectare, convert into biomass and carbon, project and report. The modules also work on their own: each one takes its own table.</span></p>
+  <div class="workflow" id="workflow"></div>
+
+  <h2 class="section-title" id="modules"><span data-l="es">Los nueve módulos</span><span data-l="en">The nine modules</span></h2>
+  <p class="section-sub"><span data-l="es">Un módulo es un bloque de la barra y un capítulo del manual. Cada uno recibe datos (a mano, pegados, de un archivo o de un ejemplo), los revisa, calcula, explica el resultado y lo exporta.</span><span data-l="en">A module is a block of the bar and a chapter of the manual. Each one takes data (typed, pasted, from a file or from an example), checks them, computes, explains the result and exports it.</span></p>
+  <div class="feature-grid" id="blockGrid"></div>
+
+  <h2 class="section-title"><span data-l="es">Datos de ejemplo</span><span data-l="en">Example data</span></h2>
+  <p class="section-sub"><span data-l="es">Cuatro conjuntos <b>simulados</b> con órdenes de magnitud realistas (no son mediciones de un sitio real; el guion que los genera está en <code>data/generar_datos.R</code>). Sirven para aprender cada módulo y para comparar los resultados con los de R.</span><span data-l="en">Four <b>simulated</b> sets with realistic orders of magnitude (they are not measurements of a real site; the script that generates them is in <code>data/generar_datos.R</code>). They serve to learn each module and to compare the results with those of R.</span></p>
+  <div class="ex-grid" id="exampleGrid"></div>
+
+  <h2 class="section-title"><span data-l="es">Lo que hace y lo que no</span><span data-l="en">What it does and what it does not</span></h2>
+  <div class="notdo">
+    <div><b><span data-l="es">Calcula con tus datos, en tu equipo</span><span data-l="en">It computes with your data, on your computer</span></b><span data-l="es">Nada se envía a ningún servidor. El fondo de mapa en línea del Bloque 8 viene apagado; si lo enciendes, sólo se piden las teselas del mapa.</span><span data-l="en">Nothing is sent to any server. The online map background of Block 8 comes switched off; if you switch it on, only the map tiles are requested.</span></div>
+    <div><b><span data-l="es">No sustituye la ecuación local</span><span data-l="en">It does not replace the local equation</span></b><span data-l="es">Las ecuaciones de biomasa del catálogo son de referencia. Si existe una ecuación para tu especie y tu región, agrégala al catálogo y úsala.</span><span data-l="en">The biomass equations of the catalogue are references. If there is an equation for your species and region, add it to the catalogue and use it.</span></div>
+    <div><b><span data-l="es">No es un sistema de información geográfica</span><span data-l="en">It is not a geographic information system</span></b><span data-l="es">El mapa calcula áreas, cuadrículas e interpolaciones y exporta GPX, KML y GeoJSON; para análisis espacial completo, lleva esos archivos a un programa de mapas.</span><span data-l="en">The map computes areas, grids and interpolations and exports GPX, KML and GeoJSON; for full spatial analysis, take those files to a mapping program.</span></div>
+    <div><b><span data-l="es">No certifica carbono</span><span data-l="en">It does not certify carbon</span></b><span data-l="es">Las cifras de carbono y su incertidumbre sirven para estudios y planes de manejo; un proyecto de mercado de carbono sigue además las reglas de su estándar.</span><span data-l="en">The carbon figures and their uncertainty serve studies and management plans; a carbon-market project also follows the rules of its standard.</span></div>
+  </div>
+
+  <h2 class="section-title" id="cite"><span data-l="es">Cómo citar</span><span data-l="en">How to cite</span></h2>
+  <div class="cite-box" id="citeBox"></div>
+
+  <p class="footer-note"><span data-l="es">ForestPro es software libre (GPL-3.0) de la LABG Suite. Hecho con código propio, sin bibliotecas de terceros.</span><span data-l="en">ForestPro is free software (GPL-3.0) of the LABG Suite. Built with its own code, with no third-party libraries.</span></p>
+</section>

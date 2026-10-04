@@ -85,7 +85,7 @@ function build() {
       ['b7crop', 'Cultivo: distancia (m)', 'Crop: spacing (m)', 2], ['b7cropRow', 'Cultivo: entre hileras (m)', 'Crop: between rows (m)', 1.5], ['b7cost', 'Costo por árbol plantado', 'Cost per tree planted', 25]]
       .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('');
   d.appendChild(dg);
-  ['b7kind', 'b7W', 'b7L', 'b7a', 'b7b', 'b7alley', 'b7crop', 'b7cropRow', 'b7cost'].forEach(id => el(id).addEventListener('change', drawLayout));
+  ['b7kind', 'b7W', 'b7L', 'b7a', 'b7b', 'b7alley', 'b7crop', 'b7cropRow', 'b7cost'].forEach(id => el(id).addEventListener('change', () => drawLayout(true)));
   R.layout = mk('div', { class: 'res-host' }); d.appendChild(R.layout);
   UI.method(d, { text: [
     '<p>Las posiciones se generan dentro del terreno dejando media distancia en los bordes. Densidad teórica de un arreglo infinito: cuadro 10 000/a²; rectángulo 10 000/(a·b); tresbolillo 10 000/(a²·√3/2), un 15.5 % más árboles que el cuadro con la misma distancia; callejones 10 000/(a·ancho). El cerco vivo pone un árbol cada a metros a lo largo del perímetro y los linderos, en los dos lados largos. El cultivo bajo los árboles se dibuja en su propio marco para ver cómo conviven.</p>',
@@ -258,7 +258,8 @@ function drawSY() {
 }
 
 /* ---------------- D ---------------- */
-function drawLayout() {
+/* the plan is drawn from the start; it counts as a result of the block only once the user changes it */
+function drawLayout(byUser) {
   if (!R.layout) return;
   R.layout.innerHTML = '';
   const o = { kind: el('b7kind').value, W: +el('b7W').value, L: +el('b7L').value, a: +el('b7a').value, b: +el('b7b').value, alley: +el('b7alley').value };
@@ -282,7 +283,7 @@ function drawLayout() {
   res.pts.forEach(p => { s += `<circle cx="${(ox + p.x * sc).toFixed(1)}" cy="${(oy + p.y * sc).toFixed(1)}" r="${cr.toFixed(1)}" style="fill:var(--bosque);fill-opacity:.85;stroke:var(--fig-bg);stroke-width:.8"/>`; });
   s += `<text class="pl-lab" x="${ox}" y="${(H - 6).toFixed(1)}">${esc(o.W + ' m × ' + o.L + ' m')}</text></svg>`;
   UI.figure(R.layout, { title: ['Plano de la plantación (árboles en verde oscuro, cultivo en verde claro)', 'Plan of the planting (trees in dark green, crop in light green)'], svg: s, key: 'b7-plan' });
-  state.agro = Object.assign(state.agro || {}, { layout: { kind: o.kind, n: res.n, perHa: res.perHa } });
+  if (byUser || (state.agro && state.agro.layout)) { state.agro = Object.assign(state.agro || {}, { layout: { kind: o.kind, n: res.n, perHa: res.perHa } }); if (byUser) { Report.set(7, true); refreshStepMarks(); } }
 }
 
 /* ---------------- E ---------------- */

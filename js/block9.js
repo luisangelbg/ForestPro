@@ -283,7 +283,7 @@ function convert() {
   R.conv.innerHTML = '';
   const k = el('b9kind').value, v = +el('b9val').value, from = el('b9from').value;
   if (!isFinite(v)) return;
-  const trim = s => /.d*$/.test(s) ? s.replace(/0+$/, '').replace(/.$/, '') : s;
+  const trim = s => /\.\d*$/.test(s) ? s.replace(/0+$/, '').replace(/\.$/, '') : s;
   const fmtV = x => { const a = Math.abs(x); return a === 0 ? '0' : a >= 1e6 || a < 1e-4 ? x.toExponential(5).replace('-', '−') : trim(fmtNum(x, a >= 100 ? 2 : a >= 1 ? 4 : 6)); };
   UI.table(R.conv, { title: [`${fmtV(v)} ${T(...UNITS[k][1].find(u => u[0] === from).slice(1))} equivalen a`, `${fmtV(v)} ${T(...UNITS[k][1].find(u => u[0] === from).slice(1))} equal`], file: 'forestpro_conversion', columns: [
     { key: 'u', label: ['Unidad', 'Unit'] }, { key: 'v', label: ['Valor', 'Value'], num: true, get: r => fmtV(r.v), raw: r => r.v }],

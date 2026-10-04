@@ -11,4 +11,5 @@ node tests/compare.js
 |---|---|---:|---:|
 | 2 | Dasometría | 287 | 0 |
 | 3 | Inventario y muestreo | 430 | 0 |
-| | **Total** | **717** | **0** |
+| 4 | Biomasa y carbono | 4974 | 0 |
+| | **Total** | **5691** | **0** |

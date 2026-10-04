@@ -65,5 +65,25 @@ t(3, 'Estratificado con un estrato igual al MAS', E => { const r = E.Invent.stra
 t(3, 'Weibull recupera forma y escala de una muestra grande', E => { const rng = E.Num.rng(7), x = []; for (let i = 0; i < 20000; i++) x.push(25 * Math.pow(-Math.log(1 - rng()), 1 / 2.2)); const w = E.Invent.weibull(x); near(w.c, 2.2, 0.03); near(w.b, 25, 0.02); });
 t(3, 'Relascopía: un árbol contado con FAB 2 representa 2/g árboles', E => { const r = E.Invent.relascope([{ point: 1, trees: [{ d: 20, v: NaN }] }, { point: 2, trees: [{ d: 20, v: NaN }] }], 2); near(r.N.mean, 2 / (Math.PI * 0.04 / 4), 1e-12); near(r.G.mean, 2, 1e-12); });
 
+/* ---------- Block 4 ---------- */
+t(4, 'Chave 2014 ec. 4: D 30 cm, H 20 m, ρ 0.6 → 0.0673·10 800^0.976 kg', E => near(E.Biomass.eq('chave14_h').f({ D: 30, H: 20, rho: 0.6 }), 0.0673 * Math.exp(0.976 * Math.log(10800)), 1e-12));
+t(4, 'Raíz/tallo del IPCC: 150 t/ha pertenece a la clase 50–150 de coníferas templadas', E => { near(E.Biomass.rootShoot('temp_conif', 150), 0.29); near(E.Biomass.rootShoot('temp_conif', 150.01), 0.20); near(E.Biomass.rootShoot('temp_conif', 49.99), 0.40); });
+t(4, 'Suelo: 2.5 % × 1.2 g/cm³ × 30 cm × (1 − 0.10) = 81 Mg C/ha', E => near(E.Biomass.socLayer(2.5, 1.2, 0, 30, 10), 81, 1e-12));
+t(4, 'Hojarasca: 500 g en 0.25 m² = 20 Mg/ha', E => near(E.Biomass.litter(500, 0.25), 20, 1e-12));
+t(4, 'Van Wagner: una pieza de 10 cm en 30 m → π²·100/240 m³/ha', E => near(E.Biomass.lineIntersect([{ transect: 1, d: 10, cls: 1 }], [{ transect: 1, L: 30 }], { 1: 0.5 })[0].V, Math.PI * Math.PI * 100 / 240, 1e-12));
+t(4, 'Densidad: el género es la media de las medias de sus especies, no de sus registros', E => {
+  const idx = E.Biomass.densityIndex([{ genus: 'A', species: 'x', wd: 0.4 }, { genus: 'A', species: 'x', wd: 0.6 }, { genus: 'A', species: 'y', wd: 0.8 }]);
+  const r = E.Biomass.woodDensity([{ genus: 'A', species: 'z' }], idx, {});
+  near(r[0].wd, (0.5 + 0.8) / 2, 1e-12); ok(r[0].level === 'genus');
+});
+t(4, 'Monte Carlo sin errores de medición: la media iguala al cálculo directo (ruido residual con media uno)', E => {
+  const eq = E.Biomass.eq('chave14_h'), trees = [];
+  for (let i = 0; i < 40; i++) trees.push({ plot: 1, ef: 10, D: 10 + i, H: 8 + i / 3, rho: 0.6, rhoSd: 0, eq });
+  const det = trees.reduce((s, t) => s + eq.f(t) * 10 / 1000, 0);
+  const mc = E.Biomass.monteCarlo(trees, { n: 20000, seed: 3, dErr: null, hCv: 0, resid: true });
+  near(mc.standMean, det, 0.005);
+});
+t(4, 'CO₂ equivalente: 44/12 del carbono', E => near(E.Biomass.CO2 * 12, 44, 1e-12));
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

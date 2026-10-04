@@ -204,4 +204,19 @@ w(do.call(rbind, sec), "pino_secciones.csv")
 n <- 85; D <- pmax(6, rnorm(n, 27, 8)); H <- 1.3 + 30 * (1 - exp(-0.05 * D))^1.3 * exp(rnorm(n, 0, 0.07))
 alt <- r1(H); alt[sample(n, 28)] <- NA
 w(data.frame(parcela = "R01", arbol = 1:n, especie = "Pinus patula", dap = r1(D), altura = alt), "pino_arboles.csv")
+# ------------------------------------------------------------------ extras para biomasa y carbono
+# madera caída en el bosque mesófilo: 12 transectos de 30 m (intersección de líneas), clase de descomposición 1–3
+mc <- list()
+for (i in 1:12) {
+  m <- rpois(1, 14); est <- c("Conservado", "Perturbado", "Ribereño")[(i - 1) %% 3 + 1]
+  mc[[i]] <- data.frame(transecto = sprintf("T%02d", i), estrato = est, longitud_m = 30,
+    pieza = seq_len(m), diametro_cm = r1(7.5 + rexp(m, 1 / (if (est == "Perturbado") 9 else 6))), clase = sample(1:3, m, TRUE, prob = c(0.4, 0.4, 0.2)))
+}
+w(do.call(rbind, mc), "mesofilo_madera_caida.csv")
+# carbono aéreo de la plantación de pino en la 3.ª y la 5.ª remedición de cada parcela permanente, con la biomasa
+# por árbol de Díaz-Franco et al. (2007) aplicada al diámetro cuadrático (una aproximación para el ejemplo) y 0.47 de C
+pr <- read.csv("pino_remediciones.csv")
+cb <- function(n, dq) n * 0.0357 * dq^2.6916 / 1000 * 0.47
+a3 <- pr[pr$medicion == 3, ]; a5 <- pr[pr$medicion == 5, ]
+w(data.frame(parcela = a3$parcela, edad1 = a3$edad, edad2 = a5$edad, c1 = r1(cb(a3$n_ha, a3$dq), 2), c2 = r1(cb(a5$n_ha, a5$dq), 2)), "pino_carbono_remedicion.csv")
 cat("Listo: datos simulados escritos en", getwd(), "\n")

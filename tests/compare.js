@@ -199,6 +199,131 @@ blocks[3] = () => {
   ]);
 };
 
+/* ================= Block 4 ================= */
+blocks[4] = () => {
+  const R = ref(4); if (!R) return;
+  const { rows, check, vec } = make(4);
+  const B = E.Biomass;
+  /* the density search of the app: its table (species or genus values) and then the plot mean */
+  const table = E.FPData.rows('densidades_madera');
+  const idxTab = B.densityIndex(table.map(r => { const nm = B.splitName(r.especie); return { genus: nm.genus, species: nm.species, wd: r.densidad }; }));
+  const levelOf = { 'especie': 'species', 'género': 'genus' };
+  ['cafetal', 'mesofilo'].forEach(ex => {
+    const a = E.FPData.rows(ex + '_arboles');
+    const wd = B.woodDensity(a.map(r => { const nm = B.splitName(r.especie); return { genus: nm.genus, species: nm.species, stand: r.parcela }; }), idxTab, { stand: true });
+    const tab = new Map(table.map(r => [r.especie, r]));
+    const ref4 = R['wd_' + ex];
+    let okLvl = 0;
+    a.forEach((r, i) => {
+      const t = tab.get(r.especie);
+      const lvl = t ? levelOf[t.nivel] : wd[i].level;
+      const rl = ['species', 'genus', 'family', 'dataset'].includes(ref4.levelWD[i]) ? ref4.levelWD[i] : 'stand';
+      if (lvl === rl) okLvl++;
+      /* the plot mean averages the rounded densities of the table: the same tolerance */
+      check(`${ex} árbol ${i + 1} (${r.especie}): densidad`, t ? t.densidad : wd[i].wd, ref4.meanWD[i], 5e-4);
+    });
+    check(`${ex}: árboles con el mismo nivel de búsqueda`, okLvl, a.length, 0, 'abs');
+  });
+  /* the whole global database, loaded as a user would load it */
+  const gpath = path.join(root, 'tests', 'r', 'tmp', 'gwdd.csv');
+  if (fs.existsSync(gpath)) {
+    const t = E.DataIO.readDelimited(fs.readFileSync(gpath, 'utf8'), {});
+    const col = n => t.columns[t.names.indexOf(n)];
+    const recs = col('wd').map((v, i) => ({ family: col('family')[i], genus: col('genus')[i], species: col('species')[i], wd: +v, region: col('region')[i] }));
+    const tx = R.wd_taxa;
+    const idx = B.densityIndex(recs);
+    const w1 = B.woodDensity(tx.genus.map((g, i) => ({ genus: g, species: tx.species[i], family: tx.family[i] })), idx, {});
+    tx.genus.forEach((g, i) => {
+      check(`${g} ${tx.species[i]} (con familia): densidad`, w1[i].wd, tx.withFamily.meanWD[i], 1e-12);
+      check(`${g} ${tx.species[i]} (con familia): nivel`, w1[i].level === tx.withFamily.levelWD[i] ? 1 : 0, 1, 0, 'abs');
+    });
+    /* a family written differently from the database: the reference drops the species match, the app keeps it */
+    const wm = B.woodDensity([{ genus: 'Inga', species: 'vera', family: 'Fabaceae-mimosoideae' }, { genus: 'Quercus', species: 'rugosa', family: 'Fagaceae' }], idx, {});
+    rows.push({ block: 4, item: 'Inga vera con familia «Fabaceae-mimosoideae»: la app (especie) frente a la referencia (' + R.wd_mismatch.levelWD[0] + '), informativa', js: wm[0].wd, r: R.wd_mismatch.meanWD[0], diff: Math.abs(wm[0].wd / R.wd_mismatch.meanWD[0] - 1), tol: NaN, kind: 'info', ok: true });
+    const idxR = B.densityIndex(recs, { region: 'CentralAmericaTrop' });
+    const w2 = B.woodDensity(tx.genus.map((g, i) => ({ genus: g, species: tx.species[i] })), idxR, {});
+    tx.genus.forEach((g, i) => {
+      check(`${g} ${tx.species[i]} (región Centroamérica tropical): densidad`, w2[i].wd, tx.region.meanWD[i], 1e-12);
+      check(`${g} ${tx.species[i]} (región): nivel`, w2[i].level === tx.region.levelWD[i] ? 1 : 0, 1, 0, 'abs');
+    });
+  }
+  /* computeAGB with the same densities */
+  const c = R.computeAGB, eq4 = B.eq('chave14_h');
+  c.D.forEach((d, i) => check(`computeAGB, árbol ${i + 1} (Mg)`, eq4.f({ D: d, H: c.H[i], rho: c.WD[i] }) / 1000, c.AGB_Mg[i], 1e-12));
+  /* every equation of the catalogue against its independent rewriting */
+  const Q = R.equations;
+  Object.keys(Q.values).forEach(id => {
+    const e = B.eq(id);
+    vec(`${id}`, Q.D.map((d, i) => e.f({ D: d, H: Q.H[i], rho: Q.rho[i], E: Q.E })), Q.values[id], 1e-12);
+  });
+  const cof = B.eq('segura06_coffee');
+  vec('segura06_coffee (d15, h)', Q.coffee.d15.map((d, i) => cof.f({ D15: d, H: Q.coffee.h[i] })), Q.coffee.agb, 1e-12);
+  const e7 = B.eq('chave14_e'), noH = Q.D.map((d, i) => e7.f({ D: d, rho: Q.rho[i], E: Q.E }));
+  rows.push({ block: 4, item: 'Ec. 7 publicada frente al reajuste sin altura de la referencia (diferencia máxima, informativa)', js: Math.max(...noH.map((v, i) => Math.abs(v / Q.biomassNoH[i] - 1))), r: 0, diff: NaN, tol: NaN, kind: 'info', ok: true });
+  /* the coffee farm with the example rules */
+  const ca = E.FPData.rows('cafetal_arboles');
+  const wdc = B.woodDensity(ca.map(r => { const nm = B.splitName(r.especie); return { genus: nm.genus, species: nm.species, stand: r.parcela }; }), idxTab, { stand: true });
+  const tab = new Map(table.map(r => [r.especie, r.densidad]));
+  const eqFor = sp => sp.startsWith('Inga') ? B.eq('segura06_inga') : sp === 'Cordia alliodora' ? B.eq('segura06_cordia') : sp.startsWith('Musa') ? B.eq('vnoord02_musa') : eq4;
+  const pa = new Map();
+  ca.forEach((r, i) => { if (r.estado !== 'vivo') return; const rho = tab.has(r.especie) ? tab.get(r.especie) : wdc[i].wd; const a = B.treeAGB({ D: r.dap, H: r.altura, rho }, eqFor(r.especie)).agb; pa.set(r.parcela, (pa.get(r.parcela) || 0) + a * 10 / 1000); });
+  R.cafetal.plot.forEach((p, i) => {
+    const agb = pa.get(p);
+    check(`cafetal ${p}: biomasa aérea (Mg/ha)`, agb, R.cafetal.agb[i], 2e-4);
+    check(`cafetal ${p}: raíces IPCC montaña tropical`, agb * B.rootShoot('trop_mount', agb), R.cafetal.bgbIPCC[i], 2e-4);
+    check(`cafetal ${p}: raíces Cairns 1997`, B.cairns(agb), R.cafetal.bgbCairns[i], 2e-4);
+    check(`cafetal ${p}: carbono (Mg C/ha)`, agb * 1.27 * 0.47, R.cafetal.c[i], 2e-4);
+  });
+  const est = E.Invent.srs([...pa.values()], {});
+  check('cafetal: media de la biomasa aérea', est.mean, R.cafetal.mean, 2e-4); check('cafetal: error estándar', est.se, R.cafetal.se, 2e-3);
+  /* root:shoot ratios at the edges of their classes */
+  ['trop_moist', 'trop_dry', 'temp_conif', 'temp_broad', 'boreal'].forEach(z => R.rootShoot.agb.forEach((a, i) => check(`raíz/tallo ${z} con ${a} t/ha`, B.rootShoot(z, a), R.rootShoot[z][i], 1e-12)));
+  /* Monte Carlo against an independent implementation of the same scheme (another generator) */
+  const m = E.FPData.rows('mesofilo_arboles'), P = new Map(E.FPData.rows('mesofilo_parcelas').map(p => [p.parcela, p]));
+  const sdl = { species: B.SD_LEVEL.species, genus: B.SD_LEVEL.genus };
+  const trees = [];
+  m.forEach((r, i) => {
+    if (r.estado !== 'vivo') return;
+    const p = P.get(r.parcela), lv = R.wd_mesofilo.levelWD[i];
+    trees.push({ plot: r.parcela, ef: 10000 / (Math.PI * Math.pow(r.dap >= 10 ? p.radio_grande_m : p.radio_chico_m, 2)), D: r.dap, H: r.altura, rho: R.computeAGB.WD[i], rhoSd: sdl[lv] || R.wd_mesofilo.sdWD[i], eq: eq4 });
+  });
+  const mc = B.monteCarlo(trees, { n: 4000, seed: 99, dErr: 'chave2004', hCv: 5, resid: true });
+  check('Monte Carlo: media del predio', mc.standMean, R.mc.mean, 0.01);
+  check('Monte Carlo: desviación estándar', mc.standSd, R.mc.sd, 0.08);
+  check('Monte Carlo: percentil 2.5', mc.standLo, R.mc.q025, 0.02);
+  check('Monte Carlo: percentil 97.5', mc.standHi, R.mc.q975, 0.02);
+  vec('Monte Carlo: media de cada parcela', mc.per.map(p => p.mean), R.mc.plotMean, 0.03);
+  const det = Num_mean(E.Invent.perPlot(trees.map(t => Object.assign({}, t, { d: t.D, v: eq4.f(t) / 1000 })), k => ({ shape: 'nested', r: P.get(k).radio_grande_m, rSmall: P.get(k).radio_chico_m, dCut: 10 }), { plots: [...P.keys()].sort() }).map(p => p.V));
+  check('Cálculo directo del predio (Mg/ha)', det, R.mc.det, 1e-10);
+  /* the reference's own Monte Carlo also draws the coefficients from their posterior: same mean, a slightly wider spread */
+  check('Monte Carlo de BIOMASS (AGBmonteCarlo): media', mc.standMean, R.mcBIOMASS.mean, 0.02);
+  check('Monte Carlo de BIOMASS (AGBmonteCarlo): desviación estándar', mc.standSd, R.mcBIOMASS.sd, 0.15);
+  /* necromass, litter, soil and change */
+  const cw = E.FPData.rows('mesofilo_madera_caida'), trs = [...new Set(cw.map(r => r.transecto))].map(t => ({ transect: t, L: 30 }));
+  const li = B.lineIntersect(cw.map(r => ({ transect: r.transecto, d: r.diametro_cm, cls: r.clase })), trs, { 1: 0.45, 2: 0.34, 3: 0.23, default: 0.34 });
+  vec('Madera caída: volumen por transecto (m³/ha)', li.map(x => x.V), R.cwd.V, 1e-12); vec('Madera caída: masa por transecto (Mg/ha)', li.map(x => x.M), R.cwd.M, 1e-12);
+  const cp = E.FPData.rows('cafetal_parcelas');
+  vec('Hojarasca por parcela (Mg/ha)', cp.map(r => B.litter(r.hojarasca_g, r.marco_m2)), R.litter.v, 1e-12);
+  const so = E.FPData.rows('cafetal_suelo'), sp = new Map();
+  so.forEach(r => sp.set(r.parcela, (sp.get(r.parcela) || 0) + B.socLayer(r.co_pct, r.dap_g_cm3, r.prof_sup, r.prof_inf, r.pedregosidad_pct)));
+  vec('Carbono del suelo por perfil (Mg C/ha)', R.soil.plot.map(p => sp.get(p)), R.soil.c, 1e-12);
+  const pc = E.FPData.rows('pino_carbono_remedicion');
+  const yrs = pc.reduce((s, r) => s + r.edad2 - r.edad1, 0) / pc.length;
+  const cpd = B.change({ paired: true, pairs: pc.map(r => ({ c1: r.c1, c2: r.c2 })), years: yrs });
+  check('Cambio pareado: media', cpd.mean, R.change.paired.mean, 1e-12); check('Cambio pareado: límite inferior', cpd.lo, R.change.paired.lo, 1e-10);
+  check('Cambio pareado: límite superior', cpd.hi, R.change.paired.hi, 1e-10); check('Cambio pareado: p', cpd.p, R.change.paired.p, 1e-6); check('Cambio pareado: tasa anual', cpd.rate, R.change.paired.rate, 1e-12);
+  const cw2 = B.change({ a: pc.map(r => r.c1), b: pc.map(r => r.c2), years: yrs });
+  check('Cambio de Welch: diferencia', cw2.mean, R.change.welch.mean, 1e-12); check('Cambio de Welch: gl', cw2.df, R.change.welch.df, 1e-10);
+  check('Cambio de Welch: límite inferior', cw2.lo, R.change.welch.lo, 1e-10); check('Cambio de Welch: p', cw2.p, R.change.welch.p, 1e-6);
+  report(4, 'Biomasa y carbono', rows, [
+    'Referencias: R 4.4.2 con BIOMASS 2.2.7 (getWoodDensity, computeAGB, AGBmonteCarlo), cada ecuación del catálogo reescrita aparte en R con los coeficientes verificados en sus fuentes, y stats::t.test.',
+    'Densidades de la tabla de la app: salen de la misma base redondeadas a 4 decimales (tolerancia 5e-4); la media de la parcela y la búsqueda en la base completa se comparan a 1e-12.',
+    'Monte Carlo: dos implementaciones del mismo esquema con generadores distintos; las tolerancias (1 % en la media, 8 % en la desviación estándar, 2 % en los percentiles) son las del error de Monte Carlo con 4 000 iteraciones. El de BIOMASS (AGBmonteCarlo, 1 000 iteraciones) sortea además los coeficientes de su distribución posterior: se compara con 2 % en la media y 15 % en la desviación estándar.',
+    'La ecuación 7 de Chave et al. (2014) se usa tal como se publicó; la referencia sin altura usa un reajuste posterior. La diferencia máxima entre ambas en los árboles de prueba se informa como dato.',
+  ]);
+};
+const Num_mean = a => a.reduce((s, v) => s + v, 0) / a.length;
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

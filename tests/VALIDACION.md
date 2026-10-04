@@ -16,4 +16,5 @@ node tests/compare.js
 | 6 | Diversidad y ecología | 1222 | 0 |
 | 7 | Sistemas agroforestales | 211 | 0 |
 | 8 | Mapas y geoprocesamiento | 269 | 0 |
-| | **Total** | **8009** | **0** |
+| 9 | Utilidades forestales | 252 | 0 |
+| | **Total** | **8261** | **0** |

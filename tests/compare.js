@@ -550,6 +550,45 @@ blocks[8] = () => {
   ]);
 };
 
+/* ================= Block 9 ================= */
+blocks[9] = () => {
+  const R = ref(9); if (!R) return;
+  const { rows, check, vec } = make(9);
+  const K = E.Tools;
+  const L = R.logs;
+  const logs = [[2.54, 32, 36, 34, 12], [2.54, 28, 31, 29.5, 10], [2.54, 24, 27, 25.4, 9], [2.54, 20, 22.5, 21.2, 8], [5.08, 30, 37, 33.2, 12], [5.08, 26, 32, 28.8, 11],
+    [3.81, 35, 40, 37.4, 14], [3.81, 22, 25.5, 23.6, 8], [2.54, 40, 45, 42.3, 15], [2.54, 18, 20, 19, 7], [5.08, 34, 42, 37.7, 13], [3.81, 27, 30.5, 28.6, 10]]
+    .map(r => ({ L: r[0], d1: r[1], d2: r[2], dm: r[3], bark: r[4] }));
+  [['over', false, 'con corteza'], ['under', true, 'sin corteza']].forEach(([k, ub, lab]) => {
+    const v = logs.map(l => K.logVolume(l, { underBark: ub }));
+    ['smalian', 'huber', 'newton', 'frustum'].forEach(m => vec(`${m[0].toUpperCase() + m.slice(1)} ${lab} (m³)`, v.map(x => x[m]), L[k][m], 1e-12));
+  });
+  const v = logs.map(l => K.logVolume(l));
+  vec('D de la punta delgada sin corteza (pulg)', v.map(x => x.Din), R.rules.D, 1e-12);
+  vec('Doyle (PT)', v.map(x => x.doyle), R.rules.doyle, 1e-12); vec('Scribner, fórmula de Bruce (PT)', v.map(x => x.scribner), R.rules.scribner, 1e-12); vec('Internacional ¼″ (PT)', v.map(x => x.intl), R.rules.intl, 1e-12);
+  R.tables.D.forEach((d, i) => { check(`Tabla Internacional ¼″, ${d}″ × 16 pies (redondeada a 5)`, K.international(d, 16), R.tables.intl16[i], 2.5, 'abs'); check(`Tabla Doyle, ${d}″ × 16 pies`, K.doyle(d, 16), R.tables.doyle16[i], 1e-12); });
+  const pz = [[1, 4, 8.25, 40], [1, 6, 8.25, 50], [1, 8, 8.25, 25], [1, 10, 8.25, 10], [2, 4, 8.25, 20], [4, 4, 8.25, 4], [1.5, 1.5, 8.25, 30]].map(p => K.piece({ t: p[0], w: p[1], L: p[2], n: p[3] }, 'in'));
+  vec('Pieza: pies tabla', pz.map(p => p.bf), R.lumber.bf, 1e-12); vec('Pieza: m³', pz.map(p => p.m3), R.lumber.m3, 1e-12);
+  check('12 piezas de 2.5 × 10 cm × 2.5 m (m³)', K.piece({ t: 2.5, w: 10, L: 2.5, n: 12 }, 'cm').m3, R.lumber.m3cm, 1e-12);
+  const tm3 = pz.reduce((s, p) => s + p.m3, 0), y = K.sawmill(R.sawmill.vlog, tm3, R.sawmill.ruleBF);
+  check('Coeficiente de aserrío', y.coef, R.sawmill.coef, 1e-12); check('Pies tabla por m³ en rollo', y.bfPerM3, R.sawmill.bfPerM3, 1e-12); check('Sobrerrendimiento', y.overrun, R.sawmill.overrun, 1e-12);
+  check('Factor de forma de 0.85 m³ con 32 cm y 24 m', K.formFactor(0.85, 32, 24), R.form.f, 1e-12); check('Volumen con f = 0.47', K.volumeFromForm(0.47, 32, 24), R.form.V, 1e-12);
+  R.units.forEach(u => check(`${u.k}: 1 ${u.from} → ${u.to} (${u.from === 'cord' || u.k === 'carbon' ? 'definición' : 'udunits2'})`, K.convert(u.k, 1, u.from, u.to), u.v, u.tol));
+  const fl = [[0, 7500, 0], [0, 6600, 0], [0, 4000, 0], [1, 4500, 0], [2, 3500, 0], [3, 3000, 0], [5, 2800, 0], [8, 5500, 0], [12, 7000, 16800], [18, 9000, 40500], [25, 65000, 300000]].map(f => ({ t: f[0], cost: f[1], income: f[2] }));
+  const e = K.econ(fl, 900, 0.08), Q = R.econ;
+  check('VPN al 8 % (FinCal::npv)', e.npv, Q.npv, 1e-11); check('Valor presente de los costos', e.pvC, Q.pvC, 1e-12); check('Valor presente de los ingresos', e.pvI, Q.pvI, 1e-12);
+  check('Beneficio / costo', e.bc, Q.bc, 1e-12); check('TIR (uniroot, tol 1e-14)', e.irr, Q.irr, 1e-10); check('TIR (FinCal::irr, tolerancia por omisión de uniroot)', e.irr, Q.irrFinCal, 1e-4, 'abs');
+  check('Valor esperado del suelo (Faustmann)', e.lev, Q.lev, 1e-11); check('Anualidad equivalente', e.eaa, Q.eaa, 1e-11); check('Año de recuperación descontada', e.payback, Q.payback, 0, 'abs');
+  vec('Flujo descontado acumulado', e.rows.map(x => x.cum), Q.cum, 1e-10, 'abs'); check('Costo total sin descontar', e.costTotal, Q.costTotal, 1e-12); check('Costo de establecimiento (años 0 y 1)', e.establishment, Q.establishment, 1e-12);
+  const cvn = K.npvCurve(fl, 900, Q.curve.r);
+  vec('VPN según la tasa (0, 2, 5, 10, 15 %)', cvn.map(c => c.npv), Q.curve.npv, 1e-11);
+  report(9, 'Utilidades forestales', rows, [
+    'Referencias: fórmulas escritas aparte en R; unidades con udunits2 (paquete units); valor presente neto y tasa interna de retorno con FinCal y con uniroot a 1e-14.',
+    'Las tablas de la regla Internacional ¼″ se publican redondeadas a 5 pies tabla: la app debe caer a ±2.5 de cada valor.',
+    'udunits2 usa el acre y la cadena del levantamiento de EE. UU. (pie de levantamiento, 1 200/3 937 m), que difieren de los internacionales en 2 partes por millón en longitud y en 4 en superficie; la app usa los internacionales (NIST retiró el pie de levantamiento en 2023). Por eso esas conversiones se comparan a 5e-6. udunits2 guarda el pie tabla redondeado a 7 cifras (2.359737 dm³), comparado a 5e-7.',
+    'FinCal::irr usa uniroot con su tolerancia por omisión (≈1e-4); la TIR exacta se compara con uniroot a 1e-14.']);
+};
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

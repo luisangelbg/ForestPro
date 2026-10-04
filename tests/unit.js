@@ -123,5 +123,14 @@ t(8, 'IDW y kriging ordinario reproducen el dato en su propio punto', E => { con
 t(8, 'Kriging ordinario: los pesos suman 1 (una constante se predice igual)', E => { const P = [[0, 0], [80, 10], [20, 90], [100, 100], [60, 50]].map(q => ({ x: q[0], y: q[1], z: 7 })); near(E.Geo.krige(P, [{ x: 33, y: 71 }], { model: 'exp', nugget: 0.1, psill: 1, range: 40 }, { type: 'ok' })[0].z, 7, 1e-10); });
 t(8, 'GeoJSON exportado se vuelve a leer igual', E => { const pts = [{ name: 'A', lat: 19.5, lon: -97 }], pol = [{ name: 'P', ring: [[-97, 19.5], [-96.99, 19.5], [-96.99, 19.51]] }]; const r = E.Geo.parse(E.Geo.toGeoJSON(pts, pol), 'x.geojson'); near(r.points[0].lat, 19.5); ok(r.polygons[0].ring.length === 4, 'anillo cerrado'); });
 
+/* ---------- Block 9 ---------- */
+t(9, '1 m³ = 423.776 pies tabla; 1 pie tabla = 144 pulg³', E => { near(E.Tools.M3_BF, 423.776000657, 1e-9); near(E.Tools.BF_M3, 144 * Math.pow(0.0254, 3), 1e-15); });
+t(9, 'Doyle: troza de 12″ × 16 pies = 64 pies tabla', E => near(E.Tools.doyle(12, 16), 64, 1e-12));
+t(9, 'Internacional ¼″: 12″ × 16 pies = 0.905 × (0.88·144 − 1.52·12 − 1.36)', E => near(E.Tools.international(12, 16), 0.905 * (0.88 * 144 - 1.52 * 12 - 1.36), 1e-12));
+t(9, 'Newton es exacta en un cono truncado', E => { const d1 = 10, d2 = 30, L = 4; near(E.Tools.newton(d1, (d1 + d2) / 2, d2, L), E.Tools.frustum(d1, d2, L), 1e-12); });
+t(9, 'Conversión de ida y vuelta: acre → ha → acre', E => near(E.Tools.convert('area', E.Tools.convert('area', 3.7, 'ac', 'ha'), 'ha', 'ac'), 3.7, 1e-12));
+t(9, 'Costo de 100 hoy e ingreso de 121 en dos años: VPN = 0 al 10 % y TIR = 10 %', E => { const e = E.Tools.econ([{ t: 0, cost: 100, income: 0 }, { t: 2, cost: 0, income: 121 }], 0, 0.1); near(e.npv, 0, 1e-9); near(e.irr, 0.1, 1e-10); near(e.bc, 1, 1e-12); });
+t(9, 'Faustmann: un turno de 1 año con VPN v vale v·(1 + r)/r', E => { const e = E.Tools.econ([{ t: 0, cost: 0, income: 0 }, { t: 1, cost: 0, income: 11 }], 0, 0.1); near(e.lev, e.npv * 1.1 / 0.1, 1e-12); near(e.lev, 110, 1e-9); });
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

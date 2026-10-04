@@ -41,7 +41,7 @@ const EXAMPLES = [
     go: [[3, 'Inventario', 'Inventory'], [6, 'Diversidad', 'Diversity'], [8, 'Mapas', 'Maps']] },
   { id: 'pino', es: 'Plantación de pino', en: 'Pine plantation', f: ['30 parcelas permanentes · 6 remediciones · árboles derribados', '30 permanent plots · 6 remeasurements · felled trees'],
     d: ['Remediciones de altura dominante, densidad y diámetro, análisis troncal de árboles tipo y secciones de árboles derribados para cubicación y ahusamiento.', 'Remeasurements of dominant height, density and diameter, stem analysis of sample trees and sections of felled trees for scaling and taper.'],
-    go: [[2, 'Dasometría', 'Mensuration'], [5, 'Crecimiento', 'Growth']] },
+    go: [[2, 'Dasometría', 'Mensuration'], [5, 'Crecimiento', 'Growth'], [9, 'Utilidades', 'Utilities']] },
   { id: 'referencias', es: 'Densidades y ecuaciones', en: 'Densities and equations', f: ['densidad básica de la madera · catálogo alométrico', 'basic wood density · allometric catalogue'],
     d: ['La tabla de densidades de las especies de los ejemplos y el catálogo de ecuaciones alométricas de referencia, editables y con su fuente.', 'The table of densities of the species in the examples and the catalogue of reference allometric equations, editable and with their source.'],
     go: [[4, 'Biomasa', 'Biomass']] },

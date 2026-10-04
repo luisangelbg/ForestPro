@@ -391,6 +391,71 @@ blocks[5] = () => {
   ]);
 };
 
+/* ================= Block 6 ================= */
+blocks[6] = () => {
+  const R = ref(6); if (!R) return;
+  const { rows, check, vec } = make(6);
+  const V = E.Divers;
+  const a = E.FPData.rows('mesofilo_arboles').filter(r => r.estado === 'vivo');
+  const M = R.sites.map(s => R.species.map(sp => a.filter(r => r.parcela === s && r.especie === sp).length));
+  const ix = M.map(x => V.indices(x));
+  vec('Riqueza S', ix.map(i => i.S), R.indices.S, 0, 'abs');
+  vec('Individuos N', ix.map(i => i.N), R.indices.N, 0, 'abs');
+  vec('Shannon H′', ix.map(i => i.H), R.indices.H, 1e-12);
+  vec('Simpson Σp²', ix.map(i => i.simpson), R.indices.simpson, 1e-12);
+  vec('Gini–Simpson 1 − Σp²', ix.map(i => i.giniSimpson), R.indices.gini, 1e-12);
+  vec('Inverso de Simpson', ix.map(i => i.invSimpson), R.indices.inv, 1e-12);
+  vec('Pielou J', ix.map(i => i.pielou), R.indices.pielou, 1e-12);
+  vec('α de Fisher (la misma ecuación resuelta con tolerancia estricta)', ix.map(i => i.fisher), R.indices.fisherExact, 1e-9);
+  vec('α de Fisher (vegan::fisher.alpha, tolerancia por omisión de uniroot)', ix.map(i => i.fisher), R.indices.fisher, 1e-5);
+  vec('Chao1 (corregido por sesgo)', ix.map(i => i.chao1), R.indices.chao1, 1e-12);
+  vec('ACE', ix.map(i => i.ace), R.indices.ace, 1e-10);
+  /* asymptotic estimators; the reference prints them with 3 decimals, entropy for q = 1 and 1 − 1/q2 for q = 2 */
+  const tot = R.species.map((_, j) => M.reduce((s, r) => s + r[j], 0));
+  [['sitio 1', M[0], R.asy.site1], ['bosque completo', tot, R.asy.pooled]].forEach(([nm, x, r]) => {
+    const as = V.asymptotic(x);
+    check(`${nm}: riqueza asintótica (q = 0)`, as.q0, r.q0, 1e-3);
+    check(`${nm}: entropía de Shannon estimada`, as.H, r.q1, 1e-3);
+    check(`${nm}: Gini–Simpson estimado`, 1 - 1 / as.q2, r.q2, 1e-3);
+    check(`${nm}: entropía observada`, V.indices(x).H, r.obs1, 1e-3);
+  });
+  const rf = V.rarefy(tot, R.rarefy.m);
+  vec('Rarefacción y extrapolación de la riqueza', rf.map(x => x.S), R.rarefy.S, 1e-8);
+  check('Cobertura de la muestra', V.coverage(tot), R.rarefy.coverage, 1e-6);
+  const ac = V.accumulate(M.map(r => r.map(v => v > 0)));
+  vec('Acumulación por parcelas: media', ac.map(x => x.S), R.accum.S, 1e-10);
+  vec('Acumulación por parcelas: DE condicionada', ac.map(x => x.sd), R.accum.sd, 1e-8);
+  /* dissimilarities in the order of the reference (lower triangle by columns) */
+  const lowerByCol = Dm => { const out = []; for (let j = 0; j < Dm.length; j++) for (let i = j + 1; i < Dm.length; i++) out.push(Dm[i][j]); return out; };
+  vec('Jaccard', lowerByCol(V.dissim(M, 'jaccard')), R.dist.jaccard, 1e-12);
+  vec('Sørensen', lowerByCol(V.dissim(M, 'sorensen')), R.dist.sorensen, 1e-12);
+  const Db = V.dissim(M, 'bray');
+  vec('Bray–Curtis', lowerByCol(Db), R.dist.bray, 1e-12);
+  const up = V.upgma(Db);
+  vec('UPGMA: alturas de fusión', up.heights.slice().sort((x, y) => x - y), R.upgma.heights.slice().sort((x, y) => x - y), 1e-12);
+  check('UPGMA: correlación cofenética', up.cophCor, R.upgma.coph, 1e-10);
+  vec('Escalamiento clásico: primeros valores propios', V.cmdscale(Db, 2).values.slice(0, 4), R.cmd.eig, 1e-9);
+  const nm = V.nmds(Db, { starts: 30, seed: 7 });
+  check('NMDS: estrés de la app ≤ estrés de isoMDS + 0.005', nm.stress <= R.nmds.isoStress + 0.005 ? 1 : 0, 1, 0, 'abs');
+  check('NMDS: estrés de la app ≤ estrés de metaMDS + 0.005', nm.stress <= R.nmds.metaStress + 0.005 ? 1 : 0, 1, 0, 'abs');
+  rows.push({ block: 6, item: 'NMDS: estrés-1 de la app, de isoMDS y de metaMDS (informativo)', js: nm.stress, r: R.nmds.isoStress, diff: R.nmds.metaStress, tol: NaN, kind: 'info', ok: true });
+  const pz = V.pretzsch(a.map(r => ({ sp: r.especie, h: r.altura })));
+  check('Pretzsch A', pz.A, R.pretzsch.A, 1e-12); check('Pretzsch Amáx', pz.Amax, R.pretzsch.Amax, 1e-12); check('Pretzsch A relativo (%)', pz.Arel, R.pretzsch.Arel, 1e-12);
+  vec('Pretzsch: árboles por zona', pz.byZone, R.pretzsch.byZone, 0, 'abs');
+  const mp = E.FPData.rows('mesofilo_mapeada'), pts = mp.map(r => ({ x: r.x, y: r.y }));
+  const ce = V.clarkEvans(pts, 50, 50);
+  check('Clark–Evans R (sin corrección)', ce.R, R.spatial.R, 1e-12); check('Clark–Evans R (Donnelly)', ce.Rd, R.spatial.Rd, 1e-12);
+  check('Clark–Evans p (sin corrección)', ce.p, R.spatial.p, 1e-9); check('Clark–Evans p (Donnelly)', ce.pd, R.spatial.pd, 1e-9);
+  check('Clark–Evans R del dosel', V.clarkEvans(mp.filter(r => r.dosel === 'dosel').map(r => ({ x: r.x, y: r.y })), 50, 50).R, R.spatial.Rcanopy, 1e-12);
+  vec('K de Ripley con corrección por traslación', V.ripleyK(pts, 50, 50, R.spatial.r).map(x => x.K), R.spatial.K, 1e-10);
+  report(6, 'Diversidad y ecología', rows, [
+    'Referencias: R 4.4.2 con vegan (diversity, fisher.alpha, estimateR, specaccum, vegdist, metaMDS), iNEXT (ChaoRichness, ChaoShannon, ChaoSimpson, iNEXT), MASS::isoMDS, stats::hclust, cmdscale y cophenetic, spatstat (clarkevans, clarkevans.test, Kest) y el índice de Pretzsch escrito aparte.',
+    'iNEXT imprime sus estimadores asintóticos con 3 decimales; por eso esas comparaciones usan 1e-3. Su «Shannon» es la entropía (no su exponencial) y su «Simpson» es 1 − Σx(x − 1)/(n(n − 1)).',
+    'NMDS no tiene una solución única: se comprueba que el estrés de la app no supere al de isoMDS (inicio en el escalamiento clásico) ni al de metaMDS (50 inicios aleatorios) en más de 0.005.',
+    'Datos: los 1 735 árboles vivos de las 24 parcelas del bosque mesófilo (30 especies) y la parcela mapeada de 50 × 50 m.',
+  ]);
+};
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

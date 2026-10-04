@@ -92,5 +92,14 @@ t(5, 'Schumacher: el IMA máximo está en t = b', E => { const f = t => 40 * Mat
 t(5, 'Índice de sitio ADA: la curva de un sitio pasa por (edad base, IS)', E => { const sf = { si: null }; const A = 40, p = 1.3, tb = 20; const proj = (h1, t1, t2) => { const u = 1 - Math.pow(h1 / A, 1 / p); return A * Math.pow(1 - Math.pow(u, t2 / t1), p); }; near(proj(proj(22, tb, 35), 35, tb), 22, 1e-10); void sf; });
 t(5, 'Clutter: proyectar a la misma edad deja el área basal igual', E => { const c = { alpha: [4, -0.01], beta: [-1.7, -7.7, 0.04, 1.9] }; near(E.Growth.clutterProject(c, 25, 10, 30, [10])[0].G, 30, 1e-12); });
 
+/* ---------- Block 6 ---------- */
+t(6, 'Shannon de 4 especies igual de abundantes = ln 4; Hill: q0 = 4, q2 = 4', E => { const x = [5, 5, 5, 5]; near(E.Divers.indices(x).H, Math.log(4), 1e-12); near(E.Divers.hill(x, 0), 4, 1e-12); near(E.Divers.hill(x, 2), 4, 1e-12); });
+t(6, 'Chao1 corregido: [1, 1, 2, 3, 5] → 5 + 2·1/(2·2) = 5.5', E => near(E.Divers.indices([1, 1, 2, 3, 5]).chao1, 5.5, 1e-12));
+t(6, 'Rarefacción al tamaño de la muestra = riqueza observada', E => { const x = [10, 4, 3, 1, 1, 1]; near(E.Divers.rarefy(x, [20])[0].S, 6, 1e-12); });
+t(6, 'Jaccard entre [1,0,1] y [1,1,0] = 2/3; Sørensen = 1/2', E => { near(E.Divers.dissim([[1, 0, 1], [1, 1, 0]], 'jaccard')[1][0], 2 / 3, 1e-12); near(E.Divers.dissim([[1, 0, 1], [1, 1, 0]], 'sorensen')[1][0], 0.5, 1e-12); });
+t(6, 'Clark–Evans de una malla cuadrada ≈ 2 (regular)', E => { const p = []; for (let i = 0; i < 20; i++) for (let j = 0; j < 20; j++) p.push({ x: i + 0.5, y: j + 0.5 }); near(E.Divers.clarkEvans(p, 20, 20).R, 2, 1e-12); });
+t(6, 'UPGMA de tres puntos: alturas 1 y (2 + 3)/2', E => { const D = [[0, 1, 2], [1, 0, 3], [2, 3, 0]]; const u = E.Divers.upgma(D); near(u.heights[0], 1, 1e-12); near(u.heights[1], 2.5, 1e-12); });
+t(6, 'Escalamiento clásico recupera distancias euclidianas', E => { const P = [[0, 0], [3, 0], [0, 4], [3, 4]]; const D = P.map(a => P.map(b => Math.hypot(a[0] - b[0], a[1] - b[1]))); const X = E.Divers.cmdscale(D, 2).X; near(Math.hypot(X[0][0] - X[3][0], X[0][1] - X[3][1]), 5, 1e-9); });
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

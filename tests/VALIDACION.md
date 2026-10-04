@@ -13,4 +13,5 @@ node tests/compare.js
 | 3 | Inventario y muestreo | 430 | 0 |
 | 4 | Biomasa y carbono | 4974 | 0 |
 | 5 | Crecimiento y rendimiento | 616 | 0 |
-| | **Total** | **6307** | **0** |
+| 6 | Diversidad y ecología | 1222 | 0 |
+| | **Total** | **7529** | **0** |

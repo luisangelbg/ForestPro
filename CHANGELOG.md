@@ -23,7 +23,7 @@ Primera versión pública.
 - **Bloque 4 · Biomasa y carbono:** catálogo editable de 31 ecuaciones alométricas con reglas por especie y
   ecuaciones propias; densidad de la madera de la Global Wood Density Database (especie → género → parcela);
   relación raíz/tallo (IPCC 2006, Cairns 1997); fracción de carbono y CO₂e; Monte Carlo; necromasa por intersección
-  de líneas, hojarasca y carbono del suelo; reservorios con su error combinado y cambio entre inventarios.
+  de líneas, hojarasca y carbono del suelo (lee también las tablas por capas de SoilPro); reservorios con su error combinado y cambio entre inventarios.
 - **Bloque 5 · Crecimiento y rendimiento:** ICA, IMA y turno biológico; modelos de Chapman–Richards, Gompertz,
   Schumacher y logístico; índice de sitio anamórfico y polimórfico (diferencia algebraica) con clases; sistema de
   Clutter por mínimos cuadrados en dos etapas, proyección y tabla de producción editable.

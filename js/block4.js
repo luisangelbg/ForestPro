@@ -141,14 +141,18 @@ function build() {
   R.lit = mk('div', { class: 'res-host' }); e.appendChild(R.lit);
   e.appendChild(mk('h3', null, L2('Carbono orgánico del suelo', 'Soil organic carbon')));
   UI.dataCard(e, { id: 'b4s', fields: [
-    { key: 'parcela', es: 'Parcela', en: 'Plot', req: true, aliases: ['plot', 'perfil', 'muestra'] },
-    { key: 'prof_sup', es: 'Profundidad superior (cm)', en: 'Upper depth (cm)', num: true, req: true, aliases: ['desde', 'top', 'prof sup'] },
-    { key: 'prof_inf', es: 'Profundidad inferior (cm)', en: 'Lower depth (cm)', num: true, req: true, aliases: ['hasta', 'bottom', 'prof inf'] },
-    { key: 'co_pct', es: 'Carbono orgánico (%)', en: 'Organic carbon (%)', num: true, req: true, aliases: ['co', 'cos', 'soc', 'carbono organico', 'c org'] },
+    { key: 'parcela', es: 'Parcela o perfil', en: 'Plot or profile', req: true, aliases: ['plot', 'perfil', 'muestra', 'rep', 'repeticion', 'sitio'] },
+    { key: 'prof_sup', es: 'Profundidad superior (cm)', en: 'Upper depth (cm)', num: true, aliases: ['desde', 'top', 'prof sup'] },
+    { key: 'prof_inf', es: 'Profundidad inferior (cm)', en: 'Lower depth (cm)', num: true, aliases: ['hasta', 'bottom', 'prof inf'] },
+    { key: 'capa', es: 'Capa (p. ej. «0-10»), si no hay profundidades', en: 'Layer (e.g. «0-10»), if there are no depths', aliases: ['layer', 'horizonte', 'profundidad'] },
+    { key: 'espesor_cm', es: 'Espesor (cm), si no hay profundidades ni capa', en: 'Thickness (cm), if there are no depths or layer', num: true, aliases: ['espesor', 'thickness', 'thick'] },
+    { key: 'co_pct', es: 'Carbono orgánico (%)', en: 'Organic carbon (%)', num: true, req: true, aliases: ['co', 'cos', 'soc', 'carbono organico', 'c org', 'oc'] },
     { key: 'dap_g_cm3', es: 'Densidad aparente (g/cm³)', en: 'Bulk density (g/cm³)', num: true, req: true, aliases: ['densidad aparente', 'da', 'bd', 'bulk density'] },
-    { key: 'pedregosidad_pct', es: 'Fragmentos gruesos (%)', en: 'Coarse fragments (%)', num: true, aliases: ['pedregosidad', 'gravas', 'coarse'] }],
+    { key: 'pedregosidad_pct', es: 'Fragmentos gruesos (%)', en: 'Coarse fragments (%)', num: true, aliases: ['pedregosidad', 'gravas', 'coarse', 'fragmentos', 'frag'] },
+    { key: 'grupo', es: 'Sistema o grupo (opcional)', en: 'System or group (optional)', aliases: ['sistema', 'manejo', 'tratamiento', 'group', 'uso'] },
+    { key: 'anio', es: 'Año (opcional)', en: 'Year (optional)', aliases: ['año', 'year', 'fecha'] }],
     examples: [{ id: 'cafetal', es: 'Cafetal: 3 capas de 0 a 30 cm por parcela', en: 'Coffee farm: 3 layers from 0 to 30 cm per plot', d: ['El mismo formato de capas que usan los análisis de suelo (carbono %, densidad aparente y fragmentos gruesos).', 'The same layer format soil analyses use (carbon %, bulk density and coarse fragments).'], rows: () => FPData.rows('cafetal_suelo') }],
-    onData: rows => { S.soil = rows; drawSoil(); } });
+    onData: rows => { S.soil = soilLayers(rows); S.soilGroup = null; drawSoil(); } });
   R.soil = mk('div', { class: 'res-host' }); e.appendChild(R.soil);
   UI.method(e, { text: [
     '<p><b>Madera caída</b> (Van Wagner 1968): V = π²·Σd²/(8L), con d en cm y L en m da m³/ha directamente; la masa es V por la densidad de su clase de descomposición (mídela en tu sitio; los valores por omisión son solo un punto de partida). <b>Hojarasca:</b> Mg/ha = gramos secos / m² del marco × 0.01. <b>Suelo:</b> Mg C/ha de una capa = C % × densidad aparente (g/cm³) × espesor (cm) × (1 − fragmentos gruesos/100); se suman las capas de cada perfil.</p>',
@@ -457,12 +461,41 @@ function drawLitter() {
   ]);
   drawPools();
 }
+/* the depths of each layer: given, from a layer written «0-10», or piled up from the thicknesses of each profile
+   (the layer format of SoilPro: system, year, replicate, layer, thickness, SOC, BD, coarse fragments) */
+function soilLayers(rows) {
+  const acc = new Map();
+  return rows.map(r => {
+    const o = Object.assign({}, r);
+    const prof = [r.grupo, r.anio, r.parcela].join('|');
+    let m;
+    if (!(isFinite(o.prof_sup) && isFinite(o.prof_inf))) {
+      if (r.capa && (m = /(\d+(?:[.,]\d+)?)\s*[-–a]\s*(\d+(?:[.,]\d+)?)/.exec(String(r.capa)))) { o.prof_sup = +m[1].replace(',', '.'); o.prof_inf = +m[2].replace(',', '.'); }
+      else if (r.espesor_cm > 0) { const t = acc.get(prof) || 0; o.prof_sup = t; o.prof_inf = t + r.espesor_cm; }
+    }
+    if (isFinite(o.prof_inf)) acc.set(prof, Math.max(acc.get(prof) || 0, o.prof_inf));
+    return o;
+  }).filter(o => isFinite(o.prof_sup) && isFinite(o.prof_inf) && o.prof_inf > o.prof_sup);
+}
 function drawSoil() {
   R.soil.innerHTML = '';
+  if (!S.soil.length) { showMessage(R.soil, 'warning', L2('Ninguna capa tiene profundidades: hacen falta las profundidades superior e inferior, la capa escrita como «0-10» o el espesor.', 'No layer has depths: the upper and lower depths, the layer written as «0-10» or the thickness are needed.')); return; }
+  /* several systems or years (as SoilPro exports them): one at a time */
+  const gkey = r => [r.grupo, r.anio].filter(v => v != null && v !== '').join(' · ');
+  const groups = [...new Set(S.soil.map(gkey))];
+  let src = S.soil;
+  if (groups.length > 1) {
+    if (!groups.includes(S.soilGroup)) S.soilGroup = groups[0];
+    const f = mk('div', { class: 'field', style: 'max-width:360px' });
+    f.innerHTML = `<label for="b4sgrp">${L2('Sistema o grupo', 'System or group')}</label><select id="b4sgrp">${groups.map(g => `<option${g === S.soilGroup ? ' selected' : ''}>${esc(g)}</option>`).join('')}</select>`;
+    R.soil.appendChild(f);
+    f.querySelector('select').addEventListener('change', ev => { S.soilGroup = ev.target.value; drawSoil(); });
+    src = S.soil.filter(r => gkey(r) === S.soilGroup);
+  }
   const by = new Map();
-  S.soil.forEach(r => { const k = String(r.parcela); by.set(k, (by.get(k) || 0) + BM().socLayer(r.co_pct, r.dap_g_cm3, r.prof_sup, r.prof_inf, isFinite(r.pedregosidad_pct) ? r.pedregosidad_pct : 0)); });
+  src.forEach(r => { const k = String(r.parcela); by.set(k, (by.get(k) || 0) + BM().socLayer(r.co_pct, r.dap_g_cm3, r.prof_sup, r.prof_inf, isFinite(r.pedregosidad_pct) ? r.pedregosidad_pct : 0)); });
   const rows = [...by.entries()].map(([plot, c]) => ({ plot, c }));
-  const depth = Math.max(...S.soil.map(r => r.prof_inf));
+  const depth = Math.max(...src.map(r => r.prof_inf));
   const e = Invent.srs(rows.map(r => r.c), { conf: 0.95 });
   S.soilEst = e;
   UI.tiles(R.soil.appendChild(mk('div')), [

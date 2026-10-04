@@ -455,12 +455,16 @@ Convierte el inventario en biomasa y carbono por árbol, por parcela y para el p
 
 | Columna | Contenido | |
 |---|---|---|
-| `parcela` | Parcela | obligatoria |
-| `prof_sup` | Profundidad superior (cm) | obligatoria, número |
-| `prof_inf` | Profundidad inferior (cm) | obligatoria, número |
+| `parcela` | Parcela o perfil | obligatoria |
+| `prof_sup` | Profundidad superior (cm) | opcional, número |
+| `prof_inf` | Profundidad inferior (cm) | opcional, número |
+| `capa` | Capa (p. ej. «0-10»), si no hay profundidades | opcional |
+| `espesor_cm` | Espesor (cm), si no hay profundidades ni capa | opcional, número |
 | `co_pct` | Carbono orgánico (%) | obligatoria, número |
 | `dap_g_cm3` | Densidad aparente (g/cm³) | obligatoria, número |
 | `pedregosidad_pct` | Fragmentos gruesos (%) | opcional, número |
+| `grupo` | Sistema o grupo (opcional) | opcional |
+| `anio` | Año (opcional) | opcional |
 
 **Tarjeta de la sección «Reservorios y cambio entre inventarios»** (ejemplos: pino).
 
@@ -543,7 +547,7 @@ Convierte el inventario en biomasa y carbono por árbol, por parcela y para el p
 
 *Los otros reservorios de carbono, cada uno con su propia tabla.*
 
-**Cómo se usa.** Tres tarjetas, una por reservorio: la madera caída por intersección de líneas (transecto, longitud, diámetro de cada pieza en el cruce y su clase de descomposición, con la densidad de cada clase), la hojarasca recogida en marcos (peso seco y superficie del marco) y el suelo por capas (profundidades, carbono orgánico, densidad aparente y fragmentos gruesos). Cada una da su reservorio en Mg/ha con su error estándar.
+**Cómo se usa.** Tres tarjetas, una por reservorio: la madera caída por intersección de líneas (transecto, longitud, diámetro de cada pieza en el cruce y su clase de descomposición, con la densidad de cada clase), la hojarasca recogida en marcos (peso seco y superficie del marco) y el suelo por capas (profundidades, carbono orgánico, densidad aparente y fragmentos gruesos). Cada una da su reservorio en Mg/ha con su error estándar. La tarjeta del suelo lee también las tablas de carbono por capas de SoilPro, la app de suelos de la suite: sistema, año, repetición, capa escrita como «0-10» o espesor, COS, DA y fragmentos; si hay varios sistemas o años, se elige uno en la lista que aparece.
 
 **Método.**
 

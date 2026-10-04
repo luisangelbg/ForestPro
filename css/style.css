@@ -243,7 +243,7 @@ tr.row-sel td { background: color-mix(in srgb, var(--primary) 9%, transparent); 
 .pl .pl-title { fill: var(--fig-ink); font-size: 13px; font-weight: 700; }
 .pl .pl-pts circle { stroke: var(--fig-bg); stroke-width: .7; }
 .pl .pl-legend text { fill: var(--fig-ink); font-size: 11px; }
-.pl .pl-legend .pl-legend-title { font-weight: 700; fill: var(--fig-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+.pl .pl-legend-title { font-weight: 700; fill: var(--fig-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
 .pl .pl-err { stroke: var(--fig-ink); stroke-width: 1.2; fill: none; }
 .pl .pl-vlab, .pl .pl-ptlab { fill: var(--fig-ink); font-size: 10px; font-variant-numeric: tabular-nums; }
 .pl .pl-dendro path { fill: none; stroke: var(--fig-ink); stroke-width: 1.4; }
@@ -278,6 +278,7 @@ tr.row-sel td { background: color-mix(in srgb, var(--primary) 9%, transparent); 
 .map-scale { position: absolute; left: 10px; bottom: 8px; font-size: 0.7rem; color: var(--fig-ink); z-index: 2; }
 .map-scale i { display: block; height: 5px; border: 1.5px solid var(--fig-ink); border-top: 0; margin-top: 1px; }
 .map-coord { position: absolute; right: 8px; top: 8px; font-size: 0.7rem; background: color-mix(in srgb, var(--card-bg) 85%, transparent); color: var(--text); padding: 2px 6px; border-radius: 6px; z-index: 2; font-variant-numeric: tabular-nums; }
+.map-coord:empty { display: none; }
 .map-grat line { stroke: var(--fig-grid); stroke-width: 1; }
 .map-grat text { fill: var(--fig-muted); font-size: 10px; }
 

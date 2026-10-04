@@ -114,5 +114,14 @@ t(7, 'Cerco vivo de 400 m de perímetro con un árbol cada 5 m: 80 árboles', E 
 t(7, 'Cobertura con traslape: copas que suman la superficie de la parcela cubren 1 − 1/e', E => { const r = Math.sqrt(1000 / Math.PI); near(E.Agro.shadeOfPlot([{ sp: 'a', d: 20, h: 10, crown: 2 * r }], 1000).cover, 100 * (1 - Math.exp(-1)), 1e-12); });
 t(7, 'Presupuesto: la diferencia en CO₂e es 44/12 de la de carbono', E => { const b = E.Agro.budget({ a: 10, b: 5 }, { a: 2 }); near(b.diff, 13); near(b.diffCO2, 13 * 44 / 12, 1e-12); });
 
+/* ---------- Block 8 ---------- */
+t(8, 'UTM ida y vuelta: menos de 1e-8° de diferencia', E => { const u = E.Geo.toUTM(19.5, -97.03); const b = E.Geo.fromUTM(u.E, u.N, u.zone, u.south); near(b.lat, 19.5, 1e-8); near(b.lon, -97.03, 1e-8); ok(u.zone === 14, 'zona ' + u.zone); });
+t(8, 'Meridiano central: Este = 500 000 m; Ecuador: Norte = 0', E => { const u = E.Geo.toUTM(0, -99); near(u.E, 500000, 1e-6); near(u.N, 0, 1e-6); });
+t(8, 'Cuadrado de 1 km en UTM: área 100 ha (agrimensor) y la esférica difiere < 1 %', E => { const p = [[0, 0], [1000, 0], [1000, 1000], [0, 1000]]; near(Math.abs(E.Geo.planarArea(p)), 1e6, 1e-9); const ring = p.map(q => { const ll = E.Geo.fromUTM(700000 + q[0], 2150000 + q[1], 14, false); return [ll.lon, ll.lat]; }); const s = E.Geo.polygonStats(ring); near(s.areaUTM, 1e6, 1e-3); ok(Math.abs(s.areaSphere / s.areaUTM - 1) < 0.01, 'esfera ' + s.areaSphere); });
+t(8, 'Cuadrícula de 100 m en un cuadrado de 1 km: 100 puntos', E => { const ring = [[0, 0], [1000, 0], [1000, 1000], [0, 1000]].map(q => { const ll = E.Geo.fromUTM(700000 + q[0], 2150000 + q[1], 14, false); return [ll.lon, ll.lat]; }); const g = E.Geo.grid(ring, { spacing: 100, offsetX: 0, offsetY: 0 }); ok(g.points.length === 100, 'puntos ' + g.points.length); near(g.expected, 100, 1e-3); });
+t(8, 'IDW y kriging ordinario reproducen el dato en su propio punto', E => { const P = [{ x: 0, y: 0, z: 1 }, { x: 100, y: 0, z: 3 }, { x: 0, y: 100, z: 2 }, { x: 100, y: 100, z: 5 }, { x: 50, y: 40, z: 4 }]; near(E.Geo.idw(P, [{ x: 100, y: 0 }])[0], 3); const k = E.Geo.krige(P, [{ x: 0, y: 100 }], { model: 'sph', nugget: 0, psill: 2, range: 150 }, { type: 'ok' })[0]; near(k.z, 2, 1e-9); near(k.v, 0, 1e-9); });
+t(8, 'Kriging ordinario: los pesos suman 1 (una constante se predice igual)', E => { const P = [[0, 0], [80, 10], [20, 90], [100, 100], [60, 50]].map(q => ({ x: q[0], y: q[1], z: 7 })); near(E.Geo.krige(P, [{ x: 33, y: 71 }], { model: 'exp', nugget: 0.1, psill: 1, range: 40 }, { type: 'ok' })[0].z, 7, 1e-10); });
+t(8, 'GeoJSON exportado se vuelve a leer igual', E => { const pts = [{ name: 'A', lat: 19.5, lon: -97 }], pol = [{ name: 'P', ring: [[-97, 19.5], [-96.99, 19.5], [-96.99, 19.51]] }]; const r = E.Geo.parse(E.Geo.toGeoJSON(pts, pol), 'x.geojson'); near(r.points[0].lat, 19.5); ok(r.polygons[0].ring.length === 4, 'anillo cerrado'); });
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

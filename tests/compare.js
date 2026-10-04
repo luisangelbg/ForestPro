@@ -490,6 +490,66 @@ blocks[7] = () => {
   ]);
 };
 
+/* ================= Block 8 ================= */
+blocks[8] = () => {
+  const R = ref(8); if (!R) return;
+  const { rows, check, vec } = make(8);
+  const Gg = E.Geo;
+  R.utm.id.forEach((id, i) => {
+    const u = Gg.toUTM(R.utm.lat[i], R.utm.lon[i], 14);
+    check(`${id}: Este UTM (m)`, u.E, R.utm.E[i], 1e-3, 'abs'); check(`${id}: Norte UTM (m)`, u.N, R.utm.N[i], 1e-3, 'abs');
+    const b = Gg.fromUTM(R.utm.E[i], R.utm.N[i], 14, false);
+    check(`${id}: latitud de regreso`, b.lat, R.utm.latBack[i], 1e-8, 'abs'); check(`${id}: longitud de regreso`, b.lon, R.utm.lonBack[i], 1e-8, 'abs');
+  });
+  const pr = E.FPData.rows('mesofilo_predio'), ring = pr.map(r => [r.lon, r.lat]);
+  const st = Gg.polygonStats(ring);
+  check('Predio: área en UTM (m²)', st.areaUTM, R.poly.areaUTM, 1e-7); check('Predio: perímetro en UTM (m)', st.perimUTM, R.poly.perimUTM, 1e-7);
+  check('Predio: área en la esfera (m²)', st.areaSphere, R.poly.areaSphere, 1e-6); check('Predio: perímetro en la esfera (m)', st.perimSphere, R.poly.perimSphere, 1e-6);
+  const gr = Gg.grid(ring, { spacing: 500, rotation: 0, offsetX: 0.5, offsetY: 0.5 });
+  check('Cuadrícula de 500 m: puntos dentro del predio', gr.points.length, R.grid.n, 0, 'abs');
+  const key = (E1, N1) => Math.round(E1) + ',' + Math.round(N1);
+  const mine = new Set(gr.points.map(p => key(p.E, p.N)));
+  check('Cuadrícula: los mismos puntos', R.grid.E.filter((e, i) => mine.has(key(e, R.grid.N[i]))).length, R.grid.n, 0, 'abs');
+  /* interpolation */
+  const I = R.interp, pts = I.x.map((x, i) => ({ x, y: I.y[i], z: I.z[i] })), tg = I.tx.map((x, i) => ({ x, y: I.ty[i] }));
+  vec('IDW (potencia 2, todos los puntos)', Gg.idw(pts, tg, { power: 2 }), I.idw, 1e-10);
+  vec('IDW (potencia 2, 5 vecinos)', Gg.idw(pts, tg, { power: 2, nmax: 5 }), I.idw5, 1e-12);
+  const ev = Gg.variogram(pts, { cutoff: I.cutoff, width: I.width });
+  vec('Semivariograma: pares por intervalo', ev.map(e => e.np), I.ev.np, 0, 'abs');
+  vec('Semivariograma: distancia media', ev.map(e => e.dist), I.ev.dist, 1e-10);
+  vec('Semivariograma: γ', ev.map(e => e.gamma), I.ev.gamma, 1e-12);
+  /* the fit: the reference stops without converging, so the criterion decides: the weighted SSE of the app must not be larger */
+  ['sph', 'exp'].forEach(mk => {
+    const f = Gg.fitVariogram(ev, mk);
+    const wsseRef = ev.reduce((s, e) => s + e.np / (e.dist * e.dist) * (e.gamma - Gg.VMODELS[mk].f(e.dist, I[mk].nugget, I[mk].psill, I[mk].range)) ** 2, 0);
+    check(`${mk}: SCE ponderada de los parámetros de gstat = su SSErr`, wsseRef, I[mk].sse, 1e-6);
+    check(`${mk}: SCE ponderada de la app ≤ la de gstat`, f.wsse <= wsseRef * (1 + 1e-6) ? 1 : 0, 1, 0, 'abs');
+    rows.push({ block: 8, item: `${mk}: SCE ponderada de la app y de gstat (informativo)`, js: f.wsse, r: wsseRef, diff: NaN, tol: NaN, kind: 'info', ok: true });
+  });
+  /* kriging with the parameters of the reference */
+  const vm = { model: 'sph', nugget: I.sph.nugget, psill: I.sph.psill, range: I.sph.range };
+  const ok = Gg.krige(pts, tg, vm, { type: 'ok' }), sk = Gg.krige(pts, tg, vm, { type: 'sk', mean: I.sk.mean });
+  vec('Kriging ordinario: predicción', ok.map(r => r.z), I.ok.pred, 1e-9); vec('Kriging ordinario: varianza', ok.map(r => r.v), I.ok.var, 1e-9);
+  vec('Kriging simple: predicción', sk.map(r => r.z), I.sk.pred, 1e-9); vec('Kriging simple: varianza', sk.map(r => r.v), I.sk.var, 1e-9);
+  const cvk = Gg.crossValidate(pts, (rest, p) => Gg.krige(rest, [p], vm, { type: 'ok' })[0].z);
+  check('Validación cruzada del kriging: RMSE', cvk.rmse, I.cvOK.rmse, 1e-9); check('Validación cruzada del kriging: error medio', cvk.me, I.cvOK.me, 1e-8);
+  const cvi = Gg.crossValidate(pts, (rest, p) => Gg.idw(rest, [p], { power: 2 })[0]);
+  check('Validación cruzada de IDW: RMSE', cvi.rmse, I.cvIDW.rmse, 1e-9); check('Validación cruzada de IDW: error medio', cvi.me, I.cvIDW.me, 1e-8);
+  /* round trip of the formats */
+  const ptsOut = [{ name: 'P1', lat: 19.5, lon: -97.01 }, { name: 'P<2>', lat: 19.51, lon: -97.02 }];
+  const back = [Gg.parse(Gg.toGPX(ptsOut, [{ name: 'predio', ring }]), 'a.gpx'), Gg.parse(Gg.toKML(ptsOut, [{ name: 'predio', ring }]), 'a.kml'), Gg.parse(Gg.toGeoJSON(ptsOut, [{ name: 'predio', ring }]), 'a.geojson')];
+  ['GPX', 'KML', 'GeoJSON'].forEach((fmt, k) => {
+    check(`${fmt}: puntos de ida y vuelta`, back[k].points.length, 2, 0, 'abs');
+    check(`${fmt}: nombre con caracteres especiales`, back[k].points[1].name === 'P<2>' ? 1 : 0, 1, 0, 'abs');
+    check(`${fmt}: área del polígono de ida y vuelta`, Gg.polygonStats(back[k].polygons[0].ring).areaUTM, st.areaUTM, 1e-6);
+  });
+  report(8, 'Mapas y geoprocesamiento', rows, [
+    'Referencias: R 4.4.2 con sf (st_transform a EPSG:32614, st_area y st_length en UTM y sobre la esfera con s2, st_intersects) y gstat (idw, variogram, fit.variogram con pesos Nⱼ/hⱼ², krige ordinario y simple, krige.cv).',
+    'UTM a 1 mm y su inversa a 1e-8 grados (≈1 mm; la serie de Krüger de tercer orden deja diferencias de 0.2 mm en la inversa). Áreas y perímetros a 1e-7 en UTM y 1e-6 sobre la esfera. El área sobre la esfera (radio medio de 6 371 008.8 m) excede a la de UTM en 0.27 % a esta latitud porque la esfera no es el elipsoide: para superficies forestales la app usa la de UTM.',
+    'El ajuste del variograma de gstat no converge en 200 iteraciones con estos datos (el variograma de 24 parcelas en 3 estratos es irregular). Por eso se compara el criterio: la suma de cuadrados ponderada de la app no es mayor que la de gstat. El kriging se compara con los mismos parámetros de gstat, a 1e-9.',
+  ]);
+};
+
 /* ---------------- run ---------------- */
 const only = process.argv.slice(2).map(Number).filter(Boolean);
 Object.keys(blocks).map(Number).filter(n => !only.length || only.includes(n)).forEach(n => {

@@ -15,4 +15,5 @@ node tests/compare.js
 | 5 | Crecimiento y rendimiento | 616 | 0 |
 | 6 | Diversidad y ecología | 1222 | 0 |
 | 7 | Sistemas agroforestales | 211 | 0 |
-| | **Total** | **7740** | **0** |
+| 8 | Mapas y geoprocesamiento | 269 | 0 |
+| | **Total** | **8009** | **0** |

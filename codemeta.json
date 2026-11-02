@@ -6,7 +6,9 @@
   "description": "A browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry: volume and taper equations, height-diameter models, sampling designs and sampling error, stand tables and Weibull distributions, allometric biomass with wood density and Monte Carlo uncertainty, carbon pools and stock change, growth models and site index, diversity indices, Hill numbers, ordination and spatial pattern, shade and planting layouts in agroforestry, maps with sampling grids, GPX/KML/GeoJSON export and kriging, log rules and plantation economics. No installation and no third-party libraries; Spanish and English interface. Every block was checked against independent references in R: 8,327 comparisons, no disagreements; 84 unit tests run in the browser.",
   "version": "1.0.0",
   "dateCreated": "2026-10-04",
-  "dateModified": "2026-11-01",
+  "dateModified": "2026-11-02",
+  "datePublished": "2026-11-02",
+  "identifier": "https://doi.org/10.5281/zenodo.23876374",
   "license": "https://spdx.org/licenses/GPL-3.0-or-later",
   "codeRepository": "https://github.com/luisangelbg/ForestPro",
   "url": "https://luisangelbg.github.io/ForestPro/",
@@ -51,5 +53,9 @@
   ],
   "readme": "README.md",
   "developmentStatus": "active",
-  "isAccessibleForFree": true
+  "isAccessibleForFree": true,
+  "relatedLink": [
+    "https://doi.org/10.5281/zenodo.23876374",
+    "https://doi.org/10.5281/zenodo.23876375"
+  ]
 }

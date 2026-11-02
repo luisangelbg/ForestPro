@@ -1,5 +1,7 @@
 # ForestPro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23876374.svg)](https://doi.org/10.5281/zenodo.23876374)
+
 **From the measured tree to the metric ton of carbon** · *Español: [LEEME.md](LEEME.md)*
 
 Forest inventory, mensuration, biomass, carbon and agroforestry in the
@@ -171,7 +173,12 @@ exist. `data/LEEME.md` and `PROCEDENCIA.md` (in Spanish) give the details.
 
 Barrera-Guzmán, L. Á. (2026). ForestPro: a browser-based platform for forest
 inventory, mensuration, biomass, carbon and agroforestry (Version 1.0.0)
-[Computer software]. https://github.com/luisangelbg/ForestPro
+[Computer software]. Zenodo.
+https://doi.org/10.5281/zenodo.23876374
+
+The DOI above always resolves to the latest version; each version has its own
+DOI on the Zenodo page (version 1.0.0: 10.5281/zenodo.23876375). Cite the
+version you used. Code: https://github.com/luisangelbg/ForestPro
 
 The **Home** page of the app and Block 10 give the citation ready to copy,
 also as a BibTeX entry, and every report ends with it. `CITATION.cff` has the

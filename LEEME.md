@@ -1,5 +1,7 @@
 # ForestPro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23876374.svg)](https://doi.org/10.5281/zenodo.23876374)
+
 **Del árbol medido a la tonelada de carbono** · *English: [README.md](README.md)*
 
 Inventario forestal, dasometría, biomasa, carbono y agroforestería en el
@@ -162,7 +164,12 @@ verosímiles, las parcelas y los árboles no existen. Ver `data/LEEME.md` y
 
 Barrera-Guzmán, L. Á. (2026). *ForestPro: a browser-based platform for forest
 inventory, mensuration, biomass, carbon and agroforestry* (versión 1.0.0)
-[Programa de cómputo]. https://github.com/luisangelbg/ForestPro
+[Programa de cómputo]. Zenodo.
+https://doi.org/10.5281/zenodo.23876374
+
+El DOI de arriba lleva siempre a la versión más reciente; cada versión tiene
+además el suyo en la página de Zenodo (la 1.0.0: 10.5281/zenodo.23876375).
+Cita la versión que usaste. Código: https://github.com/luisangelbg/ForestPro
 
 La sección **Cómo citar** de la portada de la app y la del Bloque 10 dan la
 cita lista para copiar, también como entrada BibTeX, y todos los informes

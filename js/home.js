@@ -17,9 +17,11 @@
 window.ExampleHooks = window.ExampleHooks || {};
 
 const VERSION = '1.0.0';
+/* cited by its author, title, version and the concept DOI of Zenodo, which always resolves to the latest version */
+const CITE_DOI = '10.5281/zenodo.23876374';
 const CITE = {
-  apa: 'Barrera-Guzmán, L. Á. (2026). ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry (Version ' + VERSION + ') [Computer software]. https://github.com/luisangelbg/ForestPro',
-  bib: '@software{BarreraGuzman2026ForestPro,\n  author  = {Barrera-Guzmán, Luis Ángel},\n  title   = {{ForestPro}: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry},\n  year    = {2026},\n  version = {' + VERSION + '},\n  license = {GPL-3.0-or-later},\n  url     = {https://github.com/luisangelbg/ForestPro}\n}',
+  apa: 'Barrera-Guzmán, L. Á. (2026). ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry (Version ' + VERSION + ') [Computer software]. Zenodo. https://doi.org/' + CITE_DOI,
+  bib: '@software{BarreraGuzman2026ForestPro,\n  author  = {Barrera-Guzmán, Luis Ángel},\n  title   = {{ForestPro}: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry},\n  year    = {2026},\n  version = {' + VERSION + '},\n  license = {GPL-3.0-or-later},\n  doi     = {' + CITE_DOI + '},\n  url     = {https://doi.org/' + CITE_DOI + '}\n}',
 };
 window.FP_CITE = CITE;
 window.FP_VERSION = VERSION;

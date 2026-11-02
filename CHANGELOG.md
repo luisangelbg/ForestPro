@@ -3,6 +3,23 @@
 Todas las versiones de ForestPro, de la más reciente a la más antigua. El formato sigue
 [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y la numeración, [SemVer](https://semver.org/lang/es/).
 
+## Versión 1.0.0 · Publicación: DOI de Zenodo — 2 de noviembre de 2026
+
+Sin cambio de versión. ForestPro está en GitHub (https://github.com/luisangelbg/ForestPro), en línea en
+https://luisangelbg.github.io/ForestPro/ y archivada en Zenodo con el DOI de concepto **10.5281/zenodo.23876374**
+(siempre lleva a la versión más reciente; la 1.0.0 tiene además el suyo, 10.5281/zenodo.23876375).
+
+- **Cita de la app**: termina en «Zenodo. https://doi.org/10.5281/zenodo.23876374»; el BibTeX lleva `doi` y la
+  dirección del DOI como `url`. La misma cita va en la portada, en «Cómo citar» del Bloque 10, en `forestpro.bib` y
+  al final de cada informe.
+- **Metadatos**: `README.md` y `LEEME.md` con la insignia del DOI y la cita; `CITATION.cff` con `doi`,
+  `date-released`, `identifiers` (concepto y versión) y `preferred-citation`; `codemeta.json` con `identifier`,
+  `datePublished` y `relatedLink`; la ficha del portal (`tools/portal/LEEME.md`) con el DOI.
+- **Manuales** español e inglés: créditos (cita del programa, cita del manual y renglón del DOI), secciones 1.6 y
+  10.4, apéndice E.3 (cita, BibTeX y renglón); capturas de «Cómo citar» de la portada y del Bloque 10 retomadas en
+  los dos idiomas; PDF reimpresos.
+- 84 pruebas pasan; la validación sigue en 8 327 comparaciones sin desacuerdos.
+
 ## [Sin versión] — 2026-11-01
 
 Correcciones halladas al escribir el manual. La versión sigue siendo la 1.0.0.

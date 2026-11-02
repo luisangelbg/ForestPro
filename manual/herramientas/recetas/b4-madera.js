@@ -4,9 +4,12 @@
 (async () => {
   await bloque(4, 'cafetal');
   await cargar('b4w', 'mesofilo');
+  await W(800); await listo();
   const t = tarjeta(4, L('Necromasa, hojarasca y suelo', 'Necromass, litter and soil'));
-  const host = t.querySelectorAll('.res-host')[0];
-  const tiles = host.querySelector('.stat-tile').parentElement;
+  /* the first tiles of the card after the data card of downed wood */
+  const tile = [...t.querySelectorAll('.stat-tile')].find(n => /Volumen de madera caída|Volume of downed wood/i.test(n.innerText));
+  if (!tile) throw new Error('No encuentro los mosaicos de la madera caída');
+  const tiles = tile.parentElement;
   irA(t, 200); await W(800);
   return caja([t.querySelector('h2'), tiles], 10);
 })()

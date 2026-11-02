@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-2" data-pestana="2" data-orden="2" style="--acento: var(--b2)">
+  <div class="cap-apertura">
+    <div class="cap-num">2</div>
+    <div class="cap-etiqueta">Chapter two · Block 2</div>
+    <h1 data-corto="Tree mensuration">Tree mensuration</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Every inventory rests on measuring trees one by one. This block turns the diameter and height of a standing tree into its basal area and volume; scales felled trees by sections and, with them, fits the volume equations and the stem profile that later serve for any tree of the same species; and estimates the height of the trees that were not measured for it. Its five tools are used together or on their own.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k2"></span><span class="k3"></span><span class="k9"></span></div>
+    <ul class="cap-contenido">
+      <li><b>2.1</b>Standing trees: diameter, basal area and volume</li>
+      <li><b>2.2</b>Scaling: logs and trees by sections</li>
+      <li><b>2.3</b>Volume equations</li>
+      <li><b>2.4</b>Taper</li>
+      <li><b>2.5</b>Height–diameter relationship</li>
+    </ul>
+  </div>
+
+  <p class="lead">The block introduces itself like this: <span class="ui">Five tools used together or on their own: the first measures standing trees; the second scales felled trees; with those volumes the third fits volume equations and the fourth, taper curves; the fifth estimates the missing heights.</span> Cards 2.2, 2.3 and 2.4 form a chain —the sections of the felled trees feed the equations and the taper—; the other two work on their own.</p>
+  <p>The example of this chapter is the <b>pine plantation</b>: <span class="ruta">Block 1<span class="sep">›</span>Example data<span class="sep">›</span>Open in Mensuration</span> loads the 40 felled trees with their 536 sections into the scaling card. Section 2.1 also uses the shade trees of the coffee farm example and Section 2.5 the pine plot with missing heights, which are loaded from the example list of their own data card (Section I.6).</p>
+
+  <!-- 2.1 -->
+  <h2 id="s2-1"><span class="num">2.1</span>Standing trees: diameter, basal area and volume</h2>
+  <p class="lead">The first card has two parts: a calculator for a single tree and a table of trees that is summarized by species.</p>
+  <p>At the top, four fields. <span class="ui">Form factor</span> (0.5 by default) is the fraction of the cylinder of basal area <i>g</i> and height <i>H</i> filled by the stem; both the calculator and the table use it. <span class="ui">Calculator: DBH (cm)</span> and <span class="ui">or girth (cm)</span> exclude each other: typing in one empties the other, and if you give the girth the DBH is computed from it. <span class="ui">Height (m)</span> is the total height. The tiles respond at once: the DBH with its girth, the basal area, the volume with the chosen factor and the slenderness.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-arboles.png" alt="The Standing trees card with the default calculator and the shade trees of the coffee farm loaded"></div>
+    <figcaption><b>Figure 2.1.</b> <span class="ruta">Block 2<span class="sep">›</span>Standing trees</span>. The calculator with its default values (a DBH of 30 cm and a height of 18 m) gives a basal area of 0.0707 m², a volume of 0.636 m³ with <i>f</i> = 0.5 and a slenderness of 60. Below, the 719 shade trees of the coffee farm example: mean DBH of 25.6 cm, Dq of 28.3 cm, mean height of 13.0 m, 45.28 m² of basal area and 376.83 m³.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · from diameter to volume</div>
+    <p>Diameter at breast height is measured at 1.30 m; if the girth <i>C</i> was measured, DBH = <i>C</i>/π. Basal area is the cross-section of the trunk at that height, <i>g</i> = π·DBH²/40,000 (in m², with DBH in cm). The volume of a standing tree is approximated as that of a cylinder with that base and height, reduced by the form factor: <i>V</i> = <i>g</i>·<i>H</i>·<i>f</i>. A paraboloid stem has <i>f</i> = 0.5; according to the app, conifer stems usually fall between 0.42 and 0.50 and broadleaf stems between 0.35 and 0.48. The value for your species comes from scaling felled trees (Section 2.2). Slenderness is 100·<i>H</i>/DBH, the height in meters per meter of diameter.</p>
+  </div>
+
+  <h3>The table of trees</h3>
+  <p>The data card takes one row per tree with the columns <span class="ui">Species</span>, <span class="ui">DBH (cm)</span>, <span class="ui">Girth at 1.3 m (cm)</span>, <span class="ui">Total height (m)</span>, <span class="ui">Merchantable height (m)</span>, <span class="ui">Crown diameter (m)</span> and <span class="ui">Status</span>. None is required, but each tree needs its DBH or its girth; if it has both, DBH wins. It comes with two examples, <span class="ui">Coffee farm: shade trees (25 plots)</span> and <span class="ui">Cloud forest (24 plots)</span>, and the <span class="ui">Use the loaded inventory</span> button takes the trees of Block 3.</p>
+  <p>With data loaded, five tiles appear (<span class="ui">Trees</span>, <span class="ui">Mean DBH</span> with the quadratic mean diameter below it, <span class="ui">Mean height</span>, <span class="ui">Total basal area</span> and <span class="ui">Total volume</span>); if some trees lack a height, the first tile says so, and the volume is added up only over those that have one. Two figures follow, <span class="ui">Height and diameter by species</span> (the eight species with the most trees in color, the rest in gray as <span class="ui">others</span>) and <span class="ui">Basal area by species</span> (the twelve with the largest basal area), and two tables: <span class="ui">Summary by species</span>, sorted by basal area, and <span class="ui">Tree by tree</span>, with the basal area, volume, merchantable volume (if there is a merchantable height), slenderness and crown area of each tree; 60 rows are shown on screen and the downloads carry them all.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b2-especies.png" alt="The figures of height against diameter and of basal area by species and the Summary by species table of the coffee farm"></div>
+    <figcaption><b>Figure 2.2.</b> The shade trees of the coffee farm example by species. On the left two groups separate: the bananas (<i>Musa</i> sp.) and the citrus trees, short for their diameter, and the shade trees proper. <i>Inga vera</i> has the most trees (212) and the largest basal area (12.556 m²), but <i>Cordia alliodora</i>, with 58 trees with a mean height of 23.8 m, the largest volume (104.085 m³).</figcaption>
+  </figure>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Worked example · the shade trees of the coffee farm</div>
+    <p>The interpretation of the app says: “The 10 species add up to 45.28 m² of basal area; <i>Inga vera</i> contributes 28 %.” The quadratic mean diameter (28.3 cm) is larger than the arithmetic mean (25.6 cm) because it weights thick trees more; that is why it is the one that corresponds to the mean basal area. In addition, 64 trees have a slenderness above 80: they are thin for their height and, according to the app, more vulnerable to wind.</p>
+  </div>
+  <p>Changing the form factor recalculates the calculator and the table at the same time. Bear in mind that a single factor for all species is a rough approximation —bananas, citrus and timber trees live together in the coffee farm—; for the volume of an inventory, Block 3 can use the equation fitted in Section 2.3.</p>
+
+  <!-- 2.2 -->
+  <h2 id="s2-2"><span class="num">2.2</span>Scaling: logs and trees by sections</h2>
+  <p class="lead">Scaling means measuring the true volume of a felled stem, section by section. The card does it at two scales: a single log, with three formulas, and whole trees from a table of sections.</p>
+
+  <h3>One log: Huber, Smalian and Newton</h3>
+  <p>The fields <span class="ui">Large-end diameter (cm)</span>, <span class="ui">Mid diameter (cm)</span>, <span class="ui">Small-end diameter (cm)</span> and <span class="ui">Length (m)</span> describe the log (34, 30.5 and 27 cm by 2.5 m, by default). The tiles give the volume by each formula and, below Huber and Smalian, their difference from Newton, which the app takes as the reference.</p>
+  <div class="formula">Huber: <i>V</i> = <i>g</i><sub>m</sub>·<i>L</i> &nbsp;·&nbsp; Smalian: <i>V</i> = (<i>g</i><sub>1</sub> + <i>g</i><sub>2</sub>)/2·<i>L</i> &nbsp;·&nbsp; Newton: <i>V</i> = (<i>g</i><sub>1</sub> + 4<i>g</i><sub>m</sub> + <i>g</i><sub>2</sub>)/6·<i>L</i></div>
+  <p>Newton is exact for a paraboloid, a cone or a neiloid; Smalian, which uses only the ends, overestimates in the neiloid butt of the tree, and Huber, which uses only the middle, underestimates. With the default log, Huber gives 0.1827 m³ (−0.4% against Newton), Smalian 0.1851 m³ (0.9%) and Newton 0.1835 m³. The difference grows the more the log departs from a truncated cone, above all in butt logs.</p>
+
+  <h3>Whole trees</h3>
+  <p>Below the calculator, <span class="ui">Minimum top diameter (cm)</span> (10 by default) sets how far the merchantable volume goes, and the <span class="ui">Add the stump (cylinder)</span> checkbox adds the stump to the total, scaled as a cylinder with the diameter of the first section. The data card takes one row per measured section: <span class="ui">Tree</span>*, <span class="ui">DBH (cm)</span>, <span class="ui">Total height (m)</span>*, <span class="ui">Height of the section (m)</span>* and <span class="ui">Diameter of the section (cm)</span>*, with at least 4 complete rows. The example <span class="ui">Pine: 40 felled trees by sections</span> has the diameter over bark at 0.3 m, at 1.3 m and every 2.5 m up to near the tip.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-cubicacion.png" alt="The Scaling card with the default log and the 40 felled pines loaded"></div>
+    <figcaption><b>Figure 2.3.</b> <span class="ruta">Block 2<span class="sep">›</span>Scaling</span>. At the top, the default log with the three formulas; below, the 40 felled pines of the example: 536 sections, 40.681 m³ without stump, mean form factor of 0.450 and mean form quotient of 0.640.</figcaption>
+  </figure>
+  <p>Each tree is scaled by adding Smalian logs between consecutive sections and a cone from the last section to the tip (<i>g</i>·<i>L</i>/3). The merchantable volume goes up to the height at which the diameter drops to the minimum top diameter, interpolated linearly between the two sections around it. Each tree also yields its <b>form factor</b>, <i>V</i>/(<i>g</i>·<i>H</i>), and its <b>form quotient</b>, the diameter at half height over DBH.</p>
+  <p>The results are four tiles (<span class="ui">Trees scaled</span>, <span class="ui">Total volume</span>, which says whether it includes the stump, <span class="ui">Mean form factor</span> and <span class="ui">Mean form quotient</span>), two figures and the table <span class="ui">Volume of each tree</span>, which gives for each tree the stem volume, the stump volume (even if it is not added), the total, the merchantable volume with its height and the two form indices. Tree D01 of the example, for instance, with 34.6 cm and 24.89 m, has 1.1789 m³ in the stem, 1.1681 m³ merchantable up to 21.53 m and a form factor of 0.512.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-perfiles.png" alt="The profiles of the 40 stems and the form factor of each tree against its DBH"></div>
+    <figcaption><b>Figure 2.4.</b> Left: the profile of each stem, radius over bark against height, from the thinnest tree (dark green) to the thickest (gold). Right: the form factor of each pine against its DBH, with the paraboloid (0.5) dashed; the values run from about 0.36 to about 0.58 with no clear trend with diameter.</figcaption>
+  </figure>
+  <p>The interpretation sums up: “The mean form factor of these trees is 0.450: smaller than that of the paraboloid.” That is the value to type in Section 2.1 for standing trees of the same species and condition, although, as the app itself says, the equations of the next section do better, because they let the shape change with size.</p>
+
+  <!-- 2.3 -->
+  <h2 id="s2-3"><span class="num">2.3</span>Volume equations</h2>
+  <p class="lead">A volume equation predicts the volume of a standing tree from its DBH and height. It is fitted with scaled trees and then applied to the whole inventory.</p>
+  <p>The <span class="ui">Use the trees scaled above</span> button takes the DBH, height and stem volume of the trees of Section 2.2 (plus the stump if that checkbox is ticked); if there are no scaled trees, a notice asks you to scale them first. You can also load your own trees into the data card, with <span class="ui">DBH (cm)</span>*, <span class="ui">Total height (m)</span>* and <span class="ui">Volume (m³)</span>*, at least 6. Its example, <span class="ui">Pine: volumes of the 40 felled trees</span>, holds the same Smalian volumes, already computed.</p>
+  <p>The app fits four models:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Model</th><th>Equation</th></tr></thead>
+    <tbody>
+      <tr><td>Schumacher–Hall (nonlinear)</td><td><i>V</i> = <i>b</i>₀·<i>D</i><sup><i>b</i>₁</sup>·<i>H</i><sup><i>b</i>₂</sup>, by nonlinear least squares (Levenberg–Marquardt)</td></tr>
+      <tr><td>Schumacher–Hall (logarithmic)</td><td>ln <i>V</i> = <i>b</i>₀ + <i>b</i>₁ ln <i>D</i> + <i>b</i>₂ ln <i>H</i></td></tr>
+      <tr><td>Spurr's combined variable</td><td><i>V</i> = <i>b</i>₀ + <i>b</i>₁·<i>D</i>²<i>H</i></td></tr>
+      <tr><td>Spurr logarithmic</td><td>ln <i>V</i> = <i>b</i>₀ + <i>b</i>₁ ln(<i>D</i>²<i>H</i>)</td></tr>
+    </tbody>
+  </table>
+  <p>The logarithmic forms are brought back to the volume scale by multiplying by Meyer’s factor, exp(σ²/2), which corrects the bias of undoing the logarithm. The table <span class="ui">Comparison of models (volume scale)</span> gives for each model <i>n</i>, R², RMSE in m³ and as a percentage of the mean volume, the bias and <b>Furnival’s index</b>, and highlights the model with the smallest index. Below it, <span class="ui">Show the model</span> chooses which one is shown in detail (by default, the highlighted one): its coefficient table with standard error, <i>t</i> and <i>p</i>, Meyer’s factor if it is logarithmic, and two figures, <span class="ui">Observed against predicted</span> and <span class="ui">Residuals</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-volumen.png" alt="The comparison of the four volume models, the coefficients of Spurr logarithmic and its figures of observed against predicted and residuals"></div>
+    <figcaption><b>Figure 2.5.</b> The four models fitted to the 40 felled pines. Spurr logarithmic wins, with I = 0.09031, closely followed by Schumacher–Hall logarithmic (0.09141); its coefficients are <i>b</i>₀ = −10.335 and <i>b</i>₁ = 1.0058, with a Meyer factor of 1.00816. The residuals fan out as the volume grows.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · why Furnival’s index</div>
+    <p>R² and RMSE cannot compare a model fitted in volume with one fitted in logarithms: they measure errors on different scales. Furnival (1961) brought them all to the same scale: for the models in volume, the index is the residual standard error σ̂; for the logarithmic ones, σ̂ multiplied by the geometric mean of the volumes, exp(mean of ln <i>V</i>). The smallest index is the best. When the spread grows with tree size —the usual case—, the logarithmic models, which spread the error in proportion to volume, tend to have the smallest index even if their R² on the volume scale is a little lower, as here (0.9469 against 0.9500 for the nonlinear one).</p>
+  </div>
+  <p>The interpretation says it with the numbers of the example: “The model with the smallest Furnival index is <b>Spurr logarithmic</b> (I = 0.09031; R² = 0.9469; RMSE = 17.4 % of the mean volume). The spread of the residuals grows with tree size (heteroscedasticity); the logarithmic forms stabilize it, which is why they usually win.” The second sentence appears only when the spread of the larger half of the trees is more than 1.8 times that of the smaller half.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The winning equation goes to Block 3</div>
+    <p>The model with the smallest Furnival index becomes available in <span class="ruta">Block 3<span class="sep">›</span>Expansion to the hectare</span> as <span class="ui">Equation fitted in Block 2</span>. It is the winner that goes, not the one you are viewing in <span class="ui">Show the model</span>.</p>
+  </div>
+
+  <!-- 2.4 -->
+  <h2 id="s2-4"><span class="num">2.4</span>Taper</h2>
+  <p class="lead">A taper function describes the diameter of the stem at any height. With it you compute how far the merchantable diameter goes and how many logs of a given length come out of a standing tree, with the volume of each.</p>
+  <p>The <span class="ui">Fit with the sections loaded above</span> button fits two models to the relative profile —the diameter over DBH, <i>d</i>/<i>D</i>, against the height over total height, <i>z</i> = <i>h</i>/<i>H</i>— of all the sections of Section 2.2; if no sections are loaded, it first loads those of the pine example.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Model</th><th>Form</th></tr></thead>
+    <tbody>
+      <tr><td>Kozak, Munro and Smith (1969)</td><td>(<i>d</i>/<i>D</i>)² = <i>b</i>₁(<i>z</i> − 1) + <i>b</i>₂(<i>z</i>² − 1): a single parabola, by least squares through the origin</td></tr>
+      <tr><td>Max and Burkhart (1976)</td><td>three segments —neiloid butt, paraboloid middle and cone top— joined at the points <i>a</i>₂ and <i>a</i>₁: (<i>d</i>/<i>D</i>)² = <i>b</i>₁(<i>z</i> − 1) + <i>b</i>₂(<i>z</i>² − 1) + <i>b</i>₃(<i>a</i>₁ − <i>z</i>)²<i>I</i>₁ + <i>b</i>₄(<i>a</i>₂ − <i>z</i>)²<i>I</i>₂, with <i>I</i><sub>i</sub> = 1 if <i>z</i> ≤ <i>a</i><sub>i</sub>; by nonlinear least squares from several starts</td></tr>
+    </tbody>
+  </table>
+  <p>The table <span class="ui">Comparison (on diameter)</span> gives, for each model, the sections used, R² and RMSE of the diameter, the bias and the AIC; the coefficient table of each follows, and the figure <span class="ui">Relative stem profile</span>, with all the sections as gray points and the two curves.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-ahusamiento.png" alt="The comparison of the two taper models and the relative stem profile with the sections and the two curves"></div>
+    <figcaption><b>Figure 2.6.</b> The taper of the example pines (without the coefficient tables, which in the app sit between the comparison and the figure). Max and Burkhart wins on every count: an RMSE of 1.82 cm against 1.99 cm and an AIC of −1,147.3 against −1,032.9. At the butt, its curve follows the swelling of the stump that Kozak’s parabola does not reach.</figcaption>
+  </figure>
+  <p>The coefficients of the example are <i>b</i>₁ = −1.8810 and <i>b</i>₂ = 0.73497 for Kozak, and <i>b</i>₁ = −2.8202, <i>b</i>₂ = 1.2679, <i>b</i>₃ = −1.0119, <i>b</i>₄ = 32.658, <i>a</i>₁ = 0.71088 and <i>a</i>₂ = 0.082897 for Max and Burkhart: the paraboloid starts turning into a cone at about 71% of the height and the neiloid of the butt takes up the lowest 8%. In Max and Burkhart, <i>b</i>₁, <i>b</i>₂ and <i>b</i>₃ have large standard errors (<i>p</i> values of 0.015, 0.054 and 0.099): that is normal in a segmented model, whose coefficients offset one another; what matters is the profile they draw together.</p>
+
+  <h3>The logs of a tree</h3>
+  <p>With the profile fitted, the fields <span class="ui">DBH of the tree (cm)</span>, <span class="ui">Total height (m)</span>, <span class="ui">Top diameter (cm)</span>, <span class="ui">Log length (m)</span>, <span class="ui">Stump height (m)</span> and <span class="ui">Model</span> (Max–Burkhart or Kozak 1969) describe a standing tree and how it will be bucked. The app gives the total stem volume, the height at which the diameter drops to the minimum top diameter and the whole logs that fit from the stump up to that height, with their merchantable volume; the table <span class="ui">Logs of the tree</span> gives for each log where it starts and ends, its large-end and small-end diameters and its volume, and the figure <span class="ui">The stem and its logs</span> draws the stem to scale with a dashed cut per log and, in gold, the height to the minimum diameter.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-trozas.png" alt="The controls of the tree to buck, the tiles, the table of seven logs and the drawing of the stem with its cuts"></div>
+    <figcaption><b>Figure 2.7.</b> A pine of 35 cm and 24 m (the default values) with the Max and Burkhart model: 1.0387 m³ in the stem, the diameter reaches 10 cm at 20.03 m and 7 logs of 2.5 m come out with 0.9529 m³ merchantable. The first, from 0.30 to 2.80 m, goes from 38.1 to 32.9 cm and holds 0.2380 m³.</figcaption>
+  </figure>
+  <p>Look at the <span class="ui">From (m)</span> column: each log starts 5 cm after the previous one ended (2.80 → 2.85 m). The app leaves that trim allowance between logs; there is no field to change it. That is why, in the example, an eighth log no longer fits: it would start at 18.15 m and end at 20.65 m, above the 20.03 m of the minimum diameter. The volume between two heights is integrated numerically over the profile (Simpson’s rule, 400 intervals), and the height to the minimum diameter is solved by Brent’s method. Changing any of these fields recalculates when you leave the control.</p>
+
+  <!-- 2.5 -->
+  <h2 id="s2-5"><span class="num">2.5</span>Height–diameter relationship</h2>
+  <p class="lead">Measuring the height of every tree is costly; measuring the diameter, cheap. The usual practice is to measure the height of some of the trees, fit a height–diameter curve and estimate the height of the rest with it.</p>
+  <p>The data card takes <span class="ui">Tree</span>, <span class="ui">Species</span>, <span class="ui">DBH (cm)</span>* and <span class="ui">Total height (m) — empty if missing</span>, with at least 6 trees with a measured height (above 1.3 m). Its examples are <span class="ui">Pine: plot with missing heights</span> (85 trees; 28 lack their height) and <span class="ui">Cloud forest: Liquidambar</span> (the trees of a single species, for a curve of its own); <span class="ui">Use the loaded inventory</span> takes the trees of Block 3. Below the card, <span class="ui">Species</span> fits the curve with all the trees (<span class="ui">All</span>) or with a single species, and <span class="ui">Curve to estimate with</span> chooses which curve estimates the missing heights: <span class="ui">Lowest AIC</span>, the default option, or a specific one.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b2-altura.png" alt="The comparison of the three height curves and the figure with the measured trees, the curves and the estimated heights"></div>
+    <figcaption><b>Figure 2.8.</b> The pine plot with missing heights. With 57 measured trees, Weibull has the lowest AIC (210.2), very close to Chapman–Richards (210.7) and Näslund (211.7), and an RMSE of 1.43 m; it was used to estimate the 28 missing heights. Its coefficients, in a table the capture leaves out, are <i>a</i> = 26.971, <i>b</i> = 0.016834 and <i>c</i> = 1.3559; its asymptote, 1.3 + <i>a</i> = 28.3 m, is the largest height it predicts.</figcaption>
+  </figure>
+  <p>The three curves pass through <i>H</i> = 1.3 m as the diameter tends to zero:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Curve</th><th>Equation</th></tr></thead>
+    <tbody>
+      <tr><td>Näslund</td><td><i>H</i> = 1.3 + <i>D</i>²/(<i>a</i> + <i>bD</i>)²</td></tr>
+      <tr><td>Chapman–Richards</td><td><i>H</i> = 1.3 + <i>a</i>(1 − e<sup>−<i>bD</i></sup>)<sup><i>c</i></sup></td></tr>
+      <tr><td>Weibull</td><td><i>H</i> = 1.3 + <i>a</i>(1 − e<sup>−<i>bD</i><sup><i>c</i></sup></sup>)</td></tr>
+    </tbody>
+  </table>
+  <p>They are fitted by nonlinear least squares; Näslund starts from its linearized form, <i>D</i>/√(<i>H</i> − 1.3) = <i>a</i> + <i>bD</i>. The table <span class="ui">Comparison of curves</span> gives <i>n</i>, RMSE, R², bias, AIC and BIC, and highlights the curve used for estimating; its coefficients follow, and the figure <span class="ui">Height–diameter curves</span>, with the measured trees in gray, the three curves (the chosen one with a thick solid line) and the estimated heights as orange points on it.</p>
+
+  <p>The table <span class="ui">Estimated heights</span> gives the height of each tree that lacked one (tree 3, with 34.1 cm, 24.7 m), and the <span class="ui">⤓ Full table with filled heights (CSV)</span> button downloads the 85 trees with their measured or estimated height and a column <code>altura_estimada</code> that is 1 for the estimated ones. The interpretation ends with a warning worth taking seriously: “Outside the range of measured diameters (6.0–47.1 cm) the curves may part ways: do not extrapolate far from it.” You can see it in the figure: above 45 cm, Näslund already moves away from the other two.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>One curve per species, when possible</div>
+    <p>In a mixed stand, a single curve for all species averages very different ways of growing. If a species has enough measured trees, choose it in <span class="ui">Species</span> for a curve of its own. Block 3 also estimates the missing heights (checkbox <span class="ui">Estimate the missing heights (Näslund)</span>), but with a single Näslund curve for the whole inventory.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>If</b> the slenderness of a tree exceeds 80</td><td><b>then</b> it is thin for its height and, according to the app, unstable in wind.</td></tr>
+      <tr><td><b>If</b> you have no scaled trees of your species</td><td><b>then</b> use a form factor from the literature with caution; if you have them, the mean of Section 2.2 or, better, a volume equation.</td></tr>
+      <tr><td><b>If</b> you compare volume equations with and without logarithms</td><td><b>then</b> decide by Furnival’s index, not by R²; the smallest is the best.</td></tr>
+      <tr><td><b>If</b> two curves differ by less than 2 AIC units</td><td><b>then</b> they are practically equivalent within the data; choose the simpler one or the one that behaves better at the extremes.</td></tr>
+      <tr><td><b>If</b> the coefficients of Max and Burkhart have large standard errors</td><td><b>then</b> that is not a bad fit in itself: look at the RMSE, the AIC and the drawn profile.</td></tr>
+      <tr><td><b>If</b> you are going to estimate heights or volumes outside the diameter range the curve was fitted with</td><td><b>then</b> do not go far from it: the curves extrapolate differently.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">These are guides for interpretation, not laws: what you know about the species and the site comes first.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>“No tree has at least two sections.”</b> Scaling needs two or more sections per tree; check that the <span class="ui">Tree</span> column is matched correctly and that each tree does not have a different identifier on every row. <b>“First scale trees in the previous section (or load the pine example).”</b> <span class="ui">Use the trees scaled above</span> needs the table of sections loaded in Section 2.2. <b>“At least 6 trees…”</b> The volume equations and the height curves need six complete trees; in the height curve only those above 1.3 m count. <b>“No model converged.” or “No curve converged.”</b> It usually happens with very few trees or with mixed-up units: DBH in meters or height in centimeters. <b>Volumes ten thousand times too small or too large.</b> DBH goes in centimeters and heights and length in meters; basal area comes out in m².</p>
+  </div>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Methods and sources</div>
+    <p>Each card cites its sources in its <span class="ui">Method and sources</span> box: Husch, Beers and Kershaw (2003) and Avery and Burkhart (2002) for the tree measurements; Smalian (1837) for scaling; Schumacher and Hall (1933), Spurr (1952), Meyer (1941), Furnival (1961) and Marquardt (1963) for the volume equations; Kozak, Munro and Smith (1969) and Max and Burkhart (1976) for taper; Näslund (1937), Richards (1959), Yang, Kozak and Smith (1978) and Mehtätalo, de-Miguel and Gregoire (2015) for the height curves. The full references are in Appendix F.</p>
+  </div>
+</section>
+
+</body>
+</html>

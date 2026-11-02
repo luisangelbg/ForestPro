@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-1" data-pestana="1" data-orden="1" style="--acento: var(--b1)">
+  <div class="cap-apertura">
+    <div class="cap-num">1</div>
+    <div class="cap-etiqueta">Chapter one · Block 1</div>
+    <h1 data-corto="Home">Home: the workflow, the modules and the examples</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Block 1 is the home page of the app. It computes nothing: it says what ForestPro does and what it does not, sums up the order of a forestry job in six steps, introduces the nine modules that follow, opens the four example datasets in the block where they belong and gives the citation of the program. It is the place to come back to when you start something new or need to recall where everything is.</p>
+    <div class="cap-franja"><span class="k1"></span><span class="k1"></span><span class="k3"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>1.1</b>The home page and its buttons</li>
+      <li><b>1.2</b>How it works: the six steps</li>
+      <li><b>1.3</b>The nine modules</li>
+      <li><b>1.4</b>Example data</li>
+      <li><b>1.5</b>What it does and what it does not</li>
+      <li><b>1.6</b>How to cite, the tests and the validation</li>
+    </ul>
+  </div>
+
+  <!-- 1.1 -->
+  <h2 id="s1-1"><span class="num">1.1</span>The home page and its buttons</h2>
+  <p class="lead">When you open <code>index.html</code>, the app starts in Block 1. Unlike the other blocks, it has no numbered title and no cards: it is a presentation page that you read from top to bottom, and the <span class="ui">In this block</span> list on the right takes you to each of its sections.</p>
+  <p>At the top is the <b>hero</b>, a dark panel with the motto <span class="ui">From the measured tree to the tonne of carbon</span>, a line with the four subjects of the app (<span class="ui">Forest inventory · mensuration · biomass and carbon · agroforestry</span>) and a paragraph that sums up what it does. On the right is an original drawing: the end of a log with its growth rings, labeled <span class="ui">DBH 38.4 cm · 43 rings · 1.30 m</span>, whose outer rings leave the trunk and become the contour lines of a map with inventory plots. The caption of the drawing says it in one line: <span class="ui">The rings of a trunk and the contour lines of the stand: what ForestPro measures.</span></p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/b1-heroe.png" alt="The hero of the home page with the motto, the three buttons, the four badges and the end of a log whose rings become contour lines">
+      <span class="marca" style="left:4.2%;top:67.3%">1</span>
+      <span class="marca" style="left:4.2%;top:74.8%">2</span>
+      <span class="marca" style="left:42.6%;top:74.8%">3</span>
+      <span class="marca" style="left:4.2%;top:82.5%">4</span>
+      <span class="marca" style="left:54.9%;top:34.9%">5</span>
+    </div>
+    <figcaption><b>Figure 1.1.</b> The hero of the home page. The numbers refer to the list below.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Start with an example →</b> Opens Block 3 and loads the coffee farm example into it, trees and plots: the quickest way to see the app with data.</li>
+    <li><span class="n">2</span><b>See the modules.</b> Scrolls down to <span class="ui">The nine modules</span>, on the same page.</li>
+    <li><span class="n">3</span><b>How to cite.</b> Scrolls down to the <span class="ui">How to cite</span> section, at the end of the page.</li>
+    <li><span class="n">4</span><b>The four badges.</b> <span class="ui">Runs entirely in your browser</span>, <span class="ui">Checked against reference implementations in R</span>, <span class="ui">Every method with its source</span> and <span class="ui">Spanish and English</span>.</li>
+    <li><span class="n">5</span><b>The end of the log.</b> A drawing, not a result: it does not respond to the data you load.</li>
+  </ul>
+
+  <p>The <span class="ui">Start with an example →</span> button does the same as the <span class="ui">Open in Inventory</span> button on the coffee farm card in <span class="ui">Example data</span> (Section 1.4). The other two only scroll the page; if you asked your system settings to reduce motion, the jump is immediate instead of smooth.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The home page is never cleared</div>
+    <p>Loading an example or your own data changes nothing in Block 1; the check mark in the block bar, on the other hand, marks the blocks that already have a result. The <span class="ui">ForestPro</span> name in the top bar always brings you back here.</p>
+  </div>
+
+  <!-- 1.2 -->
+  <h2 id="s1-2"><span class="num">1.2</span>How it works: the six steps</h2>
+  <p>The first section below the hero sums up the order of a forestry job in six boxes, each with its step number, its name and what goes into it. The subtitle explains it: <span class="ui">The order is that of a forestry job: measure the trees, sample the stand, expand to the hectare, convert into biomass and carbon, project and report.</span> Figure I.7 of the introduction shows this section.</p>
+  <table class="compacta">
+    <caption><b>Table 1.1.</b> The six steps of <span class="ui">How it works</span> and the blocks that carry them out</caption>
+    <thead><tr><th style="width:0.7in">Step</th><th style="width:1.9in">What the app says</th><th>Where it is done</th></tr></thead>
+    <tbody>
+      <tr><td><b>Measure</b></td><td><span class="ui">DBH, heights, sections</span></td><td><span class="chip k2">2</span> Tree mensuration; <span class="chip k9">9</span> log scaling</td></tr>
+      <tr><td><b>Sample</b></td><td><span class="ui">design and sample size</span></td><td><span class="chip k3">3</span> the inventory, the sample size; <span class="chip k8">8</span> the sampling grid</td></tr>
+      <tr><td><b>Expand</b></td><td><span class="ui">to the hectare and the stand</span></td><td><span class="chip k3">3</span> the expansion, the estimate with its error and the stand structure</td></tr>
+      <tr><td><b>Convert</b></td><td><span class="ui">biomass, carbon, CO₂e</span></td><td><span class="chip k4">4</span> Biomass and carbon; <span class="chip k7">7</span> the carbon of an agroforestry system</td></tr>
+      <tr><td><b>Project</b></td><td><span class="ui">growth and site index</span></td><td><span class="chip k5">5</span> Growth and yield</td></tr>
+      <tr><td><b>Report</b></td><td><span class="ui">report, tables and maps</span></td><td><span class="chip k10">10</span> Report and project; <span class="chip k8">8</span> the maps</td></tr>
+    </tbody>
+  </table>
+  <p>The second half of the subtitle matters just as much: <span class="ui">The modules also work on their own: each one takes its own table.</span> Nothing forces you to go through Block 3 to scale logs in Block 9 or to fit a growth curve in Block 5. The order helps you not to forget steps; it does not impose them. Section I.8 of the introduction walks through it in more detail.</p>
+
+  <!-- 1.3 -->
+  <h2 id="s1-3"><span class="num">1.3</span>The nine modules</h2>
+  <p>The section <span class="ui">The nine modules</span> has one card for each block from 2 to 10, with a vignette drawn for that block, its number, its name and the same line that the app shows below the title of the block. Clicking anywhere on the card opens the block. As its subtitle says, <span class="ui">A module is a block of the bar and a chapter of the manual.</span> The card of Block 2 corresponds to Chapter 2 of this manual, that of Block 3 to Chapter 3, and so on up to 10.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b1-modulos.png" alt="The nine module cards, from Block 2 Tree mensuration to Block 10 Report and project, each with its vignette"></div>
+    <figcaption><b>Figure 1.2.</b> <span class="ui">The nine modules</span>. Each vignette sums up its block: the tree with its height and its DBH next to a height curve (2), the plots and a diameter distribution (3), the tree with its root and the bars of AGB, BGB and CO₂e (4), a family of growth curves (5), a community of species and a dendrogram (6), a shaded coffee farm (7), the contour lines with a property and its points (8), a log with the conversion between cubic meters and board feet, labeled “m³ ↔ pt” even in English (9) and a report (10).</figcaption>
+  </figure>
+  <p>The vignettes are also original drawings made by code, like the end of the log in the hero, and they follow the language of the interface. The short names of the cards are the same as in the block bar (<span class="ui">Inventory and sampling</span>, <span class="ui">Maps</span>, …); the full title of each block is the one its chapter carries in this manual (<span class="ui">Forest inventory and sampling</span>, <span class="ui">Maps and light geoprocessing</span>, …).</p>
+
+  <!-- 1.4 -->
+  <h2 id="s1-4"><span class="num">1.4</span>Example data</h2>
+  <p>The <span class="ui">Example data</span> section has four cards, one per dataset, with its name, a line of figures, a description and one <span class="ui">Open in …</span> button for each block where it is used (Figure I.6 of the introduction). Its subtitle warns that they are <span class="ui">simulated</span>, with realistic orders of magnitude, that they are not measurements of a real site and that the script that generates them is in <code>data/generar_datos.R</code>.</p>
+  <table class="compacta">
+    <caption><b>Table 1.2.</b> The buttons of <span class="ui">Example data</span> and what they load</caption>
+    <thead><tr><th style="width:1.45in">Card</th><th style="width:1.75in">Button</th><th>What it opens and loads</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><b>Shaded coffee farm</b><br><span class="small">25 plots · 1,000 m² · coffee and shade trees</span></td><td><span class="ui">Open in Inventory</span></td><td>Block 3 with the 719 shade trees and the 25 plots (Chapter 3)</td></tr>
+      <tr><td><span class="ui">Open in Biomass</span></td><td>Block 4 with the coffee farm; it also loads its inventory into Block 3</td></tr>
+      <tr><td><span class="ui">Open in Agroforestry</span></td><td>Block 7: it loads the coffee farm inventory into Block 3 and fills in the shade, the example photo, the yield and the carbon budget</td></tr>
+      <tr><td rowspan="3"><b>Stratified cloud forest</b><br><span class="small">3 strata · 24 plots · 50 × 50 m mapped plot</span></td><td><span class="ui">Open in Inventory</span></td><td>Block 3 with the 1,830 trees and the 24 nested plots (Chapter 3)</td></tr>
+      <tr><td><span class="ui">Open in Diversity</span></td><td>Block 6 with the community and the 50 × 50 m mapped plot</td></tr>
+      <tr><td><span class="ui">Open in Maps</span></td><td>Block 8 with the plots of the cloud forest (also loaded into Block 3) and the 9-vertex property</td></tr>
+      <tr><td rowspan="3"><b>Pine plantation</b><br><span class="small">30 permanent plots · 6 remeasurements · felled trees</span></td><td><span class="ui">Open in Mensuration</span></td><td>Block 2 with the 536 sections of the 40 felled trees (Chapter 2)</td></tr>
+      <tr><td><span class="ui">Open in Growth</span></td><td>Block 5 with the stem analysis and the remeasurements</td></tr>
+      <tr><td><span class="ui">Open in Utilities</span></td><td>Block 9 with the 12 pine logs, the 25-year plantation and the sawmill yield</td></tr>
+      <tr><td><b>Densities and equations</b><br><span class="small">basic wood density · allometric catalog</span></td><td><span class="ui">Open in Biomass</span></td><td>Block 4, scrolled to the density table; it loads nothing new, because the table and the catalog already come with the block</td></tr>
+    </tbody>
+  </table>
+  <p>Each button does two things: it opens the block and loads the example into its data cards, replacing whatever was there. Each data card also has its own list of examples, so you can load, for instance, the cloud forest trees into <span class="ruta">Block 2<span class="sep">›</span>Standing trees</span> even though the home page has no button for that. The datasets, what they contain and what each is for are described in Section I.7.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The examples replace what you have</div>
+    <p>Opening an example replaces the data of the cards it fills. If you have already loaded your own inventory, save the project first (<span class="ruta">Block 10<span class="sep">›</span>Project</span>) so you can come back to it.</p>
+  </div>
+
+  <!-- 1.5 -->
+  <h2 id="s1-5"><span class="num">1.5</span>What it does and what it does not</h2>
+  <p>Four boxes say up front what you can expect from the program. The first is a promise; the other three, limits.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b1-limites.png" alt="The four boxes of What it does and what it does not"></div>
+    <figcaption><b>Figure 1.3.</b> <span class="ui">What it does and what it does not</span>, on the home page.</figcaption>
+  </figure>
+  <ul>
+    <li><b><span class="ui">It computes with your data, on your computer</span>.</b> Nothing is sent to any server. The only exception is voluntary: the online map background of Block 8, off by default, which when switched on requests only the map tiles.</li>
+    <li><b><span class="ui">It does not replace the local equation</span>.</b> The biomass equations of the Block 4 catalog are references; if there is one for your species and region, add it and use it.</li>
+    <li><b><span class="ui">It is not a geographic information system</span>.</b> Block 8 computes areas, grids and interpolations and exports GPX, KML and GeoJSON; full spatial analysis is done with a mapping program.</li>
+    <li><b><span class="ui">It does not certify carbon</span>.</b> The carbon figures with their uncertainty serve studies and management plans; a carbon-market project also follows the rules of its standard.</li>
+  </ul>
+  <p>Section I.10 of the introduction adds two limits that are not on the home page: the program does not plan the sampling for you and does not work with tree-level models or remote sensing.</p>
+
+  <!-- 1.6 -->
+  <h2 id="s1-6"><span class="num">1.6</span>How to cite, the tests and the validation</h2>
+  <p>The last section gives the citation of the program in two formats, one below the other: the APA-style reference and the BibTeX entry (with the key <code>BarreraGuzman2026ForestPro</code>, version <code>1.0.0</code> and the license <code>GPL-3.0-or-later</code>). The <span class="ui">Copy APA</span> and <span class="ui">Copy BibTeX</span> buttons copy it to the clipboard, and a brief notice confirms <span class="ui">Copied</span>. The text above it recalls what must also be cited: <span class="ui">the equations and methods you used, which every result names</span>, in its <span class="ui">Method and sources</span> box.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b1-citar.png" alt="The How to cite section with the APA reference, the BibTeX entry and the buttons to copy them"></div>
+    <figcaption><b>Figure 1.4.</b> <span class="ui">How to cite</span>, at the end of the home page: the APA reference, the BibTeX entry and the two buttons to copy them.</figcaption>
+  </figure>
+  <p>The same citation is in <span class="ruta">Block 10<span class="sep">›</span>How to cite</span>, which also downloads the file <code>forestpro.bib</code>, and at the end of every report. The address it carries, <code>https://github.com/luisangelbg/ForestPro</code>, is that of the public repository of the program; this manual reproduces it as the app gives it.</p>
+
+  <h3>The footer of the home page</h3>
+  <p>Below the citation there are three links, which open in a new tab:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Link</th><th>What it opens</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">User's manual (in Spanish)</span></td><td>The Spanish edition of this manual, in <code>manual/es/manual-completo.html</code>. In the Spanish interface the link reads <span class="ui">Manual de usuario (en español)</span></td></tr>
+      <tr><td><span class="ui">Tests</span></td><td><code>tests/run.html</code>, which runs the 72 automatic tests of the app in the browser: textbook values, closed forms and edge cases. All of them should come out green</td></tr>
+      <tr><td><span class="ui">Validation against R</span></td><td><code>tests/VALIDACION.md</code>, the summary of the 8,327 comparisons of Blocks 2 to 9 against independent reference implementations, with no disagreements (Section I.9)</td></tr>
+    </tbody>
+  </table>
+  <p>A last line says that ForestPro is free software (GPL-3.0) of the suite and that it is built with its own code, with no third-party libraries.</p>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Where to start</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>If</b> it is the first time you open the app</td><td><b>then</b> press <span class="ui">Start with an example →</span> and go through Chapter 3 with the coffee farm example.</td></tr>
+      <tr><td><b>If</b> you have a plot inventory</td><td><b>then</b> go straight to Block 3, load your trees and plots and continue with Block 4 if you want the carbon.</td></tr>
+      <tr><td><b>If</b> you only have felled trees, logs or a plantation to appraise</td><td><b>then</b> Blocks 2 and 9 work on their own, with their own table.</td></tr>
+      <tr><td><b>If</b> you are going to publish the results</td><td><b>then</b> copy the citation from here or from Block 10 and also cite the methods of each result.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">These are guides to find your way, not a compulsory order.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>An <span class="ui">Open in …</span> button takes me to the block, but I see no data.</b> The example is loaded into the data cards of that block, which may be further down; use the <span class="ui">In this block</span> list or <code>Ctrl + K</code>. <b>The copy buttons do nothing.</b> Some browsers do not allow the clipboard on pages opened as a local file; select the text of the citation and copy it by hand, or open the app with <code>Open ForestPro.bat</code> (Section I.5). <b>The link to the tests or the validation does not open.</b> Those files are in the <code>tests/</code> folder of the program; if you copied only <code>index.html</code> and the <code>js</code> and <code>css</code> folders, they are missing.</p>
+  </div>
+</section>
+
+</body>
+</html>

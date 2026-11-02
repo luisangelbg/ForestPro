@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Introducción</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.reducida { width: 80%; margin-left: auto; margin-right: auto; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================== CRÉDITOS -->
+<section class="preliminares creditos" id="creditos">
+  <div class="cred-titulo">ForestPro</div>
+  <div class="cred-sub">Manual de usuario · Del árbol medido a la tonelada de carbono</div>
+
+  <dl>
+    <dt>Autor</dt><dd><b>Luis Ángel Barrera-Guzmán</b><br><span class="small">ORCID 0000-0001-8057-2583</span></dd>
+    <dt>Programa</dt><dd>ForestPro, versión 1.0.0 (octubre de 2026)</dd>
+    <dt>Manual</dt><dd>Primera edición en español, 2026. Describe la versión 1.0 del programa.</dd>
+    <dt>Licencia del programa</dt><dd>Licencia Pública General de GNU, versión 3 o posterior (GPL-3.0-or-later).</dd>
+    <dt>Derechos del manual</dt><dd>© 2026 Luis Ángel Barrera-Guzmán. Todos los derechos reservados.</dd>
+    <dt>Idioma de la interfaz</dt><dd>Español o inglés, con el selector <span class="ui">ES</span> · <span class="ui">EN</span> de la barra superior. En este manual los nombres de botones, campos y menús se escriben como aparecen en pantalla en español, por ejemplo <span class="ui">Empezar con un ejemplo →</span>.</dd>
+  </dl>
+
+  <h4>Cómo citar el programa</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry</i> (Version 1.0.0) [Computer software]. https://github.com/luisangelbg/ForestPro</div>
+  <h4>Cómo citar este manual</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>ForestPro. Manual de usuario</i> (1.ª ed.). Distribuido con ForestPro, versión 1.0.0.</div>
+  <p class="small">La cita del programa es la que da la propia app, lista para copiarse en APA o en BibTeX, en la sección <span class="ui">Cómo citar</span> de la portada y del Bloque 10; todos los informes terminan con ella. Además de la app, cita las ecuaciones y los métodos que usaste: cada resultado dice cuáles son en su recuadro <span class="ui">Método y fuentes</span>.</p>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Privacidad</div>
+    <p>ForestPro funciona por completo dentro de tu navegador. Los inventarios, las parcelas, las fotografías del dosel y los proyectos que abres se leen en tu computadora y <b>nunca se envían a ningún servidor</b>: puedes trabajar con el inventario de un predio, de un proyecto de carbono o de una tesis en curso sin que nada salga de tu equipo. El programa no usa cuentas y no necesita conexión para calcular. La única petición a internet es voluntaria: el fondo de mapa en línea del Bloque 8, que viene apagado; si lo enciendes, el navegador pide sólo las imágenes del mapa del área visible, nunca tus datos.</p>
+  </div>
+
+  <p class="small" style="margin-top:0.35in;color:var(--gris)">Las ilustraciones, los diagramas y las capturas de pantalla de este manual son originales: se generaron con el propio programa o con código escrito para el manual. Los conjuntos de ejemplo que se usan en las capturas son <b>simulados</b>, salvo la tabla de densidades de la madera: los nombres de las especies son reales, pero los árboles, las parcelas y los predios no existen ni son mediciones de ningún sitio ni de ninguna publicación.</p>
+</section>
+
+<!-- ====================================================================== ÍNDICE -->
+<!-- Índice general: un renglón por capítulo (su h1) y, debajo, sus secciones (los h2).
+     Los títulos y los id (cap-N, sN-M, ap-x) son la propuesta para los capítulos; quien escriba un capítulo
+     ajusta aquí sus renglones si cambia un título o el número de secciones. Los números de página los pone
+     paginar.js al unir el manual. -->
+<section class="preliminares indice" id="indice" data-nueva-hoja>
+  <h1>Índice</h1>
+  <div class="indice-sub">Contenido general del manual</div>
+
+  <ol class="toc">
+    <li><div class="toc-cap"><span class="chip k0">P</span><a href="#como-leer">Cómo leer este manual</a><a class="pag" href="#como-leer"></a></div></li>
+    <li>
+      <div class="toc-cap"><span class="chip k0">In</span><a href="#cap-intro">Introducción a ForestPro</a><a class="pag" href="#cap-intro"></a></div>
+      <ul>
+        <li><span class="n">I.1</span><a href="#si-1"><span class="t">¿Qué es ForestPro?</span></a></li>
+        <li><span class="n">I.2</span><a href="#si-2"><span class="t">Preguntas que responde</span></a></li>
+        <li><span class="n">I.3</span><a href="#si-3"><span class="t">Seis ideas que sostienen el manual</span></a></li>
+        <li><span class="n">I.4</span><a href="#si-4"><span class="t">Datos que acepta y qué entrega</span></a></li>
+        <li><span class="n">I.5</span><a href="#si-5"><span class="t">Qué necesitas y cómo abrirlo</span></a></li>
+        <li><span class="n">I.6</span><a href="#si-6"><span class="t">Recorrido por la interfaz</span></a></li>
+        <li><span class="n">I.7</span><a href="#si-7"><span class="t">Los cuatro conjuntos de ejemplo</span></a></li>
+        <li><span class="n">I.8</span><a href="#si-8"><span class="t">Cómo se recorre un trabajo forestal</span></a></li>
+        <li><span class="n">I.9</span><a href="#si-9"><span class="t">Cómo se comprobó</span></a></li>
+        <li><span class="n">I.10</span><a href="#si-10"><span class="t">Lo que el programa no hace</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k1">1</span><a href="#cap-1">Inicio: el flujo, los módulos y los ejemplos</a><a class="pag" href="#cap-1"></a></div>
+      <ul>
+        <li><span class="n">1.1</span><a href="#s1-1"><span class="t">La portada y sus botones</span></a></li>
+        <li><span class="n">1.2</span><a href="#s1-2"><span class="t">Cómo funciona: los seis pasos</span></a></li>
+        <li><span class="n">1.3</span><a href="#s1-3"><span class="t">Los nueve módulos</span></a></li>
+        <li><span class="n">1.4</span><a href="#s1-4"><span class="t">Datos de ejemplo</span></a></li>
+        <li><span class="n">1.5</span><a href="#s1-5"><span class="t">Lo que hace y lo que no</span></a></li>
+        <li><span class="n">1.6</span><a href="#s1-6"><span class="t">Cómo citar, las pruebas y la validación</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k2">2</span><a href="#cap-2">Dasometría individual</a><a class="pag" href="#cap-2"></a></div>
+      <ul>
+        <li><span class="n">2.1</span><a href="#s2-1"><span class="t">Árboles en pie: diámetro, área basal y volumen</span></a></li>
+        <li><span class="n">2.2</span><a href="#s2-2"><span class="t">Cubicación: trozas y árboles por secciones</span></a></li>
+        <li><span class="n">2.3</span><a href="#s2-3"><span class="t">Ecuaciones de volumen</span></a></li>
+        <li><span class="n">2.4</span><a href="#s2-4"><span class="t">Ahusamiento</span></a></li>
+        <li><span class="n">2.5</span><a href="#s2-5"><span class="t">Relación altura–diámetro</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k3">3</span><a href="#cap-3">Inventario forestal y muestreo</a><a class="pag" href="#cap-3"></a></div>
+      <ul>
+        <li><span class="n">3.1</span><a href="#s3-1"><span class="t">El inventario: árboles y parcelas</span></a></li>
+        <li><span class="n">3.2</span><a href="#s3-2"><span class="t">Expansión a la hectárea</span></a></li>
+        <li><span class="n">3.3</span><a href="#s3-3"><span class="t">Estimación y error de muestreo</span></a></li>
+        <li><span class="n">3.4</span><a href="#s3-4"><span class="t">Tamaño de muestra</span></a></li>
+        <li><span class="n">3.5</span><a href="#s3-5"><span class="t">Relascopía (muestreo puntual)</span></a></li>
+        <li><span class="n">3.6</span><a href="#s3-6"><span class="t">Estructura del rodal</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k4">4</span><a href="#cap-4">Biomasa y carbono</a><a class="pag" href="#cap-4"></a></div>
+      <ul>
+        <li><span class="n">4.1</span><a href="#s4-1"><span class="t">Datos y ecuaciones</span></a></li>
+        <li><span class="n">4.2</span><a href="#s4-2"><span class="t">Densidad de la madera</span></a></li>
+        <li><span class="n">4.3</span><a href="#s4-3"><span class="t">Biomasa y carbono del inventario</span></a></li>
+        <li><span class="n">4.4</span><a href="#s4-4"><span class="t">Incertidumbre por Monte Carlo</span></a></li>
+        <li><span class="n">4.5</span><a href="#s4-5"><span class="t">Necromasa, hojarasca y suelo</span></a></li>
+        <li><span class="n">4.6</span><a href="#s4-6"><span class="t">Reservorios y cambio entre inventarios</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k5">5</span><a href="#cap-5">Crecimiento y rendimiento</a><a class="pag" href="#cap-5"></a></div>
+      <ul>
+        <li><span class="n">5.1</span><a href="#s5-1"><span class="t">Incrementos y turno biológico</span></a></li>
+        <li><span class="n">5.2</span><a href="#s5-2"><span class="t">Modelos de crecimiento</span></a></li>
+        <li><span class="n">5.3</span><a href="#s5-3"><span class="t">Índice de sitio</span></a></li>
+        <li><span class="n">5.4</span><a href="#s5-4"><span class="t">Proyección del rodal y tabla de producción</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k6">6</span><a href="#cap-6">Diversidad y ecología del bosque</a><a class="pag" href="#cap-6"></a></div>
+      <ul>
+        <li><span class="n">6.1</span><a href="#s6-1"><span class="t">La comunidad</span></a></li>
+        <li><span class="n">6.2</span><a href="#s6-2"><span class="t">Índices de diversidad</span></a></li>
+        <li><span class="n">6.3</span><a href="#s6-3"><span class="t">Números de Hill, rarefacción y acumulación</span></a></li>
+        <li><span class="n">6.4</span><a href="#s6-4"><span class="t">Similitud entre sitios y ordenación</span></a></li>
+        <li><span class="n">6.5</span><a href="#s6-5"><span class="t">Estructura vertical</span></a></li>
+        <li><span class="n">6.6</span><a href="#s6-6"><span class="t">Patrón espacial de los árboles</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k7">7</span><a href="#cap-7">Sistemas agroforestales</a><a class="pag" href="#cap-7"></a></div>
+      <ul>
+        <li><span class="n">7.1</span><a href="#s7-1"><span class="t">Sombra a partir del inventario</span></a></li>
+        <li><span class="n">7.2</span><a href="#s7-2"><span class="t">Sombra a partir de una fotografía del dosel</span></a></li>
+        <li><span class="n">7.3</span><a href="#s7-3"><span class="t">Sombra y rendimiento del cultivo</span></a></li>
+        <li><span class="n">7.4</span><a href="#s7-4"><span class="t">Diseño de plantación</span></a></li>
+        <li><span class="n">7.5</span><a href="#s7-5"><span class="t">Presupuesto de carbono del sistema</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k8">8</span><a href="#cap-8">Mapas y geoprocesamiento ligero</a><a class="pag" href="#cap-8"></a></div>
+      <ul>
+        <li><span class="n">8.1</span><a href="#s8-1"><span class="t">El mapa</span></a></li>
+        <li><span class="n">8.2</span><a href="#s8-2"><span class="t">Polígonos y áreas</span></a></li>
+        <li><span class="n">8.3</span><a href="#s8-3"><span class="t">Cuadrícula de muestreo</span></a></li>
+        <li><span class="n">8.4</span><a href="#s8-4"><span class="t">Exportar</span></a></li>
+        <li><span class="n">8.5</span><a href="#s8-5"><span class="t">Interpolación entre parcelas</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k9">9</span><a href="#cap-9">Utilidades forestales</a><a class="pag" href="#cap-9"></a></div>
+      <ul>
+        <li><span class="n">9.1</span><a href="#s9-1"><span class="t">Cubicación de trozas</span></a></li>
+        <li><span class="n">9.2</span><a href="#s9-2"><span class="t">Madera aserrada</span></a></li>
+        <li><span class="n">9.3</span><a href="#s9-3"><span class="t">Rendimiento de aserrío</span></a></li>
+        <li><span class="n">9.4</span><a href="#s9-4"><span class="t">Factor de forma</span></a></li>
+        <li><span class="n">9.5</span><a href="#s9-5"><span class="t">Conversión de unidades</span></a></li>
+        <li><span class="n">9.6</span><a href="#s9-6"><span class="t">Costo y rentabilidad de una plantación</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k10">10</span><a href="#cap-10">Informe y proyecto</a><a class="pag" href="#cap-10"></a></div>
+      <ul>
+        <li><span class="n">10.1</span><a href="#s10-1"><span class="t">Informe</span></a></li>
+        <li><span class="n">10.2</span><a href="#s10-2"><span class="t">Todas las tablas</span></a></li>
+        <li><span class="n">10.3</span><a href="#s10-3"><span class="t">Proyecto</span></a></li>
+        <li><span class="n">10.4</span><a href="#s10-4"><span class="t">Cómo citar</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip kx">A</span><a href="#apendices">Apéndices</a><a class="pag" href="#apendices"></a></div>
+      <ul>
+        <li><span class="n">A</span><a href="#ap-a"><span class="t">Los archivos que la app lee y escribe</span></a></li>
+        <li><span class="n">B</span><a href="#ap-b"><span class="t">Las reglas, reunidas</span></a></li>
+        <li><span class="n">C</span><a href="#ap-c"><span class="t">Glosario</span></a></li>
+        <li><span class="n">D</span><a href="#ap-d"><span class="t">Cuando algo no sale</span></a></li>
+        <li><span class="n">E</span><a href="#ap-e"><span class="t">La herramienta: licencia y cómo citarla</span></a></li>
+        <li><span class="n">F</span><a href="#ap-f"><span class="t">Referencias</span></a></li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- ====================================================================== CÓMO LEER ESTE MANUAL -->
+<section class="preliminares" id="como-leer" data-nueva-hoja style="--acento: var(--b0)">
+  <h2 style="margin-top:0.2in">Cómo leer este manual</h2>
+  <p class="lead">El manual sigue el mismo orden que la app: diez bloques numerados que se recorren de arriba abajo en la barra de la izquierda. Cada capítulo explica un bloque y lleva su mismo número —el capítulo 4 es el Bloque 4, y sus secciones y figuras se numeran 4.1, 4.2…—. La introducción no lleva número: sus secciones son I.1, I.2…</p>
+  <p>Cada capítulo empieza con lo que el bloque resuelve en un trabajo forestal, sigue con lo que hay en pantalla en el orden en que aparece y cierra con las reglas para leer el resultado y los errores más comunes. No hace falta leerlo de corrido: si sólo necesitas las existencias de un predio con su error de muestreo, basta el capítulo 3; si además quieres el carbono, el 4. El apéndice B reúne las reglas de todos los bloques.</p>
+
+  <h3>Un color para cada bloque</h3>
+  <p>El color del bloque aparece en la apertura de su capítulo, en el número de cada sección, en la pestaña del borde de la hoja y en el índice, y es el mismo de la franja de la portada.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.55in">Bloque</th><th style="width:1.65in">Nombre en la app</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k1">1</span></td><td><span class="ui">Inicio</span></td><td>Qué hace la app y qué no, el flujo de un trabajo forestal, los nueve módulos, los cuatro conjuntos de ejemplo y cómo citar</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">Dasometría</span></td><td>Diámetro, área basal, volumen por fórmulas y por ecuaciones ajustadas, ahusamiento y relación altura–diámetro</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td><span class="ui">Inventario y muestreo</span></td><td>Tamaño de muestra, diseños de muestreo, expansión a la hectárea, estructura del rodal e índices de densidad</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td><span class="ui">Biomasa y carbono</span></td><td>Ecuaciones alométricas, densidad de la madera, biomasa aérea y de raíces, necromasa, carbono y CO₂e con su incertidumbre</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td><span class="ui">Crecimiento y rendimiento</span></td><td>Incrementos corriente y medio, modelos de crecimiento, índice de sitio y proyección del rodal</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td><span class="ui">Diversidad y ecología</span></td><td>Riqueza, índices y números de Hill, rarefacción, similitud entre sitios, estructura vertical y patrón espacial</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><span class="ui">Sistemas agroforestales</span></td><td>Sombra de cafetales (por inventario o por fotografía hemisférica), sombra y rendimiento, arreglos de plantación y presupuesto de carbono</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td><span class="ui">Mapas</span></td><td>Parcelas y árboles en el mapa, áreas de polígonos, cuadrícula de muestreo, exportación GPX/KML/GeoJSON e interpolación</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td><span class="ui">Utilidades forestales</span></td><td>Cubicación de trozas y madera aserrada, pies tabla, factores de forma, conversiones, rendimiento de aserrío y costo de plantación</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td><span class="ui">Informe y proyecto</span></td><td>El informe HTML autocontenido, las tablas, el proyecto reimportable y la cita</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tipos de recuadros</h3>
+  <div class="dos">
+    <div class="caja nota" style="margin:0"><div class="caja-t"><span class="ico">i</span>Nota</div><p>Aclaraciones y consejos prácticos que ahorran tiempo.</p></div>
+    <div class="caja importante" style="margin:0"><div class="caja-t"><span class="ico">!</span>Importante</div><p>Lo que puede cambiar tus conclusiones si se pasa por alto.</p></div>
+    <div class="caja teoria" style="margin:0"><div class="caja-t"><span class="ico">θ</span>Teoría en breve</div><p>La idea detrás de un cálculo, sin fórmulas innecesarias.</p></div>
+    <div class="caja ejemplo" style="margin:0"><div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto</div><p>Un caso con los conjuntos de ejemplo del programa, con los números que da la app.</p></div>
+  </div>
+  <div class="caja regla" style="margin-top:0.18in">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> el resultado cae en este caso…</td><td><b>entonces</b> esta es la lectura recomendada.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Son guías para interpretar, no leyes: lo que sabes del rodal, de cómo se midió y de lo que pide tu plan de manejo o tu estándar de carbono siempre manda.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p>Lo que suele fallar al usar el bloque —una columna emparejada con la que no era, una parcela con la superficie equivocada, una ecuación usada fuera de su intervalo de diámetros— y cómo se arregla.</p>
+  </div>
+  <div class="caja dato">
+    <div class="dato-cifra">31</div>
+    <div class="dato-txt"><div class="caja-t">Dato clave</div>Una cifra o un hecho que conviene recordar; por ejemplo, el número de ecuaciones alométricas que trae el catálogo del Bloque 4.</div>
+  </div>
+
+  <h3>Convenciones de escritura</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:38%">Así se escribe</th><th>Significa</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Cargar ejemplo</span></td><td>Un botón, campo o menú de la app, con su texto tal como aparece en pantalla en español.</td></tr>
+      <tr><td><span class="ruta">Bloque 3<span class="sep">›</span>Tamaño de muestra</span></td><td>Una ruta: abre lo primero y dentro busca lo segundo.</td></tr>
+      <tr><td><code>Ctrl + K</code>, <code>.csv</code></td><td>Una tecla, un nombre de archivo o un valor que se escribe tal cual.</td></tr>
+      <tr><td>DAP, H, g, G</td><td>El diámetro normal a 1.30 m (cm), la altura total (m), el área basal de un árbol (m²) y la del rodal (m²/ha).</td></tr>
+      <tr><td>AGB, BGB, C, CO₂e</td><td>La biomasa aérea y la de raíces (en kg por árbol o en Mg/ha), el carbono y el dióxido de carbono equivalente (C × 44/12).</td></tr>
+      <tr><td>Mg/ha · 18.3 %</td><td>Los números se escriben con punto decimal y coma de miles, como los escribe la app, y con la unidad separada por un espacio; 1 Mg es una tonelada.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ====================================================================== INTRODUCCIÓN -->
+<section class="capitulo" id="cap-intro" data-pestana="In" data-orden="0" style="--acento: var(--b0)">
+  <div class="cap-apertura">
+    <div class="cap-num">I</div>
+    <div class="cap-etiqueta">Introducción</div>
+    <h1 data-corto="Introducción">Introducción a ForestPro</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Un inventario forestal empieza con la cinta diamétrica y el hipsómetro y termina en unas cifras que alguien más tiene que poder revisar: cuánta madera hay y con qué precisión, cuánta biomasa y cuánto carbono guarda el rodal, qué tan rápido crece, qué tan diverso es, dónde está cada parcela. ForestPro reúne ese trabajo en una sola página, en el orden en que se hace, y dice en cada paso de dónde sale cada número.</p>
+    <div class="cap-franja"><span class="k1"></span><span class="k2"></span><span class="k3"></span><span class="k4"></span><span class="k5"></span><span class="k6"></span><span class="k7"></span><span class="k8"></span><span class="k9"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>I.1</b>¿Qué es ForestPro?</li>
+      <li><b>I.2</b>Preguntas que responde</li>
+      <li><b>I.3</b>Seis ideas que sostienen el manual</li>
+      <li><b>I.4</b>Datos que acepta y qué entrega</li>
+      <li><b>I.5</b>Qué necesitas y cómo abrirlo</li>
+      <li><b>I.6</b>Recorrido por la interfaz</li>
+      <li><b>I.7</b>Los cuatro conjuntos de ejemplo</li>
+      <li><b>I.8</b>Cómo se recorre un trabajo forestal</li>
+      <li><b>I.9</b>Cómo se comprobó</li>
+      <li><b>I.10</b>Lo que el programa no hace</li>
+    </ul>
+  </div>
+
+  <!-- I.1 -->
+  <h2 id="si-1"><span class="num">I.1</span>¿Qué es ForestPro?</h2>
+  <p class="lead">Es un programa de inventario forestal, dasometría, biomasa, carbono y agroforestería que corre en el navegador, sin instalar nada. Lleva un trabajo forestal de la hoja de campo al informe: medir los árboles, muestrear el rodal, expandir a la hectárea, convertir en biomasa y carbono, proyectar el crecimiento y reportar.</p>
+  <p>Está pensado para quien levanta y analiza inventarios —técnicos forestales, estudiantes de tesis, responsables de planes de manejo o de proyectos de carbono— y para los cafetales y otros sistemas agroforestales, que rara vez caben en las herramientas hechas para el bosque. Cubica árboles y trozas y ajusta ecuaciones de volumen, de ahusamiento y de altura; expande el inventario con su error de muestreo en cuatro diseños; estima la biomasa y el carbono con un catálogo de 31 ecuaciones alométricas, la densidad de la madera y su incertidumbre por Monte Carlo; ajusta curvas de crecimiento y de índice de sitio y proyecta el rodal; mide la diversidad, la similitud entre sitios y el patrón espacial de los árboles; caracteriza la sombra de un cafetal contando árboles o con una fotografía del dosel; lleva las parcelas a un mapa, con cuadrículas de muestreo e interpolación; y resuelve las cuentas del aserradero y de la plantación.</p>
+  <p>Todo se calcula con un motor escrito desde cero para este programa, sin bibliotecas de otros, y cada resultado trae su método, sus fuentes y una interpretación en palabras.</p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/i-inicio.png" alt="La portada de la app: el lema Del árbol medido a la tonelada de carbono, los botones para empezar y la sección de un tronco cuyos anillos se vuelven curvas de nivel"></div>
+    <figcaption><b>Figura I.1.</b> La portada de ForestPro al abrirla. A la izquierda, la barra de los diez bloques; al centro, el lema, los botones <span class="ui">Empezar con un ejemplo →</span>, <span class="ui">Ver los módulos</span> y <span class="ui">Cómo citar</span>, y la sección de un tronco cuyos anillos exteriores salen como curvas de nivel de un mapa con parcelas de inventario; a la derecha, la lista de las secciones del bloque abierto.</figcaption>
+  </figure>
+
+  <!-- I.2 -->
+  <h2 id="si-2"><span class="num">I.2</span>Preguntas que responde</h2>
+  <p>Una buena manera de saber si el programa te sirve es ver qué preguntas contesta, y en qué bloque.</p>
+  <table class="compacta">
+    <thead><tr><th>Pregunta</th><th style="width:0.75in" class="c">Bloque</th></tr></thead>
+    <tbody>
+      <tr><td>¿Qué volumen tiene este árbol, o esta troza? ¿Qué ecuación de volumen describe mejor a mis árboles?</td><td class="c"><span class="chip k2">2</span> <span class="chip k9">9</span></td></tr>
+      <tr><td>¿Qué diámetro tiene el fuste a cualquier altura, y cuántas trozas comerciales salen de él?</td><td class="c"><span class="chip k2">2</span></td></tr>
+      <tr><td>¿Cuánto mide de alto un árbol al que no se le midió la altura?</td><td class="c"><span class="chip k2">2</span></td></tr>
+      <tr><td>¿Cuántos árboles, cuánta área basal y cuánto volumen hay por hectárea, y con qué error de muestreo?</td><td class="c"><span class="chip k3">3</span></td></tr>
+      <tr><td>¿Cuántas parcelas hacen falta para un error de muestreo dado?</td><td class="c"><span class="chip k3">3</span></td></tr>
+      <tr><td>¿Cómo se reparten los diámetros, qué especies dominan, qué tan denso está el rodal?</td><td class="c"><span class="chip k3">3</span></td></tr>
+      <tr><td>¿Cuánta biomasa y cuánto carbono guarda el predio, en cada reservorio, y con qué incertidumbre? ¿Cuánto cambió entre dos inventarios?</td><td class="c"><span class="chip k4">4</span></td></tr>
+      <tr><td>¿A qué edad conviene cortar? ¿Qué calidad de sitio tiene cada parcela? ¿Cuánto volumen habrá dentro de diez años?</td><td class="c"><span class="chip k5">5</span></td></tr>
+      <tr><td>¿Cuántas especies hay y cuántas faltan por registrar? ¿Qué tan parecidos son los sitios? ¿Los árboles están agregados, al azar o regulares?</td><td class="c"><span class="chip k6">6</span></td></tr>
+      <tr><td>¿Cuánta sombra tiene el cafetal, y con cuánta sombra rinde más? ¿Cuánto carbono guarda frente a un monocultivo?</td><td class="c"><span class="chip k7">7</span></td></tr>
+      <tr><td>¿Dónde están las parcelas, cuánto mide el predio, dónde pongo las parcelas de un inventario nuevo?</td><td class="c"><span class="chip k8">8</span></td></tr>
+      <tr><td>¿Cuántos pies tabla salen de una troza? ¿Cuánto rinde el aserradero? ¿Es rentable la plantación?</td><td class="c"><span class="chip k9">9</span></td></tr>
+      <tr><td>¿Cómo entrego todo en un informe, con sus tablas y sus métodos, y cómo retomo el trabajo después?</td><td class="c"><span class="chip k10">10</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- I.3 -->
+  <h2 id="si-3"><span class="num">I.3</span>Seis ideas que sostienen el manual</h2>
+  <p>Todo lo que sigue descansa en seis ideas. Si te quedas con ellas, buena parte de los errores que se cometen al procesar un inventario ya no son posibles.</p>
+  <ol class="pasos">
+    <li><b>Un árbol medido representa muchos.</b> Cada árbol de una parcela de <i>a</i> metros cuadrados vale por 10 000/<i>a</i> árboles por hectárea; en una parcela anidada, por los de la subparcela que le toca por su diámetro, y en la relascopía, por FAB/<i>g</i>. Equivocar la superficie de una parcela equivoca todo lo que sigue. Por eso el Bloque 3 pide el diseño de cada parcela y lo dice en pantalla.</li>
+    <li><b>Una media sin su error no es una estimación.</b> El inventario es una muestra del predio: la media por hectárea vale lo que vale su error de muestreo, y ese error depende del diseño con que se tomaron las parcelas —al azar, estratificadas, en malla sistemática o en conglomerados—. La app da el error de cada diseño y dice cuál corresponde.</li>
+    <li><b>Una ecuación sólo vale donde se ajustó.</b> Las ecuaciones de volumen, de biomasa y de altura se ajustaron con árboles de cierto tamaño, especie y región; fuera de ese intervalo extrapolan. La app avisa cuando un árbol cae fuera del intervalo de diámetros de su ecuación, y deja agregar la ecuación local que exista para tu especie.</li>
+    <li><b>La biomasa tiene tres fuentes de incertidumbre, y el muestreo es sólo una.</b> Las otras dos son el error de las mediciones (el diámetro, la altura, la densidad de la madera) y el error de la propia ecuación. El Bloque 4 las propaga por Monte Carlo y las suma a la del muestreo.</li>
+    <li><b>El carbono está en varios reservorios.</b> Los árboles vivos son el más visible, pero no el único: las raíces, la madera muerta, la hojarasca y el suelo cuentan, y en un cafetal el suelo suele guardar más que los árboles de sombra. La app los reúne con su error combinado.</li>
+    <li><b>Lo que no se reporta no se puede revisar.</b> El diseño y la superficie de las parcelas, la ecuación y la densidad usadas, el modelo de crecimiento, la confianza del intervalo y la versión del programa van en los métodos. Cada resultado trae su recuadro <span class="ui">Método y fuentes</span>, y el informe del Bloque 10 puede llevarlos todos.</li>
+  </ol>
+
+  <!-- I.4 -->
+  <h2 id="si-4"><span class="num">I.4</span>Datos que acepta y qué entrega</h2>
+  <p>El punto de partida es casi siempre una tabla: una fila por árbol, por parcela, por sección, por punto o por troza. Cada sección que necesita datos tiene una <b>tarjeta de datos</b> que la lee de un ejemplo, de un archivo, de una tabla pegada o escrita a mano, o del inventario ya cargado en el Bloque 3, y después empareja sus columnas con los campos que pide el método (sección I.6).</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Entra</th><th>Formato y dónde</th></tr></thead>
+    <tbody>
+      <tr><td>Tablas</td><td>Archivos <code>.csv</code>, <code>.txt</code> o <code>.tsv</code> separados por comas, punto y coma o tabuladores, con punto o coma decimal; libros <code>.xlsx</code>, <code>.xlsm</code> y <code>.ods</code>, eligiendo la hoja; o una tabla pegada desde una hoja de cálculo, con su fila de nombres. En todos los bloques</td></tr>
+      <tr><td>El inventario</td><td>Árboles y, si las hay, parcelas con su forma, tamaño, estrato y coordenadas (Bloque 3); lo usan después los bloques 2, 4, 6, 7 y 8</td></tr>
+      <tr><td>Densidad de la madera</td><td>La tabla de la app, editable, o el archivo completo de la base mundial de densidad de la madera (Bloque 4)</td></tr>
+      <tr><td>Fotografía del dosel</td><td>Una foto hemisférica o una foto normal hacia arriba (Bloque 7)</td></tr>
+      <tr><td>Geometrías</td><td>Archivos GPX, KML o GeoJSON, y tablas de vértices con su latitud y longitud (Bloque 8)</td></tr>
+      <tr><td>Proyectos</td><td>Un <code>.json</code> guardado antes por la propia app, que repite los pasos dados (Bloque 10)</td></tr>
+    </tbody>
+  </table>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Sale</th><th>Formato</th></tr></thead>
+    <tbody>
+      <tr><td>Figuras</td><td>Curvas, distribuciones, mapas, dendrogramas, ordenaciones y planos, en SVG, PNG a 300 ppp o más, JPG o PDF vectorial, desde el estudio de figuras de la suite</td></tr>
+      <tr><td>Tablas</td><td>Cada tabla de resultados en CSV o XLSX, junto a ella; todas juntas en un libro XLSX, una hoja por tabla, o en un ZIP de CSV (Bloque 10)</td></tr>
+      <tr><td>Geometrías</td><td>Las parcelas, la cuadrícula de muestreo y los polígonos en GPX, KML, GeoJSON o CSV, para el GPS o para un programa de mapas (Bloque 8)</td></tr>
+      <tr><td>Informe</td><td>Un HTML autocontenido —portada, resumen, figuras, tablas, interpretaciones y, si se pide, métodos con sus fuentes— que se imprime a PDF (Bloque 10)</td></tr>
+      <tr><td>Proyecto y cita</td><td>El proyecto en <code>.json</code>, para retomar el trabajo, y la cita en APA o en un archivo <code>forestpro.bib</code> (Bloque 10)</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Los bloques también se pasan datos a otras apps de la suite: la matriz de similitud del Bloque 6 se envía a ClusteringPro y a PCAPro, y el carbono del suelo del Bloque 4 lee las tablas por capas de SoilPro.</p>
+
+  <!-- I.5 -->
+  <h2 id="si-5"><span class="num">I.5</span>Qué necesitas y cómo abrirlo</h2>
+  <p>Sólo un navegador moderno, en una versión de los últimos años, en computadora, tableta o teléfono. No hace falta instalar nada ni tener internet; el programa entero cabe en una carpeta.</p>
+  <ol class="pasos">
+    <li><b>Doble clic en <code>index.html</code>.</b> Abre en el navegador predeterminado, en la portada. Es lo más sencillo y funciona igual que todo lo demás: los cálculos y los conjuntos de ejemplo están dentro del programa.</li>
+    <li><b>O doble clic en <code>Open ForestPro.bat</code>.</b> Si tu equipo no deja abrir páginas como archivos locales, arranca un servidor mínimo en tu propia computadora (también se puede correr <code>server.ps1</code> con PowerShell) y abre la app en <code>http://localhost:9480</code>.</li>
+  </ol>
+  <p>Las preferencias —el idioma, el tema claro u oscuro, las animaciones— se guardan en el propio navegador y se recuerdan la siguiente vez. Los datos no: cada vez que abres la app empieza vacía, y para retomar un trabajo está el proyecto <code>.json</code> del Bloque 10. Si intentas cerrar la pestaña con datos cargados o resultados sin guardar, la app te lo advierte.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Las pruebas también se abren con doble clic</div>
+    <p>El archivo <code>tests/run.html</code> corre las 62 pruebas automáticas de la app en el navegador; todas deben salir en verde. La portada las enlaza al pie, junto con este manual y la validación (sección I.9).</p>
+  </div>
+
+  <!-- I.6 -->
+  <h2 id="si-6"><span class="num">I.6</span>Recorrido por la interfaz</h2>
+  <p>Todas las aplicaciones de la suite comparten la misma barra, la misma navegación y las mismas herramientas de figuras, así que lo que aprendas aquí te sirve en las demás.</p>
+
+  <h3>Navegar sin perderse</h3>
+  <p>A la izquierda está la barra de los diez bloques; a la derecha, la lista <span class="ui">En este bloque</span>, con las secciones del bloque abierto. Todos los bloques están abiertos desde el principio y cada uno se puede usar suelto. Al pie de cada bloque dos botones llevan al anterior y al siguiente. Cuando cambias un control y los resultados se recalculan más abajo, aparece un botón flotante que te regresa al control que tocaste, y otro para volver arriba. Casi todo se puede hacer también desde el teclado:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.55in">Tecla</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><code>Alt + ←</code> · <code>Alt + →</code></td><td>El bloque anterior o el siguiente; en el modo enfocado, la sección anterior o la siguiente (en los extremos, el bloque)</td></tr>
+      <tr><td><code>Ctrl + K</code></td><td>Buscar bloques, secciones, controles y acciones</td></tr>
+      <tr><td><code>[</code> · <code>?</code> · <code>Esc</code></td><td>Contraer o mostrar la barra de bloques · ver la lista de atajos · cerrar ventanas y paneles</td></tr>
+      <tr><td><code>←</code> · <code>→</code></td><td>Recorrer la barra de bloques, con el foco en ella</td></tr>
+      <tr><td><code>+</code> · <code>−</code></td><td>En el mapa del Bloque 8: acercar y alejar</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="marco"><img src="../img/i-interfaz.png" alt="La pantalla del Bloque 3 con el cafetal de ejemplo y sus partes numeradas">
+      <span class="marca" style="left:27.5%;top:3.1%">1</span>
+      <span class="marca" style="left:71.7%;top:3.1%">2</span>
+      <span class="marca" style="left:80.8%;top:5.3%">3</span>
+      <span class="marca" style="left:91.4%;top:5.3%">4</span>
+      <span class="marca" style="left:16.6%;top:45.3%">5</span>
+      <span class="marca" style="left:18.6%;top:8.4%">6</span>
+      <span class="marca" style="left:56.6%;top:8.4%">7</span>
+      <span class="marca" style="left:74.2%;top:8.4%">8</span>
+      <span class="marca" style="left:82.3%;top:16.3%">9</span>
+      <span class="marca" style="left:18.3%;top:16.4%">10</span>
+      <span class="marca" style="left:19.9%;top:31.2%">11</span>
+      <span class="marca" style="left:17%;top:92.9%">12</span>
+    </div>
+    <figcaption><b>Figura I.2.</b> La pantalla del Bloque 3 con el cafetal de ejemplo cargado. Los números corresponden a la lista de abajo.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Nombre de la app y su lema.</b> El nombre lleva a la portada (Bloque 1).</li>
+    <li><span class="n">2</span><b>LABG Suite.</b> Vuelve al portal con las demás aplicaciones.</li>
+    <li><span class="n">3</span><b>ES · EN.</b> Cambia el idioma de toda la interfaz, también el de las figuras y el del informe.</li>
+    <li><span class="n">4</span><b>Tema, animaciones, reporte y atajos.</b> Claro u oscuro; las esperas animadas sí o no; reportar un problema en la página pública del proyecto; la lista de atajos de teclado (tecla <code>?</code>).</li>
+    <li><span class="n">5</span><b>La barra de los diez bloques.</b> El número se vuelve una palomita cuando el bloque ya tiene un resultado, y arriba se cuenta cuántos van (1/10 en la figura); <code>[</code> la contrae.</li>
+    <li><span class="n">6</span><b>La ruta.</b> La app, el bloque y la sección en la que estás.</li>
+    <li><span class="n">7</span><b>Documento · Enfocado.</b> Todas las secciones del bloque una tras otra, o una sola a la vez; el botón de al lado contrae o expande todas las secciones.</li>
+    <li><span class="n">8</span><b>Buscar</b> (<code>Ctrl + K</code>). Un bloque, una sección, un control o una acción, por su nombre.</li>
+    <li><span class="n">9</span><b>En este bloque.</b> Las secciones del bloque abierto; la actual va resaltada.</li>
+    <li><span class="n">10</span><b>El título del bloque,</b> con su número y lo que hace en una línea, y debajo una presentación breve.</li>
+    <li><span class="n">11</span><b>Una tarjeta.</b> Cada sección es una tarjeta con sus datos y controles arriba y sus resultados abajo.</li>
+    <li><span class="n">12</span><b>Buscar, Modo enfocado y Ayuda,</b> también al pie de la barra de bloques.</li>
+  </ul>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/i-buscar.png" alt="La ventana de búsqueda con carbono escrito y sus resultados agrupados en bloques, secciones y controles"></div>
+    <figcaption><b>Figura I.3.</b> La búsqueda (<code>Ctrl + K</code>) con «carbono» escrito: encuentra el Bloque 4, las secciones que lo nombran en los bloques 1, 4 y 7 y los controles que lo llevan en su rótulo, cada uno con el bloque donde está. <code>Enter</code> lleva al resultado elegido.</figcaption>
+  </figure>
+
+  <h3>La tarjeta de datos</h3>
+  <p>Casi todas las secciones que necesitan datos los reciben por la misma pieza, la <b>tarjeta de datos</b>, así que se aprende una vez. De izquierda a derecha: la lista de ejemplos de esa sección con <span class="ui">Cargar ejemplo</span> (una nota debajo dice qué trae el ejemplo elegido); <span class="ui">Abrir archivo…</span>; <span class="ui">Pegar tabla</span>; <span class="ui">Escribir a mano</span>, que abre una tabla vacía con las columnas que pide la sección; <span class="ui">Usar el inventario cargado</span>, en las secciones que pueden trabajar con el del Bloque 3; y <span class="ui">⤓ Plantilla</span>, un CSV con los nombres de las columnas y tres filas de ejemplo.</p>
+  <p>Después de leer un archivo o una tabla pegada, la app <b>empareja las columnas</b>: las que reconoce por su nombre, en español o en inglés y con varios sinónimos, ya vienen elegidas; las demás se eligen en una lista, y las obligatorias llevan un asterisco. <span class="ui">Usar estos datos</span> las carga. Las filas a las que les falta un dato obligatorio se dejan fuera con un aviso, y <span class="ui">Ver los datos</span> muestra lo que se cargó.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/i-datos.png" alt="La tarjeta de datos de los árboles del Bloque 3 con el cafetal de ejemplo cargado y sus primeras filas a la vista"></div>
+    <figcaption><b>Figura I.4.</b> La tarjeta de datos de los árboles en <span class="ruta">Bloque 3<span class="sep">›</span>El inventario: árboles y parcelas</span>, con el ejemplo <span class="ui">Cafetal bajo sombra: árboles</span> cargado: 719 árboles de sombra en 25 parcelas circulares de 1 000 m², con <span class="ui">Ver los datos</span> abierto.</figcaption>
+  </figure>
+
+  <h3>Lo que trae cada resultado</h3>
+  <p>Los resultados de todas las secciones tienen la misma forma: unos <b>mosaicos</b> con los pocos números que importan; las <b>figuras</b> y las <b>tablas</b>, con sus botones <span class="ui">⤓ CSV</span> y <span class="ui">⤓ XLSX</span>; una <b>interpretación</b> en palabras, escrita con los números de tus datos; los <b>avisos</b>, cuando algo merece atención; y, al final, el recuadro desplegable <span class="ui">Método y fuentes</span>, con las fórmulas y las publicaciones de donde salen.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/i-metodo.png" alt="La tarjeta Estimación y error de muestreo con el cafetal: mosaicos, tabla por diseño, interpretación y el recuadro Método y fuentes abierto"></div>
+    <figcaption><b>Figura I.5.</b> <span class="ruta">Bloque 3<span class="sep">›</span>Estimación y error de muestreo</span> con el cafetal de ejemplo: la densidad media es de 278 árboles por hectárea, con un error de muestreo de 18.3 % al 95 % de confianza en muestreo aleatorio simple. La tabla da la misma variable con cada diseño, la interpretación dice cuántas parcelas harían falta para bajar a 10 %, y el recuadro <span class="ui">Método y fuentes</span>, abierto, explica los estimadores y cita a Cochran (1977), Shiver y Borders (1996) y Satterthwaite (1946).</figcaption>
+  </figure>
+
+  <h3>Las figuras</h3>
+  <p>Todas las figuras de la app se pueden abrir en el <b>estudio de figuras</b>, una ventana común a la suite donde se cambian los textos, el tamaño de la letra, la leyenda y los colores sin tocar los datos, y se exporta a los anchos y resoluciones de las revistas. Junto a cada figura, el botón <span class="ui">✎</span> abre el editor de esa figura, para cambiar sus títulos, sus ejes, sus series, su leyenda y sus anotaciones. Las figuras se exportan siempre con los colores del tema claro, aunque estés trabajando en el oscuro. El capítulo 10 lo explica a fondo.</p>
+
+  <!-- I.7 -->
+  <h2 id="si-7"><span class="num">I.7</span>Los cuatro conjuntos de ejemplo</h2>
+  <p>Para aprender sin datos propios, la app trae cuatro conjuntos. Tres son <b>simulados</b> con una semilla fija y órdenes de magnitud realistas: las especies son reales, pero los árboles, las parcelas y los predios no existen, y sirven para recorrer la app y para las pruebas, no para describir ningún sitio. El cuarto reúne tablas de referencia. Se abren con los botones <span class="ui">Abrir en …</span> de <span class="ruta">Bloque 1<span class="sep">›</span>Datos de ejemplo</span>, que abren el bloque y cargan el ejemplo, o desde la lista de ejemplos de cada tarjeta de datos.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/i-ejemplos.png" alt="Las cuatro tarjetas de los conjuntos de ejemplo en la portada de la app, cada una con sus botones Abrir en"></div>
+    <figcaption><b>Figura I.6.</b> <span class="ui">Datos de ejemplo</span>, en la portada de la app. Cada tarjeta tiene un botón <span class="ui">Abrir en …</span> por cada bloque en que se usa.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.5in">Ejemplo</th><th style="width:1.15in" class="c">Abre en</th><th>Qué tiene y para qué sirve</th></tr></thead>
+    <tbody>
+      <tr><td><b>Cafetal bajo sombra</b></td><td class="c"><span class="chip k3">3</span> <span class="chip k4">4</span> <span class="chip k7">7</span></td><td>Veinticinco parcelas circulares de 1 000 m² en cinco fincas con cuatro manejos —rústico, policultivo tradicional, policultivo comercial y monocultivo bajo sombra—: 719 árboles de sombra con su DAP, su altura y su copa, 250 cafetos, el suelo por capas, la hojarasca, la sombra y el rendimiento de café, con coordenadas. Inventario, biomasa y carbono, sombra y rendimiento, mapas.</td></tr>
+      <tr><td><b>Bosque mesófilo estratificado</b></td><td class="c"><span class="chip k3">3</span> <span class="chip k6">6</span> <span class="chip k8">8</span></td><td>Veinticuatro parcelas circulares anidadas en tres estratos —conservado, perturbado y ribereño— con 1 830 árboles; una parcela de 50 × 50 m con las coordenadas de sus 196 tallos; 15 puntos de relascopía, transectos de madera caída y el polígono del predio. Inventario estratificado, relascopía, diversidad y patrón espacial, necromasa, mapas.</td></tr>
+      <tr><td><b>Plantación de pino</b></td><td class="c"><span class="chip k2">2</span> <span class="chip k5">5</span> <span class="chip k9">9</span></td><td>Treinta parcelas permanentes medidas seis veces, el análisis troncal de seis árboles, 40 árboles derribados y cubicados por secciones y una parcela con alturas faltantes. Cubicación, ecuaciones de volumen y de ahusamiento, curvas de altura, crecimiento, índice de sitio y cambio de carbono.</td></tr>
+      <tr><td><b>Densidades y ecuaciones</b></td><td class="c"><span class="chip k4">4</span></td><td>La densidad básica de la madera de 42 especies o géneros, tomada de la base mundial de densidad de la madera (de dominio público), y el catálogo de 31 ecuaciones alométricas de referencia, editables y con su fuente.</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Cómo se simuló cada conjunto —los modelos, los parámetros, la semilla— está escrito en <code>data/LEEME.md</code>, junto al guion que los genera; las tablas están también en <code>data/</code> como CSV, con los nombres de columna que la app reconoce sin tener que emparejarlos. En el texto se dice «el cafetal de ejemplo», no «el cafetal».</p>
+
+  <!-- I.8 -->
+  <h2 id="si-8"><span class="num">I.8</span>Cómo se recorre un trabajo forestal</h2>
+  <p>Los bloques están en el orden de un trabajo forestal real. No hace falta pasar por todos: los que no apliquen se saltan, y cada módulo se usa también suelto, con su propia tabla. La sección <span class="ui">Cómo funciona</span> de la portada lo resume en seis pasos.</p>
+  <figure>
+    <div class="marco"><img src="../img/i-flujo.png" alt="Los seis pasos de Cómo funciona: medir, muestrear, expandir, convertir, proyectar y reportar"></div>
+    <figcaption><b>Figura I.7.</b> <span class="ui">Cómo funciona</span>: los seis pasos de un trabajo forestal, del árbol medido al informe.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li><b>Medir</b> (Bloques 2 y 9). Los diámetros y las alturas de los árboles en pie; el volumen de los árboles derribados y de las trozas; las ecuaciones de volumen, de ahusamiento y de altura que servirán para el resto.</li>
+    <li><b>Muestrear y expandir</b> (Bloque 3). Carga los árboles y las parcelas con su diseño; la app los expande a la hectárea y estima la media, su error de muestreo y el total del predio, con la estructura del rodal y el tamaño de muestra para la próxima vez.</li>
+    <li><b>Convertir</b> (Bloque 4). La biomasa árbol por árbol, las raíces, la madera muerta, la hojarasca y el suelo; el carbono y el CO₂e de cada reservorio con su incertidumbre, y el cambio entre dos inventarios.</li>
+    <li><b>Proyectar y describir</b> (Bloques 5, 6 y 7). El crecimiento, el turno y la calidad de sitio; la diversidad y el patrón espacial; la sombra, el rendimiento y el carbono de un sistema agroforestal.</li>
+    <li><b>Ubicar</b> (Bloque 8). Las parcelas en el mapa, el área del predio, la cuadrícula para un inventario nuevo y la interpolación de una variable entre parcelas.</li>
+    <li><b>Reportar</b> (Bloque 10). El informe con las figuras, las tablas y los métodos; todas las tablas en un libro; el proyecto para retomar el trabajo.</li>
+  </ol>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El inventario se comparte entre bloques</div>
+    <p>Lo que cargas en el Bloque 3 queda disponible para la biomasa, la diversidad, la agroforestería y el mapa, con los botones <span class="ui">Usar el inventario del Bloque 3</span> o <span class="ui">Usar el inventario cargado</span>; el Bloque 4 usa además sus factores de expansión. Si cargas otro inventario, cada bloque recalcula lo suyo cuando vuelves a pedirlo, y la palomita de la barra marca los bloques que ya tienen un resultado.</p>
+  </div>
+
+  <!-- I.9 -->
+  <h2 id="si-9"><span class="num">I.9</span>Cómo se comprobó</h2>
+  <p>Un programa de cálculo vale lo que valen sus números. Cada motor de cálculo de ForestPro corre igual en el navegador que fuera de él, así que cada bloque se comparó, con los conjuntos de ejemplo, contra implementaciones de referencia independientes, escritas por otros en un lenguaje de cálculo estadístico de código abierto, y contra fórmulas escritas aparte donde no existe una implementación. Cada comparación tiene su tolerancia.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.55in">Bloque</th><th>Tema</th><th class="num" style="width:1.1in">Comparaciones</th><th class="num" style="width:1in">Desacuerdos</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k2">2</span></td><td>Dasometría individual</td><td class="num">287</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>Inventario forestal y muestreo</td><td class="num">430</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td>Biomasa y carbono</td><td class="num">4 974</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>Crecimiento y rendimiento</td><td class="num">616</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>Diversidad y ecología del bosque</td><td class="num">1 222</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td>Sistemas agroforestales</td><td class="num">211</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td>Mapas y geoprocesamiento ligero</td><td class="num">269</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td>Utilidades forestales</td><td class="num">252</td><td class="num">0</td></tr>
+      <tr class="total"><td></td><td><b>Total</b></td><td class="num"><b>8 261</b></td><td class="num"><b>0</b></td></tr>
+    </tbody>
+  </table>
+  <div class="caja dato">
+    <div class="dato-cifra">8&nbsp;261</div>
+    <div class="dato-txt"><div class="caja-t">Comparaciones sin desacuerdos</div>Volumen, ahusamiento y alturas; los estimadores de muestreo y sus intervalos; la biomasa con las 31 ecuaciones, la densidad de la madera y el Monte Carlo; los modelos de crecimiento y de índice de sitio; los índices de diversidad, la rarefacción, las ordenaciones y las funciones de Ripley; la sombra; las áreas, el variograma y el kriging; las reglas de cubicación y las cuentas financieras. Además, 62 pruebas automáticas con respuestas conocidas —valores de libro, formas cerradas y casos límite— corren en el navegador.</div>
+  </div>
+  <p>Las comparaciones sirvieron también para encontrar errores y diferencias de convención, que quedaron documentados y, los errores, corregidos antes de publicar. Por ejemplo, la primera versión del Monte Carlo del Bloque 4 corregía dos veces el sesgo de la escala logarítmica y daba una biomasa media 6.6 % más alta que el cálculo directo: el coeficiente 0.0673 de Chave et al. (2014) ya incluye esa corrección. O que en el cuadro de raíz/tallo del IPCC (2006) la clase «50–150» incluye el 150. Los capítulos dicen, donde importa, qué convenio sigue la app y por qué. El detalle, bloque por bloque, está en la carpeta <code>tests/</code> del programa.</p>
+
+  <!-- I.10 -->
+  <h2 id="si-10"><span class="num">I.10</span>Lo que el programa no hace</h2>
+  <p>Saber dónde termina una herramienta es tan útil como saber qué hace. La portada de la app lo dice en <span class="ui">Lo que hace y lo que no</span>:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">No hace</th><th>Por qué, y qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td><b>Sustituir la ecuación local</b></td><td>Las ecuaciones de biomasa del catálogo son de referencia. Si existe una ecuación para tu especie y tu región, agrégala al catálogo del Bloque 4 y asígnala a esa especie.</td></tr>
+      <tr><td><b>Ser un sistema de información geográfica</b></td><td>El mapa calcula áreas, cuadrículas e interpolaciones y exporta GPX, KML y GeoJSON; para un análisis espacial completo, lleva esos archivos a un programa de mapas.</td></tr>
+      <tr><td><b>Certificar carbono</b></td><td>Las cifras de carbono y su incertidumbre sirven para estudios y planes de manejo; un proyecto de mercado de carbono sigue además las reglas de su estándar.</td></tr>
+      <tr><td><b>Planear el muestreo por ti</b></td><td>Calcula el tamaño de muestra y dibuja la cuadrícula, pero el diseño, la forma y el tamaño de las parcelas, y el criterio para medir, son del técnico.</td></tr>
+      <tr><td><b>Modelos árbol por árbol ni teledetección</b></td><td>El crecimiento se proyecta a nivel de rodal; la app no trabaja con imágenes de satélite ni con nubes de puntos.</td></tr>
+      <tr><td><b>Guardar en un servidor</b></td><td>No se conecta a bases de datos ni guarda nada fuera de tu equipo: el trabajo se conserva en el proyecto <code>.json</code>.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

@@ -267,7 +267,7 @@ function makeGrid() {
     [['Superficie', 'Area'], fmtNum(area, 1) + ' ha'],
     rad > 0 ? [['Intensidad de muestreo', 'Sampling intensity'], fmtPct(100 * res.points.length * Math.PI * rad * rad / 10000 / area, 2), ['con parcelas de ' + n0(Math.PI * rad * rad) + ' m²', 'with plots of ' + n0(Math.PI * rad * rad) + ' m²']] : null,
   ]);
-  UI.table(R.grid, { title: ['Puntos de muestreo', 'Sampling points'], file: 'forestpro_cuadricula', columns: [
+  UI.table(R.grid, { title: ['Puntos de muestreo', 'Sampling points'], file: LangEN.file('forestpro_cuadricula'), columns: [
     { key: 'id', label: ['Punto', 'Point'], num: true }, { key: 'lat', label: ['Latitud', 'Latitude'], num: true, fmt: v => v.toFixed(6) }, { key: 'lon', label: ['Longitud', 'Longitude'], num: true, fmt: v => v.toFixed(6) },
     { key: 'E', label: ['Este UTM', 'UTM easting'], num: true, fmt: v => v.toFixed(1) }, { key: 'N', label: ['Norte UTM', 'UTM northing'], num: true, fmt: v => v.toFixed(1) }], rows: res.points, limit: 25 });
   const row = mk('div', { class: 'btn-row' });
@@ -282,7 +282,7 @@ function exportAll(fmt, gridOnly) {
     .concat(S.grid.map(g => ({ name: 'G' + g.id, lat: g.lat, lon: g.lon, desc: T('punto de muestreo', 'sampling point'), props: { E: +g.E.toFixed(2), N: +g.N.toFixed(2) } })));
   const polys = gridOnly ? [] : S.polygons;
   if (!points.length && !polys.length) { if (window.LABG) LABG.toast(T('No hay nada que exportar todavía.', 'Nothing to export yet.')); return; }
-  const base = gridOnly ? 'forestpro_cuadricula' : 'forestpro_mapa';
+  const base = LangEN.file(gridOnly ? 'forestpro_cuadricula' : 'forestpro_mapa');
   if (fmt === 'gpx') download(GE().toGPX(points, polys, 'ForestPro'), base + '.gpx', 'application/gpx+xml');
   else if (fmt === 'kml') download(GE().toKML(points, polys, 'ForestPro'), base + '.kml', 'application/vnd.google-earth.kml+xml');
   else if (fmt === 'geojson') download(GE().toGeoJSON(points, polys), base + '.geojson', 'application/geo+json');

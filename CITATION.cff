@@ -15,15 +15,20 @@ abstract: >-
   vertical structure, Clark–Evans and Ripley's K), agroforestry (shade from the inventory or a hemispherical
   photograph, shade–yield response, planting layouts, carbon budget), maps (own map with optional
   OpenStreetMap background, polygon areas, sampling grids, GPX/KML/GeoJSON export, IDW and kriging) and
-  forestry tools (log rules, lumber, sawmill yield, unit conversions, plantation economics). Every block is
-  validated against R with stated tolerances.
+  forestry tools (log rules, lumber, sawmill yield, unit conversions, plantation economics), and writes a
+  self-contained report. Bilingual interface (Spanish and English). Every block was checked against
+  independent references in R with stated tolerances (8,327 comparisons, no disagreements), and 84 unit
+  tests run in the browser.
 type: software
 authors:
   - given-names: "Luis Ángel"
     family-names: "Barrera-Guzmán"
+    email: lbarrerag@chapingo.mx
     orcid: "https://orcid.org/0000-0001-8057-2583"
 version: "1.0.0"
-date-released: "2026-10-04"
+# DOI: when the Zenodo record exists, add here (concept DOI) and the release date:
+# doi: 10.5281/zenodo.XXXXXXXX
+# date-released: "YYYY-MM-DD"
 repository-code: "https://github.com/luisangelbg/ForestPro"
 url: "https://luisangelbg.github.io/ForestPro/"
 license: GPL-3.0-or-later

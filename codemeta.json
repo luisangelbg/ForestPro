@@ -2,18 +2,42 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "ForestPro",
-  "description": "A browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry: volume and taper equations, height-diameter models, sampling designs and sampling error, stand tables and Weibull distributions, allometric biomass with wood density and Monte Carlo uncertainty, carbon pools and stock change, growth models and site index, diversity indices, Hill numbers, ordination and spatial pattern, shade and planting layouts in agroforestry, maps with sampling grids, GPX/KML/GeoJSON export and kriging, log rules and plantation economics. No installation, no third-party libraries, Spanish and English, validated against R.",
+  "alternateName": "ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry",
+  "description": "A browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry: volume and taper equations, height-diameter models, sampling designs and sampling error, stand tables and Weibull distributions, allometric biomass with wood density and Monte Carlo uncertainty, carbon pools and stock change, growth models and site index, diversity indices, Hill numbers, ordination and spatial pattern, shade and planting layouts in agroforestry, maps with sampling grids, GPX/KML/GeoJSON export and kriging, log rules and plantation economics. No installation and no third-party libraries; Spanish and English interface. Every block was checked against independent references in R: 8,327 comparisons, no disagreements; 84 unit tests run in the browser.",
   "version": "1.0.0",
   "dateCreated": "2026-10-04",
-  "datePublished": "2026-10-04",
+  "dateModified": "2026-11-01",
+  "license": "https://spdx.org/licenses/GPL-3.0-or-later",
   "codeRepository": "https://github.com/luisangelbg/ForestPro",
   "url": "https://luisangelbg.github.io/ForestPro/",
-  "license": "https://spdx.org/licenses/GPL-3.0-or-later",
-  "programmingLanguage": ["JavaScript", "HTML", "CSS"],
-  "runtimePlatform": "Web browser",
+  "issueTracker": "https://github.com/luisangelbg/ForestPro/issues",
+  "programmingLanguage": [
+    "JavaScript",
+    "HTML",
+    "CSS"
+  ],
+  "runtimePlatform": "Any modern web browser",
   "operatingSystem": "Any",
   "applicationCategory": "Forestry",
-  "keywords": ["forest inventory", "forest mensuration", "sampling", "allometry", "biomass", "carbon", "wood density", "site index", "growth and yield", "biodiversity", "agroforestry", "kriging", "log scaling"],
+  "inLanguage": [
+    "es",
+    "en"
+  ],
+  "keywords": [
+    "forest inventory",
+    "forest mensuration",
+    "sampling",
+    "allometry",
+    "biomass",
+    "carbon",
+    "wood density",
+    "site index",
+    "growth and yield",
+    "biodiversity",
+    "agroforestry",
+    "kriging",
+    "log scaling"
+  ],
   "author": [
     {
       "@type": "Person",
@@ -22,7 +46,10 @@
       "@id": "https://orcid.org/0000-0001-8057-2583"
     }
   ],
-  "softwareRequirements": ["A modern web browser (Chrome, Edge, Firefox or Safari)"],
+  "softwareRequirements": [
+    "A modern web browser; no installation"
+  ],
   "readme": "README.md",
-  "developmentStatus": "active"
+  "developmentStatus": "active",
+  "isAccessibleForFree": true
 }

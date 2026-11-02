@@ -1,0 +1,37 @@
+{
+  "title": "ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry",
+  "description": "<p>ForestPro is a self-contained web application that carries a forest or agroforestry inventory from the field sheet to the report entirely in the browser, with no installation, no third-party libraries and no server-side computation; the data never leave the computer. It covers tree mensuration (basal area, log and stem volume by Huber, Smalian and Newton, volume equations compared by Furnival's index, the segmented Max&ndash;Burkhart taper model with merchantable volume and assortments, and height&ndash;diameter curves fitted by nonlinear least squares to fill missing heights); inventory and sampling (circular, square, rectangular and nested plots, simple random, stratified, systematic and cluster estimators with confidence intervals and sampling error, sample size, point sampling with a relascope, stand and stock tables, Weibull diameter distributions fitted by maximum likelihood, importance value, Reineke's stand density index and competition indices); biomass and carbon (an editable catalogue of 31 allometric equations, wood density from the Global Wood Density Database with species, genus and plot fallback, root-to-shoot ratios, Monte Carlo propagation of allometric, density and sampling error, deadwood by line intersect, litter and soil organic carbon, carbon pools with their combined error and the change between two inventories); growth and yield (increments and biological rotation, Chapman&ndash;Richards, Gompertz, Schumacher and logistic models, anamorphic and polymorphic site index curves, and Clutter's whole-stand growth and yield system with a yield table); diversity and ecology (Shannon, Simpson, Fisher's &alpha;, Chao1 and ACE, Hill numbers, rarefaction, Jaccard, S&oslash;rensen and Bray&ndash;Curtis, UPGMA and NMDS, Pretzsch's vertical profile, Clark&ndash;Evans and Ripley's K and L); agroforestry systems (shade from the inventory of shade trees or from a hemispherical photograph segmented in the browser, the shade&ndash;yield response, planting layouts and the carbon budget against a monoculture); maps (an own map with an optional OpenStreetMap background, off by default, polygon areas, sampling grids, GPX, KML, GeoJSON and CSV export and import, IDW and kriging with the variogram and cross-validation); and forestry tools (log rules, sawn lumber, sawmill recovery, unit conversions and the economics of a plantation: NPV, IRR, benefit&ndash;cost ratio, Faustmann's land expectation value).</p><p>The last block writes a self-contained HTML report with every block worked, its figures, tables, interpretations and the methods with their sources, gathers all result tables in one XLSX workbook or as CSV files, and saves the project as JSON that replays the steps taken. Every figure can be restyled and exported as SVG, PNG, JPG or vector PDF. The interface is in Spanish and English.</p><p>Every engine runs in the browser and in node, so each block was compared, with the example data, against independent references in R 4.4.2 (BIOMASS, forestmangr, lmfor, minpack.lm, systemfit, vegan, MASS, iNEXT, spatstat, fitdistrplus, sf, gstat, units and FinCal) and against formulas written apart: 8,327 comparisons, no disagreements; 84 unit tests run in the browser. The archive includes four example data sets, simulated with a fixed seed except the wood densities (a shaded coffee farm, a stratified cloud forest, a pine plantation and the reference tables), and user manuals in Spanish (HTML and PDF, 155 pages) and English (HTML and PDF, 154 pages).</p>",
+  "upload_type": "software",
+  "version": "1.0.0",
+  "creators": [
+    {
+      "name": "Barrera-Guzmán, Luis Ángel",
+      "orcid": "0000-0001-8057-2583"
+    }
+  ],
+  "license": "gpl-3.0-or-later",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "forest inventory",
+    "forest mensuration",
+    "sampling design",
+    "sampling error",
+    "volume equations",
+    "taper models",
+    "allometry",
+    "aboveground biomass",
+    "carbon stocks",
+    "wood density",
+    "Monte Carlo uncertainty",
+    "growth and yield",
+    "site index",
+    "biodiversity",
+    "spatial pattern",
+    "agroforestry",
+    "shade coffee",
+    "kriging",
+    "log scaling",
+    "plantation economics"
+  ]
+}

@@ -23,7 +23,6 @@ type: software
 authors:
   - given-names: "Luis Ángel"
     family-names: "Barrera-Guzmán"
-    email: lbarrerag@chapingo.mx
     orcid: "https://orcid.org/0000-0001-8057-2583"
 version: "1.0.0"
 # DOI: when the Zenodo record exists, add here (concept DOI) and the release date:

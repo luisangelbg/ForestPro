@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-8" data-pestana="8" data-orden="8" style="--acento: var(--b8)">
+  <div class="cap-apertura">
+    <div class="cap-num">8</div>
+    <div class="cap-etiqueta">Capítulo ocho · Bloque 8</div>
+    <h1 data-corto="Mapas">Mapas y geoprocesamiento ligero</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Todo inventario tiene un lugar. Este bloque pone las parcelas y los árboles en el mapa, mide la superficie de los polígonos del predio, traza la cuadrícula de puntos para levantar un inventario nuevo, la lleva al receptor GPS y hace un mapa continuo de una variable medida en las parcelas. Todo se calcula en tu equipo; el fondo de mapa en línea es opcional y viene apagado.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k8"></span><span class="k8"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>8.1</b>El mapa</li>
+      <li><b>8.2</b>Polígonos y áreas</li>
+      <li><b>8.3</b>Cuadrícula de muestreo</li>
+      <li><b>8.4</b>Exportar</li>
+      <li><b>8.5</b>Interpolación entre parcelas</li>
+    </ul>
+  </div>
+
+  <p>El bloque se abre con <span class="ruta">Bloque 8<span class="sep">›</span>Mapas</span>; su título en pantalla es <span class="ui">Mapas y geoprocesamiento ligero</span>, con la línea «Parcelas y árboles en el mapa, áreas de polígonos, cuadrícula de muestreo, exportación GPX/KML/GeoJSON e interpolación.». Las cinco tarjetas comparten las mismas capas: lo que cargas, importas o dibujas en una aparece en el mapa y en las demás. El ejemplo principal es el bosque mesófilo (<span class="ui">Abrir en Mapas</span> en la portada, sección I.7): sus 24 parcelas con coordenadas y el polígono del predio, de 9 vértices. Para la interpolación se usan además las 25 parcelas del cafetal.</p>
+
+  <!-- 8.1 -->
+  <h2 id="s8-1"><span class="num">8.1</span>El mapa</h2>
+  <p class="lead">Un mapa propio de la app, que se mueve y se acerca como los mapas web, con las parcelas dibujadas con su radio real y los árboles en su lugar. Debajo queda una copia estática en coordenadas UTM, la que va al informe.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b8-mapa.png" alt="La tarjeta El mapa con el bosque mesófilo de ejemplo: los botones para cargar datos, las casillas de las capas con el fondo en línea apagado, el mapa con el predio y las parcelas sobre la retícula de latitud y longitud, y el botón para dibujar un polígono">
+      <span class="marca" style="left:1.8%;top:16.9%">1</span>
+      <span class="marca" style="left:46%;top:16.9%">2</span>
+      <span class="marca" style="left:70.1%;top:16.9%">3</span>
+      <span class="marca" style="left:1.8%;top:22.4%">4</span>
+      <span class="marca" style="left:56.6%;top:22.4%">5</span>
+      <span class="marca" style="left:10.4%;top:32.8%">6</span>
+      <span class="marca" style="left:12.9%;top:88.3%">7</span>
+      <span class="marca" style="left:1.8%;top:94.2%">8</span>
+    </div>
+    <figcaption><b>Figura 8.1.</b> El mapa con el bosque mesófilo de ejemplo: el predio (en verde) y las 24 parcelas, sin fondo en línea, sobre la retícula de latitud y longitud. Las parcelas de 17.84 m de radio son apenas círculos al nivel de zoom de todo el predio.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>El ejemplo.</b> La lista elige entre <span class="ui">Bosque mesófilo: parcelas y predio</span> y <span class="ui">Cafetal: parcelas de 5 fincas</span>; <span class="ui">Cargar ejemplo</span> lo carga en el Bloque 3 y trae aquí sus parcelas (y el predio, en el mesófilo).</li>
+    <li><span class="n">2</span><b><span class="ui">Usar el inventario del Bloque 3</span>.</b> Toma las parcelas del inventario cargado, si tienen latitud y longitud, con su radio y su estrato, y los árboles que traen x e y.</li>
+    <li><span class="n">3</span><b><span class="ui">Importar GPX, KML o GeoJSON…</span></b> Agrega los polígonos y los puntos de un archivo; un mensaje dice cuántos se importaron.</li>
+    <li><span class="n">4</span><b>Las capas.</b> <span class="ui">Parcelas</span>, <span class="ui">Árboles</span>, <span class="ui">Polígonos</span>, <span class="ui">Cuadrícula</span> e <span class="ui">Interpolación</span> se encienden y apagan por separado.</li>
+    <li><span class="n">5</span><b><span class="ui">Fondo de OpenStreetMap (pide teselas a internet)</span>.</b> Apagado por omisión. Encendido, el navegador pide las teselas del área visible; tus datos no se envían.</li>
+    <li><span class="n">6</span><b>Los botones del mapa.</b> + y − acercan y alejan; ⤢ ajusta el mapa a los datos.</li>
+    <li><span class="n">7</span><b>La escala</b> y, a la derecha, la nota del fondo: sin fondo, «Sin fondo: retícula de latitud y longitud».</li>
+    <li><span class="n">8</span><b><span class="ui">Dibujar un polígono</span>.</b> Un clic por vértice; doble clic o <span class="ui">Terminar el polígono</span> lo cierra y <code>Esc</code> lo cancela.</li>
+  </ul>
+  <p>El mapa se mueve arrastrando y se acerca con la rueda, los botones o las teclas <code>+</code> y <code>−</code>; las flechas lo desplazan. Las parcelas son círculos con su radio real; las que no tienen radio (los puntos importados) se dibujan como puntos. Los árboles aparecen al acercarse, desde el nivel de zoom 15, con un tamaño según su DAP: la app los ubica sumando sus coordenadas locales (x hacia el este, y hacia el norte, en metros) al centro de su parcela en UTM.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Sin fondo, nada sale de tu equipo</div>
+    <p>Con el fondo apagado, el mapa es una retícula de latitud y longitud dibujada por la app, y ningún dato sale de tu computadora. Con el fondo encendido, el navegador pide las imágenes del área visible a los servidores de OpenStreetMap, cuyos datos tienen licencia ODbL y llevan la atribución en la esquina del mapa; las coordenadas de tus parcelas no se envían, pero el servidor sí sabe qué zona estás mirando. Si abriste la app con doble clic, algunos servidores pueden negar las teselas; en línea funciona.</p>
+  </div>
+  <p>Debajo del mapa, el <span class="ui">Mapa estático en UTM (para el informe)</span> repite los polígonos, las parcelas (coloreadas por estrato si hay más de uno), la cuadrícula y la superficie interpolada en la zona UTM del centro de los datos, con flecha del norte y escala. Es la figura que va al informe del Bloque 10 y al estudio de figuras.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b8-estatico.png" alt="El mapa estático en UTM del bosque mesófilo con el predio, las parcelas coloreadas por estrato y los puntos de una cuadrícula de 500 metros"></div>
+    <figcaption><b>Figura 8.2.</b> El mapa estático del mesófilo en la zona UTM 14, con las parcelas por estrato y la cuadrícula sistemática de 500 m de la sección 8.3 (los cuadros).</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · dos proyecciones</div>
+    <p>El mapa interactivo usa la proyección de Mercator esférica a niveles de zoom enteros, la de los mapas web; deforma las distancias y las áreas según la latitud, y sirve para ver. Las mediciones se hacen en UTM (Mercator transversa), que dentro de su zona conserva las distancias con un error menor que 0.04 % (Snyder 1987; Karney 2011). Por eso el mapa estático, las áreas, la cuadrícula y la interpolación trabajan en metros UTM.</p>
+  </div>
+
+  <!-- 8.2 -->
+  <h2 id="s8-2"><span class="num">8.2</span>Polígonos y áreas</h2>
+  <p class="lead">La superficie y el perímetro de cada polígono —el predio, los rodales, las áreas de corta— calculados de dos maneras: en la zona UTM de su centro y sobre la esfera.</p>
+  <p>La tarjeta de datos pide los vértices de cada polígono en orden: <span class="ui">Polígono</span> * (el nombre, que agrupa los vértices), <span class="ui">Latitud</span> * y <span class="ui">Longitud</span> *, en grados decimales. Un polígono necesita al menos tres vértices; no hace falta repetir el primero al final. El ejemplo es el <span class="ui">Predio del bosque mesófilo (9 vértices)</span>. A la tabla <span class="ui">Polígonos</span> llegan también los polígonos importados y los dibujados en el mapa; <span class="ui">Quitar el último polígono</span> deshace el último.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b8-poligonos.png" alt="La tarjeta Polígonos y áreas con el predio del mesófilo: su número de vértices, el área en UTM y sobre la esfera, el perímetro, la zona y el centroide, y la interpretación"></div>
+    <figcaption><b>Figura 8.3.</b> El predio del mesófilo de ejemplo: 9 vértices, 6,685.494 ha en UTM y 6,703.819 ha sobre la esfera, 30,460.2 m de perímetro, zona 14N y centroide en 19.50369, −97.03551.</figcaption>
+  </figure>
+  <p>La interpretación compara las dos áreas —en el ejemplo difieren 0.27 %— y recomienda usar el área UTM para el inventario: es la que se usa en catastro y la que corresponde a las distancias medidas en campo.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · dos áreas</div>
+    <p>El área en UTM sale de la fórmula del agrimensor (Gauss) sobre las coordenadas planas de la zona del centro del polígono, con los lados rectos en el plano; incluye el factor de escala de la proyección (≤ 0.04 % dentro de la zona). El área sobre la esfera suma triángulos esféricos desde el primer vértice con el teorema de L'Huilier (Todhunter 1886), con lados en arcos de círculo máximo y un radio medio de 6 371 008.8 m; difiere de la del elipsoide unas décimas de punto por ciento según la latitud.</p>
+  </div>
+
+  <!-- 8.3 -->
+  <h2 id="s8-3"><span class="num">8.3</span>Cuadrícula de muestreo</h2>
+  <p class="lead">Los centros de parcela de un inventario nuevo: una malla sistemática o puntos al azar dentro de un polígono, con sus coordenadas geográficas y UTM, listos para el GPS.</p>
+  <p>Los controles son <span class="ui">Polígono</span> (cualquiera de los cargados), <span class="ui">Diseño</span> (<span class="ui">Sistemático (cuadrícula)</span> o <span class="ui">Aleatorio</span>), <span class="ui">Distancia entre puntos (m)</span> (500) y <span class="ui">Rotación (°)</span> (0) para la malla, <span class="ui">Puntos al azar</span> (30) para el diseño aleatorio, <span class="ui">Radio de la parcela (m)</span> (17.84, la de 1,000 m²) para calcular la intensidad de muestreo, y la casilla <span class="ui">Arranque aleatorio de la malla</span>. <span class="ui">Generar los puntos</span> los calcula y los pone en el mapa.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b8-cuadricula.png" alt="La tarjeta Cuadrícula de muestreo con el predio del mesófilo: los controles con los valores por omisión, los mosaicos de puntos, superficie e intensidad de muestreo, y el comienzo de la tabla de puntos"></div>
+    <figcaption><b>Figura 8.4.</b> Una malla sistemática de 500 m en el predio del mesófilo: 266 puntos (se esperaban 267.4) en 6,685.5 ha. Con parcelas de 1,000 m², la intensidad de muestreo es 0.40 %.</figcaption>
+  </figure>
+  <p>Los mosaicos dan los <span class="ui">Puntos</span> (con los esperados, en la malla), la <span class="ui">Superficie</span> del polígono y la <span class="ui">Intensidad de muestreo</span>: la superficie de las parcelas entre la del polígono. La tabla <span class="ui">Puntos de muestreo</span> muestra los primeros 25 —número, latitud, longitud, este y norte UTM— y sus descargas llevan todos; los botones <span class="ui">⤓ GPX</span>, <span class="ui">⤓ KML</span> y <span class="ui">⤓ GeoJSON</span> de esta tarjeta exportan sólo la cuadrícula (<code>forestpro_cuadricula.gpx</code>…), con los puntos nombrados G1, G2…</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · la malla y su arranque</div>
+    <p>La malla se arma en UTM con la distancia y la rotación elegidas y se queda con los puntos dentro del polígono (prueba del rayo); el número esperado es la superficie entre la distancia al cuadrado: en el ejemplo, unos 66,855,000 m² entre 250,000 m², 267.4 puntos. Sin arranque aleatorio, la malla empieza a media celda del origen y sale siempre igual. Con <span class="ui">Arranque aleatorio de la malla</span>, el origen se sortea dentro de una celda, de modo que cada punto del predio tiene la misma probabilidad de caer en la muestra, condición para tratar la malla como una muestra probabilística (Gregoire y Valentine 2008). El diseño aleatorio sortea puntos uniformes dentro del polígono: con los 30 por omisión, la intensidad baja a 0.04 %.</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El sorteo cambia cada vez</div>
+    <p>Con arranque aleatorio o con el diseño aleatorio, cada clic en <span class="ui">Generar los puntos</span> da un sorteo distinto. Descarga los puntos que vayas a usar y guárdalos con el proyecto del Bloque 10: no podrás volver a generarlos iguales.</p>
+  </div>
+
+  <!-- 8.4 -->
+  <h2 id="s8-4"><span class="num">8.4</span>Exportar</h2>
+  <p class="lead">Las capas del mapa en los formatos que leen los receptores GPS, los globos virtuales y los programas de mapas.</p>
+  <p>Los cuatro botones —<span class="ui">⤓ GPX</span>, <span class="ui">⤓ KML</span>, <span class="ui">⤓ GeoJSON</span> y <span class="ui">⤓ CSV</span>— descargan en un solo archivo (<code>forestpro_mapa.gpx</code>, <code>.kml</code>, <code>.geojson</code> o <code>.csv</code>) las parcelas cargadas, los puntos de la cuadrícula y los polígonos. Cada parcela lleva su nombre, su estrato y, si las tiene, su área basal y su densidad; cada punto de la cuadrícula, sus coordenadas UTM. El CSV tiene las columnas <code>nombre</code>, <code>lat</code>, <code>lon</code> y <code>descripcion</code>, y no lleva los polígonos. Si no hay nada cargado, un aviso lo dice.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.1in">Formato</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td>GPX</td><td>Los receptores GPS de mano: las parcelas y la cuadrícula como puntos de paso para navegar hasta ellos; los polígonos, como trayectos cerrados.</td></tr>
+      <tr><td>KML</td><td>Los globos virtuales y muchos programas de mapas.</td></tr>
+      <tr><td>GeoJSON</td><td>Cualquier programa de información geográfica; guarda los atributos de cada punto.</td></tr>
+      <tr><td>CSV</td><td>Una hoja de cálculo con los puntos, o la tarjeta de datos de otra sección.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.5 -->
+  <h2 id="s8-5"><span class="num">8.5</span>Interpolación entre parcelas</h2>
+  <p class="lead">Un mapa continuo de una variable medida en las parcelas —el área basal, el carbono, el rendimiento, la sombra— por distancia inversa o por kriging, con el variograma que dice si la variable tiene estructura espacial y la validación cruzada que dice qué método predice mejor.</p>
+  <p>Los datos vienen de dos fuentes. Si las parcelas del mapa vienen del inventario, <span class="ui">Variable</span> ofrece las suyas: <span class="ui">Área basal (m²/ha)</span>, <span class="ui">Densidad (árb/ha)</span>, <span class="ui">Volumen (m³/ha)</span> y, si se calcularon en el Bloque 4 antes de traer el inventario, <span class="ui">Biomasa aérea (Mg/ha)</span> y <span class="ui">Carbono (Mg C/ha)</span>. O bien la tarjeta de datos de esta sección lee una tabla propia con <span class="ui">Latitud</span> *, <span class="ui">Longitud</span> *, <span class="ui">Valor</span> * y <span class="ui">Nombre</span>; sus dos ejemplos son el rendimiento de café pergamino (kg/ha) y la sombra (%) de las 25 parcelas del cafetal, y al cargarlos los puntos reemplazan a las capas del mapa.</p>
+  <p>Los controles son <span class="ui">Método</span> (<span class="ui">Kriging ordinario</span>, <span class="ui">Kriging simple</span> o <span class="ui">Distancia inversa (IDW)</span>), <span class="ui">Modelo del variograma</span> (<span class="ui">Esférico</span>, <span class="ui">Exponencial</span> o <span class="ui">Gaussiano</span>), <span class="ui">Potencia de IDW</span> (2), <span class="ui">Distancia máxima del variograma (m, vacío = automática)</span>, <span class="ui">Celdas en el lado largo</span> (60; de 10 a 200) y <span class="ui">Recortar al primer polígono</span>. <span class="ui">Interpolar</span> hace el cálculo; hacen falta al menos 5 puntos con valor.</p>
+  
+  <p>Los mosaicos dan los <span class="ui">Puntos</span> y el método, el <span class="ui">Intervalo del mapa</span> y la <span class="ui">Validación cruzada</span> del kriging y de la IDW, cada una con su raíz del error cuadrático medio (RMSE) y su error medio; las dos se calculan siempre, sea cual sea el método elegido, para compararlas. Siguen la gráfica <span class="ui">Variograma experimental y modelo ajustado</span> (el tamaño de cada punto, según los pares de parcelas que lo forman) y la tabla <span class="ui">Modelo del variograma</span>, con la pepita, la meseta parcial, el alcance, la proporción de pepita y la distancia máxima con el ancho de los intervalos. La superficie se pinta en el mapa interactivo (capa <span class="ui">Interpolación</span>) y en el mapa estático, con su escala de color.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · variograma, kriging y distancia inversa</div>
+    <p>Todo se calcula en metros UTM. El variograma experimental (Matheron 1963), γ(<i>h</i>) = Σ(<i>z<sub>i</sub></i> − <i>z<sub>j</sub></i>)²/(2N(<i>h</i>)), promedia las diferencias al cuadrado entre parcelas separadas por la distancia <i>h</i>, por omisión hasta un tercio de la diagonal de los datos en 15 intervalos. Se le ajusta un modelo esférico, exponencial o gaussiano por mínimos cuadrados ponderados con pesos N<sub><i>j</i></sub>/<i>h<sub>j</sub></i>² (Cressie 1985): la <b>pepita</b> c₀ es la variación a distancia cero (error y variación de muy corto alcance), la <b>meseta</b> c₀ + c₁, la variación total, y el <b>alcance</b>, la distancia a la que las parcelas dejan de parecerse (en el exponencial el alcance práctico es 3<i>a</i>, y en el gaussiano √3·<i>a</i>). El kriging ordinario predice cada celda con los pesos que minimizan la varianza del error con media desconocida; el simple, con la media de los datos (Isaaks y Srivastava 1989). La IDW (Shepard 1968) promedia los valores con pesos 1/<i>d<sup>p</sup></i>, sin modelo. La validación cruzada deja fuera cada parcela, la predice con las demás y resume los errores.</p>
+  </div>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b8-superficie.png" alt="El mapa estático en UTM con la superficie de rendimiento del cafetal interpolada por kriging, de colores claros a verdes oscuros, y las 25 parcelas"></div>
+    <figcaption><b>Figura 8.5.</b> La superficie de rendimiento del cafetal de ejemplo en el mapa estático. El rendimiento más bajo (colores claros) rodea a las parcelas del noroeste, y los más altos (verde oscuro) quedan al norte y al sureste.</figcaption>
+  </figure>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b8-interpolacion.png" alt="Los mosaicos de la interpolación del rendimiento del cafetal, el variograma experimental con el modelo esférico ajustado y la tabla de sus parámetros"></div>
+    <figcaption><b>Figura 8.6.</b> El rendimiento del cafetal de ejemplo por kriging ordinario con modelo esférico: 25 puntos, un mapa de 502.0 a 1,208.9 kg/ha, una pepita de 384.6 con una meseta parcial de 50,323 (pepita / meseta total = 1 %) y un alcance de 2,497 m. En la validación cruzada, el kriging da RMSE 124.61 y la IDW 114.45.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · tres variables, tres variogramas</div>
+    <p><b>El rendimiento del cafetal</b> (figura 8.6) tiene dependencia espacial clara —pepita de 1 % de la meseta— hasta unos 2,497 m: las fincas difieren entre sí. Aun así, la IDW predice algo mejor que el kriging en la validación cruzada (RMSE 114.45 frente a 124.61), y la app lo dice. <b>La sombra del cafetal</b> da una pepita de 29 % de la meseta, alcance de 3,425 m y un kriging apenas mejor que la IDW (RMSE 10.29 frente a 10.44). <b>El área basal del mesófilo</b>, en cambio, da un alcance de 3 m —menor que el primer intervalo— y una pepita de 80 %: la app avisa que «el variograma no muestra dependencia espacial en las distancias analizadas (efecto pepita puro)», y el kriging predice la media, 37.2 m²/ha, en todo el mapa.</p>
+  </div>
+  <p>La interpretación compara el RMSE de los dos métodos; lee la proporción de pepita —si pasa de 60 %, «la mayor parte de la variación es de corta distancia o error», si no, «hay dependencia espacial clara» hasta el alcance práctico—; y cierra recordando que con pocas parcelas el mapa sirve para ubicar zonas, no para leer valores puntuales. El efecto pepita puro se declara cuando el alcance es menor que el primer intervalo del variograma o la meseta parcial es menos de 5 % de la meseta total.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Recortar al polígono</div>
+    <p>Con <span class="ui">Recortar al primer polígono</span> marcada (por omisión) y un polígono cargado, la superficie se calcula sólo dentro de él, y la retícula de celdas cubre el polígono en lugar del rectángulo de los puntos. Al cargar uno de los ejemplos de la tarjeta, los polígonos anteriores se quitan, así que el cafetal se interpola en el rectángulo de sus parcelas.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> necesitas la superficie del predio para el inventario</td><td><b>entonces</b> usa el área UTM, no la de la esfera ni la que dé un mapa en Mercator.</td></tr>
+      <tr><td><b>Si</b> la cuadrícula va a ser una muestra probabilística</td><td><b>entonces</b> marca <span class="ui">Arranque aleatorio de la malla</span> y guarda los puntos generados.</td></tr>
+      <tr><td><b>Si</b> la proporción de pepita es baja y el alcance supera la distancia entre parcelas vecinas</td><td><b>entonces</b> hay estructura espacial: el kriging tiene sentido.</td></tr>
+      <tr><td><b>Si</b> la pepita pasa de 60 % o la app avisa de efecto pepita puro</td><td><b>entonces</b> la variable no tiene estructura a esa escala: el mapa interpolado no agrega información a la media.</td></tr>
+      <tr><td><b>Si</b> la IDW da menor RMSE que el kriging</td><td><b>entonces</b> prefiere la IDW, o prueba otro modelo o distancia máxima del variograma.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guías para interpretar, no leyes: con 25 parcelas un variograma es una aproximación gruesa, y la ubicación de las parcelas pesa tanto como el método.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>«Las parcelas del inventario no tienen latitud y longitud»</b>: el inventario del Bloque 3 no trae coordenadas de parcela. Emparéjalas en su tarjeta de parcelas, en grados decimales (la longitud de México es negativa).</p>
+    <p><b>Los árboles no aparecen.</b> Sólo se ven desde el nivel de zoom 15, y sólo los que traen x e y en el inventario.</p>
+    <p><b>El polígono sale cruzado o con un área absurda.</b> Los vértices no están en orden alrededor del polígono, o la latitud y la longitud están intercambiadas.</p>
+    <p><b>El predio aparece dos veces en la tabla.</b> Si cargas el ejemplo del mapa y después el de la tarjeta <span class="ui">Polígonos y áreas</span>, el predio se agrega de nuevo; usa <span class="ui">Quitar el último polígono</span>.</p>
+    <p><b>«Primero carga, importa o dibuja un polígono»</b> en la cuadrícula, o <b>«El variograma no se pudo ajustar; usa IDW o cambia la distancia máxima»</b> en la interpolación: falta el polígono, o hay muy pocos pares de parcelas en los intervalos del variograma.</p>
+    <p><b>El fondo en línea no carga.</b> Algunos servidores niegan las teselas a una página abierta con doble clic; abre la app en línea o trabaja sin fondo.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-7" data-pestana="7" data-orden="7" style="--acento: var(--b7)">
+  <div class="cap-apertura">
+    <div class="cap-num">7</div>
+    <div class="cap-etiqueta">Capítulo siete · Bloque 7</div>
+    <h1 data-corto="Sistemas agroforestales">Sistemas agroforestales</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">En un cafetal los árboles no son la cosecha, pero deciden buena parte de ella: dan sombra, guardan carbono y sostienen la diversidad. Este bloque mide la sombra —contando los árboles del inventario o con una fotografía del dosel—, busca la sombra con la que el cultivo rinde más, dibuja el arreglo de una plantación nueva y compara el carbono del sistema con el de un monocultivo a pleno sol.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k7"></span><span class="k7"></span><span class="k4"></span></div>
+    <ul class="cap-contenido">
+      <li><b>7.1</b>Sombra a partir del inventario</li>
+      <li><b>7.2</b>Sombra a partir de una fotografía del dosel</li>
+      <li><b>7.3</b>Sombra y rendimiento del cultivo</li>
+      <li><b>7.4</b>Diseño de plantación</li>
+      <li><b>7.5</b>Presupuesto de carbono del sistema</li>
+    </ul>
+  </div>
+
+  <p>El bloque se abre con <span class="ruta">Bloque 7<span class="sep">›</span>Sistemas agroforestales</span>. Su línea en pantalla dice «Sombra de cafetales (por inventario o por fotografía hemisférica), sombra y rendimiento, arreglos de plantación y presupuesto de carbono.». Está pensado para cafetales y otros cultivos bajo sombra, y sus cinco tarjetas son independientes: cada una tiene su propio botón de ejemplo. El botón <span class="ui">Abrir en Agroforestería</span> del cafetal en la portada (sección I.7) las llena todas a la vez: carga el inventario del cafetal en el Bloque 3, calcula la sombra, lee las 25 parcelas de sombra y rendimiento, analiza la foto sintética y hace el presupuesto de carbono. Las cifras de este capítulo son las de ese ejemplo.</p>
+
+  <!-- 7.1 -->
+  <h2 id="s7-1"><span class="num">7.1</span>Sombra a partir del inventario</h2>
+  <p class="lead">Si el inventario trae el diámetro de copa de cada árbol de sombra, la app calcula en cada parcela la densidad, el área basal, la cobertura de copas, la riqueza de especies de sombra y un índice de complejidad, y los resume por tipo de manejo.</p>
+  <p>La tarjeta no tiene tarjeta de datos propia: lee el inventario del Bloque 3. <span class="ui">Cargar el cafetal de ejemplo</span> carga el cafetal en el Bloque 3 y vuelve aquí; <span class="ui">Usar el inventario del Bloque 3</span> toma el que ya esté cargado. Cuentan los árboles vivos, con la superficie de cada parcela según su diseño, y el grupo de cada parcela (su estrato o su conglomerado) hace de manejo. Si ningún árbol trae el diámetro de copa, la app avisa que la cobertura no se puede calcular y sugiere la fotografía (sección 7.2).</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b7-sombra.png" alt="La tarjeta Sombra a partir del inventario con el cafetal de ejemplo: los mosaicos, la tabla por tipo de manejo y la gráfica de cobertura de copas por manejo"></div>
+    <figcaption><b>Figura 7.1.</b> El cafetal de ejemplo: en promedio, 278 árboles de sombra por hectárea, 17.5 m²/ha de área basal, 48 % de cobertura de copas corregida por traslape, 7.5 especies de sombra por parcela y una complejidad de Holdridge de 6.9. La cobertura baja de 69.4 % en el manejo rústico a 33.2 % en el monocultivo bajo sombra.</figcaption>
+  </figure>
+  <p>Los cinco mosaicos son promedios de las parcelas. Si hay más de un manejo, la tabla <span class="ui">Por tipo de manejo</span> da para cada uno las parcelas, los árboles por hectárea, el área basal, la cobertura con su desviación estándar, las especies y el índice de Holdridge, ordenados de más a menos cobertura, y la gráfica dibuja la cobertura media con su desviación estándar. Debajo, la tabla <span class="ui">Por parcela</span> da para cada parcela, además, la suma de las copas (<span class="ui">Σ copas (%)</span>) y la altura media.</p>
+  <table class="compacta">
+    <caption><b>Tabla 7.1.</b> La sombra del cafetal de ejemplo por tipo de manejo</caption>
+    <thead><tr><th>Manejo</th><th class="num">Parcelas</th><th class="num">Árboles/ha</th><th class="num">G (m²/ha)</th><th class="num">Cobertura (%)</th><th class="num">Especies</th><th class="num">IC</th></tr></thead>
+    <tbody>
+      <tr><td>rústico</td><td class="num">5</td><td class="num">452</td><td class="num">31.4</td><td class="num">69.4</td><td class="num">9.4</td><td class="num">20.4</td></tr>
+      <tr><td>policultivo tradicional</td><td class="num">5</td><td class="num">334</td><td class="num">18.4</td><td class="num">52.8</td><td class="num">8.6</td><td class="num">6.5</td></tr>
+      <tr><td>policultivo comercial</td><td class="num">10</td><td class="num">226</td><td class="num">13.9</td><td class="num">42.1</td><td class="num">7.8</td><td class="num">3.3</td></tr>
+      <tr><td>monocultivo bajo sombra</td><td class="num">5</td><td class="num">150</td><td class="num">9.7</td><td class="num">33.2</td><td class="num">3.8</td><td class="num">0.8</td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · cobertura con traslape y complejidad</div>
+    <p>Cada copa ocupa π·<i>c</i>²/4, con <i>c</i> su diámetro. La suma de las copas entre la superficie de la parcela puede pasar de 100 % porque las copas se enciman: la parcela P14 suma 152 %. Si las copas se reparten al azar, la fracción del suelo bajo al menos una copa es C = 1 − exp(−Σ<i>a</i>/A) (Crookston y Stage 1999): con 152 % de copas, 78.0 % del suelo queda cubierto. El índice de complejidad de Holdridge (Holdridge et al. 1971) multiplica especies × árboles × área basal (m²) × altura media (m) / 1000, con árboles y área basal llevados a 0.1 ha; crece rápido con la estructura, y por eso separa tan bien los manejos tradicionales de los simplificados (Moguel y Toledo 1999).</p>
+  </div>
+
+  <!-- 7.2 -->
+  <h2 id="s7-2"><span class="num">7.2</span>Sombra a partir de una fotografía del dosel</h2>
+  <p class="lead">Cuando el inventario no trae las copas, o para medir la sombra en un punto, una foto del dosel tomada desde abajo basta: la app separa el cielo del follaje y mide la apertura.</p>
+  <p><span class="ui">Abrir una foto…</span> lee una imagen de tu equipo (la foto no sale de él; si es grande, se reduce a 640 píxeles por lado para el cálculo). <span class="ui">Foto de ejemplo (sintética)</span> dibuja una foto hemisférica de prueba bajo un dosel de sombra. Los controles son:</p>
+  <ul>
+    <li><span class="ui">Tipo de foto</span>: <span class="ui">Hemisférica (ojo de pez)</span>, tomada con una lente de ojo de pez hacia el cenit, o <span class="ui">Normal hacia arriba</span>, una foto común.</li>
+    <li><span class="ui">Canal</span>: <span class="ui">Azul (recomendado)</span> o <span class="ui">Luminancia</span>. En el azul el cielo es mucho más brillante que las hojas, y se separan mejor.</li>
+    <li><span class="ui">Umbral (vacío = Otsu)</span>: el nivel de gris (0 a 255) que separa cielo y dosel. Vacío, lo calcula la app.</li>
+    <li><span class="ui">Radio del círculo (% del lado menor)</span>: el círculo útil de la lente (100 por omisión); sólo cuenta en la foto hemisférica.</li>
+  </ul>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b7-foto.png" alt="La tarjeta Sombra a partir de una fotografía del dosel con la foto sintética de ejemplo: los controles, los mosaicos y la foto original junto a su segmentación en cielo blanco y dosel verde"></div>
+    <figcaption><b>Figura 7.2.</b> La foto sintética de ejemplo: con el umbral de Otsu (132), la cobertura del dosel es 51.6 % (1 − apertura ponderada), la apertura del dosel 48.4 % y la fracción de huecos 49.4 %, sobre 138,536 píxeles. A la derecha, la segmentación: cielo en blanco, dosel en verde y, en gris, lo que queda fuera del círculo.</figcaption>
+  </figure>
+  <p>Los mosaicos dan la <span class="ui">Cobertura del dosel</span>, la <span class="ui">Apertura del dosel</span> (sólo con la foto hemisférica), la <span class="ui">Fracción de huecos</span> con los píxeles contados y el <span class="ui">Umbral</span>, con «Otsu» o «manual». Con la foto normal, la cobertura es 1 − la fracción de cielo. Debajo van el <span class="ui">Histograma de grises y umbral</span> y, en la foto hemisférica, la tabla <span class="ui">Apertura por anillos de ángulo cenital</span>, con el cielo visible en anillos de 15°.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b7-histograma.png" alt="El histograma de niveles de gris de la foto de ejemplo con la línea del umbral en 132 y la tabla de apertura por anillos de 15 grados"></div>
+    <figcaption><b>Figura 7.3.</b> El histograma de la foto de ejemplo tiene dos picos bien separados —el follaje entre 20 y 45 y el cielo entre 225 y 245— y el umbral de Otsu cae entre ellos. El cielo visible va de 87.4 % cerca del cenit (0°–15°) a 33.1 % entre 45° y 60°.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · huecos y apertura</div>
+    <p>El umbral de Otsu (1979) es el que maximiza la varianza entre las dos clases del histograma. En una lente equiangular, un píxel a la distancia ρ del centro de un círculo de radio R mira al ángulo cenital θ = 90°·ρ/R. La <b>fracción de huecos</b> cuenta todos los píxeles por igual; la <b>apertura del dosel</b> pesa cada uno por el ángulo sólido que representa (sen θ/ρ), que en una lente equiangular disminuye del cenit al horizonte: un píxel junto al horizonte vale 0.64 de uno junto al cenit (Jonckheere et al. 2004; Frazer et al. 1999). Por eso las dos difieren: en el ejemplo, el anillo de 75° a 90°, con 65.2 % de cielo y 42,312 píxeles, pesa menos en la apertura que en la fracción de huecos, y la apertura (48.4 %) queda por debajo de la fracción de huecos (49.4 %).</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Cómo tomar la foto</div>
+    <p>Con cielo uniformemente nublado, al amanecer o al atardecer, sin sol directo en el cuadro, a la misma altura sobre el suelo (por encima del cultivo) y con la cámara nivelada. Revisa siempre la imagen segmentada: si el sol o el cielo brillante entre las hojas quedan mal clasificados, escribe el umbral a mano. Una foto describe un punto; para la parcela, promedia varias.</p>
+  </div>
+
+  <!-- 7.3 -->
+  <h2 id="s7-3"><span class="num">7.3</span>Sombra y rendimiento del cultivo</h2>
+  <p class="lead">¿Con cuánta sombra rinde más el cultivo? La tarjeta ajusta la regresión del rendimiento sobre la sombra, lineal y cuadrática, elige la mejor y, si la curva tiene máximo, da la sombra del rendimiento máximo con su intervalo.</p>
+  <p>La tarjeta de datos pide <span class="ui">Sombra (%)</span> * y <span class="ui">Rendimiento</span> * de cada parcela, y opcionalmente <span class="ui">Parcela</span> y <span class="ui">Grupo (manejo)</span>, que colorea los puntos. Hacen falta al menos 5 parcelas. El ejemplo, <span class="ui">Cafetal: 25 parcelas</span>, trae la sombra medida y el rendimiento de café pergamino (kg/ha) de cada parcela. La sombra puede venir de la sección 7.1, de las fotos de la 7.2 o de cualquier otra medición.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b7-rendimiento.png" alt="Los mosaicos de Sombra y rendimiento del cultivo, la gráfica de rendimiento contra sombra con las curvas cuadrática y lineal y la tabla de coeficientes del modelo cuadrático"></div>
+    <figcaption><b>Figura 7.4.</b> El cafetal de ejemplo: el modelo cuadrático gana (F del término cuadrático = 46.33, <i>p</i> &lt; 0.001; R² de 0.872 frente a 0.602 del lineal). El rendimiento es máximo con 38.8 % de sombra (intervalo de 95 %: 34.3 a 43.4 %), donde la curva estima 1,109 kg/ha.</figcaption>
+  </figure>
+  <p>Los mosaicos dan el <span class="ui">Modelo elegido</span>, con la prueba F del término cuadrático; la <span class="ui">Sombra del rendimiento máximo</span> con su intervalo; el <span class="ui">Rendimiento máximo estimado</span>; y el <span class="ui">R² (cuadrático)</span> junto al lineal. La gráfica <span class="ui">Rendimiento contra sombra</span> dibuja las dos curvas —la cuadrática con su banda de confianza del 95 % de la media— y una línea vertical en la sombra del máximo. La tabla <span class="ui">Coeficientes del modelo cuadrático</span> da b0, b1 y b2 con su error estándar, <i>t</i> y <i>p</i>: en el ejemplo, b1 = 28.648 y b2 = −0.36872.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · el óptimo y su intervalo</div>
+    <p>Las dos regresiones se ajustan por mínimos cuadrados ordinarios; la prueba F del término cuadrático y el AIC deciden el modelo. Si b₂ &lt; 0, la parábola tiene un máximo en S* = −b₁/(2b₂): en el ejemplo, −28.648/(2 × −0.36872) = 38.8 %. Su error estándar sale por el método delta, con el gradiente (−1/(2b₂), b₁/(2b₂²)) aplicado a la covarianza de b₁ y b₂ (Weisberg 2014). La forma de campana es la que se observa en cafetales: con poca sombra el cafeto sufre estrés y con mucha le falta luz (Soto-Pinto et al. 2000).</p>
+  </div>
+  <p>La interpretación dice que la curvatura es significativa si el término cuadrático tiene <i>p</i> &lt; 0.05; si no, advierte que «los datos no distinguen un óptimo de una tendencia lineal». Si la curva no tiene máximo (b₂ ≥ 0), lo dice y no da sombra óptima.</p>
+
+  <!-- 7.4 -->
+  <h2 id="s7-4"><span class="num">7.4</span>Diseño de plantación</h2>
+  <p class="lead">Para una plantación nueva: cuántos árboles caben en un terreno rectangular con un arreglo y unas distancias dados, cuántos por hectárea, cuánto cuestan y cómo conviven con el cultivo.</p>
+  <p>La tarjeta no lee datos; dibuja el plano desde que se abre el bloque, con los valores por omisión, y lo vuelve a dibujar con cada cambio. <span class="ui">Arreglo</span> ofrece <span class="ui">Marco real (cuadro)</span>, <span class="ui">Tresbolillo (triángulo)</span>, <span class="ui">Rectángulo</span>, <span class="ui">Cultivo en callejones</span>, <span class="ui">Cerco vivo (perímetro)</span> y <span class="ui">Linderos (dos lados)</span>. Los demás campos son <span class="ui">Ancho del terreno (m)</span> y <span class="ui">Largo del terreno (m)</span> (100 y 100), <span class="ui">Distancia entre árboles (m)</span> (6), <span class="ui">Distancia entre hileras (m)</span> (8, para el rectángulo), <span class="ui">Ancho del callejón (m)</span> (12, para los callejones), <span class="ui">Cultivo: distancia (m)</span> y <span class="ui">Cultivo: entre hileras (m)</span> (2 y 1.5) y <span class="ui">Costo por árbol plantado</span> (25, en la moneda que uses).</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b7-diseno.png" alt="La tarjeta Diseño de plantación con los valores por omisión: los campos, los mosaicos y el plano de un terreno de 100 por 100 metros con los árboles en marco real y el cultivo intercalado"></div>
+    <figcaption><b>Figura 7.5.</b> Los valores por omisión: marco real de 6 m en una hectárea. Caben 256 árboles (la densidad teórica de un arreglo infinito sería 278), cada uno con 39.1 m², con 3,300 plantas del cultivo a 2 × 1.5 m y un costo de 6,400.</figcaption>
+  </figure>
+  <p>Los mosaicos dan los <span class="ui">Árboles en el terreno</span> (con la superficie en hectáreas), la <span class="ui">Densidad</span> por hectárea con la teórica, la <span class="ui">Superficie por árbol</span>, las <span class="ui">Plantas del cultivo</span> y, si hay costo, el <span class="ui">Costo de los árboles</span>. El plano está a escala: los árboles en verde oscuro y el cultivo en verde claro, en su propio marco. Las plantas del cultivo se cuentan en todo el terreno, como si los árboles no les quitaran lugar.</p>
+  <table class="compacta">
+    <caption><b>Tabla 7.2.</b> Los seis arreglos en 1 ha, con 6 m entre árboles y los demás valores por omisión</caption>
+    <thead><tr><th>Arreglo</th><th class="num">Árboles</th><th class="num">Teórica (árb/ha)</th><th class="num">m² por árbol</th><th class="num">Costo</th></tr></thead>
+    <tbody>
+      <tr><td>Marco real (cuadro)</td><td class="num">256</td><td class="num">278</td><td class="num">39.1</td><td class="num">6,400</td></tr>
+      <tr><td>Tresbolillo (triángulo)</td><td class="num">304</td><td class="num">321</td><td class="num">32.9</td><td class="num">7,600</td></tr>
+      <tr><td>Rectángulo (6 × 8 m)</td><td class="num">192</td><td class="num">208</td><td class="num">52.1</td><td class="num">4,800</td></tr>
+      <tr><td>Cultivo en callejones (12 m)</td><td class="num">128</td><td class="num">139</td><td class="num">78.1</td><td class="num">3,200</td></tr>
+      <tr><td>Cerco vivo (perímetro)</td><td class="num">66</td><td class="num">—</td><td class="num">151.5</td><td class="num">1,650</td></tr>
+      <tr><td>Linderos (dos lados)</td><td class="num">32</td><td class="num">—</td><td class="num">312.5</td><td class="num">800</td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · densidad real y teórica</div>
+    <p>Las posiciones se generan dentro del terreno dejando media distancia en los bordes, así que en un terreno finito caben menos árboles que en el arreglo infinito. La densidad teórica es 10 000/<i>a</i>² en cuadro, 10 000/(<i>a</i>·<i>b</i>) en rectángulo, 10 000/(<i>a</i>²·√3/2) en tresbolillo —un 15.5 % más árboles que el cuadro con la misma distancia— y 10 000/(<i>a</i>·ancho) en callejones. El cerco vivo pone un árbol cada <i>a</i> metros en el perímetro y los linderos, en los dos lados largos (Nair 1993; Evans y Turnbull 2004).</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El plano cuenta como resultado cuando lo cambias</div>
+    <p>El plano inicial, con los valores por omisión, no marca el bloque como hecho ni entra al informe del Bloque 10 como resultado propio; en cuanto cambias un campo, sí.</p>
+  </div>
+
+  <!-- 7.5 -->
+  <h2 id="s7-5"><span class="num">7.5</span>Presupuesto de carbono del sistema</h2>
+  <p class="lead">¿Cuánto carbono guarda el cafetal con sombra frente a un monocultivo a pleno sol? La tarjeta suma el de los árboles de sombra, los cafetos, la hojarasca y el suelo del cafetal de ejemplo y lo compara con un monocultivo supuesto.</p>
+  <p>La tarjeta trabaja con las tablas del cafetal de ejemplo, no con datos propios: <span class="ui">Calcular con el cafetal de ejemplo</span> hace el cálculo, y después cada cambio en los campos lo repite. Los campos son <span class="ui">Cafetos por hectárea (sistema)</span> (vacío, la app pone la densidad media de las parcelas del ejemplo, 3447), <span class="ui">Cafetos por hectárea (monocultivo)</span> (5000), <span class="ui">Carbono del suelo del monocultivo (Mg C/ha)</span> (60), <span class="ui">Hojarasca del monocultivo (Mg/ha)</span> (3), <span class="ui">Fracción de carbono</span> (0.47) y <span class="ui">Raíz/tallo del cultivo</span> (0.27).</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b7-presupuesto.png" alt="La tarjeta Presupuesto de carbono del sistema: los campos, los mosaicos y las barras apiladas de carbono por reservorio del sistema con sombra y del monocultivo"></div>
+    <figcaption><b>Figura 7.6.</b> El cafetal de ejemplo guarda 148.4 Mg C/ha y el monocultivo supuesto 65.6 Mg C/ha: una diferencia de +82.8 Mg C/ha, o 303.4 Mg CO₂e/ha. Un cafeto pesa en promedio 1.41 kg.</figcaption>
+  </figure>
+  <table class="compacta">
+    <caption><b>Tabla 7.3.</b> El presupuesto de carbono del ejemplo (Mg C/ha), como lo da la tabla de la app</caption>
+    <thead><tr><th>Reservorio</th><th class="num">Con sombra</th><th class="num">Monocultivo</th><th class="num">Diferencia</th></tr></thead>
+    <tbody>
+      <tr><td>Árboles de sombra (aérea)</td><td class="num">36.2</td><td class="num">0.0</td><td class="num">36.2</td></tr>
+      <tr><td>Árboles de sombra (raíces)</td><td class="num">9.8</td><td class="num">0.0</td><td class="num">9.8</td></tr>
+      <tr><td>Cafetos</td><td class="num">2.9</td><td class="num">4.2</td><td class="num">−1.3</td></tr>
+      <tr><td>Hojarasca</td><td class="num">12.0</td><td class="num">1.4</td><td class="num">10.6</td></tr>
+      <tr><td>Suelo (0–30 cm)</td><td class="num">87.5</td><td class="num">60.0</td><td class="num">27.5</td></tr>
+      <tr><td><b>Total</b></td><td class="num"><b>148.4</b></td><td class="num"><b>65.6</b></td><td class="num"><b>82.8</b></td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · de dónde sale cada reservorio</div>
+    <p>La biomasa aérea de los árboles de sombra sale de las ecuaciones de Segura et al. (2006) para <i>Inga</i> y <i>Cordia</i>, de van Noordwijk et al. (2002) para el plátano y de Chave et al. (2014) con la densidad de la madera para las demás especies; las raíces, de la razón del IPCC (2006) para montañas tropicales (0.27). Los cafetos usan la ecuación de Segura et al. (2006) con el diámetro a 15 cm y la altura, multiplicada por la densidad de plantación y por 1 + raíz/tallo. La hojarasca y el suelo (0–30 cm) vienen de las tablas del ejemplo. El carbono es la biomasa por la fracción de carbono, y el CO₂e, el carbono por 44/12. Comparaciones así son las que se hacen en los cafetales de Chiapas (Soto-Pinto et al. 2010).</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>El monocultivo es un supuesto, no una medición</div>
+    <p>El monocultivo usa la biomasa media de los cafetos del ejemplo con su propia densidad y los valores de suelo y hojarasca que escribas. La diferencia de 82.8 Mg C/ha depende de ellos: con otro carbono del suelo del monocultivo, cambia en la misma cantidad. Reemplázalos por mediciones de un cafetal a pleno sol de la misma zona antes de reportar la diferencia como carbono adicional.</p>
+  </div>
+  <p>La interpretación dice cuánto más guarda el cafetal con sombra y en qué reservorios está la mayor parte de la diferencia: en los árboles de sombra y, si el suelo del cafetal supera al supuesto, también en el suelo.</p>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> el inventario trae el diámetro de copa</td><td><b>entonces</b> usa la cobertura corregida por traslape, no la suma de las copas, como la sombra de la parcela.</td></tr>
+      <tr><td><b>Si</b> no hay copas medidas</td><td><b>entonces</b> mide la sombra con fotos del dosel: varias por parcela, a la misma altura y con cielo nublado.</td></tr>
+      <tr><td><b>Si</b> la segmentación clasifica mal el cielo brillante o el sol</td><td><b>entonces</b> escribe el umbral a mano en lugar del de Otsu.</td></tr>
+      <tr><td><b>Si</b> el término cuadrático es significativo y b₂ &lt; 0</td><td><b>entonces</b> hay una sombra óptima: reporta S* con su intervalo, no sólo el valor puntual.</td></tr>
+      <tr><td><b>Si</b> el término cuadrático no es significativo</td><td><b>entonces</b> los datos no distinguen un óptimo de una tendencia lineal; no recomiendes un nivel de sombra con ellos.</td></tr>
+      <tr><td><b>Si</b> vas a reportar el carbono adicional del sistema</td><td><b>entonces</b> sustituye los supuestos del monocultivo por mediciones locales.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guías para interpretar, no leyes: el cultivo, la altitud y el manejo cambian la sombra óptima y el carbono de cada reservorio.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>«Carga un inventario en el Bloque 3 o el cafetal de ejemplo»</b>: no hay inventario cargado; usa <span class="ui">Cargar el cafetal de ejemplo</span> o carga el tuyo en el Bloque 3.</p>
+    <p><b>La cobertura no se puede calcular.</b> El inventario no trae el diámetro de copa: emparéjalo en la tarjeta de árboles del Bloque 3, o usa la fotografía.</p>
+    <p><b>La cobertura de la foto no tiene sentido.</b> Revisa el tipo de foto (una foto común tratada como hemisférica pierde las esquinas) y el radio del círculo, que debe coincidir con el círculo de la lente.</p>
+    <p><b>«Hacen falta al menos 5 parcelas»</b> en sombra y rendimiento, o no aparece la sombra del máximo: hay menos de cinco parcelas con los dos valores, o la curva no tiene máximo dentro de los datos.</p>
+    <p><b>El presupuesto no aparece.</b> Se calcula sólo después de pulsar <span class="ui">Calcular con el cafetal de ejemplo</span>.</p>
+  </div>
+</section>
+
+</body>
+</html>

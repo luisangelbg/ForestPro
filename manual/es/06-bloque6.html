@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 6</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-6" data-pestana="6" data-orden="6" style="--acento: var(--b6)">
+  <div class="cap-apertura">
+    <div class="cap-num">6</div>
+    <div class="cap-etiqueta">Capítulo seis · Bloque 6</div>
+    <h1 data-corto="Diversidad y ecología">Diversidad y ecología del bosque</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Un inventario no sólo cuenta madera: dice qué especies hay y en qué proporción. Este bloque convierte la lista de árboles en una comunidad y responde cuántas especies hay y cuántas faltan por registrar, qué tan dominada está la comunidad, qué tanto se parecen los sitios entre sí, cómo se reparten las especies en los pisos del bosque y si los árboles están agregados, al azar o regularmente espaciados.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k6"></span><span class="k6"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>6.1</b>La comunidad</li>
+      <li><b>6.2</b>Índices de diversidad</li>
+      <li><b>6.3</b>Números de Hill, rarefacción y acumulación</li>
+      <li><b>6.4</b>Similitud entre sitios y ordenación</li>
+      <li><b>6.5</b>Estructura vertical</li>
+      <li><b>6.6</b>Patrón espacial de los árboles</li>
+    </ul>
+  </div>
+
+  <p>El bloque se abre con <span class="ruta">Bloque 6<span class="sep">›</span>Diversidad y ecología</span> en la barra de la izquierda. Su título en pantalla es <span class="ui">Diversidad y ecología del bosque</span>, con la línea «Riqueza, índices y números de Hill, rarefacción, similitud entre sitios, estructura vertical y patrón espacial.». Tiene seis tarjetas. Dos de ellas leen datos: <span class="ui">La comunidad</span>, de la que dependen las cuatro siguientes, y <span class="ui">Patrón espacial de los árboles</span>, que necesita las coordenadas de cada tallo y trabaja por su cuenta. El ejemplo del capítulo es el bosque mesófilo (sección I.7): el botón <span class="ui">Abrir en Diversidad</span> de la portada, o el ejemplo de cada tarjeta, carga a la vez la comunidad de sus 24 parcelas y la parcela mapeada de 50 × 50 m.</p>
+
+  <!-- 6.1 -->
+  <h2 id="s6-1"><span class="num">6.1</span>La comunidad</h2>
+  <p class="lead">Todo el bloque parte de una <b>tabla larga</b>: una fila por sitio y especie con su abundancia, o una fila por individuo. La app la convierte en la matriz de sitios por especies que usan las secciones 6.2 a 6.5.</p>
+  <p>La tarjeta de datos es la de siempre (sección I.6): ejemplo, archivo, tabla pegada, tabla escrita a mano, <span class="ui">Usar el inventario cargado</span> (el del Bloque 3) o <span class="ui">⤓ Plantilla</span>. Pide estas columnas:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.5in">Campo en la tarjeta</th><th>Qué lleva</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Sitio o parcela</span> *</td><td>El nombre del sitio; cada valor distinto es una fila de la matriz.</td></tr>
+      <tr><td><span class="ui">Especie</span> *</td><td>El nombre de la especie; cada valor distinto es una columna.</td></tr>
+      <tr><td><span class="ui">Abundancia (vacío = 1 individuo)</span></td><td>Cuántos individuos representa la fila. Si falta, cada fila cuenta como un individuo; las filas repetidas se suman.</td></tr>
+      <tr><td><span class="ui">Grupo (estrato, finca…)</span></td><td>Un grupo de sitios (el estrato, la finca, el tratamiento). Colorea los sitios en la ordenación y separa las curvas de Hill y de rarefacción.</td></tr>
+      <tr><td><span class="ui">Altura (m), para la estructura vertical</span></td><td>La altura de cada individuo; sólo la usa la sección 6.5.</td></tr>
+    </tbody>
+  </table>
+  <p>Con <span class="ui">Usar el inventario cargado</span>, la app toma los árboles vivos del Bloque 3, cada uno como un individuo, con su parcela como sitio, su estrato (o su conglomerado) como grupo y su altura. Así la diversidad sale del mismo inventario que dio las existencias, sin preparar otra tabla.</p>
+  <p>Debajo aparecen tres mosaicos —<span class="ui">Sitios</span> (con el número de grupos), <span class="ui">Especies</span> e <span class="ui">Individuos</span>— y la <span class="ui">Matriz de sitios por especies</span>, que muestra hasta 30 filas en pantalla y se descarga completa con <span class="ui">⤓ CSV</span> o <span class="ui">⤓ XLSX</span>.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El segundo ejemplo</div>
+    <p>La lista de ejemplos de la tarjeta trae también <span class="ui">Cafetal: árboles de sombra de 25 parcelas</span>, con la finca como grupo. Da 25 sitios en 5 grupos, 10 especies y 694 individuos: una comunidad mucho más pobre, dominada por las dos especies de <i>Inga</i>, que conviene comparar con la del bosque.</p>
+  </div>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b6-comunidad.png" alt="La tarjeta La comunidad con el bosque mesófilo de ejemplo: la tarjeta de datos, los mosaicos 24 sitios, 30 especies y 1,735 individuos, y el comienzo de la matriz de sitios por especies"></div>
+    <figcaption><b>Figura 6.1.</b> El bosque mesófilo de ejemplo: los individuos vivos (DAP ≥ 2.5 cm) de 24 parcelas en 3 estratos. La matriz tiene 24 sitios, 30 especies y 1,735 individuos; cada celda es el número de individuos de una especie en una parcela.</figcaption>
+  </figure>
+
+  <!-- 6.2 -->
+  <h2 id="s6-2"><span class="num">6.2</span>Índices de diversidad</h2>
+  <p class="lead">La tarjeta no pide nada: en cuanto hay una comunidad, calcula los índices clásicos para cada sitio y para todos los sitios juntos.</p>
+  <p>Los seis mosaicos son los del conjunto completo: <span class="ui">Riqueza observada</span> (con Chao1 y ACE debajo), <span class="ui">Shannon H′</span> (con su exponencial, en «especies efectivas»), <span class="ui">Simpson 1 − λ</span> (con 1/λ), <span class="ui">Pielou J</span>, <span class="ui">α de Fisher</span> y <span class="ui">Cobertura de la muestra</span>, que se marca en verde cuando pasa de 95 %. La tabla <span class="ui">Índices por sitio</span> repite todo por parcela —N, S, H′, 1 − λ, 1/λ, J, α, Margalef, Chao1, ACE y la cobertura— y cierra con la fila <span class="ui">Todos los sitios</span>. La gráfica <span class="ui">Riqueza observada y estimada por sitio</span> pone, para cada parcela ordenada de más a menos especies, la riqueza observada y las dos estimadas.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b6-indices.png" alt="Los mosaicos de Índices de diversidad del mesófilo, la gráfica de riqueza observada, Chao1 y ACE por sitio y la interpretación"></div>
+    <figcaption><b>Figura 6.2.</b> El mesófilo completo: 30 especies observadas y 30.0 estimadas por Chao1 y ACE, H′ = 3.152 (23.4 especies efectivas), 1 − λ = 0.946, J = 0.927 y α de Fisher = 5.15, con una cobertura de 100.0 %. Por parcela, en cambio, faltan especies: M18 registra 20 y Chao1 estima 38.3. La tabla por sitio se omitió en la imagen.</figcaption>
+  </figure>
+  <p>La interpretación de la app aplica tres reglas: si Chao1 supera a la riqueza observada por menos de media especie, «el muestreo capturó prácticamente todas»; la cobertura dice qué fracción de los individuos pertenece a especies aún no vistas; y si J pasa de 0.8, «los individuos se reparten de forma equitativa», si no, «unas pocas especies dominan». En el mesófilo de ejemplo dice que se capturaron prácticamente todas y que el reparto es equitativo (J = 0.93); el cafetal de ejemplo da 10 especies, Chao1 = 10.0, H′ = 2.057 y J = 0.893.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · riqueza, equidad y lo que falta por ver</div>
+    <p>Con <i>p<sub>i</sub></i> la proporción de individuos de la especie <i>i</i>, Shannon H′ = −Σ<i>p<sub>i</sub></i> ln <i>p<sub>i</sub></i> mide la incertidumbre de adivinar la especie de un individuo al azar, y Simpson λ = Σ<i>p<sub>i</sub></i>², la probabilidad de que dos individuos sean de la misma especie; 1 − λ y 1/λ crecen con la diversidad. Pielou J = H′/ln S compara H′ con su máximo: 1 si todas las especies son igual de abundantes. El α de Fisher sale de S = α ln(1 + N/α) y depende poco del tamaño de la muestra (Fisher et al. 1943); Margalef (S − 1)/ln N y Menhinick S/√N son índices de riqueza corregidos de forma más burda (Magurran 2004). Chao1 (corregido por sesgo, S + <i>f</i>₁(<i>f</i>₁ − 1)/(2(<i>f</i>₂ + 1)); Chao 1987) y ACE (con las especies de 10 individuos o menos como raras; Chao y Lee 1992) estiman cuántas especies hay en la comunidad a partir de las que se vieron una o dos veces (<i>f</i>₁ y <i>f</i>₂). La cobertura de Chao y Jost (2012) es la fracción de los individuos de la comunidad que pertenecen a especies ya registradas.</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Compara sitios con el mismo esfuerzo</div>
+    <p>La riqueza observada crece con el número de individuos contados: una parcela con 91 individuos (M08, 26 especies) y otra con 59 (M20, 17 especies) no se comparan directamente. Para comparar riquezas usa la rarefacción de la sección 6.3, o los índices que dependen menos del tamaño (α de Fisher, 1/λ). Y mira la cobertura de cada parcela: con 0.820 (M21), casi uno de cada cinco individuos de esa comunidad pertenece a especies que la parcela no registró.</p>
+  </div>
+
+  <!-- 6.3 -->
+  <h2 id="s6-3"><span class="num">6.3</span>Números de Hill, rarefacción y acumulación</h2>
+  <p class="lead">Los números de Hill ponen todos los índices en una sola escala, la de las <b>especies efectivas</b>: cuántas especies igualmente abundantes darían la misma diversidad. La rarefacción y la acumulación dicen cómo crece la riqueza con el esfuerzo de muestreo.</p>
+  <p>Tampoco pide nada. Si la comunidad tiene entre 2 y 8 grupos, cada gráfica lleva una curva por grupo además de la de <span class="ui">Todos</span> (en negro). Hay tres gráficas y una tabla:</p>
+  <ul>
+    <li><span class="ui">Perfil de diversidad de Hill</span>: el número efectivo de especies <sup>q</sup>D para el orden q de 0 a 3. En q = 0 es la riqueza; en q = 1, exp(H′); en q = 2, el inverso de Simpson.</li>
+    <li><span class="ui">Rarefacción (continua) y extrapolación (punteada)</span>: las especies esperadas en una submuestra de <i>m</i> individuos, hasta el tamaño observado (el punto) y extrapoladas hasta el doble.</li>
+    <li><span class="ui">Acumulación de especies por parcela (± 1 DE)</span>: las especies esperadas al juntar 1, 2, … parcelas, con su banda.</li>
+    <li><span class="ui">Diversidad observada y asintótica</span>: para cada conjunto, los individuos, la diversidad observada y la asintótica en q = 0, 1 y 2 y la cobertura.</li>
+  </ul>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b6-hill.png" alt="El perfil de diversidad de Hill y las curvas de rarefacción y extrapolación del mesófilo, con una curva para todos los sitios y una por estrato"></div>
+    <figcaption><b>Figura 6.3.</b> Los tres estratos del mesófilo tienen las mismas 30 especies (q = 0), pero el perfil del conservado cae mucho más despacio que los del perturbado y el ribereño: en q = 2 tiene 18.88 especies efectivas frente a 11.60 y 11.66. Las curvas de rarefacción llegan a su asíntota antes de los 500 individuos.</figcaption>
+  </figure>
+  <p>El perfil de Hill es la manera más honesta de comparar comunidades: si dos perfiles se cruzan, una comunidad es más rica pero la otra más equitativa, y ningún índice suelto lo diría. En el ejemplo, los estratos perturbado y ribereño casi coinciden en todo el perfil, aunque el perturbado tiene 593 individuos y el ribereño 391.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b6-acumulacion.png" alt="La curva de acumulación de especies por parcela del mesófilo con su banda y la tabla de diversidad observada y asintótica"></div>
+    <figcaption><b>Figura 6.4.</b> La acumulación del mesófilo pasa de unas 22 especies con una parcela a las 30 antes de juntar diez, y la última parcela agrega 0.00 especies. En la tabla, la diversidad asintótica apenas supera a la observada (23.57 frente a 23.38 en q = 1 para todos los sitios).</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · los estimadores</div>
+    <p><sup>q</sup>D = (Σ<i>p<sub>i</sub></i><sup>q</sup>)<sup>1/(1−q)</sup> decrece con q, y tanto más rápido cuanto más dominada está la comunidad (Hill 1973). Los valores asintóticos (Chao et al. 2013, 2014) estiman la diversidad de la comunidad completa: la riqueza por S + ((<i>n</i> − 1)/<i>n</i>)·<i>f</i>₁²/(2<i>f</i>₂), la entropía de Shannon por la fórmula de Chao, Wang y Jost, y Simpson por <i>n</i>(<i>n</i> − 1)/Σ<i>x</i>(<i>x</i> − 1). La rarefacción es la de Hurlbert (1971), E[S<sub><i>m</i></sub>] = Σ[1 − C(<i>n</i> − <i>x<sub>i</sub></i>, <i>m</i>)/C(<i>n</i>, <i>m</i>)], y la extrapolación hasta 2<i>n</i>, la de Chao et al. (2014). La acumulación usa la expectativa exacta de especies en <i>t</i> parcelas y su desviación estándar condicionada a la muestra (Colwell et al. 2004).</p>
+  </div>
+  <p>La interpretación mira el último tramo de la acumulación: si la última parcela agregó menos de media especie, «la curva de acumulación ya se aplana; más parcelas apenas agregarían especies»; si no, «la curva aún sube».</p>
+
+  <!-- 6.4 -->
+  <h2 id="s6-4"><span class="num">6.4</span>Similitud entre sitios y ordenación</h2>
+  <p class="lead">¿Qué tanto comparten especies los sitios? La tarjeta calcula la disimilitud entre cada par de sitios y la resume en un mapa de calor, un dendrograma y una ordenación en dos dimensiones. Hacen falta al menos 3 sitios.</p>
+  <p>El único control es <span class="ui">Índice</span>: <span class="ui">Bray–Curtis</span> (el de omisión, con abundancias), <span class="ui">Jaccard</span> o <span class="ui">Sørensen</span> (los dos con presencia y ausencia). La tarjeta dibuja la <span class="ui">Disimilitud entre sitios</span> como mapa de calor (0 = idénticos, 1 = sin nada en común), el dendrograma <span class="ui">UPGMA</span> con su correlación cofenética en el título y la ordenación <span class="ui">NMDS</span> con su estrés; los sitios se colorean por grupo.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/b6-similitud.png" alt="El dendrograma UPGMA y la ordenación NMDS del mesófilo con Bray–Curtis, coloreados por estrato, y la interpretación"></div>
+    <figcaption><b>Figura 6.5.</b> Con Bray–Curtis, el dendrograma (correlación cofenética 0.888) separa los tres estratos sin mezclas, y la NMDS (estrés = 0.090) los pone en tres nubes. La disimilitud media es 0.322 dentro de un estrato y 0.515 entre estratos.</figcaption>
+  </figure>
+  <p>Los botones <span class="ui">Enviar la matriz a ClusteringPro</span> y <span class="ui">Enviar la matriz a PCAPro</span> descargan la matriz de sitios por especies en CSV (con las columnas sitio y grupo primero) y abren esa app de la suite en una pestaña nueva, donde se carga con su <span class="ui">Abrir archivo</span>. Para abrirlas hace falta conexión; el archivo se descarga de todos modos.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · disimilitud, árbol y ordenación</div>
+    <p>Con <i>a</i> las especies compartidas y <i>b</i> y <i>c</i> las exclusivas de cada sitio, Jaccard vale (<i>b</i> + <i>c</i>)/(<i>a</i> + <i>b</i> + <i>c</i>) y Sørensen (<i>b</i> + <i>c</i>)/(2<i>a</i> + <i>b</i> + <i>c</i>); Bray–Curtis, Σ|<i>x</i> − <i>y</i>|/Σ(<i>x</i> + <i>y</i>), pesa además las abundancias (Legendre y Legendre 2012). UPGMA une los grupos por su disimilitud media; la correlación cofenética (Sokal y Rohlf 1962) mide qué tan bien conserva el árbol las disimilitudes originales. La NMDS busca dos ejes cuyas distancias respeten el <i>orden</i> de las disimilitudes, minimizando el estrés-1 de Kruskal (1964) por mayorización (de Leeuw y Mair 2009) desde el escalamiento clásico y 20 configuraciones al azar, y se rota a sus ejes principales.</p>
+  </div>
+  <p>Cambiar el índice cambia la lectura. Con <span class="ui">Jaccard</span> la disimilitud media del mesófilo es 0.327 dentro de los estratos y 0.398 entre ellos, y con <span class="ui">Sørensen</span>, 0.198 y 0.251; con los dos el estrés sube a 0.242. Como casi todas las parcelas tienen casi todas las especies, la presencia y ausencia distingue poco: lo que separa a los estratos es <i>cuánto</i> de cada especie hay, y eso sólo lo ve Bray–Curtis. (Jaccard y Sørensen dan la misma NMDS porque uno es función creciente del otro, y la NMDS sólo usa el orden.)</p>
+  <p>La interpretación compara la disimilitud media entre grupos con la de dentro de los grupos: si la primera es más de 1.15 veces la segunda, «los grupos tienen composiciones distintas, y la ordenación los separa». El estrés se lee como representación buena por debajo de 0.10, aceptable hasta 0.20 y pobre por encima.</p>
+
+  <!-- 6.5 -->
+  <h2 id="s6-5"><span class="num">6.5</span>Estructura vertical</h2>
+  <p class="lead">¿Ocupan todas las especies todos los pisos, o cada piso tiene las suyas? La tarjeta lo resume con el índice de perfil de especies de Pretzsch y necesita la altura de al menos 10 individuos; sin ella, lo avisa.</p>
+  <p>La app divide el rodal en tres zonas según la altura máxima: zona I, más de 80 % de la altura máxima; zona II, de 50 a 80 %; zona III, hasta 50 %. Los mosaicos dan <span class="ui">A de Pretzsch</span> (con su máximo posible), <span class="ui">A relativo</span> y <span class="ui">Altura máxima</span>. La tabla <span class="ui">Índice de Pretzsch por grupo</span> los repite para todos y para cada grupo, con los individuos de cada zona; la gráfica <span class="ui">Individuos por zona de altura (10 especies más abundantes)</span> apila las tres zonas de cada especie; y la tabla <span class="ui">Estratos por la media y la desviación estándar de la altura</span> da otra división, más simple, en estrato inferior, medio y superior.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b6-vertical.png" alt="Los mosaicos de Estructura vertical del mesófilo, la tabla del índice de Pretzsch por estrato y las barras apiladas de individuos por zona de altura de las 10 especies más abundantes"></div>
+    <figcaption><b>Figura 6.6.</b> El mesófilo: A = 3.457 de un máximo de 4.500, A relativo de 76.8 % y altura máxima de 35.4 m. Sólo 11 individuos llegan a la zona I; la mayoría de las especies vive en la zona III, y sólo <i>Liquidambar styraciflua</i> tiene individuos visibles en las tres zonas.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · el índice de Pretzsch</div>
+    <p>A = −ΣΣ <i>p<sub>ij</sub></i> ln <i>p<sub>ij</sub></i>, con <i>p<sub>ij</sub></i> la proporción de individuos de la especie <i>i</i> en la zona <i>j</i>, es un Shannon de especies por pisos (Pretzsch 1996, 2009). Su máximo, A<sub>máx</sub> = ln(3S), corresponde a todas las especies repartidas por igual en los tres pisos, y A<sub>rel</sub> = 100·A/A<sub>máx</sub>. Los estratos por la media y la desviación estándar (Souza et al. 2003) ponen el inferior por debajo de la media − 1 DE y el superior por encima de la media + 1 DE; en el ejemplo, por debajo de 5.5 m (195 individuos) y desde 16.2 m (265).</p>
+  </div>
+  <p>Cada grupo usa su propia altura máxima, así que las zonas de un grupo no son las del conjunto: por eso el estrato conservado tiene 21 individuos en su zona I aunque el conjunto sólo tenga 11. La interpretación dice que la estructura vertical es compleja si A relativo pasa de 70 %, y simple si no; en el ejemplo, 77 %.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Un árbol muy alto aplasta las zonas</div>
+    <p>Las zonas se miden contra la altura máxima, y un solo emergente (o un error de captura) las desplaza todas hacia abajo. En el mesófilo de ejemplo, la altura máxima de 35.4 m deja a sólo 1 % de los individuos en la zona I. Revisa la altura máxima antes de interpretar el índice, y compara siempre con los estratos por la media, que dependen menos de un solo árbol.</p>
+  </div>
+
+  <!-- 6.6 -->
+  <h2 id="s6-6"><span class="num">6.6</span>Patrón espacial de los árboles</h2>
+  <p class="lead">Con las coordenadas de cada tallo en una parcela rectangular, la tarjeta responde si los árboles están agregados, distribuidos al azar o regularmente espaciados, y a qué distancias. Hacen falta al menos 10 árboles.</p>
+  <p>La tarjeta de datos pide <span class="ui">x (m)</span> * y <span class="ui">y (m)</span> * de cada tallo, medidas desde una esquina de la parcela, y, si se tienen, <span class="ui">Especie</span>, <span class="ui">DAP (cm)</span> (para el tamaño de los puntos del mapa) y <span class="ui">Grupo (piso, cohorte…)</span>. Arriba están los controles: <span class="ui">Ancho de la parcela (m)</span> y <span class="ui">Largo de la parcela (m)</span> (50 y 50), <span class="ui">Distancia máxima para K (m)</span> (12), <span class="ui">Simulaciones para la envolvente</span> (99; la app acepta de 19 a 999) y <span class="ui">Árboles</span>, que elige <span class="ui">Todos</span> o un grupo. Los árboles que caen fuera del rectángulo no se usan, y un aviso dice cuántos son.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b6-patron.png" alt="Los mosaicos de Clark–Evans, el mapa de tallos de la parcela mapeada de 50 × 50 m y la curva L(r) − r con su envolvente"></div>
+    <figcaption><b>Figura 6.7.</b> Los 196 tallos de la parcela mapeada (784 árb/ha). Clark–Evans da R = 1.020 (0.989 con la corrección de Donnelly, <i>p</i> = 0.770): al vecino más cercano no se distingue del azar. Pero L(r) − r supera la envolvente entre 0.9 y 12.0 m: hay agregación a esas escalas.</figcaption>
+  </figure>
+  <p>Los mosaicos dan <span class="ui">Clark–Evans R</span> con su <i>z</i> y su <i>p</i>, <span class="ui">R con corrección de Donnelly</span> con su <i>p</i> y la <span class="ui">Densidad</span>. A la izquierda queda el <span class="ui">Mapa de tallos (tamaño según el DAP)</span>, coloreado por especie; a la derecha, <span class="ui">L(r) − r con envolvente de 99 simulaciones</span>: la línea es lo observado y la banda gris, lo que daría el azar con el mismo número de árboles.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>La envolvente no es una prueba formal</div>
+    <p>Con 99 simulaciones, la banda es la mínima y la máxima de L(r) − r bajo el azar a cada distancia. Que la curva salga de ella en una distancia cualquiera no equivale a una prueba al 1 %, porque se miran muchas distancias a la vez; tómala como guía de a qué escalas hay estructura, y confirma con el índice de Clark–Evans y con lo que sabes del rodal.</p>
+  </div>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · dos patrones que se anulan</div>
+    <p>¿Cómo puede un índice decir «al azar» y otro «agregado»? Elige en <span class="ui">Árboles</span> cada piso por separado. El <b>dosel</b> (70 árboles) da R = 1.504 (1.427 corregido, <i>p</i> &lt; 0.001): árboles más regularmente espaciados que al azar, con L(r) − r por debajo de la envolvente entre 1.5 y 6.0 m, la huella de la competencia entre copas. El <b>sotobosque</b> (126 árboles) da R = 0.616 (0.593 corregido, <i>p</i> &lt; 0.001): agregado, con L(r) − r por encima de la envolvente de 0.9 a 12.0 m. Juntos, la regularidad de uno y la agregación del otro dejan a Clark–Evans cerca de 1, mientras que la K de Ripley, que mira todas las distancias a la vez, sigue viendo los grupos del sotobosque.</p>
+  </div>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · vecino más cercano y K de Ripley</div>
+    <p>Clark y Evans (1954) comparan la distancia media al vecino más cercano con la esperada bajo aleatoriedad espacial completa, 1/(2√λ): R &lt; 1 es agregación y R &gt; 1, regularidad. Cerca del borde los vecinos se pierden, y la corrección de Donnelly (1978) suma (0.0514 + 0.0412/√<i>n</i>)·P/<i>n</i> a la distancia esperada (P = perímetro). La K de Ripley (1977) cuenta los vecinos a menos de <i>r</i> de cada árbol, con la corrección por traslación (Ohser 1983); L(r) = √(K/π) vale <i>r</i> bajo el azar, así que L(r) − r por encima de la envolvente es agregación a esa escala y por debajo, regularidad (Baddeley et al. 2015).</p>
+  </div>
+  <p>La interpretación usa la R corregida: con <i>p</i> &lt; 0.05 dice si los árboles están más agregados o más regularmente espaciados que al azar, y después da los intervalos de distancia en que L(r) − r sale de la envolvente por arriba (agregación) o por abajo (regularidad o competencia).</p>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>La matriz tiene especies de más.</b> Un mismo nombre escrito de dos maneras («Quercus sp.» y «Quercus sp») son dos columnas. Revisa la lista de especies de la matriz antes de leer los índices.</p>
+    <p><b>Las abundancias salen dobladas.</b> Si la tabla trae una fila por individuo <i>y</i> una columna de abundancia, cada fila vale lo que dice esa columna. Empareja la abundancia sólo si cada fila resume varios individuos.</p>
+    <p><b>«Hacen falta al menos 3 sitios»</b> en la similitud, o <b>«La estructura vertical necesita la altura de los individuos»</b>: la comunidad tiene menos de tres sitios, o no se emparejó la altura (o hay menos de 10 alturas).</p>
+    <p><b>No hay curvas por grupo.</b> Las curvas de Hill, de rarefacción y las filas por grupo sólo aparecen con 2 a 8 grupos.</p>
+    <p><b>Muchos árboles «quedan fuera del rectángulo».</b> El ancho y el largo no corresponden a la parcela, o las coordenadas tienen el origen en el centro: deben ir de 0 al ancho y de 0 al largo.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> la cobertura de la muestra pasa de 95 % y Chao1 apenas supera a la riqueza observada</td><td><b>entonces</b> el inventario registró casi todas las especies; la riqueza observada es confiable.</td></tr>
+      <tr><td><b>Si</b> la cobertura es baja o la acumulación aún sube</td><td><b>entonces</b> faltan especies: reporta Chao1 o la riqueza asintótica con la observada, y compara sitios por rarefacción.</td></tr>
+      <tr><td><b>Si</b> J pasa de 0.8</td><td><b>entonces</b> la comunidad es equitativa; si no, unas pocas especies dominan (míralo en el perfil de Hill).</td></tr>
+      <tr><td><b>Si</b> la disimilitud entre grupos supera en más de 15 % a la de dentro de los grupos</td><td><b>entonces</b> los grupos tienen composiciones distintas.</td></tr>
+      <tr><td><b>Si</b> el estrés de la NMDS pasa de 0.20</td><td><b>entonces</b> la ordenación es una representación pobre: lee el dendrograma o prueba otro índice.</td></tr>
+      <tr><td><b>Si</b> A relativo de Pretzsch pasa de 70 %</td><td><b>entonces</b> la estructura vertical es compleja: las especies ocupan varios pisos.</td></tr>
+      <tr><td><b>Si</b> R corregida es menor que 1 con <i>p</i> &lt; 0.05 (o mayor que 1)</td><td><b>entonces</b> los árboles están agregados (o regularmente espaciados); la curva L(r) − r dice a qué distancias.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guías para interpretar, no leyes: el tamaño de las parcelas, el diámetro mínimo inventariado y la historia del rodal cambian lo que los índices pueden decir.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -182,24 +182,24 @@
     </tbody>
   </table>
   <p>The <span class="ui">Smallest DBH measured (cm)</span> of <span class="ruta">Block 3<span class="sep">›</span>Stand structure</span> is not a column but a field: the diameter from which trees were measured (2.5 cm in the example cloud forest, 5 cm in the coffee farm), which truncates the Weibull and sets the start of the classes (B.2). Do not confuse it with <code>dap_corte_cm</code>, the diameter that separates the large plot from the small one in nested plots.</p>
-  <p>The example CSV files of the <code>data/</code> folder use these names, with a decimal point and in UTF-8, so they load without matching anything. The soil card also reads the layer format of soil analyses, with its system, year, layer written as “0-10” and thickness; with several systems or years, it computes them one at a time. A template for any card, with the keys and three rows of the first example, comes from its <span class="ui">⤓ Template</span> button as <code>forestpro_&lt;card&gt;_plantilla.csv</code> (for example, <code>forestpro_b3t_plantilla.csv</code>):</p>
+  <p>The example CSV files of the <code>data/</code> folder use these names, with a decimal point and in UTF-8, so they load without matching anything. The soil card also reads the layer format of soil analyses, with its system, year, layer written as “0-10” and thickness; with several systems or years, it computes them one at a time. A template for any card, with the keys and three rows of the first example, comes from its <span class="ui">⤓ Template</span> button as <code>forestpro_&lt;card&gt;_template.csv</code> (for example, <code>forestpro_b3t_template.csv</code>; with the interface in Spanish, <code>…_plantilla.csv</code>):</p>
   <pre class="archivo">parcela,estrato,especie,familia,dap,altura,copa,estado,x,y
-P01,,Inga vera,Fabaceae,29.7,14.6,6.1,vivo,-7.1,2.6
-P01,,Inga vera,Fabaceae,38.2,12.8,7.6,vivo,-0.2,7.9
-P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
-  <p class="small">The template of the Block 3 trees, with the first three rows of the example coffee farm. Its stratum column is empty because the coffee farm takes its strata from the plot table.</p>
+P01,,Inga vera,Fabaceae,29.7,14.6,6.1,alive,-7.1,2.6
+P01,,Inga vera,Fabaceae,38.2,12.8,7.6,alive,-0.2,7.9
+P01,,Inga vera,Fabaceae,36.6,14,7.3,alive,-6.6,12.7</pre>
+  <p class="small">The template of the Block 3 trees, with the first three rows of the example coffee farm, with the interface in English (the status of the example trees comes in the interface language: <i>alive</i>, <i>vivo</i> in Spanish; the keys of the header row do not change). Its stratum column is empty because the coffee farm takes its strata from the plot table.</p>
 
   <h3>A.3 · What the app writes</h3>
   <table class="apx compacta ficheros">
     <thead><tr><th style="width:0.55in">Block</th><th style="width:2.5in">File</th><th>What it contains</th></tr></thead>
     <tbody>
-      <tr><td>2 to 9</td><td><code>forestpro_&lt;table&gt;.csv</code> · <code>.xlsx</code></td><td>Each result table from its <span class="ui">⤓ CSV</span> and <span class="ui">⤓ XLSX</span> buttons. The names are, by block: <b>2</b> <code>arboles</code>, <code>especies</code>, <code>cubicacion</code>, <code>trozas</code>, <code>modelos_volumen</code>, <code>coef_…</code>, <code>ahusamiento</code>, <code>altura_diametro</code>, <code>coef_hd_…</code>, <code>alturas_estimadas</code>; <b>3</b> <code>parcelas_ha</code>, <code>densidad</code>, <code>disenos</code>, <code>estratos</code>, <code>asignacion</code>, <code>relascopia</code>, <code>tabla_rodal</code>, <code>weibull</code>, <code>ivi</code>; <b>4</b> <code>ecuaciones</code>, <code>densidades</code>, <code>biomasa_arboles</code>, <code>biomasa_parcelas</code>, <code>monte_carlo</code>, <code>madera_caida</code>, <code>carbono_suelo</code>, <code>reservorios</code>; <b>5</b> <code>incrementos_…</code>, <code>turno</code>, <code>modelos_crecimiento</code>, <code>coef_crecimiento</code>, <code>indice_sitio</code>, <code>sitio_parcelas</code>, <code>clases_sitio</code>, <code>clutter</code>, <code>tabla_produccion</code>; <b>6</b> <code>indices_diversidad</code>, <code>hill</code>, <code>matriz_comunidad</code>, <code>estratos_altura</code>, <code>pretzsch</code>; <b>7</b> <code>sombra_parcelas</code>, <code>sombra_manejo</code>, <code>anillos</code>, <code>sombra_rendimiento</code>, <code>presupuesto_carbono</code>; <b>8</b> <code>poligonos</code>, <code>cuadricula</code>, <code>variograma</code>; <b>9</b> <code>trozas</code>, <code>aserrada</code>, <code>conversion</code>, <code>flujo</code>. The file names are the same in both languages.</td></tr>
-      <tr><td>2</td><td><code>forestpro_alturas_completas.csv</code></td><td>The trees with their height measured or estimated by the height–diameter curve: tree, species, DBH, height and an <code>altura_estimada</code> column (1 if it was estimated).</td></tr>
-      <tr><td>6</td><td><code>forestpro_matriz_para_clusteringpro.csv</code> · <code>…_para_pcapro.csv</code></td><td>The community matrix (site, group and one column per species), ready for the suite’s clustering and factor analysis apps.</td></tr>
-      <tr><td>8</td><td><code>forestpro_mapa.gpx</code> · <code>.kml</code> · <code>.geojson</code> · <code>.csv</code></td><td>The plots (with their stratum, basal area and number of trees in GeoJSON), the grid points and the polygons. In GPX, polygons go as closed tracks; in CSV only the points go (name, lat, lon, description). With the grid only: <code>forestpro_cuadricula.…</code>.</td></tr>
-      <tr><td>10</td><td><code>forestpro_informe_&lt;property&gt;.html</code></td><td>The report (Section 10.1).</td></tr>
-      <tr><td>10</td><td><code>forestpro_tablas.xlsx</code> · <code>forestpro_tablas_csv.zip</code></td><td>All the result tables, one sheet or one CSV per table (Section 10.2).</td></tr>
-      <tr><td>10</td><td><code>forestpro_proyecto_&lt;property&gt;.json</code></td><td>The project (Section 10.3 and A.4).</td></tr>
+      <tr><td>2 to 9</td><td><code>forestpro_&lt;table&gt;.csv</code> · <code>.xlsx</code></td><td>Each result table from its <span class="ui">⤓ CSV</span> and <span class="ui">⤓ XLSX</span> buttons. With the interface in English the names are, by block: <b>2</b> <code>trees</code>, <code>species</code>, <code>scaling</code>, <code>logs</code>, <code>volume_models</code>, <code>coef_…</code>, <code>taper</code>, <code>height_diameter</code>, <code>coef_hd_…</code>, <code>estimated_heights</code>; <b>3</b> <code>plots_ha</code>, <code>density</code>, <code>designs</code>, <code>strata</code>, <code>allocation</code>, <code>relascope</code>, <code>stand_table</code>, <code>weibull</code>, <code>ivi</code>; <b>4</b> <code>equations</code>, <code>densities</code>, <code>biomass_trees</code>, <code>biomass_plots</code>, <code>monte_carlo</code>, <code>downed_wood</code>, <code>soil_carbon</code>, <code>pools</code>; <b>5</b> <code>increments_…</code>, <code>rotation</code>, <code>growth_models</code>, <code>growth_coef</code>, <code>site_index</code>, <code>site_plots</code>, <code>site_classes</code>, <code>clutter</code>, <code>yield_table</code>; <b>6</b> <code>diversity_indices</code>, <code>hill</code>, <code>community_matrix</code>, <code>height_strata</code>, <code>pretzsch</code>; <b>7</b> <code>shade_plots</code>, <code>shade_management</code>, <code>rings</code>, <code>shade_yield</code>, <code>carbon_budget</code>; <b>8</b> <code>polygons</code>, <code>grid</code>, <code>variogram</code>; <b>9</b> <code>logs</code>, <code>lumber</code>, <code>conversion</code>, <code>cash_flow</code>. With the interface in Spanish, the same files get Spanish names (<code>forestpro_trozas.csv</code>…).</td></tr>
+      <tr><td>2</td><td><code>forestpro_complete_heights.csv</code></td><td>The trees with their height measured or estimated by the height–diameter curve: <code>arbol</code>, <code>especie</code>, <code>dap</code>, <code>altura</code> and an <code>altura_estimada</code> column (1 if it was estimated); the header keeps the keys of A.2.</td></tr>
+      <tr><td>6</td><td><code>forestpro_matrix_for_clusteringpro.csv</code> · <code>…_for_pcapro.csv</code></td><td>The community matrix (site, group and one column per species), ready for the suite’s clustering and factor analysis apps.</td></tr>
+      <tr><td>8</td><td><code>forestpro_map.gpx</code> · <code>.kml</code> · <code>.geojson</code> · <code>.csv</code></td><td>The plots (with their stratum, basal area and number of trees in GeoJSON), the grid points and the polygons. In GPX, polygons go as closed tracks; in CSV only the points go, with the header <code>name</code>, <code>lat</code>, <code>lon</code>, <code>description</code>. With the grid only: <code>forestpro_grid.…</code>.</td></tr>
+      <tr><td>10</td><td><code>forestpro_report_&lt;property&gt;.html</code></td><td>The report (Section 10.1).</td></tr>
+      <tr><td>10</td><td><code>forestpro_tables.xlsx</code> · <code>forestpro_tables_csv.zip</code></td><td>All the result tables, one sheet or one CSV per table (Section 10.2).</td></tr>
+      <tr><td>10</td><td><code>forestpro_project_&lt;property&gt;.json</code></td><td>The project (Section 10.3 and A.4).</td></tr>
       <tr><td>10</td><td><code>forestpro.bib</code></td><td>The citation in BibTeX.</td></tr>
       <tr><td>any</td><td>Figures, from the studio</td><td>PNG, SVG, vector PDF or TIFF, at the size and resolution you ask for, in the colors of the light theme.</td></tr>
     </tbody>
@@ -497,10 +497,10 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Assmann, E. (1970). <i>The Principles of Forest Yield Study</i>. Pergamon.</li>
     <li>Bailey, R. L. and Dell, T. R. (1973). Quantifying diameter distributions with the Weibull function. <i>Forest Science</i> 19:97–104.</li>
     <li>Bitterlich, W. (1948). Die Winkelzählprobe. <i>Allgemeine Forst- und Holzwirtschaftliche Zeitung</i> 59:4–5.</li>
-    <li>Cochran, W. G. (1977). <i>Sampling Techniques</i>, §4.6 y §5.5. Wiley.</li>
-    <li>Curtis, J. T. y McIntosh, R. P. (1951). An upland forest continuum in the prairie-forest border region of Wisconsin. <i>Ecology</i> 32:476–496.</li>
+    <li>Cochran, W. G. (1977). <i>Sampling Techniques</i>, §4.6 and §5.5. Wiley.</li>
+    <li>Curtis, J. T. and McIntosh, R. P. (1951). An upland forest continuum in the prairie-forest border region of Wisconsin. <i>Ecology</i> 32:476–496.</li>
     <li>Grosenbaugh, L. R. (1952). Plotless timber estimates — new, fast, easy. <i>Journal of Forestry</i> 50:32–37.</li>
-    <li>Hegyi, F. (1974). A simulation model for managing jack-pine stands. En <i>Growth Models for Tree and Stand Simulation</i>, pp. 74–90. Royal College of Forestry.</li>
+    <li>Hegyi, F. (1974). A simulation model for managing jack-pine stands. In <i>Growth Models for Tree and Stand Simulation</i>, pp. 74–90. Royal College of Forestry.</li>
     <li>Reineke, L. H. (1933). Perfecting a stand-density index for even-aged forests. <i>J. Agric. Res.</i> 46:627–638.</li>
     <li>Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. <i>Biometrics Bulletin</i> 2:110–114.</li>
     <li>Shiver, B. D. and Borders, B. E. (1996). <i>Sampling Techniques for Forest Resource Inventory</i>. Wiley.</li>
@@ -513,7 +513,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Chave, J. et al. (2005). Tree allometry and improved estimation of carbon stocks and balance in tropical forests. <i>Oecologia</i> 145:87–99. doi:10.1007/s00442-005-0100-x</li>
     <li>Chave, J. et al. (2009). Towards a worldwide wood economics spectrum. <i>Ecology Letters</i> 12:351–366.</li>
     <li>Chave, J. et al. (2014). Improved allometric models to estimate the aboveground biomass of tropical trees. <i>Global Change Biology</i> 20:3177–3190. doi:10.1111/gcb.12629</li>
-    <li>IPCC (2006). <i>2006 IPCC Guidelines for National Greenhouse Gas Inventories</i>, vol. 4, ch. 4 (tables 4.3 y 4.4).</li>
+    <li>IPCC (2006). <i>2006 IPCC Guidelines for National Greenhouse Gas Inventories</i>, vol. 4, ch. 4 (tables 4.3 and 4.4).</li>
     <li>Pearson, T. R. H., Brown, S. L. and Birdsey, R. A. (2007). <i>Measurement Guidelines for the Sequestration of Forest Carbon</i>. USDA Forest Service, GTR NRS-18.</li>
     <li>Réjou-Méchain, M. et al. (2017). BIOMASS: an R package for estimating above-ground biomass and its uncertainty in tropical forests. <i>Methods in Ecology and Evolution</i> 8:1163–1167.</li>
     <li>Van Wagner, C. E. (1968). The line intersect method in forest fuel sampling. <i>Forest Science</i> 14:20–26.</li>
@@ -530,7 +530,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Davis, L. S., Johnson, K. N., Bettinger, P. S. and Howard, T. E. (2001). <i>Forest Management</i>, 4th ed. McGraw-Hill.</li>
     <li>Gompertz, B. (1825). On the nature of the function expressive of the law of human mortality. <i>Phil. Trans. R. Soc.</i> 115:513–583.</li>
     <li>Schumacher, F. X. (1939). A new growth curve and its application to timber yield studies. <i>Journal of Forestry</i> 37:819–820.</li>
-    <li>Theil, H. (1953). Repeated least squares applied to complete equation systems. Central Planning Bureau, La Haya.</li>
+    <li>Theil, H. (1953). Repeated least squares applied to complete equation systems. Central Planning Bureau, The Hague.</li>
     <li>Zeide, B. (1993). Analysis of growth equations. <i>Forest Science</i> 39:594–616.</li>
   </ul>
   <h3>F.5 · Block 6 · Diversity and ecology</h3>
@@ -544,7 +544,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Clark, P. J. and Evans, F. C. (1954). Distance to nearest neighbor as a measure of spatial relationships in populations. <i>Ecology</i> 35:445–453.</li>
     <li>Colwell, R. K., Mao, C. X. and Chang, J. (2004). Interpolating, extrapolating, and comparing incidence-based species accumulation curves. <i>Ecology</i> 85:2717–2727.</li>
     <li>de Leeuw, J. and Mair, P. (2009). Multidimensional scaling using majorization: SMACOF in R. <i>J. Stat. Softw.</i> 31(3).</li>
-    <li>Donnelly, K. P. (1978). Simulations to determine the variance and edge effect of total nearest neighbor distance. En <i>Simulation Methods in Archaeology</i>, pp. 91–95. Cambridge University Press.</li>
+    <li>Donnelly, K. P. (1978). Simulations to determine the variance and edge effect of total nearest neighbor distance. In <i>Simulation Methods in Archaeology</i>, pp. 91–95. Cambridge University Press.</li>
     <li>Fisher, R. A., Corbet, A. S. and Williams, C. B. (1943). The relation between the number of species and the number of individuals. <i>J. Anim. Ecol.</i> 12:42–58.</li>
     <li>Hill, M. O. (1973). Diversity and evenness: a unifying notation and its consequences. <i>Ecology</i> 54:427–432.</li>
     <li>Hurlbert, S. H. (1971). The nonconcept of species diversity. <i>Ecology</i> 52:577–586.</li>
@@ -569,9 +569,9 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Nair, P. K. R. (1993). <i>An Introduction to Agroforestry</i>. Kluwer.</li>
     <li>Otsu, N. (1979). A threshold selection method from gray-level histograms. <i>IEEE Trans. Syst. Man Cybern.</i> 9:62–66.</li>
     <li>Segura, M., Kanninen, M. and Suárez, D. (2006). Allometric models for estimating aboveground biomass of shade trees and coffee bushes grown together. <i>Agroforestry Systems</i> 68:143–150. doi:10.1007/s10457-006-9005-x</li>
-    <li>Soto-Pinto, L., Anzueto, M., Mendoza, J., Jiménez-Ferrer, G. y de Jong, B. (2010). Carbon sequestration through agroforestry in indigenous communities of Chiapas, Mexico. <i>Agroforestry Systems</i> 78:39–51.</li>
-    <li>Soto-Pinto, L., Perfecto, I., Castillo-Hernández, J. y Caballero-Nieto, J. (2000). Shade effect on coffee production at the northern Tzeltal zone of the state of Chiapas, Mexico. <i>Agric. Ecosyst. Environ.</i> 80:61–69.</li>
-    <li>Weisberg, S. (2014). <i>Applied Linear Regression</i>, 4th ed., sec. 7.6 (método delta). Wiley.</li>
+    <li>Soto-Pinto, L., Anzueto, M., Mendoza, J., Jiménez-Ferrer, G. and de Jong, B. (2010). Carbon sequestration through agroforestry in indigenous communities of Chiapas, Mexico. <i>Agroforestry Systems</i> 78:39–51.</li>
+    <li>Soto-Pinto, L., Perfecto, I., Castillo-Hernández, J. and Caballero-Nieto, J. (2000). Shade effect on coffee production at the northern Tzeltal zone of the state of Chiapas, Mexico. <i>Agric. Ecosyst. Environ.</i> 80:61–69.</li>
+    <li>Weisberg, S. (2014). <i>Applied Linear Regression</i>, 4th ed., sec. 7.6 (delta method). Wiley.</li>
   </ul>
   <h3>F.7 · Block 8 · Maps</h3>
   <ul class="refs">
@@ -580,10 +580,10 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Isaaks, E. H. and Srivastava, R. M. (1989). <i>An Introduction to Applied Geostatistics</i>. Oxford University Press.</li>
     <li>Karney, C. F. F. (2011). Transverse Mercator with an accuracy of a few nanometers. <i>Journal of Geodesy</i> 85:475–485.</li>
     <li>Matheron, G. (1963). Principles of geostatistics. <i>Economic Geology</i> 58:1246–1266.</li>
-    <li>OpenStreetMap Foundation. Política de uso de teselas y atribución: openstreetmap.org/copyright.</li>
+    <li>OpenStreetMap Foundation. Tile usage policy and attribution: openstreetmap.org/copyright.</li>
     <li>Shepard, D. (1968). A two-dimensional interpolation function for irregularly-spaced data. <i>Proc. ACM National Conference</i>, pp. 517–524.</li>
     <li>Snyder, J. P. (1987). <i>Map Projections — A Working Manual</i>. USGS Professional Paper 1395.</li>
-    <li>Todhunter, I. (1886). <i>Spherical Trigonometry</i>, 5th ed. Macmillan (teorema de L'Huilier).</li>
+    <li>Todhunter, I. (1886). <i>Spherical Trigonometry</i>, 5th ed. Macmillan (L'Huilier's theorem).</li>
   </ul>
   <h3>F.8 · Block 9 · Forestry tools</h3>
   <ul class="refs">
@@ -592,18 +592,18 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Clark, J. F. (1906). The measurement of saw logs. <i>Forestry Quarterly</i> 4:79–93.</li>
     <li>Faustmann, M. (1849). Berechnung des Werthes, welchen Waldboden sowie noch nicht haubare Holzbestände für die Waldwirthschaft besitzen. <i>Allgemeine Forst- und Jagd-Zeitung</i> 25:441–455.</li>
     <li>Klemperer, W. D. (1996). <i>Forest Resource Economics and Finance</i>. McGraw-Hill.</li>
-    <li>NIST (2008). <i>Guide for the Use of the International System of Units (SI)</i>. Special Publication 811, apéndice B.</li>
-    <li>Prodan, M., Peters, R., Cox, F. and Real, P. (1997). <i>Mensura Forestal</i>. IICA y GTZ, San José.</li>
+    <li>NIST (2008). <i>Guide for the Use of the International System of Units (SI)</i>. Special Publication 811, appendix B.</li>
+    <li>Prodan, M., Peters, R., Cox, F. and Real, P. (1997). <i>Mensura Forestal</i>. IICA and GTZ, San José.</li>
     <li>Steele, P. H. (1984). <i>Factors Determining Lumber Recovery in Sawmilling</i>. USDA Forest Service, Gen. Tech. Rep. FPL-39.</li>
   </ul>
   <h3>F.9 · The allometric equations of the catalogue (Block 4)</h3>
   <ul class="refs">
-    <li>Brown, S. (1997). <i>Estimating Biomass and Biomass Change of Tropical Forests: a Primer</i>. FAO Forestry Paper 134, ec. 3.2.1.</li>
+    <li>Brown, S. (1997). <i>Estimating Biomass and Biomass Change of Tropical Forests: a Primer</i>. FAO Forestry Paper 134, eq. 3.2.1.</li>
     <li>Díaz-Franco, R. et al. (2007). Determinación de ecuaciones alométricas para estimar biomasa y carbono en <i>Pinus patula</i>. <i>Madera y Bosques</i> 13(1):25–34. doi:10.21829/myb.2007.1311233</li>
     <li>Figueroa-Navarro, C. M. et al. (2010). Estimación de la biomasa en un bosque bajo manejo de <i>Pinus patula</i>. <i>Rev. Mex. Cienc. For.</i> 1(1):105–112.</li>
     <li>Jenkins, J. C. et al. (2003). National-scale biomass estimators for United States tree species. <i>Forest Science</i> 49:12–35. doi:10.1093/forestscience/49.1.12</li>
-    <li>Segura, M. et al. (2006). <i>Agroforestry Systems</i> 68:143–150 (d₁₅: diámetro del tallo a 15 cm del suelo).</li>
-    <li>van Noordwijk, M. et al. (2002). Carbon stock assessment for a forest-to-coffee conversion landscape in Sumber-Jaya. <i>Science in China C</i> 45 (supl.):75–86. La fuente no indica a qué altura se mide D.</li>
+    <li>Segura, M. et al. (2006). <i>Agroforestry Systems</i> 68:143–150 (d₁₅: stem diameter 15 cm above the ground).</li>
+    <li>van Noordwijk, M. et al. (2002). Carbon stock assessment for a forest-to-coffee conversion landscape in Sumber-Jaya. <i>Science in China C</i> 45 (suppl.):75–86. The source does not say at what height D is measured.</li>
   </ul>
   <!-- /REFERENCIAS -->
 </section>

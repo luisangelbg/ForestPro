@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-3" data-pestana="3" data-orden="3" style="--acento: var(--b3)">
+  <div class="cap-apertura">
+    <div class="cap-num">3</div>
+    <div class="cap-etiqueta">Capítulo tres · Bloque 3</div>
+    <h1 data-corto="Inventario y muestreo">Inventario forestal y muestreo</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Un inventario mide unos cuantos árboles en unas cuantas parcelas y dice algo de todo el predio. Este bloque hace ese salto: expande cada árbol a la hectárea según la parcela en que se midió, estima la media del predio con su error de muestreo según el diseño con que se tomaron las parcelas, calcula cuántas parcelas harían falta, procesa la relascopía y describe la estructura del rodal. El inventario que cargas aquí es el que usan después los bloques 4, 6, 7 y 8.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k3"></span><span class="k3"></span><span class="k4"></span><span class="k8"></span></div>
+    <ul class="cap-contenido">
+      <li><b>3.1</b>El inventario: árboles y parcelas</li>
+      <li><b>3.2</b>Expansión a la hectárea</li>
+      <li><b>3.3</b>Estimación y error de muestreo</li>
+      <li><b>3.4</b>Tamaño de muestra</li>
+      <li><b>3.5</b>Relascopía (muestreo puntual)</li>
+      <li><b>3.6</b>Estructura del rodal</li>
+    </ul>
+  </div>
+
+  <p class="lead">El bloque se presenta así: <span class="ui">Carga los árboles y, si las tienes, las parcelas (con su forma, tamaño, estrato y coordenadas). El inventario queda disponible para la biomasa, la diversidad, la agroforestería y el mapa.</span> Todo lo demás se calcula solo en cuanto hay árboles: no hay botón de calcular, y cada cambio de un control rehace las cuentas que dependen de él.</p>
+  <p>El capítulo usa los dos inventarios de ejemplo. El <b>cafetal bajo sombra</b> (<span class="ui">Empezar con un ejemplo →</span> en la portada) tiene 25 parcelas circulares iguales agrupadas en fincas, sin superficie por estrato: sirve para el muestreo aleatorio, el sistemático y el de conglomerados. El <b>bosque mesófilo estratificado</b> (<span class="ruta">Datos de ejemplo<span class="sep">›</span>Abrir en Inventario</span> de su tarjeta) tiene parcelas anidadas en tres estratos con su superficie: sirve para el estratificado, la relascopía y la estructura de un bosque irregular.</p>
+
+  <!-- 3.1 -->
+  <h2 id="s3-1"><span class="num">3.1</span>El inventario: árboles y parcelas</h2>
+  <p class="lead">La tarjeta tiene dos tarjetas de datos, una debajo de la otra. Su subtítulo lo resume: <span class="ui">Una fila por árbol con su parcela; una fila por parcela con su diseño. Si no cargas parcelas, todas toman el diseño de abajo.</span></p>
+
+  <h3>Árboles</h3>
+  <p>Una fila por árbol. Son obligatorias <span class="ui">Parcela</span>* y <span class="ui">DAP (cm)</span>*; las demás son opcionales: <span class="ui">Estrato</span>, <span class="ui">Especie</span>, <span class="ui">Familia</span>, <span class="ui">Altura total (m)</span>, <span class="ui">Diámetro de copa (m)</span>, <span class="ui">Estado (vivo / muerto)</span> y las coordenadas <span class="ui">x (m)</span> y <span class="ui">y (m)</span> de cada árbol desde el centro de su parcela. Un árbol cuenta como muerto en pie si su estado contiene «muert», «seco» o «tocon» (escrito sin acento), o «dead» o «stump» en inglés; cualquier otro valor, o ninguno, lo deja vivo. Los ejemplos son <span class="ui">Cafetal bajo sombra: árboles</span> y <span class="ui">Bosque mesófilo: árboles</span>; al cargar cualquiera de los dos se cargan también sus parcelas.</p>
+
+  <h3>Parcelas (opcional)</h3>
+  <p>Una fila por parcela, con <span class="ui">Parcela</span>* (el mismo identificador que en los árboles) y, según el caso, <span class="ui">Estrato</span>, <span class="ui">Superficie del estrato (ha)</span>, <span class="ui">Conglomerado</span>, las medidas de la parcela y sus coordenadas <span class="ui">Latitud</span> y <span class="ui">Longitud</span>. El diseño de cada parcela se lee de sus columnas en este orden:</p>
+  <table class="compacta">
+    <caption><b>Tabla 3.1.</b> Cómo lee la app el diseño de cada parcela</caption>
+    <thead><tr><th style="width:2.6in">Si la parcela tiene…</th><th>la app la toma como</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Radio (m)</span>, <span class="ui">Radio de la subparcela (m)</span> y <span class="ui">DAP de corte entre parcelas (cm)</span></td><td>circular anidada: los árboles con DAP mayor o igual al corte se midieron en el círculo grande; los menores, en el chico</td></tr>
+      <tr><td>sólo <span class="ui">Radio (m)</span></td><td>circular</td></tr>
+      <tr><td><span class="ui">Lado del cuadrado (m)</span></td><td>cuadrada</td></tr>
+      <tr><td><span class="ui">Largo (m)</span> y <span class="ui">Ancho (m)</span></td><td>rectangular</td></tr>
+      <tr><td>sólo <span class="ui">Superficie de la parcela (m²)</span></td><td>una parcela de esa superficie, sin forma</td></tr>
+      <tr><td>nada de lo anterior, o no está en la tabla</td><td>el diseño por omisión</td></tr>
+    </tbody>
+  </table>
+  <p>El recuadro desplegable <span class="ui">Diseño por omisión y superficie del predio</span> tiene el diseño que toman las parcelas sin el suyo —<span class="ui">Forma</span> (<span class="ui">Circular</span>, <span class="ui">Cuadrada</span>, <span class="ui">Rectangular</span> o <span class="ui">Circular anidada</span>) con sus medidas: <span class="ui">Radio (m)</span> 17.84, <span class="ui">Lado (m)</span> 31.62, <span class="ui">Largo (m)</span> 50, <span class="ui">Ancho (m)</span> 20, <span class="ui">Radio de la subparcela (m)</span> 5.64 y <span class="ui">DAP de corte (cm)</span> 10, que corresponden a 1 000 m² y, la subparcela, a 100 m²— y la <span class="ui">Superficie total (ha)</span> del predio (100 por omisión), que da el total del predio en la estimación.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b3-inventario.png" alt="La tarjeta de parcelas del bosque mesófilo, el diseño por omisión desplegado y los mosaicos del inventario"></div>
+    <figcaption><b>Figura 3.1.</b> El bosque mesófilo de ejemplo cargado, con el diseño por omisión desplegado. Las parcelas traen su propio diseño, así que el de omisión no se usa: la línea de abajo dice que son circulares anidadas de 17.84 m de radio para los árboles de 10 cm o más y de 5.64 m para los menores. Hay 24 parcelas en 3 estratos, 1830 árboles (95 muertos en pie) y 30 especies.</figcaption>
+  </figure>
+  <p>Los mosaicos cuentan las parcelas (con el número de estratos), los árboles (con los muertos en pie), las especies y, si los hay, los conglomerados y las alturas estimadas. El cafetal de ejemplo da 25 parcelas en 4 estratos —los cuatro manejos—, 719 árboles con 25 muertos en pie, 10 especies y 5 conglomerados, y la línea de diseño dice <span class="ui">circular de 999.9 m² (r = 17.84 m)</span>. Esa línea es la primera comprobación que debes hacer: si la superficie no es la que mediste en campo, todo lo que sigue sale mal.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Una parcela sin árboles también cuenta</div>
+    <p>Las parcelas de la tabla de parcelas que no tienen ningún árbol entran en el inventario con cero árboles por hectárea. Es lo correcto —una parcela vacía es una medición—, pero sólo si está en la tabla de parcelas: si no cargas esa tabla, una parcela sin árboles simplemente no existe para la app.</p>
+  </div>
+
+  <!-- 3.2 -->
+  <h2 id="s3-2"><span class="num">3.2</span>Expansión a la hectárea</h2>
+  <p class="lead">Cada árbol medido vale por varios árboles por hectárea: <span class="ui">Cada árbol representa 10 000/a árboles por hectárea, con a la superficie de la parcela (o de la subparcela que le toca por su diámetro).</span></p>
+  <div class="formula">FE = 10 000 / <i>a</i> &nbsp;·&nbsp; <i>N</i> = Σ FE &nbsp;·&nbsp; <i>G</i> = Σ FE·<i>g</i> &nbsp;·&nbsp; <i>V</i> = Σ FE·<i>v</i> &nbsp;·&nbsp; Dq = √(Σ FE·<i>d</i>²/<i>N</i>)</div>
+  <p>En una parcela de 1 000 m², cada árbol vale 10 árboles por hectárea; en la subparcela de 100 m² del mesófilo, 100. Tres controles deciden cómo se calcula el volumen de cada árbol: <span class="ui">Volumen de cada árbol</span> elige entre <span class="ui">g · H · coeficiente mórfico</span>, con el <span class="ui">Coeficiente mórfico</span> de al lado (0.5), y <span class="ui">Ecuación ajustada en el Bloque 2</span>, que usa el modelo ganador de la sección 2.3 si lo hay (si no, sigue con el coeficiente). La casilla <span class="ui">Estimar las alturas faltantes (Näslund)</span>, marcada por omisión, ajusta una curva de Näslund con los árboles del mismo inventario que sí tienen altura (hacen falta al menos 6) y estima con ella la de los demás; el mosaico <span class="ui">Alturas estimadas</span> de la sección 3.1 dice cuántas fueron. Sin altura no hay volumen: si a un árbol le falta, el volumen de su parcela no se puede calcular y la estimación del volumen lo avisa.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b3-expansion.png" alt="Los controles de la expansión y la figura del área basal por parcela del cafetal coloreada por manejo"></div>
+    <figcaption><b>Figura 3.2.</b> El área basal por hectárea de cada parcela del cafetal de ejemplo, agrupada por manejo y ordenada de mayor a menor dentro de cada uno. Las parcelas del manejo rústico tienen las mayores áreas basales (de 16.86 a 38.90 m²/ha) y las del monocultivo bajo sombra las menores (de 6.35 a 12.17 m²/ha).</figcaption>
+  </figure>
+  <p>Debajo de la figura, la tabla <span class="ui">Valores por hectárea de cada parcela</span> da, para cada una, su estrato, los árboles medidos, <i>N</i>, <i>G</i> y <i>V</i> por hectárea, el diámetro cuadrático medio, la altura dominante y los muertos en pie por hectárea. La parcela P01 del cafetal, por ejemplo, con 38 árboles, tiene 380 árboles/ha, 18.97 m²/ha, 141.2 m³/ha, un Dq de 25.2 cm y una altura dominante de 16.5 m. Los muertos en pie se cuentan aparte y no entran en <i>N</i>, <i>G</i> ni <i>V</i>: P01 tiene 0, P04 tiene 40 árboles muertos por hectárea.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · la altura dominante</div>
+    <p>La app usa la definición de Assmann: la altura media de los 100 árboles más gruesos por hectárea, contando cada árbol tantas veces como su factor de expansión. En una parcela de 1 000 m², son los 10 árboles más gruesos. Es la altura que usan el índice de sitio (Bloque 5) y el índice de Hart–Becking (sección 3.6), porque depende poco de los aclareos.</p>
+  </div>
+
+  <!-- 3.3 -->
+  <h2 id="s3-3"><span class="num">3.3</span>Estimación y error de muestreo</h2>
+  <p class="lead">Ésta es la sección que responde la pregunta principal de un inventario: cuánto hay por hectárea en el predio y con qué precisión.</p>
+  <p>Cuatro controles: <span class="ui">Variable</span> (<span class="ui">Densidad (árboles/ha)</span>, <span class="ui">Área basal (m²/ha)</span> o <span class="ui">Volumen (m³/ha)</span>), <span class="ui">Diseño</span>, <span class="ui">Confianza</span> (90, 95 o 99 %) y la casilla <span class="ui">Corrección por población finita</span>. Al cargar el primer inventario, la app elige el diseño: <span class="ui">Estratificado</span> si hay dos o más estratos y todas las parcelas traen la superficie de su estrato, y <span class="ui">Muestreo aleatorio simple</span> en cualquier otro caso. Después, el diseño es el que tú elijas.</p>
+  <table class="compacta">
+    <caption><b>Tabla 3.2.</b> Los cuatro diseños</caption>
+    <thead><tr><th style="width:1.65in">Diseño</th><th>Qué hace y qué necesita</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Muestreo aleatorio simple</span></td><td>La media de las parcelas y su varianza <i>s</i>²/<i>n</i>; con la corrección, multiplicada por (1 − <i>n</i>/<i>N</i>). Sólo necesita las parcelas</td></tr>
+      <tr><td><span class="ui">Estratificado</span></td><td>La media de cada estrato pesada por su proporción de superficie, <i>W</i><sub>h</sub>, con la varianza Σ <i>W</i><sub>h</sub>² <i>s</i><sub>h</sub>²/<i>n</i><sub>h</sub> de la asignación que realmente se hizo y los grados de libertad efectivos de Satterthwaite. Necesita al menos 2 estratos con superficie y 2 parcelas en cada uno</td></tr>
+      <tr><td><span class="ui">Sistemático (diferencias sucesivas)</span></td><td>La media simple con la varianza de las diferencias entre parcelas vecinas de la malla, Σ(<i>y</i><sub>i+1</sub> − <i>y</i><sub>i</sub>)²/(2<i>n</i>(<i>n</i> − 1)). El orden de la malla es el de los identificadores de las parcelas, en orden natural (P2 antes que P10)</td></tr>
+      <tr><td><span class="ui">En conglomerados</span></td><td>El estimador de razón Σ<i>y</i><sub>i</sub>/Σ<i>m</i><sub>i</sub> con conglomerados de tamaño desigual, cuyos grados de libertad son los conglomerados menos uno. Necesita la columna <span class="ui">Conglomerado</span> en las parcelas</td></tr>
+    </tbody>
+  </table>
+  <p>Los mosaicos dan la <span class="ui">Media</span> con la mitad del intervalo, el <span class="ui">Error estándar</span> con sus grados de libertad, el <span class="ui">Error de muestreo</span> en porcentaje —<i>t</i>·EE/media·100, en verde si es de 10 % o menos, en ámbar hasta 20 % y en rojo arriba de 20 %—, el <span class="ui">Intervalo de confianza</span> y el <span class="ui">Total del predio</span> con su intervalo. Sigue la tabla <span class="ui">La misma variable con cada diseño</span>, con una fila por cada diseño que los datos permiten y la del elegido resaltada; su columna <span class="ui">Nota</span> da el error estándar con la asignación de Neyman (estratificado), el que tendría la malla tratada como aleatoria (sistemático) o el efecto del diseño (conglomerados). En el estratificado aparecen además la tabla <span class="ui">Por estrato</span> y una figura con la media y el intervalo de cada estrato y el de la estimación estratificada.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b3-estimacion.png" alt="La estimación estratificada de la densidad del bosque mesófilo: mosaicos, tabla por diseño, tabla por estrato y figura de medias e intervalos"></div>
+    <figcaption><b>Figura 3.3.</b> La densidad del bosque mesófilo de ejemplo con el diseño estratificado, que la app eligió sola: 2,347 árboles/ha ± 142, con un error de muestreo de 6.1 % y 14.7 grados de libertad efectivos. Como aleatorio simple, el error sería de 10.5 %. En la figura sólo se rotulan dos de los cuatro intervalos del eje horizontal; de izquierda a derecha son Conservado, Perturbado, Ribereño y la estimación estratificada.</figcaption>
+  </figure>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · estratificar el bosque mesófilo</div>
+    <p>Los tres estratos tienen densidades muy distintas: 1,976 árboles/ha en el conservado (600 ha, 10 parcelas), 3,038 en el perturbado (350 ha, 8 parcelas) y 1,958 en el ribereño (50 ha, 6 parcelas). Tratadas como una sola muestra, esas diferencias inflan la varianza; separadas por estrato, no. Por eso la interpretación dice que «Estratificar rinde 3.16 veces la precisión de tratar las parcelas como una sola muestra aleatoria». La media estratificada (2,347) tampoco es la simple (2,325): pesa cada estrato por su superficie, no por su número de parcelas, y el ribereño tiene seis parcelas en sólo el 5 % del predio.</p>
+  </div>
+  <p>El total del predio del estratificado se calcula con la suma de las superficies de los estratos (1,000 ha en el mesófilo: 2,346,797 árboles), no con la <span class="ui">Superficie total (ha)</span> del diseño por omisión, que usan los otros tres diseños. Si las dos cifras no coinciden, revisa cuál es la buena.</p>
+
+  <h3>El cafetal: aleatorio, sistemático y conglomerados</h3>
+  <p>Con el cafetal de ejemplo, la densidad es de 278 árboles/ha, con un error estándar de 25 y 24 grados de libertad: un error de muestreo de 18.3 % al 95 % y un intervalo de 227 a 328 (la figura I.5 de la introducción muestra esta tarjeta). En las 100 ha por omisión, el total es de 27,764 árboles. La tabla por diseño da dos lecturas más del mismo inventario:</p>
+  <table class="compacta">
+    <caption><b>Tabla 3.3.</b> La densidad del cafetal de ejemplo con cada diseño (95 % de confianza)</caption>
+    <thead><tr><th>Diseño</th><th class="num">Media</th><th class="num">Error estándar</th><th class="num">gl</th><th class="num">Error de muestreo (%)</th><th>Nota</th></tr></thead>
+    <tbody>
+      <tr><td>Aleatorio simple</td><td class="num">278</td><td class="num">25</td><td class="num">24.0</td><td class="num">18.3</td><td>—</td></tr>
+      <tr><td>Sistemático</td><td class="num">278</td><td class="num">14</td><td class="num">24.0</td><td class="num">10.2</td><td>EE como aleatorio: 25</td></tr>
+      <tr><td>Conglomerados</td><td class="num">278</td><td class="num">53</td><td class="num">4.0</td><td class="num">52.7</td><td>efecto del diseño: 4.61</td></tr>
+    </tbody>
+  </table>
+  <p>Las tres medias son iguales; lo que cambia es cuánto se sabe. Como malla sistemática, las parcelas vecinas se parecen y la varianza por diferencias sucesivas baja el error a 10.2 %. Como conglomerados —las cinco fincas—, el error sube a 52.7 %: las parcelas de una misma finca se parecen tanto que, según el efecto del diseño de 4.61, valen como menos de un cuarto de parcelas independientes, y sólo quedan 4 grados de libertad. Con el área basal pasa lo mismo: 17.45 m²/ha con 22.4 % como aleatorio, 18.0 % como sistemático y 60.0 % como conglomerados; con el volumen, 145.5 m³/ha con 27.3, 23.7 y 71.7 %.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>El diseño no se elige por el error que da</div>
+    <p>La tabla por diseño sirve para entender el inventario, no para escoger el diseño con el error más bajo. El diseño correcto es el que se usó en campo: si las parcelas se tomaron por fincas, el error es el de conglomerados, aunque sea el peor. La varianza sistemática, además, sólo es válida si el orden de los identificadores sigue la malla.</p>
+  </div>
+  <p>La corrección por población finita usa como número de parcelas posibles la superficie total entre la superficie media de las parcelas (en el cafetal, 100 ha / 0.1 ha = 1 000 parcelas). Con 25 de 1 000 parcelas medidas, apenas cambia nada: el error estándar baja de 25 a 24 y el error de muestreo de 18.3 a 18.0 %. Importa cuando se mide una fracción grande del predio. Cuando el error pasa de 10 %, la interpretación dice cuántas parcelas harían falta para bajar a ese valor con el coeficiente de variación del inventario: en el cafetal, unas 78 (CV de 44 %).</p>
+
+  <!-- 3.4 -->
+  <h2 id="s3-4"><span class="num">3.4</span>Tamaño de muestra</h2>
+  <p class="lead">Antes de salir al campo, o para planear la segunda fase de un inventario, la pregunta es la inversa: <span class="ui">¿Cuántas parcelas hacen falta para un error de muestreo dado?</span></p>
+  <p>Los campos son <span class="ui">Coeficiente de variación (%)</span> (40 por omisión), <span class="ui">Error permisible (%)</span> (10), <span class="ui">Parcelas posibles N (vacío = infinita)</span>, <span class="ui">Confianza</span> y <span class="ui">Asignación por estrato</span> (<span class="ui">Óptima (Neyman)</span> o <span class="ui">Proporcional</span>). El botón <span class="ui">Tomar el CV del inventario cargado</span> escribe el coeficiente de variación de la variable elegida en la sección 3.3, calculado como muestreo aleatorio simple. Los resultados se recalculan al escribir.</p>
+  <div class="formula"><i>n</i> = <i>t</i>²·CV²/<i>E</i>² &nbsp;·&nbsp; con <i>N</i> parcelas posibles: <i>n</i> = <i>t</i>²·CV²/(<i>E</i>² + <i>t</i>²·CV²/<i>N</i>)</div>
+  <p>Como <i>t</i> depende de los grados de libertad, que dependen de <i>n</i>, la app empieza con la <i>t</i> de 30 grados de libertad y repite con <i>n</i> − 1 hasta que <i>n</i> deja de cambiar. Los mosaicos dan las <span class="ui">Parcelas necesarias</span> con la <i>t</i> final, las que harían falta <span class="ui">Sin corrección finita</span> (si diste <i>N</i>) y las <span class="ui">Iteraciones</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b3-tamano.png" alt="La tarjeta Tamaño de muestra con el CV del bosque mesófilo y la asignación por estrato"></div>
+    <figcaption><b>Figura 3.4.</b> El tamaño de muestra con el CV de la densidad del bosque mesófilo de ejemplo (25.0 %): 27 parcelas para un error de 10 % al 95 % (<i>t</i> = 2.056 con 26 gl). Con los tres estratos y la asignación de Neyman, la tabla da <i>n</i> = 9 y reparte 6, 3 y 2 parcelas.</figcaption>
+  </figure>
+  <p>Si el inventario cargado tiene estratos con superficie, la tabla <span class="ui">Asignación por estrato</span> calcula el tamaño de un muestreo estratificado con la desviación estándar y la media de cada estrato y lo reparte: en proporción a <i>W</i><sub>h</sub><i>s</i><sub>h</sub> con la asignación óptima de Neyman, o a <i>W</i><sub>h</sub> con la proporcional. Ningún estrato recibe menos de 2 parcelas, y por eso las parcelas de la tabla pueden sumar más que el <i>n</i> del título: en el mesófilo, 6 + 3 + 2 = 11 frente a <i>n</i> = 9, porque el ribereño, con el 5 % de la superficie, recibiría menos de una. En cualquier caso, la comparación enseña lo que vale estratificar: 9 a 11 parcelas en lugar de 27 para el mismo error.</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · el cafetal</div>
+    <p>Con el cafetal cargado y la densidad como variable, <span class="ui">Tomar el CV del inventario cargado</span> escribe 44.2 % y la app pide 78 parcelas para un error de 10 % (<i>t</i> = 1.991 con 77 gl, en 2 iteraciones): tres veces las 25 que se midieron. Es el mismo número que da la interpretación de la sección 3.3.</p>
+  </div>
+
+  <!-- 3.5 -->
+  <h2 id="s3-5"><span class="num">3.5</span>Relascopía (muestreo puntual)</h2>
+  <p class="lead">En el muestreo puntual no hay parcela: desde cada punto se miran los árboles con un relascopio o una cuña y se cuentan los que quedan «dentro», es decir, los que se ven más anchos que el ángulo del instrumento. Cada árbol contado representa FAB/<i>g</i> árboles por hectárea.</p>
+  <p>Los campos son <span class="ui">Factor de área basal (m²/ha)</span> (2 por omisión) y <span class="ui">Coeficiente mórfico</span> (0.5), para el volumen. La tarjeta de datos pide una fila por árbol contado: <span class="ui">Punto</span>*, <span class="ui">Especie</span>, <span class="ui">DAP (cm)</span>* y <span class="ui">Altura (m)</span>. Su ejemplo es <span class="ui">Bosque mesófilo: 15 puntos, FAB = 2</span>, con 235 árboles; no se carga con el inventario del mesófilo, sino desde esta misma tarjeta.</p>
+  <div class="formula">por punto: <i>G</i> = FAB × árboles contados &nbsp;·&nbsp; <i>N</i> = Σ FAB/<i>g</i><sub>i</sub> &nbsp;·&nbsp; <i>V</i> = Σ FAB·<i>v</i><sub>i</sub>/<i>g</i><sub>i</sub></div>
+  <p>Un árbol de diámetro <i>d</i> (cm) entra si está a menos de <i>R</i> = <i>d</i>/(2√FAB) metros del punto: con FAB = 2, un árbol de 30 cm entra hasta a 10.6 m. Los gruesos se ven desde más lejos que los delgados, y así la muestra queda pesada por el área basal sin medir ninguna parcela. Entre puntos, la estimación es la del muestreo aleatorio simple, al 95 %.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b3-relascopia.png" alt="La tarjeta Relascopía con los 15 puntos del bosque mesófilo y sus mosaicos"></div>
+    <figcaption><b>Figura 3.5.</b> Los 15 puntos de relascopía del bosque mesófilo de ejemplo con FAB = 2: 15.7 árboles contados por punto, 31.33 ± 3.39 m²/ha de área basal (10.8 %), 435 ± 66 árboles/ha (15.1 %) y 274.9 ± 26.1 m³/ha (9.5 %).</figcaption>
+  </figure>
+  <p>La tabla <span class="ui">Por punto</span> da los árboles contados y <i>G</i>, <i>N</i> y <i>V</i> por hectárea de cada punto: en R01 se contaron 21 árboles, que con FAB = 2 son 42.0 m²/ha. La interpretación compara el promedio con el intervalo recomendado de 7 a 15 árboles por punto. En el ejemplo, con 15.7, dice que son «muchos; un FAB mayor ahorraría tiempo sin perder mucha precisión».</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>La relascopía no mide lo mismo que las parcelas</div>
+    <p>La densidad de la relascopía (435 árboles/ha) no se compara con la de las parcelas del mesófilo (más de 2,300): las parcelas anidadas incluyen los árboles desde 2.5 cm de DAP, y en la relascopía los árboles delgados casi nunca quedan «dentro». El área basal, en cambio, sí es comparable, porque la dominan los árboles gruesos. El resultado de la relascopía no entra en el inventario que usan los otros bloques.</p>
+  </div>
+
+  <!-- 3.6 -->
+  <h2 id="s3-6"><span class="num">3.6</span>Estructura del rodal</h2>
+  <p class="lead">La última tarjeta describe cómo está hecho el rodal: cómo se reparten los diámetros, qué especies dominan, qué tan denso está y cuánta competencia tiene cada árbol. Usa sólo los árboles vivos, y hacen falta al menos 10.</p>
+  <p>Los controles son <span class="ui">Ancho de clase (cm)</span> (5), <span class="ui">Weibull</span> (<span class="ui">2 parámetros</span> o <span class="ui">3 parámetros</span>), <span class="ui">Estrato</span> (<span class="ui">Todos</span> o uno) y <span class="ui">Radio de Hegyi (m)</span> (6).</p>
+
+  <h3>Distribución diamétrica y modelo de Weibull</h3>
+  <p>La figura da los árboles por hectárea en cada clase diamétrica, ya expandidos, con la curva de Weibull ajustada encima. La Weibull se ajusta por máxima verosimilitud con cada árbol pesado por su factor de expansión, para que los árboles de la subparcela chica cuenten lo que representan; con 3 parámetros, la ubicación <i>a</i> se busca por verosimilitud perfilada por debajo del diámetro más chico. La tabla <span class="ui">Parámetros y bondad de ajuste</span> da la ubicación, la escala <i>b</i>, la forma <i>c</i>, el DAP medio del modelo y dos pruebas de bondad de ajuste: Kolmogorov–Smirnov, con un valor <i>p</i> asintótico (conservador, porque los parámetros salen de la misma muestra), y χ² por clases con frecuencias esperadas de 5 o más.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b3-estructura.png" alt="La distribución diamétrica del bosque mesófilo con su Weibull de 2 parámetros y la tabla de parámetros y bondad de ajuste"></div>
+    <figcaption><b>Figura 3.6.</b> La distribución diamétrica del bosque mesófilo de ejemplo, todos los estratos: la Weibull de 2 parámetros tiene <i>b</i> = 11.157 cm y <i>c</i> = 1.285, con un DAP medio de 10.33 cm. La primera barra (0–5 cm) es más baja que la segunda porque sólo se midieron árboles desde 2.5 cm; las dos pruebas rechazan el ajuste.</figcaption>
+  </figure>
+  <p>La interpretación lee la forma <i>c</i>: menor de 1.2, «una J invertida» (muchos árboles delgados y pocos gruesos, típica de un bosque irregular o en regeneración); de 1.2 a 3, una distribución sesgada a la derecha; de 3 o más, una campana casi simétrica, típica de un rodal coetáneo. El mesófilo, con <i>c</i> = 1.28, queda apenas en el segundo grupo; el cafetal, con <i>c</i> = 2.21 (<i>b</i> = 28.921 cm, DAP medio de 25.61 cm), claramente. Si la prueba de Kolmogorov–Smirnov rechaza el ajuste, la interpretación lo dice y sugiere una mezcla de cohortes o de estratos. En el cafetal la rechaza con <i>D</i> = 0.068 y <i>p</i> = 0.003 (χ² = 56.53 con 8 gl); en el mesófilo, con <i>D</i> = 0.336 (χ² = 2,550.49 con 6 gl).</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Las pruebas de ajuste con parcelas anidadas</div>
+    <p>La Weibull se ajusta con los árboles pesados por su factor de expansión, pero las dos pruebas comparan la curva con los diámetros sin pesar, tal como se midieron. En una parcela anidada los árboles delgados se midieron en una superficie diez veces menor, así que los diámetros medidos tienen, en proporción, muchos más árboles gruesos que el rodal; las pruebas comparan entonces dos distribuciones distintas y rechazan casi siempre. En el mesófilo de ejemplo, el rechazo dice poco sobre la forma del rodal; mira la figura. Además, la Weibull de 2 parámetros arranca en cero aunque no haya árboles de menos de 2.5 cm. La de 3 parámetros da, en el mesófilo, <i>a</i> = 2.49 cm con una forma <i>c</i> = 0.942, menor que 1: la ubicación queda pegada al diámetro mínimo, el caso en que la verosimilitud no tiene máximo interior.</p>
+  </div>
+
+  <h3>Tabla de rodal e índice de valor de importancia</h3>
+  <p>La <span class="ui">Tabla de rodal: árboles por hectárea por especie y clase</span> cruza las diez especies de mayor importancia (más una fila <span class="ui">Otras</span> y el <span class="ui">Total</span>) con las clases diamétricas. Las clases de la derecha se cierran en una clase abierta («≥ 65» en los dos ejemplos) en cuanto se ha contado el 99 % de los árboles, para que la tabla no tenga decenas de columnas casi vacías; un punto (·) señala una celda sin árboles.</p>
+  <p>La tabla <span class="ui">Índice de valor de importancia</span> da para cada especie su densidad (<i>N</i> por hectárea y relativa), su dominancia (área basal por hectárea y relativa) y su frecuencia (la proporción de parcelas en que aparece, absoluta y relativa), y el IVI, la suma de las tres relativas: de 0 a 300, o en porcentaje (IVI/3). La figura <span class="ui">Componentes del IVI (10 especies principales)</span> apila las tres partes.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b3-ivi.png" alt="La tabla del índice de valor de importancia del cafetal y la figura con sus tres componentes apilados"></div>
+    <figcaption><b>Figura 3.7.</b> El índice de valor de importancia del cafetal de ejemplo (captura con la ventana a 1 600 px para que quepan las últimas columnas). <i>Inga vera</i> encabeza con 71.83 de 300 (23.94 %), seguida de <i>Inga jinicuil</i> (50.32) y <i>Cordia alliodora</i> (35.76). <i>Musa</i> sp. tiene más árboles que <i>Cordia</i>, pero mucha menos área basal.</figcaption>
+  </figure>
+  <p>En el mesófilo, la especie más importante es <i>Liquidambar styraciflua</i>, con un IVI de 31.40, y las nueve que le siguen quedan entre 11 y 20: un bosque sin una especie dominante clara, como es de esperar en un bosque mesófilo.</p>
+
+  <h3>Densidad y competencia</h3>
+  <p>La tabla <span class="ui">Índices de densidad por parcela</span> (en pantalla, las primeras 30 parcelas) da para cada parcela su <i>N</i>, su Dq, el <b>índice de densidad del rodal de Reineke</b> —IDR = <i>N</i>·(Dq/25)<sup>1.605</sup>, el número equivalente de árboles de 25 cm por hectárea—, la altura dominante y el <b>índice de Hart–Becking</b> —el espaciamiento medio entre árboles, √(10 000/<i>N</i>), como porcentaje de la altura dominante—. La interpretación da los promedios y lee el de Hart–Becking: menos de 17 %, rodal denso, candidato a aclareo; más de 25 %, rodal abierto.</p>
+  <table class="compacta">
+    <caption><b>Tabla 3.4.</b> Densidad de los dos ejemplos según la interpretación de la app</caption>
+    <thead><tr><th>Ejemplo</th><th class="num">IDR medio de Reineke</th><th class="num">Hart–Becking medio (%)</th><th>Lectura</th></tr></thead>
+    <tbody>
+      <tr><td>Cafetal bajo sombra</td><td class="num">337</td><td class="num">41.8</td><td>rodal abierto</td></tr>
+      <tr><td>Bosque mesófilo</td><td class="num">925</td><td class="num">12.1</td><td>rodal denso, candidato a aclareo</td></tr>
+    </tbody>
+  </table>
+  <p>El índice de Reineke se pensó para rodales coetáneos y el de Hart–Becking para plantaciones; en un cafetal o un bosque mesófilo sirven para comparar parcelas entre sí, no como norma de aclareo.</p>
+  <p>Si los árboles traen coordenadas <span class="ui">x (m)</span> y <span class="ui">y (m)</span> —medidas desde el centro de la parcela— y una parcela tiene al menos 5 árboles con ellas, la app calcula el <b>índice de competencia de Hegyi</b> de cada árbol: la suma, sobre los vecinos a menos del radio elegido, del diámetro del vecino entre el del árbol, dividida entre la distancia. Los árboles a menos de ese radio del borde de la parcela se dejan fuera de la figura, porque les faltan vecinos. En las parcelas anidadas sólo entran los árboles de la parcela grande.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b3-hegyi.png" alt="El índice de competencia de Hegyi de los árboles del cafetal contra su DAP"></div>
+    <figcaption><b>Figura 3.8.</b> La competencia de Hegyi contra el DAP en el cafetal de ejemplo, con un radio de 6 m. Los árboles delgados son los que soportan más competencia (índices de hasta 9); los gruesos, casi ninguna.</figcaption>
+  </figure>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> la línea <span class="ui">Diseño de parcela</span> no dice la superficie que mediste</td><td><b>entonces</b> detente: corrige la tabla de parcelas o el diseño por omisión antes de mirar cualquier resultado.</td></tr>
+      <tr><td><b>Si</b> el error de muestreo es de 10 % o menos</td><td><b>entonces</b> cumple lo que piden muchos planes de manejo (mosaico verde).</td></tr>
+      <tr><td><b>Si</b> está entre 10 y 20 %</td><td><b>entonces</b> la estimación es útil pero imprecisa (ámbar); la sección 3.4 dice cuántas parcelas más harían falta.</td></tr>
+      <tr><td><b>Si</b> pasa de 20 %</td><td><b>entonces</b> la media vale poco por sí sola (rojo); aumenta las parcelas o estratifica.</td></tr>
+      <tr><td><b>Si</b> las parcelas se tomaron por grupos (fincas, conglomerados)</td><td><b>entonces</b> el error que corresponde es el de conglomerados, aunque sea el mayor; un efecto del diseño mayor de 1 indica que las parcelas de un grupo se parecen.</td></tr>
+      <tr><td><b>Si</b> en la relascopía se cuentan menos de 7 árboles por punto, o más de 15</td><td><b>entonces</b> baja o sube el factor de área basal la próxima vez.</td></tr>
+      <tr><td><b>Si</b> la forma de Weibull es menor de 1.2 · de 1.2 a 3 · de 3 o más</td><td><b>entonces</b> la distribución es una J invertida · sesgada a la derecha · una campana, según la app.</td></tr>
+      <tr><td><b>Si</b> el índice de Hart–Becking es menor de 17 % · mayor de 25 %</td><td><b>entonces</b> el rodal es denso, candidato a aclareo · abierto, según la app.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Son guías para interpretar, no leyes: el diseño de campo, el plan de manejo y el tipo de bosque mandan.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>Los valores por hectárea salen diez veces más grandes o más chicos.</b> La superficie de las parcelas está mal: un radio en centímetros, una superficie en hectáreas en la columna de m², o parcelas que tomaron el diseño por omisión porque su identificador no coincide con el de los árboles («P1» frente a «P01»). <b>«Hay árboles sin altura».</b> El volumen necesita la altura de todos los árboles: marca <span class="ui">Estimar las alturas faltantes (Näslund)</span> o elige otra variable. <b>«El diseño estratificado necesita al menos 2 estratos con superficie y 2 parcelas cada uno».</b> Falta la columna <span class="ui">Superficie del estrato (ha)</span> en las parcelas, o algún estrato tiene una sola parcela. <b>«El diseño en conglomerados necesita la columna de conglomerado en las parcelas».</b> Carga la tabla de parcelas con esa columna. <b>Cargué otro inventario y el diseño no cambió.</b> La app elige el diseño sólo con el primer inventario; después, cámbialo tú. <b>«Hacen falta al menos 10 árboles vivos».</b> La estructura del rodal no se calcula con menos; revisa el estrato elegido y la columna de estado.</p>
+  </div>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Métodos y fuentes</div>
+    <p>Las fuentes de cada tarjeta están en su recuadro <span class="ui">Método y fuentes</span>: Husch, Beers y Kershaw (2003) y Assmann (1970) para la expansión; Cochran (1977), Shiver y Borders (1996) y Satterthwaite (1946) para la estimación y el tamaño de muestra; Bitterlich (1948) y Grosenbaugh (1952) para la relascopía; Bailey y Dell (1973), Curtis y McIntosh (1951), Reineke (1933), Wilson (1946) y Hegyi (1974) para la estructura del rodal. Las referencias completas están en el apéndice F.</p>
+  </div>
+</section>
+
+</body>
+</html>

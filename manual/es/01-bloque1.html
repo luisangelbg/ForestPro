@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-1" data-pestana="1" data-orden="1" style="--acento: var(--b1)">
+  <div class="cap-apertura">
+    <div class="cap-num">1</div>
+    <div class="cap-etiqueta">Capítulo uno · Bloque 1</div>
+    <h1 data-corto="Inicio">Inicio: el flujo, los módulos y los ejemplos</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">El Bloque 1 es la portada de la app. No calcula nada: dice qué hace ForestPro y qué no, resume en seis pasos el orden de un trabajo forestal, presenta los nueve módulos que siguen, abre los cuatro conjuntos de ejemplo en el bloque que les corresponde y da la cita del programa. Es el lugar al que se vuelve para empezar algo nuevo o para recordar dónde está cada cosa.</p>
+    <div class="cap-franja"><span class="k1"></span><span class="k1"></span><span class="k3"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>1.1</b>La portada y sus botones</li>
+      <li><b>1.2</b>Cómo funciona: los seis pasos</li>
+      <li><b>1.3</b>Los nueve módulos</li>
+      <li><b>1.4</b>Datos de ejemplo</li>
+      <li><b>1.5</b>Lo que hace y lo que no</li>
+      <li><b>1.6</b>Cómo citar, las pruebas y la validación</li>
+    </ul>
+  </div>
+
+  <!-- 1.1 -->
+  <h2 id="s1-1"><span class="num">1.1</span>La portada y sus botones</h2>
+  <p class="lead">Al abrir <code>index.html</code>, la app arranca en el Bloque 1. A diferencia de los demás bloques, éste no tiene título numerado ni tarjetas: es una página de presentación que se recorre de arriba abajo, y la lista <span class="ui">En este bloque</span> de la derecha lleva a cada una de sus secciones.</p>
+  <p>Arriba está el <b>héroe</b>, un recuadro oscuro con el lema <span class="ui">Del árbol medido a la tonelada de carbono</span>, una línea con las cuatro materias de la app (<span class="ui">Inventario forestal · dasometría · biomasa y carbono · agroforestería</span>) y un párrafo que resume lo que hace. A la derecha, un dibujo propio: la sección de un tronco con sus anillos de crecimiento, rotulada <span class="ui">DAP 38.4 cm · 43 anillos · 1.30 m</span>, cuyos anillos exteriores salen del tronco y se vuelven las curvas de nivel de un mapa con parcelas de inventario. El pie del dibujo lo dice en una línea: <span class="ui">Los anillos de un tronco y las curvas de nivel del rodal: lo que mide ForestPro.</span></p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/b1-heroe.png" alt="El héroe de la portada con el lema, los tres botones, las cuatro insignias y la sección de un tronco cuyos anillos se vuelven curvas de nivel">
+      <span class="marca" style="left:4.2%;top:66.7%">1</span>
+      <span class="marca" style="left:4.2%;top:74.3%">2</span>
+      <span class="marca" style="left:41.6%;top:74.3%">3</span>
+      <span class="marca" style="left:4.2%;top:82.2%">4</span>
+      <span class="marca" style="left:54.9%;top:34.6%">5</span>
+    </div>
+    <figcaption><b>Figura 1.1.</b> El héroe de la portada. Los números corresponden a la lista de abajo.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Empezar con un ejemplo →</b> Abre el Bloque 3 y carga en él el cafetal de ejemplo, árboles y parcelas: la manera más rápida de ver la app con datos.</li>
+    <li><span class="n">2</span><b>Ver los módulos.</b> Baja a la sección <span class="ui">Los nueve módulos</span> de la misma portada.</li>
+    <li><span class="n">3</span><b>Cómo citar.</b> Baja a la sección <span class="ui">Cómo citar</span>, al final de la portada.</li>
+    <li><span class="n">4</span><b>Las cuatro insignias.</b> <span class="ui">Funciona completo en tu navegador</span>, <span class="ui">Comparado contra implementaciones de referencia en R</span>, <span class="ui">Cada método con su fuente</span> y <span class="ui">Español e inglés</span>.</li>
+    <li><span class="n">5</span><b>La sección del tronco.</b> Un dibujo, no un resultado: no responde a los datos que cargues.</li>
+  </ul>
+
+  <p>El botón <span class="ui">Empezar con un ejemplo →</span> hace lo mismo que el botón <span class="ui">Abrir en Inventario</span> de la tarjeta del cafetal en <span class="ui">Datos de ejemplo</span> (sección 1.4). Los otros dos sólo desplazan la página; si en la configuración de tu sistema pediste reducir el movimiento, el salto es inmediato en lugar de suave.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>La portada no se borra</div>
+    <p>Cargar un ejemplo o tus propios datos no cambia nada en el Bloque 1; la palomita de la barra de bloques marca, en cambio, los bloques que ya tienen un resultado. El nombre <span class="ui">ForestPro</span> de la barra superior siempre regresa aquí.</p>
+  </div>
+
+  <!-- 1.2 -->
+  <h2 id="s1-2"><span class="num">1.2</span>Cómo funciona: los seis pasos</h2>
+  <p>La primera sección debajo del héroe resume el orden de un trabajo forestal en seis recuadros, cada uno con su número de paso, su nombre y lo que entra en él. El subtítulo lo explica: <span class="ui">El orden es el de un trabajo forestal: medir los árboles, muestrear el rodal, expandir a la hectárea, convertir en biomasa y carbono, proyectar y reportar.</span> La figura I.7 de la introducción muestra esta sección.</p>
+  <table class="compacta">
+    <caption><b>Tabla 1.1.</b> Los seis pasos de <span class="ui">Cómo funciona</span> y los bloques que los resuelven</caption>
+    <thead><tr><th style="width:0.7in">Paso</th><th style="width:1.9in">Lo que dice la app</th><th>Dónde se hace</th></tr></thead>
+    <tbody>
+      <tr><td><b>Medir</b></td><td><span class="ui">DAP, alturas, secciones</span></td><td><span class="chip k2">2</span> Dasometría individual; <span class="chip k9">9</span> cubicación de trozas</td></tr>
+      <tr><td><b>Muestrear</b></td><td><span class="ui">diseño y tamaño de muestra</span></td><td><span class="chip k3">3</span> el inventario, el tamaño de muestra; <span class="chip k8">8</span> la cuadrícula de muestreo</td></tr>
+      <tr><td><b>Expandir</b></td><td><span class="ui">a la hectárea y al rodal</span></td><td><span class="chip k3">3</span> la expansión, la estimación con su error y la estructura del rodal</td></tr>
+      <tr><td><b>Convertir</b></td><td><span class="ui">biomasa, carbono, CO₂e</span></td><td><span class="chip k4">4</span> Biomasa y carbono; <span class="chip k7">7</span> el carbono de un sistema agroforestal</td></tr>
+      <tr><td><b>Proyectar</b></td><td><span class="ui">crecimiento e índice de sitio</span></td><td><span class="chip k5">5</span> Crecimiento y rendimiento</td></tr>
+      <tr><td><b>Reportar</b></td><td><span class="ui">informe, tablas y mapas</span></td><td><span class="chip k10">10</span> Informe y proyecto; <span class="chip k8">8</span> los mapas</td></tr>
+    </tbody>
+  </table>
+  <p>La segunda mitad del subtítulo es igual de importante: <span class="ui">Los módulos también se usan sueltos: cada uno acepta su propia tabla.</span> Nada obliga a pasar por el Bloque 3 para cubicar trozas en el 9 o para ajustar una curva de crecimiento en el 5. El orden sirve para no olvidar pasos, no para imponerlos; la sección I.8 de la introducción lo recorre con más detalle.</p>
+
+  <!-- 1.3 -->
+  <h2 id="s1-3"><span class="num">1.3</span>Los nueve módulos</h2>
+  <p>La sección <span class="ui">Los nueve módulos</span> tiene una tarjeta por cada bloque del 2 al 10, con una viñeta dibujada para ese bloque, su número, su nombre y la misma línea que la app pone debajo del título del bloque. Un clic en cualquier parte de la tarjeta abre el bloque. Como dice su subtítulo, <span class="ui">Un módulo es un bloque de la barra y un capítulo del manual.</span> La tarjeta del Bloque 2 corresponde al capítulo 2 de este manual, la del 3 al capítulo 3, y así hasta el 10.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b1-modulos.png" alt="Las nueve tarjetas de los módulos, del Bloque 2 Dasometría al Bloque 10 Informe y proyecto, cada una con su viñeta"></div>
+    <figcaption><b>Figura 1.2.</b> <span class="ui">Los nueve módulos</span>. Cada viñeta resume el bloque: el árbol con su altura y su DAP junto a una curva de altura (2), las parcelas y una distribución diamétrica (3), el árbol con su raíz y las barras de AGB, BGB y CO₂e (4), una familia de curvas de crecimiento (5), una comunidad de especies y un dendrograma (6), un cafetal bajo sombra (7), las curvas de nivel con un predio y sus puntos (8), una troza con la conversión m³ ↔ pt (9) y un informe (10).</figcaption>
+  </figure>
+  <p>Las viñetas también son dibujos propios hechos por código, como la sección del tronco del héroe, y salen en el idioma de la interfaz. Los nombres cortos de las tarjetas son los mismos de la barra de bloques (<span class="ui">Dasometría</span>, <span class="ui">Inventario y muestreo</span>, …); el título completo de cada bloque es el que lleva su capítulo en este manual (<span class="ui">Dasometría individual</span>, <span class="ui">Inventario forestal y muestreo</span>, …).</p>
+
+  <!-- 1.4 -->
+  <h2 id="s1-4"><span class="num">1.4</span>Datos de ejemplo</h2>
+  <p>La sección <span class="ui">Datos de ejemplo</span> tiene cuatro tarjetas, una por conjunto, con su nombre, una línea de cifras, una descripción y un botón <span class="ui">Abrir en …</span> por cada bloque en que se usa (figura I.6 de la introducción). Su subtítulo advierte que son <span class="ui">simulados</span>, con órdenes de magnitud realistas, que no son mediciones de un sitio real y que el guion que los genera está en <code>data/generar_datos.R</code>.</p>
+  <table class="compacta">
+    <caption><b>Tabla 1.2.</b> Los botones de <span class="ui">Datos de ejemplo</span> y lo que cargan</caption>
+    <thead><tr><th style="width:1.45in">Tarjeta</th><th style="width:1.75in">Botón</th><th>Qué abre y qué carga</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><b>Cafetal bajo sombra</b><br><span class="small">25 parcelas · 1 000 m² · café y árboles de sombra</span></td><td><span class="ui">Abrir en Inventario</span></td><td>Bloque 3 con los 719 árboles de sombra y las 25 parcelas (capítulo 3)</td></tr>
+      <tr><td><span class="ui">Abrir en Biomasa</span></td><td>Bloque 4 con el cafetal; carga también su inventario en el Bloque 3</td></tr>
+      <tr><td><span class="ui">Abrir en Agroforestería</span></td><td>Bloque 7: carga el inventario del cafetal en el Bloque 3 y llena la sombra, la foto de ejemplo, el rendimiento y el presupuesto de carbono</td></tr>
+      <tr><td rowspan="3"><b>Bosque mesófilo estratificado</b><br><span class="small">3 estratos · 24 parcelas · parcela mapeada de 50 × 50 m</span></td><td><span class="ui">Abrir en Inventario</span></td><td>Bloque 3 con los 1 830 árboles y las 24 parcelas anidadas (capítulo 3)</td></tr>
+      <tr><td><span class="ui">Abrir en Diversidad</span></td><td>Bloque 6 con la comunidad y la parcela mapeada de 50 × 50 m</td></tr>
+      <tr><td><span class="ui">Abrir en Mapas</span></td><td>Bloque 8 con las parcelas del mesófilo (cargadas también en el Bloque 3) y el predio de 9 vértices</td></tr>
+      <tr><td rowspan="3"><b>Plantación de pino</b><br><span class="small">30 parcelas permanentes · 6 remediciones · árboles derribados</span></td><td><span class="ui">Abrir en Dasometría</span></td><td>Bloque 2 con las 536 secciones de los 40 árboles derribados (capítulo 2)</td></tr>
+      <tr><td><span class="ui">Abrir en Crecimiento</span></td><td>Bloque 5 con el análisis troncal y las remediciones</td></tr>
+      <tr><td><span class="ui">Abrir en Utilidades</span></td><td>Bloque 9 con las 12 trozas de pino, la plantación a 25 años y el rendimiento de aserrío</td></tr>
+      <tr><td><b>Densidades y ecuaciones</b><br><span class="small">densidad básica de la madera · catálogo alométrico</span></td><td><span class="ui">Abrir en Biomasa</span></td><td>Bloque 4, a la altura de la tabla de densidades; no carga nada nuevo, porque la tabla y el catálogo ya vienen en el bloque</td></tr>
+    </tbody>
+  </table>
+  <p>Cada botón hace dos cosas: abre el bloque y carga el ejemplo en sus tarjetas de datos, reemplazando lo que hubiera. Cada tarjeta de datos tiene además su propia lista de ejemplos, de modo que puedes cargar, por ejemplo, los árboles del mesófilo en <span class="ruta">Bloque 2<span class="sep">›</span>Árboles en pie</span> aunque la portada no tenga un botón para eso. Los conjuntos, lo que traen y para qué sirve cada uno están descritos en la sección I.7.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Los ejemplos reemplazan lo que tengas</div>
+    <p>Abrir un ejemplo sustituye los datos de las tarjetas que llena. Si ya cargaste tu propio inventario, guarda antes el proyecto (<span class="ruta">Bloque 10<span class="sep">›</span>Proyecto</span>) para poder volver a él.</p>
+  </div>
+
+  <!-- 1.5 -->
+  <h2 id="s1-5"><span class="num">1.5</span>Lo que hace y lo que no</h2>
+  <p>Cuatro recuadros dicen de frente qué se puede esperar del programa. El primero es una promesa; los otros tres, límites.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b1-limites.png" alt="Los cuatro recuadros de Lo que hace y lo que no"></div>
+    <figcaption><b>Figura 1.3.</b> <span class="ui">Lo que hace y lo que no</span>, en la portada.</figcaption>
+  </figure>
+  <ul>
+    <li><b><span class="ui">Calcula con tus datos, en tu equipo</span>.</b> Nada se envía a ningún servidor. La única excepción es voluntaria: el fondo de mapa en línea del Bloque 8, apagado por omisión, que al encenderse pide sólo las teselas del mapa.</li>
+    <li><b><span class="ui">No sustituye la ecuación local</span>.</b> Las ecuaciones de biomasa del catálogo del Bloque 4 son de referencia; si existe una para tu especie y tu región, agrégala y úsala.</li>
+    <li><b><span class="ui">No es un sistema de información geográfica</span>.</b> El Bloque 8 calcula áreas, cuadrículas e interpolaciones y exporta GPX, KML y GeoJSON; el análisis espacial completo se hace con un programa de mapas.</li>
+    <li><b><span class="ui">No certifica carbono</span>.</b> Las cifras de carbono con su incertidumbre sirven para estudios y planes de manejo; un proyecto del mercado de carbono sigue además las reglas de su estándar.</li>
+  </ul>
+  <p>La sección I.10 de la introducción agrega dos límites que no están en la portada: el programa no planea el muestreo por ti y no trabaja con modelos árbol por árbol ni con teledetección.</p>
+
+  <!-- 1.6 -->
+  <h2 id="s1-6"><span class="num">1.6</span>Cómo citar, las pruebas y la validación</h2>
+  <p>La última sección da la cita del programa en dos formatos, uno debajo del otro: la referencia en estilo APA y la entrada de BibTeX (con la clave <code>BarreraGuzman2026ForestPro</code>, la versión <code>1.0.0</code> y la licencia <code>GPL-3.0-or-later</code>). Los botones <span class="ui">Copiar APA</span> y <span class="ui">Copiar BibTeX</span> la copian al portapapeles, y un aviso breve confirma <span class="ui">Copiado</span>. El texto que la acompaña recuerda lo que también hay que citar: <span class="ui">las ecuaciones y métodos que usaste, que cada resultado indica</span>, en su recuadro <span class="ui">Método y fuentes</span>.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b1-citar.png" alt="La sección Cómo citar con la referencia APA, la entrada BibTeX y los botones para copiarlas"></div>
+    <figcaption><b>Figura 1.4.</b> <span class="ui">Cómo citar</span>, al final de la portada: la referencia APA, la entrada BibTeX y los dos botones para copiarlas.</figcaption>
+  </figure>
+  <p>La misma cita está en <span class="ruta">Bloque 10<span class="sep">›</span>Cómo citar</span>, que además descarga el archivo <code>forestpro.bib</code>, y al final de todos los informes. La dirección que trae, <code>https://github.com/luisangelbg/ForestPro</code>, es la del repositorio público del programa; este manual la reproduce tal como la da la app.</p>
+
+  <h3>El pie de la portada</h3>
+  <p>Debajo de la cita hay tres enlaces, que se abren en una pestaña nueva:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Enlace</th><th>Qué abre</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Manual de usuario (en español)</span></td><td>Este manual, en <code>manual/es/manual-completo.html</code>. En la interfaz inglesa el enlace dice que el manual está en español</td></tr>
+      <tr><td><span class="ui">Pruebas</span></td><td><code>tests/run.html</code>, que corre en el navegador las 62 pruebas automáticas de la app: valores de libro, formas cerradas y casos límite. Todas deben salir en verde</td></tr>
+      <tr><td><span class="ui">Validación contra R</span></td><td><code>tests/VALIDACION.md</code>, el resumen de las 8 261 comparaciones de los bloques 2 a 9 contra implementaciones de referencia independientes, sin desacuerdos (sección I.9)</td></tr>
+    </tbody>
+  </table>
+  <p>Una última línea dice que ForestPro es software libre (GPL-3.0) de la suite y que está hecho con código propio, sin bibliotecas de terceros.</p>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Por dónde empezar</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> es la primera vez que abres la app</td><td><b>entonces</b> pulsa <span class="ui">Empezar con un ejemplo →</span> y recorre el capítulo 3 con el cafetal de ejemplo.</td></tr>
+      <tr><td><b>Si</b> tienes un inventario de parcelas</td><td><b>entonces</b> ve directo al Bloque 3, carga tus árboles y tus parcelas y sigue con el 4 si quieres el carbono.</td></tr>
+      <tr><td><b>Si</b> sólo tienes árboles derribados, trozas o una plantación que evaluar</td><td><b>entonces</b> los bloques 2 y 9 trabajan solos, con su propia tabla.</td></tr>
+      <tr><td><b>Si</b> vas a publicar los resultados</td><td><b>entonces</b> copia la cita desde aquí o desde el Bloque 10 y cita también los métodos de cada resultado.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Son guías para orientarse, no un orden obligatorio.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>Un botón <span class="ui">Abrir en …</span> lleva al bloque, pero no veo datos.</b> El ejemplo se carga en las tarjetas de datos de ese bloque, que pueden estar más abajo; usa la lista <span class="ui">En este bloque</span> o <code>Ctrl + K</code>. <b>Los botones de copiar no hacen nada.</b> Algunos navegadores no dejan usar el portapapeles en páginas abiertas como archivo local; selecciona el texto de la cita y cópialo a mano, o abre la app con <code>Open ForestPro.bat</code> (sección I.5). <b>El enlace a las pruebas o a la validación no abre.</b> Esos archivos están en la carpeta <code>tests/</code> del programa; si copiaste sólo <code>index.html</code> y las carpetas <code>js</code> y <code>css</code>, faltan.</p>
+  </div>
+</section>
+
+</body>
+</html>

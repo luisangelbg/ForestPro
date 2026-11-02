@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-2" data-pestana="2" data-orden="2" style="--acento: var(--b2)">
+  <div class="cap-apertura">
+    <div class="cap-num">2</div>
+    <div class="cap-etiqueta">Capítulo dos · Bloque 2</div>
+    <h1 data-corto="Dasometría individual">Dasometría individual</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Todo inventario descansa en medir árboles uno por uno. Este bloque convierte el diámetro y la altura de un árbol en pie en su área basal y su volumen; cubica árboles derribados por secciones y, con ellos, ajusta las ecuaciones de volumen y el perfil del fuste que después sirven para cualquier árbol de la misma especie; y estima la altura de los árboles a los que no se les midió. Sus cinco herramientas se usan juntas o por separado.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k2"></span><span class="k3"></span><span class="k9"></span></div>
+    <ul class="cap-contenido">
+      <li><b>2.1</b>Árboles en pie: diámetro, área basal y volumen</li>
+      <li><b>2.2</b>Cubicación: trozas y árboles por secciones</li>
+      <li><b>2.3</b>Ecuaciones de volumen</li>
+      <li><b>2.4</b>Ahusamiento</li>
+      <li><b>2.5</b>Relación altura–diámetro</li>
+    </ul>
+  </div>
+
+  <p class="lead">El bloque se presenta así: <span class="ui">Cinco herramientas que se usan juntas o por separado: la primera mide árboles en pie; la segunda cubica árboles derribados; con esos volúmenes la tercera ajusta ecuaciones de volumen y la cuarta, curvas de ahusamiento; la quinta estima las alturas que faltan.</span> Las tarjetas 2.2, 2.3 y 2.4 forman una cadena —las secciones de los árboles derribados alimentan las ecuaciones y el ahusamiento—; las otras dos trabajan solas.</p>
+  <p>El ejemplo de este capítulo es la <b>plantación de pino</b>: <span class="ruta">Bloque 1<span class="sep">›</span>Datos de ejemplo<span class="sep">›</span>Abrir en Dasometría</span> carga los 40 árboles derribados con sus 536 secciones en la tarjeta de cubicación. La sección 2.1 usa además los árboles de sombra del cafetal de ejemplo y la 2.5, la parcela de pino con alturas faltantes, que se cargan desde la lista de ejemplos de su propia tarjeta de datos (sección I.6).</p>
+
+  <!-- 2.1 -->
+  <h2 id="s2-1"><span class="num">2.1</span>Árboles en pie: diámetro, área basal y volumen</h2>
+  <p class="lead">La primera tarjeta tiene dos partes: una calculadora para un solo árbol y una tabla de árboles que se resume por especie.</p>
+  <p>Arriba, cuatro campos. <span class="ui">Coeficiente mórfico</span> (0.5 por omisión) es la fracción del cilindro de área basal <i>g</i> y altura <i>H</i> que ocupa el fuste; lo usan la calculadora y la tabla. <span class="ui">Calculadora: DAP (cm)</span> y <span class="ui">o circunferencia (cm)</span> son excluyentes: al escribir en uno se vacía el otro, y si das la circunferencia el DAP se calcula de ella. <span class="ui">Altura (m)</span> es la altura total. Los mosaicos responden al instante: el DAP con su circunferencia, el área basal, el volumen con el coeficiente elegido y la esbeltez.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-arboles.png" alt="La tarjeta Árboles en pie con la calculadora por omisión y los árboles de sombra del cafetal cargados"></div>
+    <figcaption><b>Figura 2.1.</b> <span class="ruta">Bloque 2<span class="sep">›</span>Árboles en pie</span>. La calculadora con sus valores por omisión (DAP de 30 cm y 18 m de altura) da un área basal de 0.0707 m², un volumen de 0.636 m³ con <i>f</i> = 0.5 y una esbeltez de 60. Abajo, los 719 árboles de sombra del cafetal de ejemplo: DAP medio de 25.6 cm, Dq de 28.3 cm, altura media de 13.0 m, 45.28 m² de área basal y 376.83 m³.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · del diámetro al volumen</div>
+    <p>El diámetro normal se mide a 1.30 m; si se midió la circunferencia <i>C</i>, DAP = <i>C</i>/π. El área basal es la sección del tronco a esa altura, <i>g</i> = π·DAP²/40 000 (en m², con el DAP en cm). El volumen de un árbol en pie se aproxima como el de un cilindro de esa base y esa altura, reducido por el coeficiente mórfico: <i>V</i> = <i>g</i>·<i>H</i>·<i>f</i>. Un fuste con forma de paraboloide tiene <i>f</i> = 0.5; según la app, los fustes de coníferas suelen quedar entre 0.42 y 0.50 y los de latifoliadas entre 0.35 y 0.48. El valor de tu especie sale de cubicar árboles derribados (sección 2.2). La esbeltez es 100·<i>H</i>/DAP, la altura en metros por cada metro de diámetro.</p>
+  </div>
+
+  <h3>La tabla de árboles</h3>
+  <p>La tarjeta de datos pide una fila por árbol con las columnas <span class="ui">Especie</span>, <span class="ui">DAP (cm)</span>, <span class="ui">Circunferencia a 1.3 m (cm)</span>, <span class="ui">Altura total (m)</span>, <span class="ui">Altura comercial (m)</span>, <span class="ui">Diámetro de copa (m)</span> y <span class="ui">Estado</span>. Ninguna es obligatoria, pero cada árbol necesita su DAP o su circunferencia; si trae los dos, manda el DAP. Trae dos ejemplos, <span class="ui">Cafetal: árboles de sombra (25 parcelas)</span> y <span class="ui">Bosque mesófilo (24 parcelas)</span>, y el botón <span class="ui">Usar el inventario cargado</span> toma los árboles del Bloque 3.</p>
+  <p>Con los datos cargados aparecen cinco mosaicos (<span class="ui">Árboles</span>, <span class="ui">DAP medio</span> con el diámetro cuadrático medio debajo, <span class="ui">Altura media</span>, <span class="ui">Área basal total</span> y <span class="ui">Volumen total</span>); si a algunos árboles les falta la altura, el primero lo dice, y el volumen se suma sólo con los que la tienen. Siguen dos figuras, <span class="ui">Altura y diámetro por especie</span> (las ocho especies con más árboles en color, el resto en gris como <span class="ui">otras</span>) y <span class="ui">Área basal por especie</span> (las doce de mayor área basal), y dos tablas: <span class="ui">Resumen por especie</span>, ordenada por área basal, y <span class="ui">Árbol por árbol</span>, con el área basal, el volumen, el volumen comercial (si hay altura comercial), la esbeltez y el área de copa de cada uno; en pantalla se ven 60 filas y las descargas las llevan todas.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b2-especies.png" alt="Las figuras de altura contra diámetro y de área basal por especie y la tabla Resumen por especie del cafetal"></div>
+    <figcaption><b>Figura 2.2.</b> Los árboles de sombra del cafetal de ejemplo por especie. A la izquierda se separan dos grupos: los plátanos (<i>Musa</i> sp.) y los cítricos, bajos para su diámetro, y los árboles de sombra propiamente dichos. <i>Inga vera</i> tiene el mayor número de árboles (212) y la mayor área basal (12.556 m²), pero <i>Cordia alliodora</i>, con 58 árboles de 23.8 m de altura media, el mayor volumen (104.085 m³).</figcaption>
+  </figure>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · los árboles de sombra del cafetal</div>
+    <p>La interpretación de la app dice: «Las 10 especies suman 45.28 m² de área basal; <i>Inga vera</i> aporta el 28 %.» El diámetro cuadrático medio (28.3 cm) es mayor que el promedio aritmético (25.6 cm) porque pesa más a los árboles gruesos; por eso es el que corresponde al área basal media. Además, 64 árboles tienen una esbeltez mayor de 80: son delgados para su altura y, según la app, más vulnerables al viento.</p>
+  </div>
+  <p>Cambiar el coeficiente mórfico recalcula la calculadora y la tabla a la vez. Recuerda que un solo coeficiente para todas las especies es una aproximación gruesa —en el cafetal conviven plátanos, cítricos y maderables—; para el volumen de un inventario, el Bloque 3 puede usar la ecuación ajustada en la sección 2.3.</p>
+
+  <!-- 2.2 -->
+  <h2 id="s2-2"><span class="num">2.2</span>Cubicación: trozas y árboles por secciones</h2>
+  <p class="lead">Cubicar es medir el volumen real de un fuste derribado, sección por sección. La tarjeta lo hace a dos escalas: una troza suelta, con tres fórmulas, y árboles completos a partir de una tabla de secciones.</p>
+
+  <h3>Una troza: Huber, Smalian y Newton</h3>
+  <p>Los campos <span class="ui">Diámetro mayor (cm)</span>, <span class="ui">Diámetro al centro (cm)</span>, <span class="ui">Diámetro menor (cm)</span> y <span class="ui">Largo (m)</span> describen la troza (34, 30.5 y 27 cm por 2.5 m, por omisión). Los mosaicos dan el volumen por cada fórmula y, debajo de Huber y de Smalian, su diferencia con Newton, que la app toma como referencia.</p>
+  <div class="formula">Huber: <i>V</i> = <i>g</i><sub>m</sub>·<i>L</i> &nbsp;·&nbsp; Smalian: <i>V</i> = (<i>g</i><sub>1</sub> + <i>g</i><sub>2</sub>)/2·<i>L</i> &nbsp;·&nbsp; Newton: <i>V</i> = (<i>g</i><sub>1</sub> + 4<i>g</i><sub>m</sub> + <i>g</i><sub>2</sub>)/6·<i>L</i></div>
+  <p>Newton es exacta para un paraboloide, un cono o un neiloide; Smalian, que sólo usa los extremos, sobreestima en la base neiloide del árbol, y Huber, que sólo usa el centro, subestima. Con la troza por omisión, Huber da 0.1827 m³ (−0.4 % frente a Newton), Smalian 0.1851 m³ (0.9 %) y Newton 0.1835 m³. La diferencia crece cuanto más se aparta la troza de un tronco de cono, sobre todo en las trozas de la base.</p>
+
+  <h3>Árboles completos</h3>
+  <p>Debajo de la calculadora, <span class="ui">Diámetro mínimo en punta (cm)</span> (10 por omisión) fija hasta dónde llega el volumen comercial, y la casilla <span class="ui">Sumar el tocón (cilindro)</span> añade al total el tocón, cubicado como un cilindro con el diámetro de la primera sección. La tarjeta de datos pide una fila por sección medida: <span class="ui">Árbol</span>*, <span class="ui">DAP (cm)</span>, <span class="ui">Altura total (m)</span>*, <span class="ui">Altura de la sección (m)</span>* y <span class="ui">Diámetro de la sección (cm)</span>*, con al menos 4 filas completas. El ejemplo <span class="ui">Pino: 40 árboles derribados por secciones</span> trae el diámetro con corteza a 0.3 m, a 1.3 m y cada 2.5 m hasta cerca de la punta.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-cubicacion.png" alt="La tarjeta Cubicación con la troza por omisión y los 40 pinos derribados cargados"></div>
+    <figcaption><b>Figura 2.3.</b> <span class="ruta">Bloque 2<span class="sep">›</span>Cubicación</span>. Arriba, la troza por omisión con las tres fórmulas; abajo, los 40 pinos derribados de ejemplo: 536 secciones, 40.681 m³ sin tocón, coeficiente mórfico medio de 0.450 y cociente de forma medio de 0.640.</figcaption>
+  </figure>
+  <p>Cada árbol se cubica sumando trozas de Smalian entre secciones consecutivas y un cono desde la última sección hasta la punta (<i>g</i>·<i>L</i>/3). El volumen comercial llega hasta la altura en que el diámetro baja al mínimo en punta, interpolada en línea recta entre las dos secciones que la rodean. De cada árbol salen también su <b>coeficiente mórfico</b>, <i>V</i>/(<i>g</i>·<i>H</i>), y su <b>cociente de forma</b>, el diámetro a media altura entre el DAP.</p>
+  <p>Los resultados son cuatro mosaicos (<span class="ui">Árboles cubicados</span>, <span class="ui">Volumen total</span>, que dice si lleva tocón, <span class="ui">Coeficiente mórfico medio</span> y <span class="ui">Cociente de forma medio</span>), dos figuras y la tabla <span class="ui">Volumen de cada árbol</span>, que da para cada uno el volumen del fuste, el del tocón (aunque no se sume), el total, el comercial con su altura y los dos índices de forma. El árbol D01 del ejemplo, por ejemplo, de 34.6 cm y 24.89 m, tiene 1.1789 m³ en el fuste, 1.1681 m³ comerciales hasta 21.53 m y un coeficiente mórfico de 0.512.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-perfiles.png" alt="Los perfiles de los 40 fustes y el coeficiente mórfico de cada árbol contra su DAP"></div>
+    <figcaption><b>Figura 2.4.</b> Izquierda: el perfil de cada fuste, radio con corteza contra altura, del árbol más delgado (verde oscuro) al más grueso (dorado). Derecha: el coeficiente mórfico de cada pino contra su DAP, con el paraboloide (0.5) punteado; los valores van de cerca de 0.36 a cerca de 0.58 sin una tendencia clara con el diámetro.</figcaption>
+  </figure>
+  <p>La interpretación resume: «El coeficiente mórfico medio de estos árboles es 0.450: menor que el del paraboloide.» Ese valor es el que conviene escribir en la sección 2.1 para árboles en pie de la misma especie y condición, aunque, como dice la propia app, las ecuaciones de la sección siguiente lo hacen mejor, porque dejan que la forma cambie con el tamaño.</p>
+
+  <!-- 2.3 -->
+  <h2 id="s2-3"><span class="num">2.3</span>Ecuaciones de volumen</h2>
+  <p class="lead">Una ecuación de volumen predice el volumen de un árbol en pie a partir de su DAP y su altura. Se ajusta con árboles cubicados y después se aplica a todo el inventario.</p>
+  <p>El botón <span class="ui">Usar los árboles cubicados arriba</span> toma el DAP, la altura y el volumen del fuste de los árboles de la sección 2.2 (más el tocón si esa casilla está marcada); si no hay árboles cubicados, un aviso pide cubicar primero. También se pueden cargar árboles propios en la tarjeta de datos, con <span class="ui">DAP (cm)</span>*, <span class="ui">Altura total (m)</span>* y <span class="ui">Volumen (m³)</span>*, al menos 6. Su ejemplo, <span class="ui">Pino: volúmenes de los 40 árboles derribados</span>, son los mismos volúmenes por Smalian, ya calculados.</p>
+  <p>La app ajusta cuatro modelos:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Modelo</th><th>Ecuación</th></tr></thead>
+    <tbody>
+      <tr><td>Schumacher–Hall (no lineal)</td><td><i>V</i> = <i>b</i>₀·<i>D</i><sup><i>b</i>₁</sup>·<i>H</i><sup><i>b</i>₂</sup>, por mínimos cuadrados no lineales (Levenberg–Marquardt)</td></tr>
+      <tr><td>Schumacher–Hall (logarítmica)</td><td>ln <i>V</i> = <i>b</i>₀ + <i>b</i>₁ ln <i>D</i> + <i>b</i>₂ ln <i>H</i></td></tr>
+      <tr><td>Variable combinada de Spurr</td><td><i>V</i> = <i>b</i>₀ + <i>b</i>₁·<i>D</i>²<i>H</i></td></tr>
+      <tr><td>Spurr logarítmica</td><td>ln <i>V</i> = <i>b</i>₀ + <i>b</i>₁ ln(<i>D</i>²<i>H</i>)</td></tr>
+    </tbody>
+  </table>
+  <p>Las formas logarítmicas se devuelven a la escala del volumen multiplicando por el factor de Meyer, exp(σ²/2), que corrige el sesgo de deshacer el logaritmo. La tabla <span class="ui">Comparación de modelos (escala del volumen)</span> da para cada uno <i>n</i>, R², RMSE en m³ y en porcentaje del volumen medio, el sesgo y el <b>índice de Furnival</b>, y resalta el modelo con el menor índice. Debajo, <span class="ui">Ver el modelo</span> elige cuál se muestra en detalle (por omisión, el resaltado): su tabla de coeficientes con error estándar, <i>t</i> y <i>p</i>, el factor de Meyer si es logarítmico, y dos figuras, <span class="ui">Observado contra estimado</span> y <span class="ui">Residuales</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-volumen.png" alt="La comparación de los cuatro modelos de volumen, los coeficientes de Spurr logarítmica y sus figuras de observado contra estimado y residuales"></div>
+    <figcaption><b>Figura 2.5.</b> Los cuatro modelos ajustados a los 40 pinos derribados (captura con la ventana a 1 600 px para que quepa la última columna). Gana la Spurr logarítmica, con I = 0.09031, seguida de cerca por la Schumacher–Hall logarítmica (0.09141); sus coeficientes son <i>b</i>₀ = −10.335 y <i>b</i>₁ = 1.0058, con un factor de Meyer de 1.00816. Los residuales se abren en abanico conforme crece el volumen.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · por qué el índice de Furnival</div>
+    <p>R² y RMSE no sirven para comparar un modelo ajustado en volumen con uno ajustado en logaritmos: miden errores en escalas distintas. Furnival (1961) llevó todos a la misma escala: para los modelos en volumen, el índice es el error estándar residual σ̂; para los logarítmicos, σ̂ multiplicado por la media geométrica de los volúmenes, exp(media de ln <i>V</i>). El menor índice es el mejor. Cuando la dispersión crece con el tamaño del árbol —lo habitual—, los modelos logarítmicos, que reparten el error en proporción al volumen, suelen tener el menor índice aunque su R² en la escala del volumen sea un poco más bajo, como aquí (0.9469 frente a 0.9500 del no lineal).</p>
+  </div>
+  <p>La interpretación lo dice con los números del ejemplo: «El modelo con menor índice de Furnival es <b>Spurr logarítmica</b> (I = 0.09031; R² = 0.9469; RMSE = 17.4 % del volumen medio). La dispersión de los residuales crece con el tamaño del árbol (heterocedasticidad); las formas logarítmicas la estabilizan y por eso suelen ganar.» La segunda frase sólo aparece cuando la dispersión de la mitad de los árboles más grandes es más de 1.8 veces la de la mitad más chica.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>La ecuación ganadora pasa al Bloque 3</div>
+    <p>El modelo con el menor índice de Furnival queda disponible en <span class="ruta">Bloque 3<span class="sep">›</span>Expansión a la hectárea</span> como <span class="ui">Ecuación ajustada en el Bloque 2</span>. Es el ganador el que pasa, no el que estés viendo en <span class="ui">Ver el modelo</span>.</p>
+  </div>
+
+  <!-- 2.4 -->
+  <h2 id="s2-4"><span class="num">2.4</span>Ahusamiento</h2>
+  <p class="lead">Una función de ahusamiento describe el diámetro del fuste a cualquier altura. Con ella se calcula hasta dónde llega el diámetro comercial y cuántas trozas de un largo dado salen de un árbol en pie, con el volumen de cada una.</p>
+  <p>El botón <span class="ui">Ajustar con las secciones cargadas arriba</span> ajusta dos modelos al perfil relativo —el diámetro entre el DAP, <i>d</i>/<i>D</i>, contra la altura entre la altura total, <i>z</i> = <i>h</i>/<i>H</i>— de todas las secciones de la sección 2.2; si no hay secciones cargadas, carga primero las del pino de ejemplo.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Modelo</th><th>Forma</th></tr></thead>
+    <tbody>
+      <tr><td>Kozak, Munro y Smith (1969)</td><td>(<i>d</i>/<i>D</i>)² = <i>b</i>₁(<i>z</i> − 1) + <i>b</i>₂(<i>z</i>² − 1): una sola parábola, por mínimos cuadrados sin intercepto</td></tr>
+      <tr><td>Max y Burkhart (1976)</td><td>tres segmentos —neiloide en la base, paraboloide en el centro y cono en la punta— unidos en los puntos <i>a</i>₂ y <i>a</i>₁: (<i>d</i>/<i>D</i>)² = <i>b</i>₁(<i>z</i> − 1) + <i>b</i>₂(<i>z</i>² − 1) + <i>b</i>₃(<i>a</i>₁ − <i>z</i>)²<i>I</i>₁ + <i>b</i>₄(<i>a</i>₂ − <i>z</i>)²<i>I</i>₂, con <i>I</i><sub>i</sub> = 1 si <i>z</i> ≤ <i>a</i><sub>i</sub>; por mínimos cuadrados no lineales con varios arranques</td></tr>
+    </tbody>
+  </table>
+  <p>La tabla <span class="ui">Comparación (en diámetro)</span> da, para cada modelo, las secciones usadas, R² y RMSE del diámetro, el sesgo y el AIC; siguen la tabla de coeficientes de cada uno y la figura <span class="ui">Perfil relativo del fuste</span>, con todas las secciones como puntos grises y las dos curvas.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-ahusamiento.png" alt="La comparación de los dos modelos de ahusamiento y el perfil relativo del fuste con las secciones y las dos curvas"></div>
+    <figcaption><b>Figura 2.6.</b> El ahusamiento de los pinos de ejemplo (sin las tablas de coeficientes, que en la app van entre la comparación y la figura). Max y Burkhart gana en todo: RMSE de 1.82 cm frente a 1.99 cm y AIC de −1,147.3 frente a −1,032.9. En la base, su curva sigue el ensanchamiento del tocón que la parábola de Kozak no alcanza.</figcaption>
+  </figure>
+  <p>Los coeficientes del ejemplo son <i>b</i>₁ = −1.8810 y <i>b</i>₂ = 0.73497 para Kozak, y <i>b</i>₁ = −2.8202, <i>b</i>₂ = 1.2679, <i>b</i>₃ = −1.0119, <i>b</i>₄ = 32.658, <i>a</i>₁ = 0.71088 y <i>a</i>₂ = 0.082897 para Max y Burkhart: el paraboloide empieza a volverse cono hacia el 71 % de la altura y el neiloide de la base ocupa el 8 % inferior. En Max y Burkhart, <i>b</i>₁, <i>b</i>₂ y <i>b</i>₃ tienen errores estándar grandes (valores <i>p</i> de 0.015, 0.054 y 0.099): es lo normal en un modelo segmentado, cuyos coeficientes se compensan entre sí; lo que importa es el perfil que dibujan juntos.</p>
+
+  <h3>Las trozas de un árbol</h3>
+  <p>Con el perfil ajustado, los campos <span class="ui">DAP del árbol (cm)</span>, <span class="ui">Altura total (m)</span>, <span class="ui">Diámetro en punta (cm)</span>, <span class="ui">Largo de troza (m)</span>, <span class="ui">Altura del tocón (m)</span> y <span class="ui">Modelo</span> (Max–Burkhart o Kozak 1969) describen un árbol en pie y cómo se troceará. La app da el volumen total del fuste, la altura a la que el diámetro baja al mínimo en punta y las trozas enteras que caben desde el tocón hasta esa altura, con su volumen comercial; la tabla <span class="ui">Trozas del árbol</span> da para cada troza dónde empieza y termina, sus diámetros mayor y menor y su volumen, y la figura <span class="ui">El fuste y sus trozas</span> dibuja el fuste a escala con un corte punteado por troza y, en dorado, la altura al diámetro mínimo.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-trozas.png" alt="Los controles del árbol a trocear, los mosaicos, la tabla de siete trozas y el dibujo del fuste con sus cortes"></div>
+    <figcaption><b>Figura 2.7.</b> Un pino de 35 cm y 24 m (los valores por omisión) con el modelo de Max y Burkhart: 1.0387 m³ en el fuste, el diámetro llega a 10 cm a los 20.03 m y salen 7 trozas de 2.5 m con 0.9529 m³ comerciales. La primera, de 0.30 a 2.80 m, pasa de 38.1 a 32.9 cm y tiene 0.2380 m³.</figcaption>
+  </figure>
+  <p>Fíjate en la columna <span class="ui">Desde (m)</span>: cada troza empieza 5 cm después de donde terminó la anterior (2.80 → 2.85 m). La app deja ese margen de despunte entre trozas; no hay un campo para cambiarlo. Por eso, en el ejemplo, una octava troza ya no cabe: empezaría en 18.15 m y terminaría en 20.65 m, por encima de los 20.03 m del diámetro mínimo. El volumen entre dos alturas se integra numéricamente sobre el perfil (regla de Simpson, 400 intervalos), y la altura al diámetro mínimo se resuelve por el método de Brent. Cambiar cualquiera de estos campos recalcula al soltar el control.</p>
+
+  <!-- 2.5 -->
+  <h2 id="s2-5"><span class="num">2.5</span>Relación altura–diámetro</h2>
+  <p class="lead">Medir la altura de todos los árboles cuesta; medir el diámetro, poco. Lo habitual es medir la altura a una parte de los árboles, ajustar una curva altura–diámetro y estimar con ella la altura del resto.</p>
+  <p>La tarjeta de datos pide <span class="ui">Árbol</span>, <span class="ui">Especie</span>, <span class="ui">DAP (cm)</span>* y <span class="ui">Altura total (m) — vacía si falta</span>, con al menos 6 árboles con altura medida (mayor de 1.3 m). Sus ejemplos son <span class="ui">Pino: parcela con alturas faltantes</span> (85 árboles; a 28 les falta la altura) y <span class="ui">Bosque mesófilo: Liquidambar</span> (los árboles de una sola especie, para una curva propia); <span class="ui">Usar el inventario cargado</span> toma los árboles del Bloque 3. Debajo de la tarjeta, <span class="ui">Especie</span> ajusta la curva con todos los árboles (<span class="ui">Todas</span>) o con una sola especie, y <span class="ui">Curva para estimar</span> elige con cuál curva se estiman las alturas faltantes: la de menor AIC, que es la opción por omisión, o una en particular.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b2-altura.png" alt="La comparación de las tres curvas de altura, y la figura con los árboles medidos, las curvas y las alturas estimadas"></div>
+    <figcaption><b>Figura 2.8.</b> La parcela de pino con alturas faltantes. Con 57 árboles medidos, Weibull tiene el menor AIC (210.2), muy cerca de Chapman–Richards (210.7) y de Näslund (211.7), y un RMSE de 1.43 m; con ella se estimaron las 28 alturas que faltaban. Sus coeficientes, en una tabla que la captura omite, son <i>a</i> = 26.971, <i>b</i> = 0.016834 y <i>c</i> = 1.3559; su asíntota, 1.3 + <i>a</i> = 28.3 m, es la altura máxima que predice.</figcaption>
+  </figure>
+  <p>Las tres curvas pasan por <i>H</i> = 1.3 m cuando el diámetro tiende a cero:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Curva</th><th>Ecuación</th></tr></thead>
+    <tbody>
+      <tr><td>Näslund</td><td><i>H</i> = 1.3 + <i>D</i>²/(<i>a</i> + <i>bD</i>)²</td></tr>
+      <tr><td>Chapman–Richards</td><td><i>H</i> = 1.3 + <i>a</i>(1 − e<sup>−<i>bD</i></sup>)<sup><i>c</i></sup></td></tr>
+      <tr><td>Weibull</td><td><i>H</i> = 1.3 + <i>a</i>(1 − e<sup>−<i>bD</i><sup><i>c</i></sup></sup>)</td></tr>
+    </tbody>
+  </table>
+  <p>Se ajustan por mínimos cuadrados no lineales; Näslund arranca de su forma linealizada, <i>D</i>/√(<i>H</i> − 1.3) = <i>a</i> + <i>bD</i>. La tabla <span class="ui">Comparación de curvas</span> da <i>n</i>, RMSE, R², sesgo, AIC y BIC, y resalta la curva que se usa para estimar; siguen sus coeficientes y la figura <span class="ui">Curvas de altura–diámetro</span>, con los árboles medidos en gris, las tres curvas (la elegida con línea continua y gruesa) y las alturas estimadas como puntos naranjas sobre ella.</p>
+
+  <p>La tabla <span class="ui">Alturas estimadas</span> da la altura de cada árbol que no la tenía (el árbol 3, de 34.1 cm, 24.7 m), y el botón <span class="ui">⤓ Tabla completa con alturas rellenas (CSV)</span> descarga los 85 árboles con su altura medida o estimada y una columna <code>altura_estimada</code> que vale 1 en las estimadas. La interpretación cierra con una advertencia que conviene tomar en serio: «Fuera del intervalo de diámetros medidos (6.0–47.1 cm) las curvas pueden separarse: no extrapoles lejos de él.» En la figura se ve: arriba de 45 cm, Näslund ya se aparta de las otras dos.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Una curva por especie, cuando se puede</div>
+    <p>En un rodal mezclado, una sola curva para todas las especies promedia formas de crecer muy distintas. Si una especie tiene suficientes árboles medidos, elige esa especie en <span class="ui">Especie</span> para su propia curva. El Bloque 3 también estima las alturas que faltan (casilla <span class="ui">Estimar las alturas faltantes (Näslund)</span>), pero con una sola curva de Näslund para todo el inventario.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>Si</b> la esbeltez de un árbol pasa de 80</td><td><b>entonces</b> es delgado para su altura y, según la app, inestable al viento.</td></tr>
+      <tr><td><b>Si</b> no tienes árboles cubicados de tu especie</td><td><b>entonces</b> usa un coeficiente mórfico de la literatura con cautela; si los tienes, el medio de la sección 2.2 o, mejor, una ecuación de volumen.</td></tr>
+      <tr><td><b>Si</b> comparas ecuaciones de volumen con y sin logaritmo</td><td><b>entonces</b> decide por el índice de Furnival, no por R²; el menor es el mejor.</td></tr>
+      <tr><td><b>Si</b> dos curvas difieren en menos de 2 unidades de AIC</td><td><b>entonces</b> son prácticamente equivalentes dentro de los datos; elige la más sencilla o la que se comporte mejor en los extremos.</td></tr>
+      <tr><td><b>Si</b> los coeficientes de Max y Burkhart tienen errores estándar grandes</td><td><b>entonces</b> no es un mal ajuste en sí: mira el RMSE, el AIC y el perfil dibujado.</td></tr>
+      <tr><td><b>Si</b> vas a estimar alturas o volúmenes fuera del intervalo de diámetros con que se ajustó la curva</td><td><b>entonces</b> no lo hagas lejos de él: las curvas extrapolan distinto.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Son guías para interpretar, no leyes: lo que sabes de la especie y del sitio manda.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>«Ningún árbol tiene al menos dos secciones».</b> La cubicación necesita dos o más secciones por árbol; revisa que la columna <span class="ui">Árbol</span> esté bien emparejada y que cada árbol no tenga un identificador distinto en cada fila. <b>«Primero cubica árboles en la sección anterior».</b> <span class="ui">Usar los árboles cubicados arriba</span> necesita la tabla de secciones cargada en la 2.2. <b>«Hacen falta al menos 6 árboles…».</b> Las ecuaciones de volumen y las curvas de altura piden seis árboles completos; en la curva de altura sólo cuentan los de más de 1.3 m. <b>«Ningún modelo convergió» o «Ninguna curva convergió».</b> Suele pasar con muy pocos árboles o con unidades cruzadas: el DAP en metros o la altura en centímetros. <b>Volúmenes diez mil veces más chicos o más grandes.</b> El DAP va en centímetros y las alturas y el largo en metros; el área basal sale en m².</p>
+  </div>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Métodos y fuentes</div>
+    <p>Cada tarjeta cita sus fuentes en su recuadro <span class="ui">Método y fuentes</span>: Husch, Beers y Kershaw (2003) y Avery y Burkhart (2002) para las medidas del árbol; Smalian (1837) para la cubicación; Schumacher y Hall (1933), Spurr (1952), Meyer (1941), Furnival (1961) y Marquardt (1963) para las ecuaciones de volumen; Kozak, Munro y Smith (1969) y Max y Burkhart (1976) para el ahusamiento; Näslund (1937), Richards (1959), Yang, Kozak y Smith (1978) y Mehtätalo, de-Miguel y Gregoire (2015) para las curvas de altura. Las referencias completas están en el apéndice F.</p>
+  </div>
+</section>
+
+</body>
+</html>

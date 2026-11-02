@@ -161,18 +161,11 @@ de ejemplo», no «el cafetal». Números con punto decimal y coma de miles, com
 
 **No lo corrijas.** Anótalo al final de tu entrega con el bloque, cómo reproducirlo, qué esperabas y
 qué salió (con la captura si ayuda), y escribe el capítulo con lo que la app hace hoy, sin presentar
-el error como correcto. Los que se vieron al preparar el manual:
-
-- Bloque 10, «Bloques que entran»: las casillas se numeran «1. Dasometría», «2. Inventario y
-  muestreo»… «8. Utilidades forestales», uno menos que el número del bloque (Dasometría es el
-  Bloque 2). La búsqueda (`Ctrl + K`) también los muestra así («3. Biomasa y carbono» en Informe y
-  proyecto).
-- Bloque 1, «Cómo funciona»: con la ventana de 1400 px, los seis pasos no caben en un renglón y el
-  sexto queda solo abajo.
-- Bloque 3, «Estimación y error de muestreo»: el campo «Diseño» corta su texto («Muestreo aleatorio
-  sin…») a 1400 px.
-- La cita que da la app apunta a `https://github.com/luisangelbg/ForestPro`, que todavía no existe
-  (la app no está publicada); el manual la reproduce tal cual.
+el error como correcto. Los errores que se anotaron al escribir la primera versión del manual se
+corrigieron en la app (commit 0eebe7b, 72 pruebas, 8 327 comparaciones sin desacuerdos; la lista está en
+el mensaje del commit): entre ellos, la numeración de las casillas de «Bloques que entran» del Bloque 10,
+el flujo de «Cómo funciona» en dos filas de tres, el campo «Diseño» ancho y la hojarasca del cafetal.
+La cita de la app sigue apuntando a `https://github.com/luisangelbg/ForestPro`, que existirá al publicarla.
 
 ## 6. Tamaño
 

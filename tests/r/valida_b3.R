@@ -71,6 +71,54 @@ gap <- max(1e-3, 0.002 * min(d))
 op <- optimize(prof, c(0, min(d) - gap), maximum = TRUE, tol = 1e-10)
 w3 <- fitdist(d - op$maximum, "weibull", control = list(reltol = 1e-14))
 out$weibull3 <- list(a = op$maximum, shape = unname(w3$estimate["shape"]), scale = unname(w3$estimate["scale"]), loglik = w3$loglik)
+# Weibull ponderada por el factor de expansión y truncada en el DAP mínimo medido (2.5 cm), escrita aparte:
+# -log L = -Σ w [log f(x) - log S(t)], minimizada con optim sobre log(c), log(b)
+x <- viv$dap; w <- viv$ef
+wfit <- function(t) {
+  nll <- function(q) { cc <- exp(q[1]); bb <- exp(q[2]); -sum(w * (dweibull(x, cc, bb, log = TRUE) - (if (t > 0) pweibull(t, cc, bb, lower.tail = FALSE, log.p = TRUE) else 0))) }
+  o <- optim(c(0, log(mean(x))), nll, method = "BFGS", control = list(reltol = 1e-16, maxit = 1000))
+  o <- optim(o$par, nll, method = "Nelder-Mead", control = list(reltol = 1e-16, maxit = 5000))
+  o <- optim(o$par, nll, method = "BFGS", control = list(reltol = 1e-16, maxit = 1000))
+  list(shape = exp(o$par[1]), scale = exp(o$par[2]), loglik = -o$value)
+}
+out$weibullW <- suppressWarnings(wfit(0)); out$weibullWT <- suppressWarnings(wfit(2.5))
+# bondad de ajuste ponderada: distribución empírica ponderada y tamaño efectivo de Kish
+neff <- sum(w)^2 / sum(w^2)
+kolm <- function(l) { k <- 1:100; min(1, max(0, sum(2 * (-1)^(k - 1) * exp(-2 * k^2 * l^2)))) }
+wks <- function(Fm) {
+  ux <- sort(unique(x)); wx <- tapply(w, factor(x, levels = ux), sum); cw <- cumsum(wx) / sum(w)
+  before <- c(0, head(cw, -1)); F <- Fm(ux)
+  D <- max(c(cw - F, F - before)); list(D = D, p = kolm(sqrt(neff) * D), neff = neff)
+}
+FT <- function(f, t) function(v) ifelse(v <= t, 0, (pweibull(v, f$shape, f$scale) - pweibull(t, f$shape, f$scale)) / pweibull(t, f$shape, f$scale, lower.tail = FALSE))
+out$ksW <- wks(FT(out$weibullW, 0)); out$ksWT <- wks(FT(out$weibullWT, 2.5))
+# χ² con las proporciones ponderadas de clases de 5 cm, escaladas a n_ef; se juntan clases hasta esperados >= 5
+wchi <- function(Fm, k, start = floor(min(x) / 5) * 5) {
+  ed <- seq(start, start + ceiling((max(x) + 1e-9 - start) / 5) * 5, by = 5)
+  cls <- pmin(findInterval(x, ed, rightmost.closed = FALSE), length(ed) - 1)
+  O <- sapply(seq_len(length(ed) - 1), function(j) sum(w[cls == j])); O <- O / sum(O) * neff
+  E <- neff * diff(Fm(ed)); E[1] <- E[1] + neff * Fm(ed[1]); E[length(E)] <- E[length(E)] + neff * (1 - Fm(ed[length(ed)]))
+  mo <- c(); me <- c(); oo <- 0; ee <- 0
+  for (j in seq_along(O)) { oo <- oo + O[j]; ee <- ee + E[j]; if (ee >= 5) { mo <- c(mo, oo); me <- c(me, ee); oo <- 0; ee <- 0 } }
+  if (oo > 0 || ee > 0) { mo[length(mo)] <- mo[length(mo)] + oo; me[length(me)] <- me[length(me)] + ee }
+  chi <- sum((mo - me)^2 / me); df <- length(mo) - 1 - k
+  list(chi = chi, df = df, p = pchisq(chi, df, lower.tail = FALSE))
+}
+out$chiW <- wchi(FT(out$weibullW, 0), 2); out$chiWT <- wchi(FT(out$weibullWT, 2.5), 2, start = 2.5)
+# tamaño de muestra estratificado (área basal, E = 10 %): n y su reparto en parcelas enteras que suman n
+# (mínimo 2 por estrato y el resto por los mayores residuos), con asignación de Neyman y proporcional
+ssStrat <- function(alloc, E = 10, conf = 0.95) {
+  Wh <- sapply(st, function(s) s$area[1]); Wh <- Wh / sum(Wh); sh <- sapply(st, function(s) sd(s$G)); mh <- sapply(st, function(s) mean(s$G))
+  D <- E / 100 * sum(Wh * mh); n <- 30; prev <- -1
+  for (i in 1:100) { t <- qt(1 - (1 - conf) / 2, n - 1); raw <- if (alloc == "prop") sum(Wh * sh^2) / (D / t)^2 else sum(Wh * sh)^2 / (D / t)^2
+    nx <- max(2 * length(st), ceiling(raw - 1e-9)); if (nx == prev) break; prev <- n <- nx }
+  ex <- if (alloc == "prop") Wh * n else n * Wh * sh / sum(Wh * sh)
+  base <- pmax(2, floor(ex)); left <- n - sum(base)
+  cand <- which(base == floor(ex)); cand <- cand[order(-(ex[cand] - floor(ex[cand])), cand)]
+  k <- 1; while (left > 0 && k <= length(cand)) { base[cand[k]] <- base[cand[k]] + 1; left <- left - 1; k <- k + 1 }
+  list(strata = names(st), nRaw = n, n = sum(base), nh = unname(base))
+}
+out$stratSize <- list(neyman = ssStrat("neyman"), prop = ssStrat("prop"))
 # IVI del cafetal (parcelas de 1 000 m²) con forest_structure
 fsx <- as.data.frame(forest_structure(ca, "especie", "dap", "parcela", 1000))
 fsx <- fsx[order(fsx$especie), ]

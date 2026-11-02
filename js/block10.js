@@ -14,7 +14,7 @@
    The report gathers what the blocks show (numbers, figures, tables,
    interpretations and, if asked, the methods with their sources) into one
    HTML file that carries everything inside: the figures go as SVG with their
-   styles written in and the colours of the light theme, so the file looks the
+   styles written in and the colors of the light theme, so the file looks the
    same anywhere and prints to PDF from the browser.
 
    The project is the record of what was done: the data loaded in each data
@@ -190,7 +190,7 @@ const normColor = v => v.indexOf('color(srgb') < 0 ? v : v.replace(/color\(srgb\
   const c = x => Math.round(Math.max(0, Math.min(1, +x)) * 255);
   return a == null ? `rgb(${c(r)}, ${c(g)}, ${c(b)})` : `rgba(${c(r)}, ${c(g)}, ${c(b)}, ${/%$/.test(a) ? parseFloat(a) / 100 : +a})`;
 });
-/* an SVG of the app with its computed styles written in, in the colours of the light theme */
+/* an SVG of the app with its computed styles written in, in the colors of the light theme */
 function svgOut(svg) {
   return inLight(() => {
     const clone = svg.cloneNode(true);
@@ -292,6 +292,7 @@ h4{font-size:.95rem;margin:14px 0 6px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:10px 0}
 .stat-tile{border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:8px 12px}
 .stat-label{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.nc{text-transform:none}
 .stat-value{font-size:1.2rem;font-weight:700}
 .stat-sub{font-size:.8rem;color:var(--muted)}
 .stat-tile.bad{box-shadow:inset 3px 0 0 #b3261e}.stat-tile.good{box-shadow:inset 3px 0 0 var(--primary)}.stat-tile.warn{box-shadow:inset 3px 0 0 #b26a00}
@@ -313,7 +314,7 @@ tr.row-total td{font-weight:700;background:var(--soft)}
 .ref-mini{padding-left:18px;margin:6px 0}
 pre{white-space:pre-wrap;background:var(--soft);border-radius:8px;padding:10px 12px;font-size:.8rem}
 footer{margin-top:40px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
-.printbar{position:fixed;right:16px;top:16px}
+.printbar{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;padding:10px 16px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line)}
 .printbar button{font:inherit;font-weight:700;background:var(--primary);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer}
 @media (max-width:640px){main{padding:18px 16px 48px}.cover{flex-direction:column;align-items:flex-start}.toc ol{columns:1}}
 @media print{.printbar{display:none}main{max-width:none;padding:0}h2.blk{break-before:page}figure,.tiles,.interp,.method,tr{break-inside:avoid}h2,h3,h4{break-after:avoid}@page{size:A4;margin:16mm 14mm}}
@@ -330,7 +331,7 @@ function buildReport() {
   let h = `<!DOCTYPE html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}${site ? ' · ' + esc(site) : ''}</title><meta name="generator" content="ForestPro ${esc(window.FP_VERSION || '')}"><style>${REPORT_CSS}</style></head><body>`;
   h += `<div class="printbar"><button type="button" onclick="window.print()">${esc(T('Imprimir o guardar como PDF', 'Print or save as PDF'))}</button></div><main>`;
   h += `<header class="cover">${Art.logo(84)}<div><h1>${esc(title)}</h1>${site ? `<p class="site">${esc(site)}</p>` : ''}<p>${[author, dateTxt].filter(Boolean).map(esc).join(' · ')}</p><p>${esc(T('Generado con ForestPro ', 'Generated with ForestPro ') + (window.FP_VERSION || '') + ' · LABG')}</p></div></header>`;
-  if (blocks.length > 1) h += `<nav class="toc"><b>${esc(T('Contenido', 'Contents'))}</b><ol>${blocks.map(b => `<li><a href="#b${b.n}">${esc(b.name)}</a></li>`).join('')}</ol></nav>`;
+  if (blocks.length > 1) h += `<nav class="toc"><b>${esc(T('Contenido', 'Contents'))}</b><ol>${blocks.map(b => `<li value="${b.n}"><a href="#b${b.n}">${esc(b.name)}</a></li>`).join('')}</ol></nav>`;
   if (notes) h += `<h2>${esc(T('Presentación', 'Introduction'))}</h2><div class="notes">${esc(notes)}</div>`;
   const sum = blocks.filter(b => b.p.tiles);
   if (sum.length) {
@@ -338,7 +339,7 @@ function buildReport() {
     sum.forEach(b => { h += `<h4>${esc(b.name)}</h4><div class="tiles">${b.p.tiles}</div>`; });
   }
   blocks.forEach(b => {
-    h += `<h2 class="blk" id="b${b.n}">${b.n - 1}. ${esc(b.name)}</h2>`;
+    h += `<h2 class="blk" id="b${b.n}">${b.n}. ${esc(b.name)}</h2>`;
     if (b.p.data.length) h += `<p class="data">${esc(T('Datos: ', 'Data: '))}${b.p.data.map(esc).join('; ')}</p>`;
     b.p.cards.forEach(c => { h += `<h3>${esc(c.title)}</h3>` + c.items.map(it => it.html).join(''); });
   });
@@ -375,7 +376,7 @@ function exportTables(kind) {
   if (kind === 'xlsx') download(new Blob([DataIO.xlsx(sh)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), 'forestpro_tablas.xlsx');
   else {
     const used = new Set();
-    const files = sh.map((s, i) => { let nm = (s.file || slug(s.name)).replace(/[^\w.-]+/g, '_'); while (used.has(nm)) nm += '_' + (i + 1); used.add(nm); return { name: nm + '.csv', data: '﻿' + DataIO.toCSV(s.header, s.rows) }; });
+    const files = sh.map((s, i) => { let nm = (s.file || slug(s.name)).replace(/[^\w.-]+/g, '_'); while (used.has(nm)) nm += '_' + (i + 1); used.add(nm); return { name: nm + '.csv', data: DataIO.toCSV(s.header, s.rows) }; });
     download(new Blob([DataIO.zip(files)], { type: 'application/zip' }), 'forestpro_tablas_csv.zip');
   }
   showMessage(R.tabs, 'success', L2(`${sh.length} tablas exportadas.`, `${sh.length} tables exported.`));
@@ -400,10 +401,10 @@ function build() {
   nf.innerHTML = `<label for="b10notes">${L2('Presentación o notas (opcional)', 'Introduction or notes (optional)')}</label><textarea id="b10notes" rows="3"></textarea>`;
   a.appendChild(nf);
   const inc = mk('fieldset', { class: 'inc-set' });
-  inc.innerHTML = `<legend>${L2('Bloques que entran', 'Blocks to include')}</legend>` + BLOCKS.map(n => `<label class="checkbox-label"><input type="checkbox" id="b10inc${n}" checked> ${n - 1}. ${L2(STEPS.find(s => s.n === n).es, STEPS.find(s => s.n === n).en)}</label>`).join('') +
+  inc.innerHTML = `<legend>${L2('Bloques que entran', 'Blocks to include')}</legend>` + BLOCKS.map(n => `<label class="checkbox-label"><input type="checkbox" id="b10inc${n}" checked> ${n}. ${L2(STEPS.find(s => s.n === n).es, STEPS.find(s => s.n === n).en)}</label>`).join('') +
     `<label class="checkbox-label"><input type="checkbox" id="b10methods" checked> ${L2('Con los métodos y sus fuentes', 'With the methods and their sources')}</label><label class="checkbox-label"><input type="checkbox" id="b10warn" checked> ${L2('Con los avisos', 'With the warnings')}</label>`;
   a.appendChild(inc);
-  a.appendChild(mk('p', { class: 'hint' }, L2('Entra lo que cada bloque muestra en este momento; un bloque sin resultados no aparece. Las figuras van con los colores del tema claro y con lo que hayas cambiado en el editor ✎.', 'What each block shows right now goes in; a block with no results does not appear. Figures go in the colours of the light theme and with whatever you changed in the editor ✎.')));
+  a.appendChild(mk('p', { class: 'hint' }, L2('Entra lo que cada bloque muestra en este momento; un bloque sin resultados no aparece. Las figuras van con los colores del tema claro y con lo que hayas cambiado en el editor ✎.', 'What each block shows right now goes in; a block with no results does not appear. Figures go in the colors of the light theme and with whatever you changed in the editor ✎.')));
   const row = mk('div', { class: 'btn-row' });
   const pv = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Vista previa', 'Preview'));
   pv.addEventListener('click', preview);

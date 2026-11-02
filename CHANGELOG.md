@@ -3,6 +3,57 @@
 Todas las versiones de ForestPro, de la más reciente a la más antigua. El formato sigue
 [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y la numeración, [SemVer](https://semver.org/lang/es/).
 
+## [Sin versión] — 2026-11-01
+
+Correcciones halladas al escribir el manual. La versión sigue siendo la 1.0.0.
+
+### Corregido
+
+- **Bloque 4 · error del total de reservorios.** Ya no se suman en cuadratura reservorios que salen de las mismas
+  parcelas: la biomasa aérea, las raíces, los muertos en pie (y la hojarasca y el suelo cuando traen las mismas
+  parcelas) se suman parcela por parcela y el error del total sale de esos totales con el estimador del inventario;
+  solo los reservorios de otra muestra (madera caída, arbustos) se agregan en cuadratura. La tabla dice cómo entra
+  cada reservorio y la interpretación compara con la cuadratura. El balance ya no mezcla tarjetas de sitios
+  distintos: lo que viene de otro ejemplo o archivo queda fuera con un aviso. Validado contra un cálculo aparte en R.
+- **Bloque 4:** la gráfica del cambio rotula «Medición 1»; la leyenda de las ecuaciones ya no recorta los nombres ni
+  se encima con el título del eje; el selector de la base mundial ya no ofrece .xls (que no se lee) y lo explica si
+  llega uno.
+- **Bloque 3 · Weibull:** Kolmogorov–Smirnov y χ² usan los mismos pesos del ajuste y el tamaño efectivo de Kish;
+  nuevo campo «DAP mínimo medido» (truncamiento por la izquierda; la app propone el menor DAP del inventario) y las
+  clases empiezan en él; el aviso de borde de la de 3 parámetros salta a menos de 1 % del mínimo, y otro avisa cuando
+  la ubicación queda en 0.
+- **Bloque 3:** el tamaño de muestra estratificado reparte parcelas enteras que suman la n del título (y se calcula
+  al cargar el inventario); conglomerados ya no dice «CV (0 %)»; «tocón» con acento cuenta como muerto; el diseño de
+  estimación y el corte se eligen de nuevo con cada inventario; la figura por estrato rotula todos los estratos y no
+  corta los intervalos; las notas de los ejemplos se actualizan al cargarlos desde otro bloque.
+- **Bloque 5:** rehacer el sitio respeta la edad inicial, el índice de sitio y el área basal que escribió el usuario;
+  si cambia la edad base, el índice propuesto se recalcula y el escrito a mano lleva un aviso; la tabla de producción
+  termina en la edad final; el cruce ICA = IMA usa el ICA periódico contra el IMA al inicio del intervalo y
+  corresponde al IMA máximo.
+- **Bloque 7:** el texto de la foto hemisférica dice bien que el peso sen θ/ρ disminuye hacia el horizonte; la
+  gráfica de cobertura se titula «Cobertura de copas por manejo (media ± DE)» y sus cifras quedan sobre las barras de
+  error; el plano de plantación sale centrado.
+- **Bloque 8:** la validación cruzada usa el kriging elegido (simple u ordinario); el predio no se agrega dos veces;
+  la barra de color deja lugar para su título.
+- **Bloque 9:** la nota del flujo descontado es cierta (se ocultan los años con solo el costo anual); sin doble
+  negativo en el sobrerrendimiento; singulares «1 metro equivale a», «1 movimiento cae…».
+- **Bloque 10:** los bloques llevan su número (en las casillas, en Ctrl K y en el informe, cuyo índice también); los
+  CSV del ZIP llevan una sola BOM; el botón de imprimir es una barra fija arriba y ya no tapa el título.
+- **Bloque 2:** la opción «La de menor AIC» ya no muestra los dos idiomas; leyendas que no se enciman con el eje.
+- **Figuras y diseño:** leyendas de abajo en tantas columnas como quepan y bajo el título del eje (Bloques 2, 4 y 6);
+  los símbolos y las unidades no pasan a mayúsculas en las etiquetas (Mg, λ, α); a 1 400 px caben los menús largos y
+  las tablas de resultados (los encabezados se parten en dos renglones); el flujo de trabajo del inicio va en dos
+  filas de tres; detalles del héroe y de la viñeta del Bloque 2.
+- **Datos:** la hojarasca simulada del cafetal era demasiado alta (12.0 Mg C/ha); ahora 3.5 Mg C/ha.
+- **Documentación:** el README apunta al manual de `manual/`; la guía y el registro ya no mencionan una PCoA que la app
+  no muestra; interfaz inglesa con ortografía estadounidense y comillas “ ” donde se tocó.
+
+### Validación
+
+- 8 327 comparaciones con R sin desacuerdos (antes 8 261): nuevas la Weibull ponderada y truncada con sus pruebas, el
+  reparto del tamaño de muestra estratificado y el balance de reservorios; regeneradas las referencias de los Bloques
+  3, 4 y 5 (`tests/LEEME_VALIDACION.md`). 72 pruebas unitarias (antes 62).
+
 ## [1.0.0] — 2026-10-04
 
 Primera versión pública.
@@ -28,7 +79,7 @@ Primera versión pública.
   Schumacher y logístico; índice de sitio anamórfico y polimórfico (diferencia algebraica) con clases; sistema de
   Clutter por mínimos cuadrados en dos etapas, proyección y tabla de producción editable.
 - **Bloque 6 · Diversidad y ecología:** Shannon, Simpson, Pielou, α de Fisher, Chao1 y ACE, cobertura, números de
-  Hill y sus estimaciones asintóticas, rarefacción y acumulación; Jaccard, Sørensen y Bray–Curtis, UPGMA, PCoA y
+  Hill y sus estimaciones asintóticas, rarefacción y acumulación; Jaccard, Sørensen y Bray–Curtis, UPGMA y
   NMDS, con envío de la matriz a ClusteringPro y PCAPro; perfil de Pretzsch; Clark–Evans y K y L de Ripley.
 - **Bloque 7 · Sistemas agroforestales:** sombra desde el inventario (cobertura con traslape, índice de complejidad
   de Holdridge) y desde una foto hemisférica (umbral de Otsu, apertura por ángulo sólido); respuesta del

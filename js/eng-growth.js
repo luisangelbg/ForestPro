@@ -39,13 +39,17 @@ const G = {};
 G.increments = function (series) {
   const s = series.filter(r => isFinite(r.t) && isFinite(r.y) && r.t > 0).slice().sort((a, b) => a.t - b.t);
   const out = s.map((r, i) => ({ t: r.t, y: r.y, ima: r.y / r.t, ica: i ? (r.y - s[i - 1].y) / (r.t - s[i - 1].t) : NaN }));
-  /* the age of the largest IMA, and the first crossing of ICA below IMA after it rises (linear interpolation) */
+  /* the age of the largest IMA, and the crossing of ICA and IMA that goes with it. IMA rises over an interval
+     exactly when the (periodic) ICA of the interval exceeds the IMA at its start, so f = ICA − IMA(start) is
+     positive on the interval that ends at the largest IMA and not positive on the next; f is placed at the
+     middle of each interval and the crossing interpolated linearly between those two midpoints */
   let best = 0;
   out.forEach((r, i) => { if (r.ima > out[best].ima) best = i; });
   let cross = NaN;
-  for (let i = 2; i < out.length; i++) {
-    const a = out[i - 1], b = out[i], da = a.ica - a.ima, db = b.ica - b.ima;
-    if (isFinite(da) && isFinite(db) && da > 0 && db <= 0) { cross = a.t + (b.t - a.t) * da / (da - db); break; }
+  if (best >= 1 && best < out.length - 1) {
+    const f = i => out[i].ica - out[i - 1].ima, mid = i => (out[i - 1].t + out[i].t) / 2;
+    const fa = f(best), fb = f(best + 1);
+    cross = mid(best) + (mid(best + 1) - mid(best)) * fa / (fa - fb);
   }
   return { rows: out, tMaxIMA: out[best].t, maxIMA: out[best].ima, tCross: cross };
 };
@@ -192,6 +196,8 @@ G.clutterProject = function (c, S, t1, g1, ages) {
 G.yieldTable = function (o) {
   const ages = [];
   for (let t = o.t0; t <= o.tEnd + 1e-9; t += o.step) ages.push(+t.toFixed(6));
+  /* the final age always closes the table, even when the step does not land on it */
+  if (ages[ages.length - 1] < o.tEnd - 1e-9) ages.push(+(+o.tEnd).toFixed(6));
   const pr = G.clutterProject(o.clutter, o.S, o.t0, o.g0, ages);
   const rows = pr.map((r, i) => {
     const N = o.n0 * pow(1 - (o.mort || 0) / 100, r.t - o.t0);

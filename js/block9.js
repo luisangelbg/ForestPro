@@ -31,9 +31,9 @@ const EX_FLOWS = [[0, 'Preparación del terreno', 'Site preparation', 7500, 0], 
   [18, 'Segundo aclareo (45 m³)', 'Second thinning (45 m³)', 9000, 40500], [25, 'Corta final (250 m³)', 'Final harvest (250 m³)', 65000, 300000]];
 
 const UNITS = {
-  length: [['Longitud', 'Length'], [['m', 'metros', 'metres'], ['cm', 'centímetros', 'centimetres'], ['mm', 'milímetros', 'millimetres'], ['km', 'kilómetros', 'kilometres'], ['in', 'pulgadas', 'inches'], ['ft', 'pies', 'feet'], ['yd', 'yardas', 'yards'], ['ch', 'cadenas (66 pies)', 'chains (66 ft)'], ['mi', 'millas', 'miles']]],
+  length: [['Longitud', 'Length'], [['m', 'metros', 'meters'], ['cm', 'centímetros', 'centimeters'], ['mm', 'milímetros', 'millimeters'], ['km', 'kilómetros', 'kilometers'], ['in', 'pulgadas', 'inches'], ['ft', 'pies', 'feet'], ['yd', 'yardas', 'yards'], ['ch', 'cadenas (66 pies)', 'chains (66 ft)'], ['mi', 'millas', 'miles']]],
   area: [['Superficie', 'Area'], [['m2', 'm²', 'm²'], ['ha', 'hectáreas', 'hectares'], ['km2', 'km²', 'km²'], ['ac', 'acres', 'acres'], ['ft2', 'pies²', 'square feet']]],
-  volume: [['Volumen', 'Volume'], [['m3', 'm³', 'm³'], ['dm3', 'dm³ (litros)', 'dm³ (litres)'], ['ft3', 'pies³', 'cubic feet'], ['bf', 'pies tabla', 'board feet'], ['cord', 'cuerdas (128 pies³ apilados)', 'cords (128 ft³ stacked)']]],
+  volume: [['Volumen', 'Volume'], [['m3', 'm³', 'm³'], ['dm3', 'dm³ (litros)', 'dm³ (liters)'], ['ft3', 'pies³', 'cubic feet'], ['bf', 'pies tabla', 'board feet'], ['cord', 'cuerdas (128 pies³ apilados)', 'cords (128 ft³ stacked)']]],
   mass: [['Masa', 'Mass'], [['kg', 'kilogramos', 'kilograms'], ['g', 'gramos', 'grams'], ['t', 'toneladas (Mg)', 'tonnes (Mg)'], ['lb', 'libras', 'pounds'], ['sht', 'toneladas cortas', 'short tons'], ['lgt', 'toneladas largas', 'long tons']]],
   basal: [['Área basal por superficie', 'Basal area per area'], [['m2ha', 'm²/ha', 'm²/ha'], ['ft2ac', 'pies²/acre', 'ft²/acre']]],
   volha: [['Volumen por superficie', 'Volume per area'], [['m3ha', 'm³/ha', 'm³/ha'], ['ft3ac', 'pies³/acre', 'ft³/acre'], ['bfac', 'pies tabla/acre', 'board feet/acre'], ['cordac', 'cuerdas/acre', 'cords/acre']]],
@@ -42,6 +42,10 @@ const UNITS = {
   density: [['Densidad', 'Density'], [['kgm3', 'kg/m³', 'kg/m³'], ['gcm3', 'g/cm³', 'g/cm³'], ['lbft3', 'libras/pie³', 'lb/ft³']]],
   trees: [['Árboles por superficie', 'Trees per area'], [['ha', 'árboles/ha', 'trees/ha'], ['ac', 'árboles/acre', 'trees/acre'], ['m2', 'árboles/m²', 'trees/m²']]],
 };
+/* the name of a unit for a quantity of exactly 1: the words before «/» or «(» go to the singular */
+const SING = { metros: 'metro', centímetros: 'centímetro', milímetros: 'milímetro', kilómetros: 'kilómetro', pulgadas: 'pulgada', pies: 'pie', 'pies²': 'pie²', 'pies³': 'pie³', yardas: 'yarda', cadenas: 'cadena', millas: 'milla', hectáreas: 'hectárea', acres: 'acre', cuerdas: 'cuerda', kilogramos: 'kilogramo', gramos: 'gramo', toneladas: 'tonelada', cortas: 'corta', largas: 'larga', libras: 'libra', árboles: 'árbol',
+  meters: 'meter', centimeters: 'centimeter', millimeters: 'millimeter', kilometers: 'kilometer', inches: 'inch', feet: 'foot', yards: 'yard', chains: 'chain', miles: 'mile', hectares: 'hectare', cords: 'cord', kilograms: 'kilogram', grams: 'gram', tonnes: 'tonne', pounds: 'pound', tons: 'ton', trees: 'tree' };
+const singular = name => { const m = /^([^/(]*)(.*)$/.exec(name); return m[1].split(' ').map(w => SING[w] || w).join(' ') + m[2]; };
 
 function build() {
   const root = el('b9root');
@@ -51,7 +55,7 @@ function build() {
     'The everyday sums in the forest and the sawmill: scaling logs, tallying sawn lumber, sawmill yield, form factor, unit conversions and the profitability of a plantation.')));
 
   /* A. logs */
-  const a = UI.section(root, ['Cubicación de trozas', 'Log scaling'], ['Volumen de cada troza en metros cúbicos por cuatro fórmulas y en pies tabla por tres reglas.', 'Volume of each log in cubic metres by four formulas and in board feet by three rules.']);
+  const a = UI.section(root, ['Cubicación de trozas', 'Log scaling'], ['Volumen de cada troza en metros cúbicos por cuatro fórmulas y en pies tabla por tres reglas.', 'Volume of each log in cubic meters by four formulas and in board feet by three rules.']);
   const ar = mk('div', { class: 'btn-row' });
   const exA = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cargar ejemplo: 12 trozas de pino', 'Load example: 12 pine logs'));
   exA.addEventListener('click', () => { S.logs = EX_LOGS.map(r => Object.assign({}, r)); drawLogGrid(); scaleLogs(); });
@@ -61,7 +65,7 @@ function build() {
   ar.appendChild(mk('label', { class: 'checkbox-label' }, `<input type="checkbox" id="b9ub"> ${L2('Volumen sin corteza', 'Volume under bark')}`));
   a.appendChild(ar);
   R.logGrid = mk('div'); a.appendChild(R.logGrid);
-  a.appendChild(mk('p', { class: 'hint' }, L2('Longitud en metros; diámetros con corteza en centímetros (punta delgada, punta gruesa y, si la tienes, a la mitad); grosor de corteza en milímetros, de un solo lado.', 'Length in metres; diameters over bark in centimetres (small end, large end and, if you have it, the middle); bark thickness in millimetres, on one side.')));
+  a.appendChild(mk('p', { class: 'hint' }, L2('Longitud en metros; diámetros con corteza en centímetros (punta delgada, punta gruesa y, si la tienes, a la mitad); grosor de corteza en milímetros, de un solo lado.', 'Length in meters; diameters over bark in centimeters (small end, large end and, if you have it, the middle); bark thickness in millimeters, on one side.')));
   const sb = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cubicar', 'Scale'));
   sb.addEventListener('click', scaleLogs);
   a.appendChild(mk('div', { class: 'btn-row' })).appendChild(sb);
@@ -73,9 +77,9 @@ function build() {
     refs: ['Husch, B., Beers, T. W. y Kershaw, J. A. (2003). <i>Forest Mensuration</i>, 4.ª ed. Wiley.', 'Avery, T. E. y Burkhart, H. E. (2002). <i>Forest Measurements</i>, 5.ª ed. McGraw-Hill.', 'Bruce, D. (1925). A formula for the Scribner rule. <i>Journal of Forestry</i> 23:432–433.', 'Clark, J. F. (1906). The measurement of saw logs. <i>Forestry Quarterly</i> 4:79–93.'] });
 
   /* B. lumber */
-  const b = UI.section(root, ['Madera aserrada', 'Sawn lumber'], ['Pies tabla y metros cúbicos de una lista de piezas.', 'Board feet and cubic metres of a list of pieces.']);
+  const b = UI.section(root, ['Madera aserrada', 'Sawn lumber'], ['Pies tabla y metros cúbicos de una lista de piezas.', 'Board feet and cubic meters of a list of pieces.']);
   const br = mk('div', { class: 'btn-row' });
-  br.innerHTML = `<label for="b9unit" class="sr-only">${L2('Unidades', 'Units')}</label><select id="b9unit"><option value="in"${optL('Pulgadas y pies', 'Inches and feet')}</option><option value="cm"${optL('Centímetros y metros', 'Centimetres and metres')}</option></select>`;
+  br.innerHTML = `<label for="b9unit" class="sr-only">${L2('Unidades', 'Units')}</label><select id="b9unit"><option value="in"${optL('Pulgadas y pies', 'Inches and feet')}</option><option value="cm"${optL('Centímetros y metros', 'Centimeters and meters')}</option></select>`;
   const exB = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Cargar ejemplo: lo aserrado de las 12 trozas', 'Load example: the lumber from the 12 logs'));
   exB.addEventListener('click', () => { el('b9unit').value = 'in'; S.pieces = EX_PIECES.map(p => ({ name: T(p[0], p[1]), t: p[2], w: p[3], L: p[4], n: p[5] })); drawPieceGrid(); tallyLumber(); });
   br.appendChild(exB);
@@ -89,7 +93,7 @@ function build() {
   R.lumber = mk('div', { class: 'res-host' }); b.appendChild(R.lumber);
   UI.method(b, { text: [
     '<p>Un pie tabla es una pieza de 1 pulgada × 12 pulgadas × 1 pie: 144 pulgadas cúbicas = 2.359 737 216 dm³, de modo que 1 m³ = 423.776 pies tabla. Pies tabla de una pieza = grosor (pulg) × ancho (pulg) × largo (pies) / 12, con las medidas nominales con que se comercia. En centímetros y metros, m³ = grosor × ancho × largo / 10 000.</p>',
-    '<p>A board foot is a piece of 1 inch × 12 inches × 1 foot: 144 cubic inches = 2.359737216 dm³, so 1 m³ = 423.776 board feet. Board feet of a piece = thickness (in) × width (in) × length (ft) / 12, with the nominal sizes used in trade. In centimetres and metres, m³ = thickness × width × length / 10,000.</p>'],
+    '<p>A board foot is a piece of 1 inch × 12 inches × 1 foot: 144 cubic inches = 2.359737216 dm³, so 1 m³ = 423.776 board feet. Board feet of a piece = thickness (in) × width (in) × length (ft) / 12, with the nominal sizes used in trade. In centimeters and meters, m³ = thickness × width × length / 10,000.</p>'],
     refs: ['NIST (2008). <i>Guide for the Use of the International System of Units (SI)</i>. Special Publication 811, apéndice B.'] });
 
   /* C. sawmill yield */
@@ -140,7 +144,7 @@ function build() {
   ['b9st', 'b9stf'].forEach(id => el(id).addEventListener('input', stacked));
   UI.method(e, { text: [
     '<p>Definiciones exactas: 1 pulgada = 2.54 cm; 1 pie = 0.3048 m; 1 acre = 4 046.856 422 4 m²; 1 libra = 0.453 592 37 kg; 1 pie tabla = 144 pulg³; 1 cuerda = 128 pies³ de madera apilada. Las magnitudes por superficie se convierten con el factor de la unidad y el de la superficie (por ejemplo, 1 pie²/acre = 0.2296 m²/ha). El carbono pasa a CO₂ equivalente por 44/12. El factor de apilado (madera sólida por metro cúbico estéreo) depende del diámetro y de lo recto de las piezas; 0.6 a 0.7 es lo común en leña.</p>',
-    '<p>Exact definitions: 1 inch = 2.54 cm; 1 foot = 0.3048 m; 1 acre = 4,046.8564224 m²; 1 pound = 0.45359237 kg; 1 board foot = 144 in³; 1 cord = 128 ft³ of stacked wood. Per-area quantities are converted with the factor of the unit and that of the area (for example, 1 ft²/acre = 0.2296 m²/ha). Carbon becomes CO₂ equivalent by 44/12. The stacking factor (solid wood per stacked cubic metre) depends on the diameter and the straightness of the pieces; 0.6 to 0.7 is usual for firewood.</p>'],
+    '<p>Exact definitions: 1 inch = 2.54 cm; 1 foot = 0.3048 m; 1 acre = 4,046.8564224 m²; 1 pound = 0.45359237 kg; 1 board foot = 144 in³; 1 cord = 128 ft³ of stacked wood. Per-area quantities are converted with the factor of the unit and that of the area (for example, 1 ft²/acre = 0.2296 m²/ha). Carbon becomes CO₂ equivalent by 44/12. The stacking factor (solid wood per stacked cubic meter) depends on the diameter and the straightness of the pieces; 0.6 to 0.7 is usual for firewood.</p>'],
     refs: ['NIST (2008). <i>Guide for the Use of the International System of Units (SI)</i>. Special Publication 811.'] });
 
   /* F. plantation economics */
@@ -218,7 +222,7 @@ function drawPieceGrid() {
   const cm = el('b9unit').value === 'cm';
   UI.grid(R.pieceGrid, [{ key: 'name', label: ['Pieza', 'Piece'], w: 170 }, { key: 't', label: cm ? ['Grosor (cm)', 'Thickness (cm)'] : ['Grosor (pulg)', 'Thickness (in)'], num: true }, { key: 'w', label: cm ? ['Ancho (cm)', 'Width (cm)'] : ['Ancho (pulg)', 'Width (in)'], num: true },
     { key: 'L', label: cm ? ['Largo (m)', 'Length (m)'] : ['Largo (pies)', 'Length (ft)'], num: true }, { key: 'n', label: ['Piezas', 'Pieces'], num: true, def: 1 }], S.pieces);
-  R.unitHint.innerHTML = cm ? L2('Grosor y ancho en centímetros; largo en metros.', 'Thickness and width in centimetres; length in metres.') : L2('Medidas nominales: grosor y ancho en pulgadas, largo en pies (8¼ pies = 8.25).', 'Nominal sizes: thickness and width in inches, length in feet (8¼ ft = 8.25).');
+  R.unitHint.innerHTML = cm ? L2('Grosor y ancho en centímetros; largo en metros.', 'Thickness and width in centimeters; length in meters.') : L2('Medidas nominales: grosor y ancho en pulgadas, largo en pies (8¼ pies = 8.25).', 'Nominal sizes: thickness and width in inches, length in feet (8¼ ft = 8.25).');
 }
 function tallyLumber() {
   R.lumber.innerHTML = '';
@@ -228,7 +232,7 @@ function tallyLumber() {
   const rows = ps.map(p => Object.assign({ name: p.name || '—', n: p.n > 0 ? p.n : 1 }, K().piece(p, unit)));
   const tot = { bf: rows.reduce((s, r) => s + r.bf, 0), m3: rows.reduce((s, r) => s + r.m3, 0), n: rows.reduce((s, r) => s + r.n, 0) };
   S.lumRes = { rows, tot };
-  UI.tiles(R.lumber.appendChild(mk('div')), [[['Piezas', 'Pieces'], n0(tot.n)], [['Pies tabla', 'Board feet'], n1(tot.bf)], [['Metros cúbicos', 'Cubic metres'], n4(tot.m3) + ' m³']]);
+  UI.tiles(R.lumber.appendChild(mk('div')), [[['Piezas', 'Pieces'], n0(tot.n)], [['Pies tabla', 'Board feet'], n1(tot.bf)], [['Metros cúbicos', 'Cubic meters'], n4(tot.m3) + ' m³']]);
   UI.table(R.lumber, { title: ['Madera aserrada por tipo de pieza', 'Sawn lumber by kind of piece'], file: 'forestpro_aserrada', columns: [
     { key: 'name', label: ['Pieza', 'Piece'] }, { key: 'n', label: ['Piezas', 'Pieces'], num: true, fmt: n0 }, { key: 'bf', label: ['Pies tabla', 'Board feet'], num: true, fmt: n2 }, { key: 'm3', label: ['m³', 'm³'], num: true, fmt: n4 },
     { key: 'share', label: ['% del volumen', '% of volume'], num: true, get: r => r._class ? 100 : 100 * r.m3 / tot.m3, fmt: v => fmtNum(v, 1) }],
@@ -250,7 +254,7 @@ function sawYield() {
     [['Pies tabla por m³ en rollo', 'Board feet per m³ of roundwood'], n0(y.bfPerM3)],
     rule > 0 ? [['Sobrerrendimiento', 'Overrun'], fmtPct(100 * y.overrun, 1), ['frente a ' + n0(rule) + ' PT de la regla', 'against ' + n0(rule) + ' BF of the rule']] : null,
   ]);
-  UI.interp(R.yield, [`De cada m³ en rollo salen ${fmtNum(y.coef, 3)} m³ de madera aserrada (${n0(y.bfPerM3)} pies tabla); ${fmtPct(100 * y.waste, 0)} se va en aserrín, costeras, recortes y corteza. ${y.coef < 0.45 ? 'Es un rendimiento bajo: trozas delgadas o torcidas, sierras de corte grueso o un patrón de corte que no aprovecha la troza.' : y.coef > 0.65 ? 'Es un rendimiento alto, propio de trozas gruesas y rectas o de sierras delgadas.' : 'Es un rendimiento común en aserraderos de sierra cinta o circular con trozas medianas.'}${rule > 0 ? ` El aserradero obtuvo ${fmtPct(100 * y.overrun, 0)} ${y.overrun >= 0 ? 'más' : 'menos'} de lo que predice la regla.` : ''}`,
+  UI.interp(R.yield, [`De cada m³ en rollo salen ${fmtNum(y.coef, 3)} m³ de madera aserrada (${n0(y.bfPerM3)} pies tabla); ${fmtPct(100 * y.waste, 0)} se va en aserrín, costeras, recortes y corteza. ${y.coef < 0.45 ? 'Es un rendimiento bajo: trozas delgadas o torcidas, sierras de corte grueso o un patrón de corte que no aprovecha la troza.' : y.coef > 0.65 ? 'Es un rendimiento alto, propio de trozas gruesas y rectas o de sierras delgadas.' : 'Es un rendimiento común en aserraderos de sierra cinta o circular con trozas medianas.'}${rule > 0 ? ` El aserradero obtuvo ${fmtPct(100 * Math.abs(y.overrun), 0)} ${y.overrun >= 0 ? 'más' : 'menos'} de lo que predice la regla.` : ''}`,
     `Each m³ of roundwood yields ${fmtNum(y.coef, 3)} m³ of sawn lumber (${n0(y.bfPerM3)} board feet); ${fmtPct(100 * y.waste, 0)} goes into sawdust, slabs, trimmings and bark. ${y.coef < 0.45 ? 'It is a low recovery: small or crooked logs, thick-kerf saws or a cutting pattern that wastes the log.' : y.coef > 0.65 ? 'It is a high recovery, typical of large straight logs or thin saws.' : 'It is a common recovery for band or circular saw mills with medium logs.'}${rule > 0 ? ` The mill obtained ${fmtPct(100 * Math.abs(y.overrun), 0)} ${y.overrun >= 0 ? 'more' : 'less'} than the rule predicts.` : ''}`]);
   state.tools = Object.assign(state.tools || {}, { sawmill: { coef: y.coef, bfPerM3: y.bfPerM3, overrun: y.overrun } });
   Report.set(9, true); refreshStepMarks();
@@ -285,7 +289,8 @@ function convert() {
   if (!isFinite(v)) return;
   const trim = s => /\.\d*$/.test(s) ? s.replace(/0+$/, '').replace(/\.$/, '') : s;
   const fmtV = x => { const a = Math.abs(x); return a === 0 ? '0' : a >= 1e6 || a < 1e-4 ? x.toExponential(5).replace('-', '−') : trim(fmtNum(x, a >= 100 ? 2 : a >= 1 ? 4 : 6)); };
-  UI.table(R.conv, { title: [`${fmtV(v)} ${T(...UNITS[k][1].find(u => u[0] === from).slice(1))} equivalen a`, `${fmtV(v)} ${T(...UNITS[k][1].find(u => u[0] === from).slice(1))} equal`], file: 'forestpro_conversion', columns: [
+  const fu = UNITS[k][1].find(u => u[0] === from), one = Math.abs(v) === 1;
+  UI.table(R.conv, { title: [`${fmtV(v)} ${one ? singular(fu[1]) : fu[1]} ${one ? 'equivale' : 'equivalen'} a`, `${fmtV(v)} ${one ? singular(fu[2]) : fu[2]} ${one ? 'equals' : 'equal'}`], file: 'forestpro_conversion', columns: [
     { key: 'u', label: ['Unidad', 'Unit'] }, { key: 'v', label: ['Valor', 'Value'], num: true, get: r => fmtV(r.v), raw: r => r.v }],
     rows: UNITS[k][1].filter(u => u[0] !== from).map(u => ({ u: T(u[1], u[2]), v: K().convert(k, v, from, u[0]) })) });
 }
@@ -306,8 +311,11 @@ function econ() {
   if (!isFinite(r) || r <= -1) { showMessage(R.econ, 'warning', L2('Revisa la tasa de descuento.', 'Check the discount rate.')); return; }
   const T0 = Ts !== '' && +Ts > 0 ? Math.round(+Ts) : null;
   const late = T0 != null ? flows.filter(f => f.t > T0) : [];
-  if (late.length) showMessage(R.econ, 'warning', L2(`${late.length} movimientos caen después del turno y no se cuentan.`, `${late.length} items fall after the rotation and are not counted.`));
+  if (late.length) showMessage(R.econ, 'warning', late.length === 1 ? L2('1 movimiento cae después del turno y no se cuenta.', '1 item falls after the rotation and is not counted.') : L2(`${late.length} movimientos caen después del turno y no se cuentan.`, `${late.length} items fall after the rotation and are not counted.`));
   const e = K().econ(flows, ann, r, T0);
+  /* the table shows the years with an item of their own (and the last one); the rest only carry the annual cost */
+  const flowYears = new Set(flows.map(f => Math.round(f.t))), cfAll = e.rows;
+  const cfRows = cfAll.filter(x => flowYears.has(x.t) || x.income || x.t === e.T);
   const money = v => (v < 0 ? '−' : '') + '$' + fmtNum(Math.abs(v), 0);
   UI.tiles(R.econ.appendChild(mk('div')), [
     [['Valor presente neto', 'Net present value'], money(e.npv), [`al ${fmtPct(100 * r, 1)}`, `at ${fmtPct(100 * r, 1)}`], e.npv >= 0 ? 'good' : 'bad'],
@@ -333,7 +341,7 @@ function econ() {
   UI.table(R.econ, { title: ['Flujo de efectivo descontado', 'Discounted cash flow'], file: 'forestpro_flujo', columns: [
     { key: 't', label: ['Año', 'Year'], num: true }, { key: 'cost', label: ['Costos', 'Costs'], num: true, fmt: n0 }, { key: 'income', label: ['Ingresos', 'Revenues'], num: true, fmt: n0 },
     { key: 'net', label: ['Neto', 'Net'], num: true, fmt: n0 }, { key: 'disc', label: ['Neto descontado', 'Discounted net'], num: true, fmt: n0 }, { key: 'cum', label: ['Acumulado descontado', 'Cumulative discounted'], num: true, fmt: n0 }],
-    rows: e.rows.filter(x => x.cost || x.income), note: ['Los años sin movimientos más que el costo anual no se muestran; sí se cuentan.', 'Years with nothing but the annual cost are not shown; they are counted.'] });
+    rows: cfRows, note: cfRows.length < cfAll.length ? (ann ? ['Los años sin más movimiento que el costo anual no se muestran; sí se cuentan.', 'Years with nothing but the annual cost are not shown; they are counted.'] : ['Los años sin movimientos no se muestran.', 'Years without items are not shown.']) : null });
   UI.interp(R.econ, [`${e.npv >= 0 ? `Al ${fmtPct(100 * r, 1)} la plantación es rentable: deja ${money(e.npv)} por hectárea en valor presente` : `Al ${fmtPct(100 * r, 1)} la plantación no es rentable: pierde ${money(-e.npv)} por hectárea en valor presente`}${isFinite(e.irr) ? ` y su tasa interna de retorno es ${fmtPct(100 * e.irr, 1)}, ${e.irr > r ? 'mayor' : 'menor'} que la tasa exigida` : ''}. Cada unidad invertida regresa ${fmtNum(e.bc, 2)} en valor presente. Si la tierra se dedica a este turno para siempre, vale ${money(e.lev)} por hectárea (Faustmann); compara este valor, no el VPN de un solo turno, cuando evalúes turnos de distinta duración. Con casi todo el ingreso al final, el resultado es muy sensible a la tasa y al precio de la corta final.`,
     `${e.npv >= 0 ? `At ${fmtPct(100 * r, 1)} the plantation is profitable: it leaves ${money(e.npv)} per hectare in present value` : `At ${fmtPct(100 * r, 1)} the plantation is not profitable: it loses ${money(-e.npv)} per hectare in present value`}${isFinite(e.irr) ? ` and its internal rate of return is ${fmtPct(100 * e.irr, 1)}, ${e.irr > r ? 'above' : 'below'} the required rate` : ''}. Each unit invested returns ${fmtNum(e.bc, 2)} in present value. If the land is given to this rotation forever, it is worth ${money(e.lev)} per hectare (Faustmann); compare this value, not the NPV of a single rotation, when you weigh rotations of different length. With almost all the revenue at the end, the result is very sensitive to the rate and to the price of the final harvest.`]);
   state.tools = Object.assign(state.tools || {}, { econ: { npv: e.npv, irr: e.irr, lev: e.lev, bc: e.bc, r } });

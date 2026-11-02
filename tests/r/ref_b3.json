@@ -73,6 +73,50 @@
     "scale": 17.4755095561352,
     "loglik": -6529.74038155095
   },
+  "weibullW": {
+    "shape": 1.28475642385336,
+    "scale": 11.1567202219457,
+    "loglik": -182089.853662534
+  },
+  "weibullWT": {
+    "shape": 0.793272465905825,
+    "scale": 5.62024620356839,
+    "loglik": -168897.314519375
+  },
+  "ksW": {
+    "D": 0.189752896263702,
+    "p": 1.56473680601056e-22,
+    "neff": 706.855427967216
+  },
+  "ksWT": {
+    "D": 0.118698553987805,
+    "p": 4.47340833049166e-09,
+    "neff": 706.855427967216
+  },
+  "chiW": {
+    "chi": 237.222465225268,
+    "df": 5,
+    "p": 3.02572382955999e-49
+  },
+  "chiWT": {
+    "chi": 49.9089728767303,
+    "df": 6,
+    "p": 4.90279065696183e-09
+  },
+  "stratSize": {
+    "neyman": {
+      "strata": ["Conservado", "Perturbado", "Ribereño"],
+      "nRaw": 22,
+      "n": 22,
+      "nh": [16, 4, 2]
+    },
+    "prop": {
+      "strata": ["Conservado", "Perturbado", "Ribereño"],
+      "nRaw": 24,
+      "n": 24,
+      "nh": [14, 8, 2]
+    }
+  },
   "ivi": {
     "sp": ["Cedrela odorata", "Citrus sinensis", "Cordia alliodora", "Erythrina americana", "Grevillea robusta", "Inga jinicuil", "Inga vera", "Musa sp.", "Persea americana", "Trema micrantha"],
     "AF": [52, 76, 68, 88, 28, 100, 100, 92, 72, 72],

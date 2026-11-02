@@ -24,8 +24,8 @@
    Plot.bars    grouped or stacked bars over categories, or a histogram over
                 numeric classes, with optional error bars and overlay curves
    Plot.dendro  a dendrogram from an agglomerative merge list
-   Plot.heat    a matrix as coloured cells (similarities)
-   Plot.ramp    sequential colours (forest greens to gold) for maps and cells */
+   Plot.heat    a matrix as colored cells (similarities)
+   Plot.ramp    sequential colors (forest greens to gold) for maps and cells */
 (function (g) {
 'use strict';
 const Plot = {};
@@ -34,8 +34,8 @@ const escx = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').r
 Plot.esc = escx;
 const TT = (es, en) => (g.T ? g.T(es, en) : es);
 
-/* categorical colours of ForestPro: mid tones readable on paper and on the dark theme,
-   ordered so that neighbours differ in hue and lightness (forest green, ochre, bark,
+/* categorical colors of ForestPro: mid tones readable on paper and on the dark theme,
+   ordered so that neighbors differ in hue and lightness (forest green, ochre, bark,
    sky, heather, moss, berry, teal, cedar, slate) */
 Plot.CAT = ['#2E7D32', '#D08C1E', '#8D6E63', '#3A7DC9', '#9467BD', '#7CB342', '#D84B5A', '#1FA187', '#B5652B', '#6B7F99', '#C2A83E', '#5E9C8F'];
 Plot.color = k => Plot.CAT[((k % Plot.CAT.length) + Plot.CAT.length) % Plot.CAT.length];
@@ -168,12 +168,17 @@ Plot.xy = function (o) {
   const S = o.series.filter(Boolean);
   const leg = o.legend === false ? [] : S.filter(s => s.label).map(s => ({ label: s.label, color: s.color || 'var(--fig-ink)', kind: s.type === 'points' ? 'pt' : s.type === 'band' ? 'band' : 'ln', dash: s.dash }));
   const legW = o.legend === 'bottom' ? 0 : legendWidth(leg);
-  const m = { l: o.ml || 62, r: (legW ? legW + 18 : 18), t: o.title ? 32 : 14, b: (o.legend === 'bottom' && leg.length ? 46 + 18 * Math.ceil(leg.length / 3) : 48) };
+  /* a legend under the plot: as many columns as its longest entry allows (up to 3), below the x title */
+  const ml = o.ml || 62;
+  const bCols = leg.length ? Math.max(1, Math.min(3, leg.length, Math.floor((W - ml - 10) / (28 + 6.3 * Math.max(...leg.map(i => String(i.label).length)))))) : 1;
+  const bRows = Math.ceil(leg.length / bCols);
+  const m = { l: ml, r: (legW ? legW + 18 : 18), t: o.title ? 32 : 14, b: (o.legend === 'bottom' && leg.length ? 52 + 18 * bRows : 48) };
   let x0 = m.l, x1 = W - m.r, y0 = H - m.b, y1 = m.t;
   const xs = [], ys = [];
   S.forEach(s => {
     if (s.type === 'hline') { ys.push([s.y]); return; }
     if (s.type === 'vline') { xs.push([s.x]); return; }
+    if (s.type === 'segments') { s.segs.forEach(q => { xs.push([q[0], q[2]]); ys.push([q[1], q[3]]); }); return; }
     if (s.x) xs.push(s.x.filter(v => !o.xlog || v > 0));
     if (s.y) ys.push(s.y.filter(v => !o.ylog || v > 0));
     if (s.y2) ys.push(s.y2.filter(v => !o.ylog || v > 0));
@@ -182,14 +187,15 @@ Plot.xy = function (o) {
   if (o.xlog) ex = [Math.max(ex[0], 1e-9) / 1.15, ex[1] * 1.15];
   if (o.ylog) ey = [Math.max(ey[0], 1e-9) / 1.15, ey[1] * 1.15];
   if (o.equal) {
-    /* the same metres per pixel on both axes: shrink the longer side */
+    /* the same meters per pixel on both axes: shrink the longer side */
     const kx = (x1 - x0) / (ex[1] - ex[0]), ky = (y0 - y1) / (ey[1] - ey[0]), k = Math.min(kx, ky);
     const wx = (ex[1] - ex[0]) * k, wy = (ey[1] - ey[0]) * k;
     const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
     x0 = cx - wx / 2; x1 = cx + wx / 2; y0 = cy + wy / 2; y1 = cy - wy / 2;
   }
   const sx = Plot.scale(ex[0], ex[1], x0, x1, o.xlog), sy = Plot.scale(ey[0], ey[1], y0, y1, o.ylog);
-  const xt = o.xlog ? Plot.logTicks(ex[0], ex[1]) : Plot.ticks(ex[0], ex[1], o.xticks || 6);
+  /* xtickVals: the exact positions of categorical ticks (1, 2, … with their names in xLabels) */
+  const xt = o.xtickVals ? { ticks: o.xtickVals.slice(), step: 1 } : o.xlog ? Plot.logTicks(ex[0], ex[1]) : Plot.ticks(ex[0], ex[1], o.xticks || 6);
   const yt = o.ylog ? Plot.logTicks(ey[0], ey[1]) : Plot.ticks(ey[0], ey[1], o.yticks || 6);
   if (o.xLabels) xt.labels = o.xLabels;
   let s = Plot.open(W, H, o, { x0, x1, y0, y1, ex, ey }, o.label || o.title);
@@ -251,10 +257,10 @@ Plot.xy = function (o) {
   if (o.over) s += o.over({ sx, sy, x0, x1, y0, y1 });
   if (leg.length) {
     if (o.legend === 'bottom') {
-      let sl = `<g data-role="legend" class="pl-legend" transform="translate(${f(m.l)} ${f(H - 18 * Math.ceil(leg.length / 3) - 4)})">`;
-      const cw = (W - m.l - 10) / 3;
+      let sl = `<g data-role="legend" class="pl-legend" transform="translate(${f(m.l)} ${f(H - 18 * bRows + 6)})">`;
+      const cw = (W - m.l - 10) / bCols;
       leg.forEach((it, k) => {
-        const X = (k % 3) * cw, Y = Math.floor(k / 3) * 18;
+        const X = (k % bCols) * cw, Y = Math.floor(k / bCols) * 18;
         const mark = it.kind === 'ln' ? `<line data-li="${k}" x1="${f(X)}" y1="${f(Y - 4)}" x2="${f(X + 16)}" y2="${f(Y - 4)}" style="stroke:${it.color};stroke-width:2.2${it.dash ? ';stroke-dasharray:' + it.dash : ''}"/>` : it.kind === 'band' ? `<rect data-li="${k}" x="${f(X + 1)}" y="${f(Y - 9.5)}" width="13" height="11" style="fill:${it.color};fill-opacity:.3"/>` : `<circle data-li="${k}" cx="${f(X + 7)}" cy="${f(Y - 4)}" r="4.5" style="fill:${it.color}"/>`;
         sl += mark + `<text data-li="${k}" x="${f(X + 21)}" y="${f(Y)}">${escx(it.label)}</text>`;
       });
@@ -332,7 +338,9 @@ Plot.bars = function (o) {
         const cx = bx + bw / 2, e = ser.err[i];
         s += `<path class="pl-err" d="M${f(cx)} ${f(sy(v - e))}V${f(sy(v + e))}M${f(cx - 4)} ${f(sy(v - e))}H${f(cx + 4)}M${f(cx - 4)} ${f(sy(v + e))}H${f(cx + 4)}"/>`;
       }
-      if (o.valueLabels && (nS === 1 || !o.stacked)) s += `<text class="pl-vlab" x="${f(bx + bw / 2)}" y="${f(ya - 4)}" text-anchor="middle">${escx(o.valueFmt ? o.valueFmt(v) : +v.toPrecision(3))}</text>`;
+      /* the value sits above the error bar when there is one, so neither hides the other */
+      const yLab = ser.err && isFinite(ser.err[i]) && !o.stacked && v >= 0 ? Math.min(ya, sy(v + ser.err[i])) : ya;
+      if (o.valueLabels && (nS === 1 || !o.stacked)) s += `<text class="pl-vlab" x="${f(bx + bw / 2)}" y="${f(yLab - 4)}" text-anchor="middle">${escx(o.valueFmt ? o.valueFmt(v) : +v.toPrecision(3))}</text>`;
     });
   }
   s += `</g>`;
@@ -407,7 +415,7 @@ Plot.heat = function (o) {
   s += Plot.colorbar(x1 + 18, y1, 12, Math.min(n * cell, 180), lo, hi, o.rev, o.cbTitle);
   return s + '</svg>';
 };
-/* a vertical colour bar with its numbers */
+/* a vertical color bar with its numbers */
 Plot.colorbar = function (x, y, w, h, lo, hi, rev, title) {
   const id = 'cb' + Math.random().toString(36).slice(2, 8);
   let s = `<g data-legend="colorbar" data-role="legend"><defs><linearGradient id="${id}" x1="0" y1="1" x2="0" y2="0">`;

@@ -271,7 +271,7 @@ UI.dataCard = function (host, o) {
     area.innerHTML = '';
     clearMessages(msg);
     const m = mk('div', { class: 'col-match' });
-    m.innerHTML = `<p class="hint">${L2('Indica qué columna de tu tabla corresponde a cada campo. Las que se reconocieron por su nombre ya están elegidas.', 'Say which column of your table holds each field. Those recognised by their name are already chosen.')}</p>`;
+    m.innerHTML = `<p class="hint">${L2('Indica qué columna de tu tabla corresponde a cada campo. Las que se reconocieron por su nombre ya están elegidas.', 'Say which column of your table holds each field. Those recognized by their name are already chosen.')}</p>`;
     const grid = mk('div', { class: 'form-grid' });
     const sels = {};
     o.fields.forEach(fd => {
@@ -368,7 +368,7 @@ UI.dataCard = function (host, o) {
     download(DataIO.toCSV(header, ex), 'forestpro_' + id + '_plantilla.csv', 'text/csv;charset=utf-8');
   });
   document.addEventListener('langchange', () => { const v = exSel.value; fillEx(); exSel.value = v; showExNote(); });
-  const api = { load: exId => { if (exId) exSel.value = exId; exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box, fields: o.fields, examples: (o.examples || []).map(e => e.id) };
+  const api = { load: exId => { if (exId) { exSel.value = exId; showExNote(); } exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box, fields: o.fields, examples: (o.examples || []).map(e => e.id) };
   UI.cards[id] = api;
   return api;
 };
@@ -385,7 +385,7 @@ UI.coefCols = [
   { key: 'p', label: ['p'], num: true, get: r => fmtP(r.p), raw: r => r.p },
 ];
 UI.coefTable = (host, fit, o) => UI.table(host, Object.assign({ columns: UI.coefCols, rows: UI.coefRows(fit, o && o.names) }, o || {}));
-/* the species with the most rows keep their colour; the rest are pooled as «others» */
+/* the species with the most rows keep their color; the rest are pooled as «others» */
 UI.speciesColors = function (list, k) {
   k = k || 8;
   const cnt = new Map();

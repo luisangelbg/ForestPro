@@ -288,6 +288,15 @@ B.change = function (o) {
   return { paired: false, n: a.length + b.length, mean: m, se, df, t, lo: m - t * se, hi: m + t * se, p: Num.pt2(m / se, df), rate: o.years > 0 ? m / o.years : NaN, rateLo: o.years > 0 ? (m - t * se) / o.years : NaN, rateHi: o.years > 0 ? (m + t * se) / o.years : NaN };
 };
 
+/* the carbon of every pool and its error. byPlot: {mean, se} of the plot-by-plot sum of the pools measured on
+   the same plots (their covariances are inside that sum); independent: [{mean, se}] of the pools from other
+   samples, added in quadrature (IPCC 2006, vol. 1, eq. 3.1) */
+B.combinePools = function (byPlot, independent) {
+  const ind = independent || [];
+  const mean = (byPlot ? byPlot.mean : 0) + ind.reduce((s, p) => s + p.mean, 0);
+  const v = (byPlot ? byPlot.se * byPlot.se : 0) + ind.reduce((s, p) => s + p.se * p.se, 0);
+  return { mean, se: Math.sqrt(v), half: 1.96 * Math.sqrt(v) };
+};
 g.Biomass = B;
 return B;
 }

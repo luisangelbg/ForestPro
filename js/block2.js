@@ -172,7 +172,7 @@ function build() {
   UI.dataCard(e, { id: 'b2h', fields: F.hd, examples: EX.hd, minRows: 6, inventory: () => state.inv && state.inv.trees ? state.inv.trees.map((t, i) => ({ arbol: t.arbol || i + 1, especie: t.especie, dap: t.dap, altura: t.altura })) : null,
     onData: rows => { S.hdRows = rows; runHD(); } });
   const hs = mk('div', { class: 'form-grid' });
-  hs.innerHTML = `<div class="field"><label for="b2hSp">${L2('Especie', 'Species')}</label><select id="b2hSp"></select></div><div class="field"><label for="b2hModel">${L2('Curva para estimar', 'Curve to estimate with')}</label><select id="b2hModel"><option value="best">${L2('La de menor AIC', 'The lowest AIC')}</option><option value="naslund">Näslund</option><option value="chapman">Chapman–Richards</option><option value="weibull">Weibull</option></select></div>`;
+  hs.innerHTML = `<div class="field"><label for="b2hSp">${L2('Especie', 'Species')}</label><select id="b2hSp"></select></div><div class="field"><label for="b2hModel">${L2('Curva para estimar', 'Curve to estimate with')}</label><select id="b2hModel"><option value="best"${optL('La de menor AIC', 'Lowest AIC')}</option><option value="naslund">Näslund</option><option value="chapman">Chapman–Richards</option><option value="weibull">Weibull</option></select></div>`;
   e.appendChild(hs);
   el('b2hSp').addEventListener('change', runHD);
   el('b2hModel').addEventListener('change', () => { if (S.hd) drawHD(); });
@@ -288,7 +288,7 @@ function drawSecs() {
   ]);
   const two = mk('div', { class: 'figs-2' }); R.secs.appendChild(two);
   const ser = out.slice(0, 60).map((t, k) => ({ type: 'line', x: t.secs.map(s => s.d / 2).concat([0]), y: t.secs.map(s => s.h).concat([t.H]), color: Plot.ramp(0.15 + 0.7 * (t.dbh - Math.min(...out.map(o => o.dbh))) / ((Math.max(...out.map(o => o.dbh)) - Math.min(...out.map(o => o.dbh))) || 1)), width: 1.3 }));
-  UI.figure(two, { title: ['Perfiles de los fustes (radio contra altura)', 'Stem profiles (radius against height)'], svg: Plot.xy({ series: ser, xlab: T('Radio con corteza (cm)', 'Radius over bark (cm)'), ylab: T('Altura (m)', 'Height (m)'), name: 'b2-perfiles', w: 560, h: 400, zeroX: true, zeroY: true }), note: ['Color: del árbol más delgado (verde oscuro) al más grueso (dorado).', 'Colour: from the thinnest tree (dark green) to the thickest (gold).'], key: 'b2-prof' });
+  UI.figure(two, { title: ['Perfiles de los fustes (radio contra altura)', 'Stem profiles (radius against height)'], svg: Plot.xy({ series: ser, xlab: T('Radio con corteza (cm)', 'Radius over bark (cm)'), ylab: T('Altura (m)', 'Height (m)'), name: 'b2-perfiles', w: 560, h: 400, zeroX: true, zeroY: true }), note: ['Color: del árbol más delgado (verde oscuro) al más grueso (dorado).', 'Color: from the thinnest tree (dark green) to the thickest (gold).'], key: 'b2-prof' });
   UI.figure(two, { title: ['Coeficiente mórfico contra DAP', 'Form factor against DBH'], svg: Plot.xy({ series: [{ type: 'points', x: out.map(t => t.dbh), y: out.map(t => t.formFactor), color: 'var(--primary)' }, { type: 'hline', y: 0.5, color: 'var(--fig-muted)' }], xlab: T('DAP (cm)', 'DBH (cm)'), ylab: T('Coeficiente mórfico', 'Form factor'), name: 'b2-coef-morfico', w: 560, h: 400 }), note: ['La línea punteada es el paraboloide (0.5).', 'The dashed line is the paraboloid (0.5).'], key: 'b2-ff' });
   const cols = [
     { key: 'tree', label: ['Árbol', 'Tree'] }, { key: 'dbh', label: ['DAP (cm)', 'DBH (cm)'], num: true, fmt: n1 }, { key: 'H', label: ['Altura (m)', 'Height (m)'], num: true, fmt: n2 },
@@ -337,7 +337,7 @@ function drawVol() {
   const half = m.pred.map((p, i) => [p, Math.abs(m.res[i])]).sort((a, b) => a[0] - b[0]);
   const lo = Num.mean(half.slice(0, half.length >> 1).map(x => x[1])), hi = Num.mean(half.slice(half.length >> 1).map(x => x[1]));
   UI.interp(R.vol, [`El modelo con menor índice de Furnival es <b>${esc(T(best.model.es, best.model.en))}</b> (I = ${fmtNum(best.furnival, 5)}; R² = ${n4(best.r2v)}; RMSE = ${fmtNum(best.rmsePct, 1)} % del volumen medio).` + (hi > 1.8 * lo ? ' La dispersión de los residuales crece con el tamaño del árbol (heterocedasticidad); las formas logarítmicas la estabilizan y por eso suelen ganar.' : ''),
-    `The model with the smallest Furnival index is <b>${esc(T(best.model.es, best.model.en))}</b> (I = ${fmtNum(best.furnival, 5)}; R² = ${n4(best.r2v)}; RMSE = ${fmtNum(best.rmsePct, 1)} % of the mean volume).` + (hi > 1.8 * lo ? ' The spread of the residuals grows with tree size (heteroscedasticity); the logarithmic forms stabilise it, which is why they usually win.' : '')]);
+    `The model with the smallest Furnival index is <b>${esc(T(best.model.es, best.model.en))}</b> (I = ${fmtNum(best.furnival, 5)}; R² = ${n4(best.r2v)}; RMSE = ${fmtNum(best.rmsePct, 1)} % of the mean volume).` + (hi > 1.8 * lo ? ' The spread of the residuals grows with tree size (heteroscedasticity); the logarithmic forms stabilize it, which is why they usually win.' : '')]);
   state.dendro = Object.assign(state.dendro || {}, { vol: { best: best.key, coef: best.fit.coef, model: best.model.eq, meyer: best.fit.meyer || 1 } });
   report();
 }

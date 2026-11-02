@@ -88,16 +88,21 @@ Art.hero = function () {
   s += `<circle cx="${cx}" cy="${cy}" r="200" fill="url(#${id}g)"/>`;
   /* contour lines over the map, numbered like a topographic sheet */
   const cont = [150, 178, 208, 240, 274, 310, 348];
+  const plots = [[cx + 252, cy - 128, 26], [cx + 300, cy + 40, 22], [cx + 210, cy + 150, 24]];
+  /* does a label box (x … x + 44, y − 11 … y + 2) touch one of the plots? */
+  const onPlot = (x, y) => plots.some(([px, py, pr]) => Math.hypot(Math.max(x - px, 0, px - x - 44), Math.max(y - 11 - py, 0, py - y - 2)) < pr + 3);
   cont.forEach((R, k) => {
     const d = ring(cx, cy, R, k + 7, { a0: -1.05, a1: 1.05, contour: true, amp: 0.045, n: 80 });
     s += `<path class="ha-cont" style="--d:${(1.5 + k * 0.12).toFixed(2)}s" pathLength="1" d="${d}" fill="none" stroke="${k % 2 ? '#D4A848' : '#7FBF62'}" stroke-width="${k % 3 === 0 ? 2.2 : 1.4}" stroke-linecap="round" opacity="${(0.9 - k * 0.07).toFixed(2)}"/>`;
     if (k % 3 === 0) {
-      const t = 0.55 - k * 0.04, r = R * (1 + 0.10 * Math.cos(t) ** 2);
+      /* the label sits on its line, moved up the line far enough to stay inside the drawing */
+      let t = 0.55 - k * 0.04, r = R * (1 + 0.10 * Math.cos(t) ** 2);
+      for (let i = 0; i < 40 && cx + r * Math.cos(t) + 4 + 44 > W; i++) { t += 0.01; r = R * (1 + 0.10 * Math.cos(t) ** 2); }
+      for (let i = 0; i < 40 && onPlot(cx + r * Math.cos(t) + 4, cy - r * Math.sin(t) - 4); i++) { t -= 0.01; r = R * (1 + 0.10 * Math.cos(t) ** 2); }
       s += `<text class="ha-lab" style="--d:${(2.1 + k * 0.12).toFixed(2)}s" x="${f(cx + r * Math.cos(t) + 4)}" y="${f(cy - r * Math.sin(t) - 4)}" fill="#D4A848" font-size="11" font-family="system-ui, sans-serif">${2100 + k * 20} m</text>`;
     }
   });
   /* a circular plot of the inventory, with its trees, and a systematic grid of sample points */
-  const plots = [[cx + 252, cy - 128, 26], [cx + 300, cy + 40, 22], [cx + 210, cy + 150, 24]];
   plots.forEach(([x, y, r], k) => {
     s += `<g class="ha-plot" style="--d:${(2.4 + k * 0.25).toFixed(2)}s"><circle cx="${x}" cy="${y}" r="${r}" fill="rgba(127,191,98,.10)" stroke="#E6C470" stroke-width="1.4" stroke-dasharray="4 3"/>`;
     [[-8, -6], [7, -9], [10, 6], [-6, 9], [1, 1]].forEach(([dx, dy], j) => {
@@ -142,7 +147,7 @@ Art.vignette = function (n) {
   const ax = 'stroke="var(--fig-axis)" stroke-width="1"';
   switch (+n) {
     case 2: return V(`<line x1="20" y1="96" x2="200" y2="96" ${ax}/>` + tree(70, 96, 82) +
-      `<path d="M62 70h16" stroke="var(--oro)" stroke-width="3"/><text x="84" y="73" class="art-mut" font-size="9">1.30 m · DAP</text>` +
+      `<path d="M62 70h16" stroke="var(--oro)" stroke-width="3"/><text x="46" y="76" text-anchor="end" class="art-mut" font-size="9">${T('DAP', 'DBH')}</text><text x="46" y="87" text-anchor="end" class="art-mut" font-size="9">1.30 m</text>` +
       `<path d="M104 96V14M100 18l4-6 4 6M100 92l4 4 4-4" stroke="var(--fig-ink)" fill="none" stroke-width="1.2"/><text x="110" y="52" class="art-mut" font-size="9">H</text>` +
       `<path d="M140 90c10-2 16-22 26-40s14-28 30-34" fill="none" stroke="var(--primary)" stroke-width="2"/>` +
       [[146, 84], [152, 74], [160, 64], [166, 50], [176, 40], [186, 30], [196, 22]].map(([x, y]) => `<circle cx="${x}" cy="${y + (x % 7) - 3}" r="2.4" fill="var(--musgo)"/>`).join(''));

@@ -17,8 +17,13 @@ at <- read.csv(file.path(dat, "pino_analisis_troncal.csv"))
 at$v <- pi * at$diametro^2 / 40000 * at$altura * 0.45
 inc <- lapply(split(at, at$arbol), function(t) {
   t <- t[order(t$edad), ]; ica <- c(NA, diff(t$v) / diff(t$edad)); ima <- t$v / t$edad
+  # cruce ICA = IMA del IMA máximo: el ICA periódico de cada intervalo contra el IMA al inicio del intervalo,
+  # ubicado en el punto medio del intervalo e interpolado entre el intervalo que termina en el máximo y el siguiente
   b <- which.max(ima); cr <- NA
-  for (i in 3:nrow(t)) { da <- ica[i - 1] - ima[i - 1]; db <- ica[i] - ima[i]; if (!is.na(da) && !is.na(db) && da > 0 && db <= 0) { cr <- t$edad[i - 1] + (t$edad[i] - t$edad[i - 1]) * da / (da - db); break } }
+  if (b >= 2 && b < nrow(t)) {
+    f <- function(i) ica[i] - ima[i - 1]; m <- function(i) (t$edad[i - 1] + t$edad[i]) / 2
+    cr <- m(b) + (m(b + 1) - m(b)) * f(b) / (f(b) - f(b + 1))
+  }
   list(tree = t$arbol[1], ica = ica, ima = ima, tMaxIMA = t$edad[b], maxIMA = ima[b], tCross = cr)
 })
 out$inc <- unname(inc)

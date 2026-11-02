@@ -55,7 +55,7 @@ for (fi in 1:5) for (j in 1:5) {
     lat = round(lat, 5), lon = round(lon, 5), altitud = round(F$alt + rnorm(1, 0, 25)),
     area_m2 = 1000, radio_m = 17.84, sombra_pct = r1(cob + rnorm(1, 0, 4)),
     densidad_cafe = dens_cafe, rend_cafe = round(max(rend, 150)),
-    hojarasca_g = round(runif(1, 380, 900)), marco_m2 = 0.25)
+    hojarasca_g = round(runif(1, 110, 260)), marco_m2 = 0.25)
   nc <- 10
   d15 <- pmax(1.5, rnorm(nc, 4.6, 1.1)); hc <- pmax(0.9, 0.55 + 0.33 * d15 + rnorm(nc, 0, 0.18))
   caf[[k]] <- data.frame(parcela = sprintf("P%02d", k), cafeto = 1:nc, d15 = r1(d15), altura = r1(hc, 2))

@@ -35,7 +35,7 @@ theme, keyboard navigation and reduced motion when the system asks for it.
 | 3 | Inventory and sampling: trees and plots (circular, square, rectangular or nested), expansion to the hectare, simple random, stratified (Cochran with Satterthwaite's degrees of freedom), systematic (successive differences) and cluster (ratio) estimators with confidence intervals and sampling error, sample size, point sampling with a relascope, stand and stock tables, the Weibull distribution of diameters (2 and 3 parameters by maximum likelihood), importance value index, Reineke's stand density index, Hart–Becking spacing and Hegyi's competition index |
 | 4 | Biomass and carbon: an editable catalogue of 31 allometric equations (Chave 2014 and 2005, Brown 1997, Jenkins 2003, coffee, banana and shade-tree equations, Mexican pines) with species rules and your own equations; wood density from the Global Wood Density Database with species → genus → plot fallback; root-to-shoot ratios (IPCC 2006, Cairns 1997); carbon fraction and CO₂e; Monte Carlo propagation of allometric, density and sampling error; deadwood by line intersect, litter and soil organic carbon (it also reads the layer tables of SoilPro, the soil app of the suite); carbon pools with their combined error and the change between two inventories |
 | 5 | Growth and yield: current and mean annual increment and the biological rotation; Chapman–Richards, Gompertz, Schumacher and logistic models; anamorphic and polymorphic (algebraic difference) site index curves and classes; Clutter's whole-stand growth and yield system fitted by two-stage least squares, with projection and an editable yield table |
-| 6 | Diversity and ecology: Shannon, Simpson, Pielou, Fisher's α, Chao1 and ACE, sample coverage, Hill numbers with their asymptotic estimates, rarefaction and species accumulation; Jaccard, Sørensen and Bray–Curtis, UPGMA dendrograms, principal coordinates and NMDS, with export of the matrix to the suite's clustering and factor-analysis apps; Pretzsch's vertical species profile; Clark–Evans with edge correction and Ripley's K and L with a simulation envelope |
+| 6 | Diversity and ecology: Shannon, Simpson, Pielou, Fisher's α, Chao1 and ACE, sample coverage, Hill numbers with their asymptotic estimates, rarefaction and species accumulation; Jaccard, Sørensen and Bray–Curtis, UPGMA dendrograms and NMDS (started from classical scaling, which is not shown), with export of the matrix to the suite's clustering and factor-analysis apps; Pretzsch's vertical species profile; Clark–Evans with edge correction and Ripley's K and L with a simulation envelope |
 | 7 | Agroforestry systems: shade from the inventory of shade trees (crown cover with random overlap, density, basal area, Holdridge's complexity index); canopy openness from a hemispherical photograph segmented in the browser (Otsu's threshold, gap fraction and solid-angle weighting); the shade–yield response with the shade of maximum yield and its interval; planting layouts (square, triangular, rectangular, alleys, live fences, boundary rows) drawn as SVG; the carbon budget of the system against a monoculture |
 | 8 | Maps: an own interactive map (plots with their true radius, trees, polygons; optional OpenStreetMap background, off by default); polygon area and perimeter in UTM and on the sphere; systematic and random sampling grids; GPX, KML, GeoJSON and CSV export and import; IDW and ordinary or simple kriging with the experimental variogram, a weighted least-squares fit and leave-one-out cross-validation; a static UTM map for the report |
 | 9 | Forestry tools: log scaling (Smalian, Huber, Newton, frustum; Doyle, Scribner and International ¼″ log rules), sawn lumber in board feet and m³, sawmill recovery and overrun, form factor, unit conversions with exact definitions, stacked wood, and the economics of a plantation (NPV, IRR, benefit–cost ratio, Faustmann's land expectation value, equivalent annual annuity, payback) |
@@ -50,14 +50,14 @@ spatstat, fitdistrplus, sf, gstat, units (udunits2) and FinCal, and formulas wri
 | Block | Topic | Comparisons | Disagreements |
 |---|---|---:|---:|
 | 2 | Tree mensuration | 287 | 0 |
-| 3 | Inventory and sampling | 430 | 0 |
-| 4 | Biomass and carbon | 4 974 | 0 |
-| 5 | Growth and yield | 616 | 0 |
+| 3 | Inventory and sampling | 458 | 0 |
+| 4 | Biomass and carbon | 5 015 | 0 |
+| 5 | Growth and yield | 613 | 0 |
 | 6 | Diversity and ecology | 1 222 | 0 |
 | 7 | Agroforestry systems | 211 | 0 |
 | 8 | Maps and geoprocessing | 269 | 0 |
 | 9 | Forestry tools | 252 | 0 |
-| | **Total** | **8 261** | **0** |
+| | **Total** | **8 327** | **0** |
 
 The tolerance of every comparison is stated next to it in `tests/resultados/bN.md`; the summary is in
 `tests/VALIDACION.md`, and `tests/LEEME_VALIDACION.md` explains, block by block, the differences of convention with
@@ -94,9 +94,11 @@ area (never the user's data), with the attribution the licence requires.
 
 ## Manual
 
-The user's manual in Spanish is in `docs/`: **`docs/manual.html`** (printable to PDF from the browser) and its
-source **`docs/manual.md`**. One chapter per block, with the data formats, how to use every section, the methods
-with their equations and sources, the interpretation and the validation.
+The user's manual is in `manual/`: one HTML part per chapter in `manual/es/` (Spanish), joined in
+**`manual/es/manual-completo.html`** and printable to PDF from the browser, with its screenshots in `manual/img/` (the
+English edition goes in `manual/en/`). One chapter per block, with the data formats, how to use every section, the
+methods with their equations and sources, the interpretation and the validation. The older single-file manual in
+`docs/` is kept as source material.
 
 ## Repository, online version and citation
 

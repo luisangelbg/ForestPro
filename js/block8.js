@@ -50,35 +50,36 @@ function build() {
   const mh = mk('div'); a.appendChild(mh);
   map = MapView.create(mh, { center: [19.5, -97.03], zoom: 11, onDrawEnd: ring => { if (ring) { S.polygons.push({ name: T('Polígono ', 'Polygon ') + (S.polygons.length + 1), ring }); drawPolys(); refresh(); saved(); } el('b8draw').hidden = false; el('b8end').hidden = true; } });
   const dr = mk('div', { class: 'btn-row' });
-  dr.innerHTML = `<button type="button" class="btn btn-secondary btn-sm" id="b8draw">${L2('Dibujar un polígono', 'Draw a polygon')}</button><button type="button" class="btn btn-primary btn-sm" id="b8end" hidden>${L2('Terminar el polígono', 'Finish the polygon')}</button><span class="hint" style="margin:0">${L2('Clic para cada vértice; doble clic o «Terminar» para cerrarlo; Esc cancela.', 'Click for each vertex; double click or «Finish» to close it; Esc cancels.')}</span>`;
+  dr.innerHTML = `<button type="button" class="btn btn-secondary btn-sm" id="b8draw">${L2('Dibujar un polígono', 'Draw a polygon')}</button><button type="button" class="btn btn-primary btn-sm" id="b8end" hidden>${L2('Terminar el polígono', 'Finish the polygon')}</button><span class="hint" style="margin:0">${L2('Clic para cada vértice; doble clic o «Terminar» para cerrarlo; Esc cancela.', 'Click for each vertex; double click or “Finish” to close it; Esc cancels.')}</span>`;
   a.appendChild(dr);
   el('b8draw').addEventListener('click', () => { map.startDraw(); el('b8draw').hidden = true; el('b8end').hidden = false; });
   el('b8end').addEventListener('click', () => map.finishDraw());
   R.static = mk('div', { class: 'res-host' }); a.appendChild(R.static);
   UI.method(a, { text: [
     '<p>Proyección de Mercator esférica a niveles de zoom enteros, la de los mapas web. Sin fondo, el mapa muestra una retícula de latitud y longitud y nada sale de tu equipo. Con el fondo encendido, el navegador pide las teselas del área visible a los servidores de OpenStreetMap, cuyos datos tienen licencia ODbL y piden la atribución que aparece en la esquina. Los árboles se ubican sumando sus coordenadas locales (x hacia el este, y hacia el norte, en metros) al centro de su parcela en UTM. El mapa estático de abajo, en UTM, es el que va al informe y al estudio de figuras.</p>',
-    '<p>Spherical Mercator projection at integer zoom levels, as web maps use. With no background the map shows a latitude and longitude graticule and nothing leaves your computer. With the background on, the browser requests the tiles of the visible area from the OpenStreetMap servers, whose data are licensed ODbL and require the attribution shown in the corner. Trees are placed by adding their local coordinates (x to the east, y to the north, in metres) to the centre of their plot in UTM. The static map below, in UTM, is the one that goes into the report and the figure studio.</p>'],
+    '<p>Spherical Mercator projection at integer zoom levels, as web maps use. With no background the map shows a latitude and longitude graticule and nothing leaves your computer. With the background on, the browser requests the tiles of the visible area from the OpenStreetMap servers, whose data are licensed ODbL and require the attribution shown in the corner. Trees are placed by adding their local coordinates (x to the east, y to the north, in meters) to the center of their plot in UTM. The static map below, in UTM, is the one that goes into the report and the figure studio.</p>'],
     refs: ['Snyder, J. P. (1987). <i>Map Projections — A Working Manual</i>. USGS Professional Paper 1395.', 'OpenStreetMap Foundation. Política de uso de teselas y atribución: openstreetmap.org/copyright.'] });
 
   /* B. polygons */
-  const b = UI.section(root, ['Polígonos y áreas', 'Polygons and areas'], ['Superficie y perímetro de cada polígono en la zona UTM de su centro y sobre la esfera.', 'Area and perimeter of each polygon in the UTM zone of its centre and on the sphere.']);
+  const b = UI.section(root, ['Polígonos y áreas', 'Polygons and areas'], ['Superficie y perímetro de cada polígono en la zona UTM de su centro y sobre la esfera.', 'Area and perimeter of each polygon in the UTM zone of its center and on the sphere.']);
   UI.dataCard(b, { id: 'b8p', fields: [
     { key: 'poligono', es: 'Polígono', en: 'Polygon', req: true, aliases: ['polygon', 'nombre', 'predio'] },
     { key: 'lat', es: 'Latitud', en: 'Latitude', num: true, req: true, aliases: ['latitude', 'y'] },
     { key: 'lon', es: 'Longitud', en: 'Longitude', num: true, req: true, aliases: ['longitude', 'long', 'x'] }],
     examples: [{ id: 'mesofilo', es: 'Predio del bosque mesófilo (9 vértices)', en: 'Cloud forest property (9 vertices)', d: ['Los vértices del polígono en orden, en grados decimales.', 'The vertices of the polygon in order, in decimal degrees.'], rows: () => FPData.rows('mesofilo_predio').map(r => ({ poligono: T('Predio', 'Property'), lat: r.lat, lon: r.lon })) }],
-    onData: rows => { const by = new Map(); rows.forEach(r => { const k = String(r.poligono); if (!by.has(k)) by.set(k, []); by.get(k).push([r.lon, r.lat]); }); by.forEach((ring, name) => { if (ring.length >= 3) S.polygons.push({ name, ring }); }); drawPolys(); refresh(true); } });
+    /* a polygon loaded again with the same name replaces the one already on the map instead of doubling it */
+    onData: rows => { const by = new Map(); rows.forEach(r => { const k = String(r.poligono); if (!by.has(k)) by.set(k, []); by.get(k).push([r.lon, r.lat]); }); S.polygons = S.polygons.filter(p => !by.has(p.name)); by.forEach((ring, name) => { if (ring.length >= 3) S.polygons.push({ name, ring }); }); drawPolys(); refresh(true); } });
   R.polys = mk('div', { class: 'res-host' }); b.appendChild(R.polys);
   UI.method(b, { text: [
     '<p>Área en UTM: fórmula del agrimensor (Gauss) sobre las coordenadas planas de la zona del centro del polígono, la que se usa en catastro e inventario; incluye el factor de escala de la proyección (≤ 0.04 % dentro de la zona). Área sobre la esfera: suma de triángulos esféricos desde el primer vértice por el teorema de L\'Huilier, con radio medio de 6 371 008.8 m; difiere de la del elipsoide unas décimas de punto por ciento según la latitud. Los lados de los polígonos se consideran rectos en UTM y arcos de círculo máximo en la esfera.</p>',
-    '<p>UTM area: the surveyor\'s formula (Gauss) on the plane coordinates of the zone of the polygon\'s centre, the one used in cadastre and inventory; it includes the scale factor of the projection (≤ 0.04 % within the zone). Area on the sphere: sum of spherical triangles from the first vertex by L\'Huilier\'s theorem, with a mean radius of 6,371,008.8 m; it differs from that of the ellipsoid by a few tenths of a per cent depending on latitude. Polygon sides are straight in UTM and great-circle arcs on the sphere.</p>'],
+    '<p>UTM area: the surveyor\'s formula (Gauss) on the plane coordinates of the zone of the polygon\'s center, the one used in cadastre and inventory; it includes the scale factor of the projection (≤ 0.04 % within the zone). Area on the sphere: sum of spherical triangles from the first vertex by L\'Huilier\'s theorem, with a mean radius of 6,371,008.8 m; it differs from that of the ellipsoid by a few tenths of a per cent depending on latitude. Polygon sides are straight in UTM and great-circle arcs on the sphere.</p>'],
     refs: ['Karney, C. F. F. (2011). Transverse Mercator with an accuracy of a few nanometers. <i>Journal of Geodesy</i> 85:475–485.', 'Todhunter, I. (1886). <i>Spherical Trigonometry</i>, 5.ª ed. Macmillan (teorema de L\'Huilier).'] });
 
   /* C. grid */
-  const c = UI.section(root, ['Cuadrícula de muestreo', 'Sampling grid'], ['Los centros de parcela de un muestreo sistemático (o aleatorio) dentro de un polígono, listos para el GPS.', 'The plot centres of a systematic (or random) sample inside a polygon, ready for the GPS.']);
+  const c = UI.section(root, ['Cuadrícula de muestreo', 'Sampling grid'], ['Los centros de parcela de un muestreo sistemático (o aleatorio) dentro de un polígono, listos para el GPS.', 'The plot centers of a systematic (or random) sample inside a polygon, ready for the GPS.']);
   const cg = mk('div', { class: 'form-grid' });
   cg.innerHTML = `<div class="field"><label for="b8poly">${L2('Polígono', 'Polygon')}</label><select id="b8poly"></select></div>` +
-    `<div class="field"><label for="b8kind">${L2('Diseño', 'Design')}</label><select id="b8kind"><option value="grid"${optL('Sistemático (cuadrícula)', 'Systematic (grid)')}</option><option value="random"${optL('Aleatorio', 'Random')}</option></select></div>` +
+    `<div class="field wide"><label for="b8kind">${L2('Diseño', 'Design')}</label><select id="b8kind"><option value="grid"${optL('Sistemático (cuadrícula)', 'Systematic (grid)')}</option><option value="random"${optL('Aleatorio', 'Random')}</option></select></div>` +
     [['b8sp', 'Distancia entre puntos (m)', 'Spacing between points (m)', 500], ['b8rot', 'Rotación (°)', 'Rotation (°)', 0], ['b8n', 'Puntos al azar', 'Random points', 30], ['b8rad', 'Radio de la parcela (m)', 'Plot radius (m)', 17.84]]
       .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('') +
     `<label class="checkbox-label"><input type="checkbox" id="b8rstart"> ${L2('Arranque aleatorio de la malla', 'Random start of the grid')}</label>`;
@@ -102,7 +103,7 @@ function build() {
   /* E. interpolation */
   const e = UI.section(root, ['Interpolación entre parcelas', 'Interpolation among plots'], ['Un mapa continuo de una variable medida en las parcelas: por distancia inversa o por kriging, con el variograma y la validación cruzada.', 'A continuous map of a variable measured in the plots: by inverse distance or by kriging, with the variogram and cross-validation.']);
   const eg = mk('div', { class: 'form-grid' });
-  eg.innerHTML = `<div class="field"><label for="b8var">${L2('Variable', 'Variable')}</label><select id="b8var"></select></div>` +
+  eg.innerHTML = `<div class="field wide"><label for="b8var">${L2('Variable', 'Variable')}</label><select id="b8var"></select></div>` +
     `<div class="field"><label for="b8meth">${L2('Método', 'Method')}</label><select id="b8meth"><option value="ok"${optL('Kriging ordinario', 'Ordinary kriging')}</option><option value="sk"${optL('Kriging simple', 'Simple kriging')}</option><option value="idw"${optL('Distancia inversa (IDW)', 'Inverse distance (IDW)')}</option></select></div>` +
     `<div class="field"><label for="b8vm">${L2('Modelo del variograma', 'Variogram model')}</label><select id="b8vm"><option value="sph"${optL('Esférico', 'Spherical')}</option><option value="exp"${optL('Exponencial', 'Exponential')}</option><option value="gau"${optL('Gaussiano', 'Gaussian')}</option></select></div>` +
     [['b8pow', 'Potencia de IDW', 'IDW power', 2], ['b8cut', 'Distancia máxima del variograma (m, vacío = automática)', 'Variogram cutoff (m, empty = automatic)', ''], ['b8res', 'Celdas en el lado largo', 'Cells on the long side', 60]]
@@ -130,8 +131,8 @@ function build() {
   e.appendChild(mk('div', { class: 'btn-row' })).appendChild(ib);
   R.interp = mk('div', { class: 'res-host' }); e.appendChild(R.interp);
   UI.method(e, { text: [
-    '<p>Todo se calcula en metros (UTM). <b>IDW:</b> ẑ = Σwᵢzᵢ/Σwᵢ con wᵢ = 1/dᵢ<sup>p</sup>. <b>Variograma experimental</b> (Matheron): γ(h) = Σ(zᵢ − zⱼ)²/(2N(h)) por intervalos de distancia; por omisión, hasta un tercio de la diagonal de los datos en 15 intervalos. <b>Modelos:</b> esférico, exponencial γ = c₀ + c₁(1 − e<sup>−h/a</sup>) y gaussiano γ = c₀ + c₁(1 − e<sup>−(h/a)²</sup>) (en los dos últimos el alcance práctico es 3a y √3·a), ajustados por mínimos cuadrados ponderados con pesos Nⱼ/hⱼ². <b>Kriging ordinario:</b> media desconocida, resuelve [Γ 1; 1ᵀ 0][λ; μ] = [γ₀; 1]; varianza σ² = Σλᵢγᵢ₀ + μ. <b>Kriging simple:</b> media conocida (la de los datos). La validación cruzada deja fuera cada parcela, la predice con las demás y resume el error medio y su raíz cuadrática media.</p>',
-    '<p>Everything is computed in metres (UTM). <b>IDW:</b> ẑ = Σwᵢzᵢ/Σwᵢ with wᵢ = 1/dᵢ<sup>p</sup>. <b>Experimental variogram</b> (Matheron): γ(h) = Σ(zᵢ − zⱼ)²/(2N(h)) by distance classes; by default, up to a third of the diagonal of the data in 15 classes. <b>Models:</b> spherical, exponential γ = c₀ + c₁(1 − e<sup>−h/a</sup>) and Gaussian γ = c₀ + c₁(1 − e<sup>−(h/a)²</sup>) (in the last two the practical range is 3a and √3·a), fitted by weighted least squares with weights Nⱼ/hⱼ². <b>Ordinary kriging:</b> unknown mean, it solves [Γ 1; 1ᵀ 0][λ; μ] = [γ₀; 1]; variance σ² = Σλᵢγᵢ₀ + μ. <b>Simple kriging:</b> known mean (that of the data). Cross-validation leaves out each plot, predicts it with the others and summarises the mean error and its root mean square.</p>'],
+    '<p>Todo se calcula en metros (UTM). <b>IDW:</b> ẑ = Σwᵢzᵢ/Σwᵢ con wᵢ = 1/dᵢ<sup>p</sup>. <b>Variograma experimental</b> (Matheron): γ(h) = Σ(zᵢ − zⱼ)²/(2N(h)) por intervalos de distancia; por omisión, hasta un tercio de la diagonal de los datos en 15 intervalos. <b>Modelos:</b> esférico, exponencial γ = c₀ + c₁(1 − e<sup>−h/a</sup>) y gaussiano γ = c₀ + c₁(1 − e<sup>−(h/a)²</sup>) (en los dos últimos el alcance práctico es 3a y √3·a), ajustados por mínimos cuadrados ponderados con pesos Nⱼ/hⱼ². <b>Kriging ordinario:</b> media desconocida, resuelve [Γ 1; 1ᵀ 0][λ; μ] = [γ₀; 1]; varianza σ² = Σλᵢγᵢ₀ + μ. <b>Kriging simple:</b> media conocida (la de los datos). La validación cruzada deja fuera cada parcela, la predice con las demás (con el kriging elegido, simple u ordinario, y con IDW; si se eligió IDW, el kriging de la comparación es el ordinario) y resume el error medio y su raíz cuadrática media.</p>',
+    '<p>Everything is computed in meters (UTM). <b>IDW:</b> ẑ = Σwᵢzᵢ/Σwᵢ with wᵢ = 1/dᵢ<sup>p</sup>. <b>Experimental variogram</b> (Matheron): γ(h) = Σ(zᵢ − zⱼ)²/(2N(h)) by distance classes; by default, up to a third of the diagonal of the data in 15 classes. <b>Models:</b> spherical, exponential γ = c₀ + c₁(1 − e<sup>−h/a</sup>) and Gaussian γ = c₀ + c₁(1 − e<sup>−(h/a)²</sup>) (in the last two the practical range is 3a and √3·a), fitted by weighted least squares with weights Nⱼ/hⱼ². <b>Ordinary kriging:</b> unknown mean, it solves [Γ 1; 1ᵀ 0][λ; μ] = [γ₀; 1]; variance σ² = Σλᵢγᵢ₀ + μ. <b>Simple kriging:</b> known mean (that of the data). Cross-validation leaves out each plot, predicts it with the others (with the kriging chosen, simple or ordinary, and with IDW; if IDW was chosen, the kriging of the comparison is the ordinary one) and summarizes the mean error and its root mean square.</p>'],
     refs: ['Matheron, G. (1963). Principles of geostatistics. <i>Economic Geology</i> 58:1246–1266.', 'Cressie, N. (1985). Fitting variogram models by weighted least squares. <i>Mathematical Geology</i> 17:563–586.', 'Isaaks, E. H. y Srivastava, R. M. (1989). <i>An Introduction to Applied Geostatistics</i>. Oxford University Press.', 'Shepard, D. (1968). A two-dimensional interpolation function for irregularly-spaced data. <i>Proc. ACM National Conference</i>, pp. 517–524.'] });
 }
 
@@ -142,7 +143,7 @@ function fromInventory() {
   if (!pl.length) { clearMessages(R.msgA); showMessage(R.msgA, 'warning', L2('Las parcelas del inventario no tienen latitud y longitud.', 'The plots of the inventory have no latitude and longitude.')); return false; }
   const bm = new Map((state.biomass && state.biomass.plots || []).map(p => [p.plot, p]));
   S.plots = pl.map(p => ({ name: p.plot, lat: p.lat, lon: p.lon, r: p.design && p.design.r ? p.design.r : Math.sqrt(Invent.plotArea(p.design || { shape: 'circle', r: 17.84 }, 1e9) / Math.PI), stratum: p.stratum, N: p.N, G: p.G, V: p.V, agb: (bm.get(p.plot) || {}).agb, c: (bm.get(p.plot) || {}).c }));
-  /* trees placed from the centre of their plot */
+  /* trees placed from the center of their plot */
   const ctr = new Map(S.plots.map(p => [p.name, GE().toUTM(p.lat, p.lon)]));
   S.trees = state.inv.trees.filter(t => t.alive && isFinite(t.x) && isFinite(t.y) && ctr.has(t.plot)).map(t => { const u = ctr.get(t.plot), ll = GE().fromUTM(u.E + t.x, u.N + t.y, u.zone, u.south); return { lat: ll.lat, lon: ll.lon, sp: t.especie, d: t.dap }; });
   const vars = [['G', 'Área basal (m²/ha)', 'Basal area (m²/ha)'], ['N', 'Densidad (árb/ha)', 'Density (trees/ha)'], ['V', 'Volumen (m³/ha)', 'Volume (m³/ha)'], ['agb', 'Biomasa aérea (Mg/ha)', 'Aboveground biomass (Mg/ha)'], ['c', 'Carbono (Mg C/ha)', 'Carbon (Mg C/ha)']].filter(([k]) => S.plots.some(p => isFinite(p[k])));
@@ -193,7 +194,9 @@ function drawStatic() {
   const U = (lat, lon) => { const u = GE().toUTM(lat, lon, zone); return [u.E, u.N]; };
   const pts = all.map(p => U(p[0], p[1]));
   const x0 = Math.min(...pts.map(p => p[0])), x1 = Math.max(...pts.map(p => p[0])), y0 = Math.min(...pts.map(p => p[1])), y1 = Math.max(...pts.map(p => p[1]));
-  const W = 640, H = 520, m = { l: 88, r: S.raster ? 90 : 20, t: 16, b: 52 };
+  /* room on the right for the color bar, its numbers and its whole title */
+  const cbW = S.raster ? Math.max(90, 30 + 6.6 * String(S.raster.title || '').length) : 20;
+  const W = 640, H = 520, m = { l: 88, r: cbW, t: 16, b: 52 };
   const span = Math.max(x1 - x0, y1 - y0) * 1.08 || 100, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
   const k = Math.min((W - m.l - m.r) / span, (H - m.t - m.b) / span);
   const ex = [cx - (W - m.l - m.r) / 2 / k, cx + (W - m.l - m.r) / 2 / k], ey = [cy - (H - m.t - m.b) / 2 / k, cy + (H - m.t - m.b) / 2 / k];
@@ -235,7 +238,7 @@ function drawPolys() {
   R.polys.appendChild(mk('div', { class: 'btn-row' })).appendChild(del);
   const p0 = rows[0];
   UI.interp(R.polys, [`«${esc(p0.name)}» mide ${fmtNum(p0.areaUTM / 10000, 2)} ha en UTM (zona ${p0.zone}) y ${fmtNum(p0.areaSphere / 10000, 2)} ha sobre la esfera: la diferencia de ${fmtPct(100 * (p0.areaSphere / p0.areaUTM - 1), 2)} viene de usar una esfera en vez del elipsoide y del factor de escala de la proyección. Para el inventario usa el área UTM.`,
-    `«${esc(p0.name)}» measures ${fmtNum(p0.areaUTM / 10000, 2)} ha in UTM (zone ${p0.zone}) and ${fmtNum(p0.areaSphere / 10000, 2)} ha on the sphere: the ${fmtPct(100 * (p0.areaSphere / p0.areaUTM - 1), 2)} difference comes from using a sphere instead of the ellipsoid and from the scale factor of the projection. For the inventory use the UTM area.`]);
+    `“${esc(p0.name)}” measures ${fmtNum(p0.areaUTM / 10000, 2)} ha in UTM (zone ${p0.zone}) and ${fmtNum(p0.areaSphere / 10000, 2)} ha on the sphere: the ${fmtPct(100 * (p0.areaSphere / p0.areaUTM - 1), 2)} difference comes from using a sphere instead of the ellipsoid and from the scale factor of the projection. For the inventory use the UTM area.`]);
 }
 
 /* ---------------- C ---------------- */
@@ -315,7 +318,8 @@ async function runInterp() {
     let q = 0;
     targets.forEach((t, k) => { if (inside[k]) vals[k] = pIn[q++]; });
     cvI = GE().crossValidate(pts, (rest, p) => GE().idw(rest, [p], { power })[0]);
-    if (vf.ok) cv = GE().crossValidate(pts, (rest, p) => GE().krige(rest, [p], vf, { type: 'ok' })[0].z);
+    /* the cross-validation uses the kriging chosen (simple or ordinary); with IDW chosen, ordinary kriging for comparison */
+    if (vf.ok) cv = GE().crossValidate(pts, (rest, p) => GE().krige(rest, [p], vf, { type: meth === 'sk' ? 'sk' : 'ok' })[0].z);
   });
   const zs = vals.filter(Boolean).map(r => r.z), lo = Math.min(...zs), hi = Math.max(...zs);
   /* the raster image */
@@ -331,10 +335,10 @@ async function runInterp() {
   UI.tiles(R.interp.appendChild(mk('div')), [
     [['Puntos', 'Points'], String(pts.length), [meth === 'idw' ? 'IDW, potencia ' + power : (meth === 'ok' ? 'kriging ordinario' : 'kriging simple'), meth === 'idw' ? 'IDW, power ' + power : (meth === 'ok' ? 'ordinary kriging' : 'simple kriging')]],
     [['Intervalo del mapa', 'Range of the map'], n1(lo) + ' – ' + n1(hi)],
-    cv ? [['Validación cruzada: kriging', 'Cross-validation: kriging'], 'RMSE ' + n2(cv.rmse), ['error medio ' + n2(cv.me), 'mean error ' + n2(cv.me)]] : null,
+    cv ? [meth === 'sk' ? ['Validación cruzada: kriging simple', 'Cross-validation: simple kriging'] : ['Validación cruzada: kriging ordinario', 'Cross-validation: ordinary kriging'], 'RMSE ' + n2(cv.rmse), ['error medio ' + n2(cv.me), 'mean error ' + n2(cv.me)]] : null,
     [['Validación cruzada: IDW', 'Cross-validation: IDW'], 'RMSE ' + n2(cvI.rmse), ['error medio ' + n2(cvI.me), 'mean error ' + n2(cvI.me)]],
   ]);
-  if (pureNug) showMessage(R.interp, 'warning', L2('El variograma no muestra dependencia espacial en las distancias analizadas (efecto pepita puro): el kriging predice casi la media en todo el mapa. Prueba IDW u otra distancia máxima, o acepta que la variable no tiene estructura espacial a esta escala.', 'The variogram shows no spatial dependence at the distances analysed (pure nugget effect): kriging predicts almost the mean over the whole map. Try IDW or another cutoff, or accept that the variable has no spatial structure at this scale.'));
+  if (pureNug) showMessage(R.interp, 'warning', L2('El variograma no muestra dependencia espacial en las distancias analizadas (efecto pepita puro): el kriging predice casi la media en todo el mapa. Prueba IDW u otra distancia máxima, o acepta que la variable no tiene estructura espacial a esta escala.', 'The variogram shows no spatial dependence at the distances analyzed (pure nugget effect): kriging predicts almost the mean over the whole map. Try IDW or another cutoff, or accept that the variable has no spatial structure at this scale.'));
   if (vf.ok) {
     const hs = Array.from({ length: 80 }, (_, i) => cutoff * i / 79);
     UI.figure(R.interp, { title: ['Variograma experimental y modelo ajustado', 'Experimental variogram and fitted model'], svg: Plot.xy({ series: [{ type: 'points', x: ev.map(e => e.dist), y: ev.map(e => e.gamma), sizes: ev.map(e => 2.5 + Math.sqrt(e.np) * 0.8), color: 'var(--accent)', label: T('Experimental (tamaño = pares)', 'Experimental (size = pairs)') }, { type: 'line', x: hs, y: hs.map(vf.gamma), color: 'var(--primary)', width: 2.4, label: T(GE().VMODELS[model].es, GE().VMODELS[model].en) }], xlab: T('Distancia (m)', 'Distance (m)'), ylab: 'γ(h)', name: 'b8-variograma', w: 600, h: 340, zeroX: true, zeroY: true }), key: 'b8-vgm' });

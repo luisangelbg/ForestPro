@@ -174,6 +174,26 @@ blocks[3] = () => {
   const w3 = I.weibull(d, { three: true });
   check('Weibull 3p: ubicación', w3.a, R.weibull3.a, 1e-3); check('Weibull 3p: forma', w3.c, R.weibull3.shape, 1e-3);
   check('Weibull 3p: escala', w3.b, R.weibull3.scale, 1e-3); check('Weibull 3p: log-verosimilitud', w3.ll, R.weibull3.loglik, 1e-7);
+  /* Weibull weighted by the expansion factor, with and without the 2.5-cm threshold, and its weighted tests */
+  const live = trees.filter(t => t.alive), ef = live.map(t => t.ef);
+  [['', 0, R.weibullW, R.ksW, R.chiW], [' truncada en 2.5 cm', 2.5, R.weibullWT, R.ksWT, R.chiWT]].forEach(([lab, tr, rw, rk, rc]) => {
+    const wb = I.weibull(d, { weights: ef, trunc: tr });
+    check('Weibull 2p ponderada' + lab + ': forma', wb.c, rw.shape, 1e-6); check('Weibull 2p ponderada' + lab + ': escala', wb.b, rw.scale, 1e-6);
+    check('Weibull 2p ponderada' + lab + ': log-verosimilitud', wb.ll, rw.loglik, 1e-9);
+    const k = I.ks(d, wb.cdf, ef);
+    check('K–S ponderado' + lab + ': tamaño efectivo de Kish', k.nEff, rk.neff, 1e-12); check('K–S ponderado' + lab + ': D', k.D, rk.D, 1e-6); check('K–S ponderado' + lab + ': p', k.p, rk.p, 1e-3);
+    const cl = I.classes(d, 5, { weights: ef, start: tr > 0 ? tr : undefined }), s = cl.counts.reduce((a, b) => a + b, 0);
+    const ch = I.chi2(cl.edges, cl.counts.map(c => c / s * k.nEff), wb.cdf, wb.k);
+    check('χ² ponderado' + lab + ': estadístico', ch.chi, rc.chi, 1e-5); check('χ² ponderado' + lab + ': gl', ch.df, rc.df, 0, 'abs'); check('χ² ponderado' + lab + ': p', ch.p, rc.p, 1e-3);
+  });
+  /* stratified sample size: whole plots that add up to n */
+  const stIn = [...strata.values()].map(g => ({ name: g.name, w: g.area, s: E.Num.sd(g.y), mean: E.Num.mean(g.y) }));
+  ['neyman', 'prop'].forEach(al => {
+    const a = I.stratSampleSize({ strata: stIn, err: 10, alloc: al }), rr = R.stratSize[al];
+    check(`n estratificado (${al})`, a.n, rr.n, 0, 'abs');
+    check(`n estratificado (${al}): suma de los nₕ = n`, a.nh.reduce((x, y) => x + y, 0), rr.n, 0, 'abs');
+    rr.strata.forEach((nm, i) => check(`n estratificado (${al}): ${nm}`, a.nh[stIn.findIndex(g => g.name === nm)], rr.nh[i], 0, 'abs'));
+  });
   /* IVI of the coffee shade trees (plots of 1 000 m²: ef = 10) */
   const ivi = I.ivi(ca.map(r => ({ plot: r.parcela, sp: r.especie, d: r.dap, ef: 10 })), 25);
   R.ivi.sp.forEach((sp, i) => {
@@ -195,6 +215,7 @@ blocks[3] = () => {
     'Referencias: R 4.4.2; forestmangr (sprs, strs, ss_diffs, forest_structure), fitdistrplus::fitdist, stats::ks.test y fórmulas de Cochran (1977) escritas aparte en R.',
     'forestmangr::strs calcula el error estándar con (Σ Pⱼ Sⱼ)²/n, que solo es la varianza del estimador estratificado con la asignación de Neyman. La app usa la varianza de Cochran con la asignación realizada y da la de Neyman aparte; se compara cada una con su fórmula.',
     'forestmangr redondea sus salidas a 9 decimales como máximo: por eso la tolerancia contra sus valores es 1e-8. La forma y la escala de Weibull se comparan a 1e-6 porque los dos optimizadores se detienen en puntos ligeramente distintos; la log-verosimilitud coincide a 1e-9.',
+    'La Weibull ponderada (cada árbol con su factor de expansión) y la truncada en el DAP mínimo medido se comparan con una verosimilitud escrita aparte en R y minimizada con optim; K–S y χ² usan los mismos pesos y el tamaño efectivo de Kish. Sus p se comparan a 1e-3 relativo porque dependen de la forma y la escala, que coinciden a 1e-6.',
     'Datos: los ejemplos simulados del bosque mesófilo (24 parcelas anidadas, relascopía de 15 puntos, parcela mapeada) y del cafetal (25 parcelas en 5 fincas).',
   ]);
 };
@@ -307,6 +328,27 @@ blocks[4] = () => {
   const so = E.FPData.rows('cafetal_suelo'), sp = new Map();
   so.forEach(r => sp.set(r.parcela, (sp.get(r.parcela) || 0) + B.socLayer(r.co_pct, r.dap_g_cm3, r.prof_sup, r.prof_inf, r.pedregosidad_pct)));
   vec('Carbono del suelo por perfil (Mg C/ha)', R.soil.plot.map(p => sp.get(p)), R.soil.c, 1e-12);
+  /* the carbon balance of the coffee farm: the pools of the same plots summed plot by plot, as the app does */
+  const pdd = new Map();
+  ca.forEach((r, i) => { if (r.estado === 'vivo') return; const rho = tab.has(r.especie) ? tab.get(r.especie) : wdc[i].wd; pdd.set(r.parcela, (pdd.get(r.parcela) || 0) + B.treeAGB({ D: r.dap, H: r.altura, rho }, eqFor(r.especie)).agb * 10 / 1000); });
+  const litM = new Map(cp.map(r => [r.parcela, B.litter(r.hojarasca_g, r.marco_m2)]));
+  const PP = R.pools.plot.map(p => { const a = pa.get(p); return [a * 0.47, a * B.rootShoot('trop_mount', a) * 0.47, (pdd.get(p) || 0) * 0.47, litM.get(p) * 0.47, sp.get(p)]; });
+  const sums = PP.map(r => r.reduce((s, v) => s + v, 0));
+  vec('Balance del cafetal: carbono total de cada parcela (Mg C/ha)', sums, R.pools.total, 2e-4);
+  const eSum = E.Invent.srs(sums, {});
+  const cmb = B.combinePools({ mean: eSum.mean, se: eSum.se }, []);
+  check('Balance del cafetal: total (Mg C/ha)', cmb.mean, R.pools.mean, 2e-4);
+  check('Balance del cafetal: error estándar del total, suma por parcela', cmb.se, R.pools.se, 2e-3);
+  check('Balance del cafetal: semiintervalo 1.96·EE', cmb.half, R.pools.half, 2e-3);
+  ['aérea', 'raíces', 'muertos en pie', 'hojarasca', 'suelo'].forEach((nm, j) => {
+    const e = E.Invent.srs(PP.map(r => r[j]), {});
+    check(`Balance del cafetal: ${nm}, media`, e.mean, R.pools.poolMean[j], 2e-4); check(`Balance del cafetal: ${nm}, error estándar`, e.se, R.pools.poolSe[j], 2e-3);
+  });
+  const seQ = Math.sqrt([0, 1, 2, 3, 4].reduce((s, j) => { const e = E.Invent.srs(PP.map(r => r[j]), {}); return s + e.se * e.se; }, 0));
+  check('Balance del cafetal: la cuadratura (que la app ya no usa), como contraste', seQ, R.pools.seQuadrature, 2e-3);
+  const cwE = E.Invent.srs(li.map(x => x.M), {});
+  const cmb2 = B.combinePools({ mean: eSum.mean, se: eSum.se }, [{ mean: cwE.mean * 0.47, se: cwE.se * 0.47 }]);
+  check('Balance con una muestra independiente (transectos): total', cmb2.mean, R.pools.withCwd.mean, 2e-4); check('Balance con una muestra independiente: error estándar', cmb2.se, R.pools.withCwd.se, 2e-3);
   const pc = E.FPData.rows('pino_carbono_remedicion');
   const yrs = pc.reduce((s, r) => s + r.edad2 - r.edad1, 0) / pc.length;
   const cpd = B.change({ paired: true, pairs: pc.map(r => ({ c1: r.c1, c2: r.c2 })), years: yrs });
@@ -320,6 +362,7 @@ blocks[4] = () => {
     'Densidades de la tabla de la app: salen de la misma base redondeadas a 4 decimales (tolerancia 5e-4); la media de la parcela y la búsqueda en la base completa se comparan a 1e-12.',
     'Monte Carlo: dos implementaciones del mismo esquema con generadores distintos; las tolerancias (1 % en la media, 8 % en la desviación estándar, 2 % en los percentiles) son las del error de Monte Carlo con 4 000 iteraciones. El de BIOMASS (AGBmonteCarlo, 1 000 iteraciones) sortea además los coeficientes de su distribución posterior: se compara con 2 % en la media y 15 % en la desviación estándar.',
     'La ecuación 7 de Chave et al. (2014) se usa tal como se publicó; la referencia sin altura usa un reajuste posterior. La diferencia máxima entre ambas en los árboles de prueba se informa como dato.',
+    'Balance de carbono: el error del total se calcula con la suma por parcela de los reservorios medidos en las mismas parcelas (aérea, raíces, muertos en pie, hojarasca y suelo del cafetal), escrita aparte en R; la madera caída, de otra muestra, se agrega en cuadratura. Tolerancias de 2e-4 (medias) y 2e-3 (errores estándar) por el redondeo de las densidades de la tabla.',
   ]);
 };
 const Num_mean = a => a.reduce((s, v) => s + v, 0) / a.length;

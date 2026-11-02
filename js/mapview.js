@@ -12,7 +12,7 @@
 /* ForestPro — a small interactive map of its own.
 
    Spherical Mercator at integer zoom levels, as web maps use. Layers are drawn
-   in one SVG over the map: polygons, circles with a radius in metres (plots),
+   in one SVG over the map: polygons, circles with a radius in meters (plots),
    points (trees, grid), labels and a raster image (interpolations). Drag to
    pan, wheel or + − to zoom, arrows on the keyboard; a click can add vertices
    of a polygon. With no background the map shows a graticule of latitude and

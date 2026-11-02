@@ -66,6 +66,24 @@ function esc(s) {
    Used as `<option value="v"${optL('texto', 'text')}</option>` (it closes the opening tag itself). */
 function optL(es, en) { return ` data-es="${esc(es)}" data-en="${esc(en == null ? es : en)}">${esc(T(es, en))}`; }
 function L2(es, en) { return `<span data-l="es">${es}</span><span data-l="en">${en == null ? es : en}</span>`; }
+/* labels written in capitals by CSS (field labels, tile labels): symbols and units must keep their case,
+   so Greek letters, «Mg» and every parenthesis that holds a unit go inside <span class="nc"> (text-transform: none) */
+const NC_UNIT = /[\/%°²³₀-₉Ͱ-Ͽ]|(^|[\s(])(?:Mg|kg|g|cm|mm|m|km|ha|t|lb|ft|in|ac|dm|µm)(?=$|[\s)·,])/;
+function noCaps(html) {
+  return String(html).split(/(<[^>]+>)/).map((part, i) => i % 2 ? part : part
+    .replace(/\([^()<>]*\)|[Ͱ-Ͽ]+|\bMg\b|CO₂e?/g, m => m[0] === '(' && !NC_UNIT.test(m.slice(1, -1)) ? m : `<span class="nc">${m}</span>`)).join('')
+    .replace(/<span class="nc">([^<]*)<span class="nc">([^<]*)<\/span>([^<]*)<\/span>/g, '<span class="nc">$1$2$3</span>');
+}
+const NC_SEL = '.field > label, .stat-label, .inc-set > legend';
+function guardCaps(node) {
+  if (!node || node.nodeType !== 1) return;
+  const list = node.matches && node.matches(NC_SEL) ? [node] : [...node.querySelectorAll(NC_SEL)];
+  list.forEach(l => { if (l.dataset.nc || l.hasAttribute('data-es') || l.querySelector('input,select,textarea')) return; l.dataset.nc = '1'; const h = noCaps(l.innerHTML); if (h !== l.innerHTML) l.innerHTML = h; });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  guardCaps(document.body);
+  new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(guardCaps))).observe(document.body, { childList: true, subtree: true });
+});
 function showMessage(container, type, text) {
   if (typeof container === 'string') container = el(container);
   if (!container) return null;
@@ -239,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 Object.assign(window, {
-  STEPS, el, els, mk, esc, L2, showMessage, clearMessages,
+  STEPS, el, els, mk, esc, L2, noCaps, showMessage, clearMessages,
   fmtNum, fmtSig, fmtP, fmtPct, download, slug,
   goStep, stepOn, stepName, refreshStepMarks, runWork, Prefs, cssVar, isDark,
 });

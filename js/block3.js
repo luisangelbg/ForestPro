@@ -79,9 +79,10 @@ function build() {
   const a = UI.section(root, ['El inventario: árboles y parcelas', 'The inventory: trees and plots'],
     ['Una fila por árbol con su parcela; una fila por parcela con su diseño. Si no cargas parcelas, todas toman el diseño de abajo.', 'One row per tree with its plot; one row per plot with its design. If you do not load plots, all take the design below.']);
   a.appendChild(mk('h3', null, L2('Árboles', 'Trees')));
-  S.cardT = UI.dataCard(a, { id: 'b3t', fields: FT, examples: EXT, onData: (rows, meta) => { S.trees = rows; S.treesName = meta.name; if (meta.example) { S.cardP.load(meta.example); return; } assemble(); } });
+  /* a new table of trees or plots is a new inventory: the design and the measurement threshold are chosen again */
+  S.cardT = UI.dataCard(a, { id: 'b3t', fields: FT, examples: EXT, onData: (rows, meta) => { S.trees = rows; S.treesName = meta.name; S.treesExample = meta.example || null; S.designSet = false; if (meta.example) { S.cardP.load(meta.example); return; } assemble(); } });
   a.appendChild(mk('h3', null, L2('Parcelas (opcional)', 'Plots (optional)')));
-  S.cardP = UI.dataCard(a, { id: 'b3p', fields: FP, examples: EXP, onData: rows => { S.plots = rows; assemble(); } });
+  S.cardP = UI.dataCard(a, { id: 'b3p', fields: FP, examples: EXP, onData: rows => { S.plots = rows; S.designSet = false; assemble(); } });
   const dg = mk('details', { class: 'method-box' });
   dg.innerHTML = `<summary>${L2('Diseño por omisión y superficie del predio', 'Default design and area of the property')}</summary>`;
   const fg = mk('div', { class: 'form-grid method-body' });
@@ -113,7 +114,7 @@ function build() {
     ['La media por hectárea, su error estándar, el intervalo de confianza, el error de muestreo en % y el total del predio, según el diseño con que se tomaron las parcelas.', 'The mean per hectare, its standard error, the confidence interval, the sampling error in % and the total of the property, according to the design with which the plots were taken.']);
   const cf = mk('div', { class: 'form-grid' });
   cf.innerHTML = `<div class="field"><label for="b3var">${L2('Variable', 'Variable')}</label><select id="b3var">${Object.keys(VARS).map(k => `<option value="${k}"${optL(VARS[k].es, VARS[k].en)}</option>`).join('')}</select></div>` +
-    `<div class="field"><label for="b3design">${L2('Diseño', 'Design')}</label><select id="b3design"><option value="srs"${optL('Muestreo aleatorio simple', 'Simple random sampling')}</option><option value="strat"${optL('Estratificado', 'Stratified')}</option><option value="sys"${optL('Sistemático (diferencias sucesivas)', 'Systematic (successive differences)')}</option><option value="cluster"${optL('En conglomerados', 'Cluster')}</option></select></div>` +
+    `<div class="field wide"><label for="b3design">${L2('Diseño', 'Design')}</label><select id="b3design"><option value="srs"${optL('Muestreo aleatorio simple', 'Simple random sampling')}</option><option value="strat"${optL('Estratificado', 'Stratified')}</option><option value="sys"${optL('Sistemático (diferencias sucesivas)', 'Systematic (successive differences)')}</option><option value="cluster"${optL('En conglomerados', 'Cluster')}</option></select></div>` +
     `<div class="field"><label for="b3conf">${L2('Confianza', 'Confidence')}</label><select id="b3conf"><option value="0.9">90 %</option><option value="0.95" selected>95 %</option><option value="0.99">99 %</option></select></div>` +
     `<label class="checkbox-label"><input type="checkbox" id="b3fpc"> ${L2('Corrección por población finita', 'Finite-population correction')}</label>`;
   c.appendChild(cf);
@@ -145,7 +146,7 @@ function build() {
 
   /* E. relascope */
   const e = UI.section(root, ['Relascopía (muestreo puntual)', 'Point sampling (relascope)'],
-    ['En cada punto se cuentan los árboles que el relascopio o la cuña dan como «dentro» con un factor de área basal (FAB); cada uno representa FAB/g árboles por hectárea.', 'At each point the trees the relascope or the prism counts «in» with a basal-area factor (BAF) are recorded; each one stands for BAF/g trees per hectare.']);
+    ['En cada punto se cuentan los árboles que el relascopio o la cuña dan como «dentro» con un factor de área basal (FAB); cada uno representa FAB/g árboles por hectárea.', 'At each point the trees the relascope or the prism counts “in” with a basal-area factor (BAF) are recorded; each one stands for BAF/g trees per hectare.']);
   const ef = mk('div', { class: 'form-grid' });
   ef.innerHTML = `<div class="field"><label for="b3baf">${L2('Factor de área basal (m²/ha)', 'Basal-area factor (m²/ha)')}</label><input type="number" id="b3baf" value="2" step="any"></div><div class="field"><label for="b3rff">${L2('Coeficiente mórfico', 'Form factor')}</label><input type="number" id="b3rff" value="0.5" step="0.01"></div>`;
   e.appendChild(ef);
@@ -155,7 +156,7 @@ function build() {
     { key: 'especie', es: 'Especie', en: 'Species', aliases: ['species'] },
     { key: 'dap', es: 'DAP (cm)', en: 'DBH (cm)', num: true, req: true, aliases: ['dbh', 'd'] },
     { key: 'altura', es: 'Altura (m)', en: 'Height (m)', num: true, aliases: ['h', 'ht'] }],
-    examples: [{ id: 'mesofilo', es: 'Bosque mesófilo: 15 puntos, FAB = 2', en: 'Cloud forest: 15 points, BAF = 2', d: ['Los árboles contados «dentro» en cada punto, con su DAP y altura.', 'The trees counted «in» at each point, with their DBH and height.'], rows: () => FPData.rows('mesofilo_relascopio').map(r => ({ punto: r.punto, especie: r.especie, dap: r.dap, altura: r.altura })) }],
+    examples: [{ id: 'mesofilo', es: 'Bosque mesófilo: 15 puntos, FAB = 2', en: 'Cloud forest: 15 points, BAF = 2', d: ['Los árboles contados «dentro» en cada punto, con su DAP y altura.', 'The trees counted “in” at each point, with their DBH and height.'], rows: () => FPData.rows('mesofilo_relascopio').map(r => ({ punto: r.punto, especie: r.especie, dap: r.dap, altura: r.altura })) }],
     onData: rows => { S.rel = rows; drawRel(); } });
   R.rel = mk('div', { class: 'res-host' }); e.appendChild(R.rel);
   UI.method(e, { text: [
@@ -169,14 +170,15 @@ function build() {
   const ff = mk('div', { class: 'form-grid' });
   ff.innerHTML = `<div class="field"><label for="b3w">${L2('Ancho de clase (cm)', 'Class width (cm)')}</label><input type="number" id="b3w" value="5" step="any"></div>` +
     `<div class="field"><label for="b3wb">${L2('Weibull', 'Weibull')}</label><select id="b3wb"><option value="2"${optL('2 parámetros', '2 parameters')}</option><option value="3"${optL('3 parámetros', '3 parameters')}</option></select></div>` +
+    `<div class="field"><label for="b3trunc">${L2('DAP mínimo medido (cm)', 'Smallest DBH measured (cm)')}</label><input type="number" id="b3trunc" value="" step="any" min="0" placeholder="${esc(T('sin corte', 'no threshold'))}" data-es-ph="sin corte" data-en-ph="no threshold"></div>` +
     `<div class="field"><label for="b3st">${L2('Estrato', 'Stratum')}</label><select id="b3st"></select></div>` +
     `<div class="field"><label for="b3hegR">${L2('Radio de Hegyi (m)', 'Hegyi radius (m)')}</label><input type="number" id="b3hegR" value="6" step="any"></div>`;
   f.appendChild(ff);
-  ['b3w', 'b3wb', 'b3st', 'b3hegR'].forEach(id => el(id).addEventListener('change', () => { if (S.per) drawStruct(); }));
+  ['b3w', 'b3wb', 'b3trunc', 'b3st', 'b3hegR'].forEach(id => el(id).addEventListener('change', () => { if (S.per) drawStruct(); }));
   R.struct = mk('div', { class: 'res-host' }); f.appendChild(R.struct);
   UI.method(f, { text: [
-    '<p><b>Weibull:</b> f(x) = (c/b)((x − a)/b)<sup>c−1</sup>exp(−((x − a)/b)<sup>c</sup>), por máxima verosimilitud con cada árbol pesado por su factor de expansión (para que la subparcela chica cuente lo que representa); con 3 parámetros, la ubicación a se busca por verosimilitud perfilada por debajo del menor diámetro. Bondad de ajuste: Kolmogorov–Smirnov (p asintótico, conservador cuando los parámetros salen de la misma muestra) y χ² por clases con esperados ≥ 5. <b>IVI</b> = densidad relativa + dominancia relativa (área basal) + frecuencia relativa (proporción de parcelas con la especie); suma 300 (IVI % = IVI/3). <b>Reineke:</b> IDR = N·(Dq/25)<sup>1.605</sup>. <b>Hart–Becking:</b> S % = espaciamiento medio/altura dominante × 100, con espaciamiento √(10 000/N) en cuadro o √(20 000/(N√3)) en tresbolillo. <b>Hegyi:</b> IC<sub>i</sub> = Σ (D<sub>j</sub>/D<sub>i</sub>)/dist<sub>ij</sub> sobre los vecinos a menos de R m; los árboles a menos de R del borde se marcan porque les faltan vecinos.</p>',
-    '<p><b>Weibull:</b> f(x) = (c/b)((x − a)/b)<sup>c−1</sup>exp(−((x − a)/b)<sup>c</sup>), by maximum likelihood with each tree weighted by its expansion factor (so that the small subplot counts for what it represents); with 3 parameters the location a is searched by profile likelihood below the smallest diameter. Goodness of fit: Kolmogorov–Smirnov (asymptotic p, conservative when the parameters come from the same sample) and χ² by classes with expected counts ≥ 5. <b>IVI</b> = relative density + relative dominance (basal area) + relative frequency (share of plots with the species); it adds to 300 (IVI % = IVI/3). <b>Reineke:</b> SDI = N·(Dq/25)<sup>1.605</sup>. <b>Hart–Becking:</b> S % = mean spacing/dominant height × 100, with spacing √(10,000/N) in square or √(20,000/(N√3)) in triangular layout. <b>Hegyi:</b> CI<sub>i</sub> = Σ (D<sub>j</sub>/D<sub>i</sub>)/dist<sub>ij</sub> over the neighbours within R m; trees closer than R to the edge are flagged because they lack neighbours.</p>'],
+    '<p><b>Weibull:</b> f(x) = (c/b)((x − a)/b)<sup>c−1</sup>exp(−((x − a)/b)<sup>c</sup>), por máxima verosimilitud con cada árbol pesado por su factor de expansión (para que la subparcela chica cuente lo que representa); con 3 parámetros, la ubicación a se busca por verosimilitud perfilada por debajo del menor diámetro, y la app avisa cuando queda a menos de 1 % de él. Si hay un DAP mínimo de medición t (los árboles más delgados no se midieron), la distribución se trunca por la izquierda: f(x)/S(t) para x ≥ t, con S(t) = exp(−((t − a)/b)<sup>c</sup>); la app propone el menor DAP del inventario. Bondad de ajuste con los mismos pesos del ajuste: la distribución empírica de Kolmogorov–Smirnov es la ponderada, F<sub>n</sub>(x) = Σw<sub>i</sub>[x<sub>i</sub> ≤ x]/Σw<sub>i</sub>, y el χ² compara las proporciones ponderadas de cada clase con las del modelo; los dos usan el tamaño efectivo de Kish, n<sub>ef</sub> = (Σw<sub>i</sub>)²/Σw<sub>i</sub>², en lugar del número de árboles (con parcelas anidadas, n<sub>ef</sub> es mucho menor). El p de K–S es el asintótico, conservador cuando los parámetros salen de la misma muestra; el χ² junta clases hasta que los esperados son ≥ 5. <b>IVI</b> = densidad relativa + dominancia relativa (área basal) + frecuencia relativa (proporción de parcelas con la especie); suma 300 (IVI % = IVI/3). <b>Reineke:</b> IDR = N·(Dq/25)<sup>1.605</sup>. <b>Hart–Becking:</b> S % = espaciamiento medio/altura dominante × 100, con espaciamiento √(10 000/N) en cuadro o √(20 000/(N√3)) en tresbolillo. <b>Hegyi:</b> IC<sub>i</sub> = Σ (D<sub>j</sub>/D<sub>i</sub>)/dist<sub>ij</sub> sobre los vecinos a menos de R m; los árboles a menos de R del borde se marcan porque les faltan vecinos.</p>',
+    '<p><b>Weibull:</b> f(x) = (c/b)((x − a)/b)<sup>c−1</sup>exp(−((x − a)/b)<sup>c</sup>), by maximum likelihood with each tree weighted by its expansion factor (so that the small subplot counts for what it represents); with 3 parameters the location a is searched by profile likelihood below the smallest diameter, and the app warns when it ends within 1 % of it. If there is a smallest DBH measured t (thinner trees were not recorded), the distribution is left-truncated: f(x)/S(t) for x ≥ t, with S(t) = exp(−((t − a)/b)<sup>c</sup>); the app proposes the smallest DBH of the inventory. Goodness of fit with the same weights as the fit: the empirical distribution of Kolmogorov–Smirnov is the weighted one, F<sub>n</sub>(x) = Σw<sub>i</sub>[x<sub>i</sub> ≤ x]/Σw<sub>i</sub>, and the χ² compares the weighted share of each class with that of the model; both use Kish\'s effective size, n<sub>eff</sub> = (Σw<sub>i</sub>)²/Σw<sub>i</sub>², instead of the number of trees (with nested plots n<sub>eff</sub> is much smaller). The K–S p is the asymptotic one, conservative when the parameters come from the same sample; the χ² pools classes until the expected counts are ≥ 5. <b>IVI</b> = relative density + relative dominance (basal area) + relative frequency (share of plots with the species); it adds to 300 (IVI % = IVI/3). <b>Reineke:</b> SDI = N·(Dq/25)<sup>1.605</sup>. <b>Hart–Becking:</b> S % = mean spacing/dominant height × 100, with spacing √(10,000/N) in square or √(20,000/(N√3)) in triangular layout. <b>Hegyi:</b> CI<sub>i</sub> = Σ (D<sub>j</sub>/D<sub>i</sub>)/dist<sub>ij</sub> over the neighbors within R m; trees closer than R to the edge are flagged because they lack neighbors.</p>'],
     refs: ['Bailey, R. L. y Dell, T. R. (1973). Quantifying diameter distributions with the Weibull function. <i>Forest Science</i> 19:97–104.', 'Curtis, J. T. y McIntosh, R. P. (1951). An upland forest continuum in the prairie-forest border region of Wisconsin. <i>Ecology</i> 32:476–496.', 'Reineke, L. H. (1933). Perfecting a stand-density index for even-aged forests. <i>J. Agric. Res.</i> 46:627–638.', 'Wilson, F. G. (1946). Numerical expression of stocking in terms of height. <i>Journal of Forestry</i> 44:758–761.', 'Hegyi, F. (1974). A simulation model for managing jack-pine stands. En <i>Growth Models for Tree and Stand Simulation</i>, pp. 74–90. Royal College of Forestry.'] });
   drawSize();
 }
@@ -194,7 +196,8 @@ function designOf(p, def) {
   if (p.area_m2 > 0) return { shape: 'area', area: p.area_m2 };
   return def;
 }
-const alive = s => !/muert|dead|seco|tocon|stump/i.test(String(s || ''));
+/* «tocón» and «tocon», «Muerto» and «muerto»: accents do not matter */
+const alive = s => !/muert|dead|seco|tocon|stump|snag/i.test(String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, ''));
 function assemble() {
   if (!S.trees) return;
   const def = defaultDesign();
@@ -218,14 +221,20 @@ function assemble() {
   const per = Invent.perPlot(trees, plotOf, { plots: plotIds });
   per.forEach(p => { const pp = pmap.get(p.plot) || {}; p.stratum = pp.estrato || (p.trees[0] || {}).stratum || ''; p.cluster = pp.conglomerado || ''; p.lat = pp.lat; p.lon = pp.lon; p.stratumArea = pp.area_estrato_ha; p.design = plotOf(p.plot); });
   S.per = per; S.inv = trees; S.hdFit = hdFit; S.nEst = nEst;
-  state.inv = { name: S.treesName || '', trees: trees.map(t => ({ plot: t.plot, stratum: t.stratum, especie: t.sp, familia: t.family, dap: t.d, altura: t.h, hEst: !!t.hEst, estado: t.status, alive: t.alive, x: t.x, y: t.y, ef: t.ef, v: t.v, cluster: t.cluster, copa: (S.trees[t.id - 1] || {}).copa })),
+  state.inv = { name: S.treesName || '', example: S.treesExample || null, trees: trees.map(t => ({ plot: t.plot, stratum: t.stratum, especie: t.sp, familia: t.family, dap: t.d, altura: t.h, hEst: !!t.hEst, estado: t.status, alive: t.alive, x: t.x, y: t.y, ef: t.ef, v: t.v, cluster: t.cluster, copa: (S.trees[t.id - 1] || {}).copa })),
     plots: per.map(p => ({ plot: p.plot, stratum: p.stratum, cluster: p.cluster, lat: p.lat, lon: p.lon, stratumArea: p.stratumArea, design: p.design, N: p.N, G: p.G, V: p.V })), area: +el('b3area').value };
   /* the design that fits the data best by default */
   const strata = [...new Set(per.map(p => p.stratum).filter(Boolean))];
-  if (!S.designSet) { el('b3design').value = strata.length > 1 && per.every(p => p.stratumArea > 0) ? 'strat' : 'srs'; S.designSet = true; }
+  if (!S.designSet) {
+    el('b3design').value = strata.length > 1 && per.every(p => p.stratumArea > 0) ? 'strat' : 'srs';
+    /* the measurement threshold: the smallest DBH, rounded down to half a centimeter */
+    const dmin = Math.min(...trees.filter(t => t.d > 0).map(t => t.d));
+    el('b3trunc').value = isFinite(dmin) && dmin >= 1 ? String(Math.floor(dmin * 2 + 1e-9) / 2) : '';
+    S.designSet = true;
+  }
   const sel = el('b3st');
   sel.innerHTML = `<option value=""${optL('Todos', 'All')}</option>` + strata.map(s => `<option>${esc(s)}</option>`).join('');
-  drawInv(); drawExp(); drawEst(); drawStruct();
+  drawInv(); drawExp(); drawEst(); drawStruct(); drawSize();
   state.inventory = { n: per.length, strata: strata.length };
   Report.set(3, true); refreshStepMarks();
   document.dispatchEvent(new CustomEvent('inventorychange'));
@@ -322,12 +331,14 @@ function drawEst() {
     ser.push({ type: 'segments', segs: [[r.strata.length + 1, r.lo, r.strata.length + 1, r.hi]], color: 'var(--fig-ink)', width: 3 });
     ser.push({ type: 'points', x: [r.strata.length + 1], y: [r.mean], color: 'var(--fig-ink)', r: 6 });
     const labs = r.strata.map(s => s.name).concat([T('Estratificada', 'Stratified')]);
-    UI.figure(R.est, { title: [`${Vv.es}: media e intervalo por estrato`, `${Vv.en}: mean and interval by stratum`], svg: Plot.xy({ series: ser, xlim: [0.4, labs.length + 0.6], xticks: labs.length, xLabels: x => labs[Math.round(x) - 1] || '', ylab: T(Vv.es, Vv.en), name: 'b3-estratos', w: 600, h: 340, legend: false, zeroY: true }), key: 'b3-strata' });
+    UI.figure(R.est, { title: [`${Vv.es}: media e intervalo por estrato`, `${Vv.en}: mean and interval by stratum`], svg: Plot.xy({ series: ser, xlim: [0.4, labs.length + 0.6], xtickVals: labs.map((_, i) => i + 1), xLabels: x => labs[Math.round(x) - 1] || '', ylab: T(Vv.es, Vv.en), name: 'b3-estratos', w: 600, h: 340, legend: false, zeroY: true }), key: 'b3-strata' });
   }
-  const need = Invent.sampleSize({ cv: r.cv || Invent.srs(S.per.map(p => p[v])).cv, err: 10, conf });
+  /* the CV of the plots (the cluster estimator has none of its own) */
+  const cvUse = isFinite(r.cv) && r.cv > 0 ? r.cv : Invent.srs(S.per.map(p => p[v])).cv;
+  const need = Invent.sampleSize({ cv: cvUse, err: 10, conf });
   UI.interp(R.est, [
-    `Con ${r.n} ${design === 'cluster' ? 'conglomerados' : 'parcelas'} ${Vv.ph[0]} es ${Vv.f(r.mean)} ${u} con un error de muestreo de ${fmtNum(r.errPct, 1)} % al ${Math.round(conf * 100)} % de confianza.` + (r.errPct > 10 ? ` Para bajar a 10 % harían falta unas ${need.n} parcelas con este CV (${fmtNum(r.cv || 0, 0)} %).` : ' Cumple el 10 % que piden muchos planes de manejo.') + (r.efficiency ? ` Estratificar rinde ${fmtNum(r.efficiency, 2)} veces la precisión de tratar las parcelas como una sola muestra aleatoria.` : '') + (r.deff ? ` El efecto del diseño es ${fmtNum(r.deff, 2)}: ${r.deff > 1 ? 'las parcelas de un mismo conglomerado se parecen entre sí y aportan menos información que si fueran independientes' : 'los conglomerados no restan precisión'}.` : ''),
-    `With ${r.n} ${design === 'cluster' ? 'clusters' : 'plots'} ${Vv.ph[1]} is ${Vv.f(r.mean)} ${u} with a sampling error of ${fmtNum(r.errPct, 1)} % at ${Math.round(conf * 100)} % confidence.` + (r.errPct > 10 ? ` Bringing it down to 10 % would take about ${need.n} plots with this CV (${fmtNum(r.cv || 0, 0)} %).` : ' It meets the 10 % many management plans require.') + (r.efficiency ? ` Stratifying gives ${fmtNum(r.efficiency, 2)} times the precision of treating the plots as one random sample.` : '') + (r.deff ? ` The design effect is ${fmtNum(r.deff, 2)}: ${r.deff > 1 ? 'plots of the same cluster resemble each other and carry less information than independent ones' : 'the clusters cost no precision'}.` : '')], r.errPct > 20 ? 'warn' : null);
+    `Con ${r.n} ${design === 'cluster' ? 'conglomerados' : 'parcelas'} ${Vv.ph[0]} es ${Vv.f(r.mean)} ${Vv.u} con un error de muestreo de ${fmtNum(r.errPct, 1)} % al ${Math.round(conf * 100)} % de confianza.` + (r.errPct > 10 ? ` Para bajar a 10 % harían falta unas ${need.n} parcelas con este CV (${fmtNum(cvUse, 0)} %).` : ' Cumple el 10 % que piden muchos planes de manejo.') + (r.efficiency ? ` Estratificar rinde ${fmtNum(r.efficiency, 2)} veces la precisión de tratar las parcelas como una sola muestra aleatoria.` : '') + (r.deff ? ` El efecto del diseño es ${fmtNum(r.deff, 2)}: ${r.deff > 1 ? 'las parcelas de un mismo conglomerado se parecen entre sí y aportan menos información que si fueran independientes' : 'los conglomerados no restan precisión'}.` : ''),
+    `With ${r.n} ${design === 'cluster' ? 'clusters' : 'plots'} ${Vv.ph[1]} is ${Vv.f(r.mean)} ${Vv.ue} with a sampling error of ${fmtNum(r.errPct, 1)} % at ${Math.round(conf * 100)} % confidence.` + (r.errPct > 10 ? ` Bringing it down to 10 % would take about ${need.n} plots with this CV (${fmtNum(cvUse, 0)} %).` : ' It meets the 10 % many management plans require.') + (r.efficiency ? ` Stratifying gives ${fmtNum(r.efficiency, 2)} times the precision of treating the plots as one random sample.` : '') + (r.deff ? ` The design effect is ${fmtNum(r.deff, 2)}: ${r.deff > 1 ? 'plots of the same cluster resemble each other and carry less information than independent ones' : 'the clusters cost no precision'}.` : '')], r.errPct > 20 ? 'warn' : null);
   S.est = r;
   state.inventory = Object.assign(state.inventory || {}, { est: { v, design, mean: r.mean, se: r.se, errPct: r.errPct, lo: r.lo, hi: r.hi } });
 }
@@ -394,23 +405,37 @@ function drawStruct() {
   if (trees.length < 10) { showMessage(R.struct, 'info', L2('Hacen falta al menos 10 árboles vivos.', 'At least 10 live trees are needed.')); return; }
   const w = +el('b3w').value || 5, nP = per.length;
   const d = trees.map(t => t.d), wt = trees.map(t => t.ef / nP);
-  const cl = Invent.classes(d, w, { weights: wt });
   const three = el('b3wb').value === '3';
-  const wb = Invent.weibull(d, { weights: trees.map(t => t.ef), three });
-  const Nha = wt.reduce((a, b) => a + b, 0);
+  const trunc = +el('b3trunc').value > 0 ? +el('b3trunc').value : 0;
+  /* with a measurement threshold the classes start at it, so the first bar is a whole class like the rest */
+  const cl = Invent.classes(d, w, { weights: wt, start: trunc > 0 && Math.min(...d) >= trunc ? trunc : undefined });
+  const ef = trees.map(t => t.ef);
+  const wb = Invent.weibull(d, { weights: ef, three, trunc });
+  /* the trees the model describes: those at or above the measurement threshold */
+  const inT = d.map(v => v >= trunc);
+  const dT = d.filter((_, i) => inT[i]), efT = ef.filter((_, i) => inT[i]);
+  const Nha = wt.reduce((a, b, i) => a + (inT[i] ? b : 0), 0);
   const xs = Array.from({ length: 160 }, (_, i) => cl.edges[0] + i * (cl.edges[cl.edges.length - 1] - cl.edges[0]) / 159);
-  const fig = Plot.bars({ edges: cl.edges, series: [{ label: T('Árboles por hectárea', 'Trees per hectare'), values: cl.counts, color: 'var(--musgo)' }], curves: [{ x: xs, y: xs.map(x => Nha * w * wb.pdf(x)), color: 'var(--accent)', label: 'Weibull ' + (three ? '3p' : '2p') }],
+  const fig = Plot.bars({ edges: cl.edges, series: [{ label: T('Árboles por hectárea', 'Trees per hectare'), values: cl.counts, color: 'var(--musgo)' }], curves: [{ x: xs, y: xs.map(x => Nha * w * wb.pdf(x)), color: 'var(--accent)', label: 'Weibull ' + (three ? '3p' : '2p') + (trunc ? T(' truncada', ' truncated') : '') }],
     xlab: T('Clase diamétrica (cm)', 'Diameter class (cm)'), ylab: T('Árboles por hectárea', 'Trees per hectare'), name: 'b3-distribucion-diametrica', w: 640, h: 360, edgeTicks: cl.edges.length <= 16 });
   UI.figure(R.struct, { title: ['Distribución diamétrica y modelo de Weibull', 'Diameter distribution and Weibull model'], svg: fig, key: 'b3-ddist' });
-  if (wb.boundary) showMessage(R.struct, 'warning', L2('La ubicación de la Weibull de 3 parámetros quedó pegada al diámetro mínimo: con forma menor que 1 la verosimilitud no tiene máximo interior. Usa la de 2 parámetros.', 'The location of the 3-parameter Weibull stuck to the smallest diameter: with a shape below 1 the likelihood has no interior maximum. Use the 2-parameter one.'));
-  /* goodness of fit, unweighted counts for the χ² (the actual trees) */
-  const ks = Invent.ks(d, wb.cdf);
-  const raw = Invent.classes(d, w);
-  const chi = Invent.chi2(raw.edges, raw.counts, wb.cdf, wb.k);
+  if (wb.boundary) showMessage(R.struct, 'warning', wb.c < 1
+    ? L2(`La ubicación de la Weibull de 3 parámetros quedó pegada al diámetro mínimo (a = ${n2(wb.a)} cm): con forma menor que 1 la verosimilitud no tiene máximo interior. Usa la de 2 parámetros.`, `The location of the 3-parameter Weibull stuck to the smallest diameter (a = ${n2(wb.a)} cm): with a shape below 1 the likelihood has no interior maximum. Use the 2-parameter one.`)
+    : L2(`La ubicación de la Weibull de 3 parámetros quedó en el borde: a = ${n2(wb.a)} cm, a ${fmtNum(wb.edgeGap, 3)} cm del menor diámetro. Ahí el modelo de 3 parámetros no se distingue de uno de 2 que empieza en el mínimo; ${trunc ? 'con el corte de medición, la de 2 parámetros truncada describe lo mismo con un parámetro menos' : 'si hubo un DAP mínimo de medición, escríbelo y usa la de 2 parámetros truncada'}.`, `The location of the 3-parameter Weibull is at the edge: a = ${n2(wb.a)} cm, ${fmtNum(wb.edgeGap, 3)} cm below the smallest diameter. There the 3-parameter model cannot be told from a 2-parameter one that starts at the minimum; ${trunc ? 'with the measurement threshold, the truncated 2-parameter one describes the same with one parameter less' : 'if there was a smallest DBH measured, type it and use the truncated 2-parameter one'}.`));
+  if (three && wb.atZero) showMessage(R.struct, 'info', L2('La ubicación de la Weibull de 3 parámetros quedó en 0: el modelo se reduce al de 2 parámetros.', 'The location of the 3-parameter Weibull ended at 0: the model reduces to the 2-parameter one.'));
+  /* goodness of fit with the weights of the fit and Kish's effective size: the weighted empirical distribution
+     for K–S, the weighted share of each class (scaled to n_eff) for the χ² */
+  const ks = Invent.ks(dT, wb.cdf, efT);
+  const raw = Invent.classes(dT, w, { weights: efT, start: trunc > 0 ? trunc : undefined });
+  const sRaw = raw.counts.reduce((a, b) => a + b, 0);
+  const chi = Invent.chi2(raw.edges, raw.counts.map(c => c / sRaw * ks.nEff), wb.cdf, wb.k);
   UI.table(R.struct, { title: ['Parámetros y bondad de ajuste', 'Parameters and goodness of fit'], file: 'forestpro_weibull', columns: [
     { key: 'k', label: ['Cantidad', 'Quantity'] }, { key: 'v', label: ['Valor', 'Value'], num: true }], rows: [
     { k: T('Ubicación a (cm)', 'Location a (cm)'), v: n2(wb.a) }, { k: T('Escala b (cm)', 'Scale b (cm)'), v: n3(wb.b) }, { k: T('Forma c', 'Shape c'), v: n3(wb.c) },
-    { k: T('DAP medio del modelo (cm)', 'Model mean DBH (cm)'), v: n2(wb.mean) }, { k: 'Kolmogorov–Smirnov D', v: n3(ks.D) }, { k: T('p (K–S, asintótico)', 'p (K–S, asymptotic)'), v: fmtP(ks.p) },
+    { k: T('DAP mínimo medido, truncamiento (cm)', 'Smallest DBH measured, truncation (cm)'), v: trunc ? n1(trunc) : '—' },
+    { k: T('DAP medio del modelo (cm)', 'Model mean DBH (cm)'), v: n2(wb.mean) },
+    { k: T('Árboles / tamaño efectivo (Kish)', 'Trees / effective size (Kish)'), v: dT.length + ' / ' + n1(ks.nEff) },
+    { k: T('Kolmogorov–Smirnov D (ponderado)', 'Kolmogorov–Smirnov D (weighted)'), v: n3(ks.D) }, { k: T('p (K–S, asintótico)', 'p (K–S, asymptotic)'), v: fmtP(ks.p) },
     { k: 'χ² (' + chi.classes + T(' clases, ', ' classes, ') + chi.df + T(' gl)', ' df)'), v: n2(chi.chi) }, { k: 'p (χ²)', v: fmtP(chi.p) }] });
   /* stand table: top species × classes, trees per hectare */
   /* the stand table closes with an open class once 99 % of the trees are counted */

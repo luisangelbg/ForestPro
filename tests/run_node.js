@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const ctx = { console, Math, Date, JSON, TextEncoder, TextDecoder, Uint8Array, Uint32Array, Int32Array, Float64Array, Array, Object, Number, String, Map, Set, Error, isFinite, isNaN };
 ctx.window = ctx; ctx.globalThis = ctx; ctx.T = es => es;
 vm.createContext(ctx);
-['num.js', 'nls.js', 'dataio.js', 'datasets.js', 'eng-dendro.js', 'eng-invent.js', 'eng-biomass.js', 'eng-growth.js', 'eng-divers.js', 'eng-agro.js', 'eng-geo.js', 'eng-tools.js']
+['num.js', 'nls.js', 'dataio.js', 'plot.js', 'datasets.js', 'eng-dendro.js', 'eng-invent.js', 'eng-biomass.js', 'eng-growth.js', 'eng-divers.js', 'eng-agro.js', 'eng-geo.js', 'eng-tools.js']
   .forEach(f => { const p = path.join(root, 'js', f); if (fs.existsSync(p)) vm.runInContext(fs.readFileSync(p, 'utf8'), ctx, { filename: f }); });
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'unit.js'), 'utf8'), ctx, { filename: 'unit.js' });
 let pass = 0, fail = 0;

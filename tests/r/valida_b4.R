@@ -110,6 +110,19 @@ so <- read.csv(file.path(dat, "cafetal_suelo.csv"))
 so$c <- so$co_pct * so$dap_g_cm3 * (so$prof_inf - so$prof_sup) * (1 - so$pedregosidad_pct / 100)
 sp <- tapply(so$c, so$parcela, sum)
 out$soil <- list(plot = names(sp), c = as.numeric(sp), mean = mean(sp), se = sd(sp) / sqrt(length(sp)))
+# balance de carbono del cafetal: los reservorios medidos en las mismas 25 parcelas se suman parcela por parcela
+# (aérea, raíces con 0.27, muertos en pie, hojarasca y suelo, con fracción de carbono 0.47) y el error del total
+# sale de esos totales; la madera caída (otra muestra, de transectos) se agregaría en cuadratura
+cf <- 0.47; pl <- names(pa)
+dead <- ca[ca$estado != "vivo", ]
+pd <- tapply(dead$agb * 10 / 1000, factor(dead$parcela, levels = pl), sum); pd[is.na(pd)] <- 0
+litp <- lit[match(pl, cp$parcela)]; soilp <- as.numeric(sp[pl])
+pools <- cbind(agb = as.numeric(pa) * cf, bgb = as.numeric(pa) * 0.27 * cf, dead = as.numeric(pd) * cf, litter = litp * cf, soil = soilp)
+tot <- rowSums(pools); nP <- length(tot)
+se <- function(v) sd(v) / sqrt(length(v))
+out$pools <- list(plot = pl, total = unname(tot), mean = mean(tot), se = se(tot), half = 1.96 * se(tot),
+  poolMean = unname(colMeans(pools)), poolSe = unname(apply(pools, 2, se)), seQuadrature = sqrt(sum(apply(pools, 2, se)^2)),
+  withCwd = list(mean = mean(tot) + mean(cwt$M) * cf, se = sqrt(se(tot)^2 + (se(cwt$M) * cf)^2)))
 pc <- read.csv(file.path(dat, "pino_carbono_remedicion.csv"))
 tp <- t.test(pc$c2, pc$c1, paired = TRUE); tw <- t.test(pc$c2, pc$c1, paired = FALSE)
 yrs <- mean(pc$edad2 - pc$edad1)

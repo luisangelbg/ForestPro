@@ -153,6 +153,13 @@ A.layout = function (o) {
     /* boundary rows along the two long sides */
     for (let x = o.a / 2; x <= W - o.a / 2 + 1e-9; x += o.a) { push(x, 0); if (o.both !== false) push(x, L); }
   }
+  /* the grid layouts are centred in the field: the margin left over by a spacing that does not divide the
+     side is split between both edges instead of piling up on the right and at the bottom */
+  if (pts.length && o.kind !== 'fence') {
+    const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+    const dx = (W - max(...xs) - min(...xs)) / 2, dy = o.kind === 'boundary' ? 0 : (L - max(...ys) - min(...ys)) / 2;
+    pts.forEach(p => { p.x += dx; p.y += dy; });
+  }
   const area = W * L;
   return { pts, n: pts.length, perHa: pts.length * 10000 / area, areaPerTree: area / pts.length, theoretical: A.densityOf(o) };
 };

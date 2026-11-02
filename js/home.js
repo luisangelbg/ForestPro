@@ -42,8 +42,8 @@ const EXAMPLES = [
   { id: 'pino', es: 'Plantación de pino', en: 'Pine plantation', f: ['30 parcelas permanentes · 6 remediciones · árboles derribados', '30 permanent plots · 6 remeasurements · felled trees'],
     d: ['Remediciones de altura dominante, densidad y diámetro, análisis troncal de árboles tipo y secciones de árboles derribados para cubicación y ahusamiento.', 'Remeasurements of dominant height, density and diameter, stem analysis of sample trees and sections of felled trees for scaling and taper.'],
     go: [[2, 'Dasometría', 'Mensuration'], [5, 'Crecimiento', 'Growth'], [9, 'Utilidades', 'Utilities']] },
-  { id: 'referencias', es: 'Densidades y ecuaciones', en: 'Densities and equations', f: ['densidad básica de la madera · catálogo alométrico', 'basic wood density · allometric catalogue'],
-    d: ['La tabla de densidades de las especies de los ejemplos y el catálogo de ecuaciones alométricas de referencia, editables y con su fuente.', 'The table of densities of the species in the examples and the catalogue of reference allometric equations, editable and with their source.'],
+  { id: 'referencias', es: 'Densidades y ecuaciones', en: 'Densities and equations', f: ['densidad básica de la madera · catálogo alométrico', 'basic wood density · allometric catalog'],
+    d: ['La tabla de densidades de las especies de los ejemplos y el catálogo de ecuaciones alométricas de referencia, editables y con su fuente.', 'The table of densities of the species in the examples and the catalog of reference allometric equations, editable and with their source.'],
     go: [[4, 'Biomasa', 'Biomass']] },
 ];
 
@@ -102,5 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('langchange', () => {
   const hero = el('heroArt');
   if (hero && window.Art) { const cap = hero.querySelector('.ha-caption'); hero.innerHTML = Art.hero(); if (cap) hero.appendChild(cap); }
+  /* the vignettes carry a word or two (DAP / DBH) */
+  if (window.Art) els('#blockGrid .feature .f-art').forEach((d, i) => { d.innerHTML = Art.vignette(i + 2); });
 });
 })();

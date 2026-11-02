@@ -70,7 +70,14 @@ I.stratSampleSize = function (o) {
     prev = n = nx; it++;
   }
   const nh = S.map((s, i) => o.alloc === 'prop' ? Wh[i] * n : n * Wh[i] * s.s / sumWS);
-  return { n, t, mean, D, nh: nh.map(v => max(2, Math.round(v))), nhExact: nh, Wh };
+  /* whole plots that add up to n: at least 2 per stratum, the rest by the largest remainders
+     (Hamilton's method); if the minimum of 2 pushes the sum above n, n is that sum */
+  const base = nh.map(v => max(2, Math.floor(v)));
+  let left = n - base.reduce((a, b) => a + b, 0);
+  const order = nh.map((v, i) => [v - Math.floor(v), i]).filter(([, i]) => base[i] === Math.floor(nh[i])).sort((p, q) => q[0] - p[0] || p[1] - q[1]);
+  for (let k = 0; left > 0 && k < order.length; k++, left--) base[order[k][1]]++;
+  for (let k = 0; left > 0; k = (k + 1) % base.length, left--) base[k]++;
+  return { n: base.reduce((a, b) => a + b, 0), nRaw: n, t, mean, D, nh: base, nhExact: nh, Wh };
 };
 
 /* ---------------- estimators of the mean per hectare ----------------
@@ -205,7 +212,7 @@ I.classes = function (d, w, o) {
   o = o || {};
   const x = d.filter(isFinite), wt = o.weights || null;
   const lo = o.start != null ? o.start : Math.floor(min(...x) / w) * w;
-  const hi = Math.ceil((max(...x) + 1e-9) / w) * w;
+  const hi = lo + Math.ceil((max(...x) - lo + 1e-9) / w) * w;
   const edges = [];
   for (let e = lo; e <= hi + 1e-9; e += w) edges.push(+e.toFixed(6));
   if (edges.length < 2) edges.push(lo + w);
@@ -215,63 +222,95 @@ I.classes = function (d, w, o) {
 };
 /* Weibull by maximum likelihood (weights allowed): f(x) = (c/b)((x−a)/b)^(c−1) exp(−((x−a)/b)^c).
    For a fixed location a the score of the shape c is solved by Brent and the scale follows in closed form. */
-function weibullFixedA(x, w, a) {
+/* With a measurement threshold t (trees below it were not measured) the density is the left-truncated one,
+   f(x)/S(t): the score and the scale keep their closed forms with yᵢ^c replaced by yᵢ^c − τ^c, τ = t − a. */
+function weibullFixedA(x, w, a, t) {
   const y = x.map(v => v - a);
   if (y.some(v => v <= 0)) return null;
+  const tau = t > a ? t - a : 0, lt = tau > 0 ? log(tau) : 0;
   const sw = w.reduce((s, v) => s + v, 0);
   const ly = y.map(log), mlog = ly.reduce((s, v, i) => s + w[i] * v, 0) / sw;
   const score = c => {
-    let s1 = 0, s2 = 0;
+    const tc = tau > 0 ? pow(tau, c) : 0;
+    let s1 = -sw * tc * lt, s2 = -sw * tc;
     for (let i = 0; i < y.length; i++) { const p = w[i] * pow(y[i], c); s1 += p * ly[i]; s2 += p; }
     return 1 / c + mlog - s1 / s2;
   };
   let lo = 0.05, hi = 1;
   while (score(hi) > 0 && hi < 200) hi *= 2;
   const c = Num.brent(score, lo, hi, 1e-13);
-  let sp = 0;
+  const tc = tau > 0 ? pow(tau, c) : 0;
+  let sp = -sw * tc;
   for (let i = 0; i < y.length; i++) sp += w[i] * pow(y[i], c);
   const b = pow(sp / sw, 1 / c);
   let ll = 0;
-  for (let i = 0; i < y.length; i++) ll += w[i] * (log(c) - log(b) + (c - 1) * (ly[i] - log(b)) - pow(y[i] / b, c));
-  return { a, b, c, ll };
+  for (let i = 0; i < y.length; i++) ll += w[i] * (log(c) - log(b) + (c - 1) * (ly[i] - log(b)) - pow(y[i] / b, c) + tc / pow(b, c));
+  return { a, b, c, ll, tau };
 }
+/* o: { weights, three, location, trunc } — trunc: the smallest diameter that was measured (left truncation);
+   only the trees at or above it enter the fit */
 I.weibull = function (d, o) {
   o = o || {};
+  const t = o.trunc > 0 ? o.trunc : 0;
   const x = [], w = [];
-  d.forEach((v, i) => { if (isFinite(v) && v > 0) { x.push(v); w.push(o.weights ? o.weights[i] : 1); } });
+  d.forEach((v, i) => { if (isFinite(v) && v > 0 && v >= t) { x.push(v); w.push(o.weights ? o.weights[i] : 1); } });
   let fit;
   if (o.three) {
     const m = min(...x);
-    if (o.location != null) fit = weibullFixedA(x, w, o.location);
+    if (o.location != null) fit = weibullFixedA(x, w, o.location, t);
     else {
       /* profile likelihood of the location on [0, min − ε]; the likelihood is unbounded when c < 1 near min, so the
          search stops at a small gap below the smallest diameter */
       const gap = max(1e-3, 0.002 * m);
-      const r = Num.golden(a => { const f = weibullFixedA(x, w, a); return f ? -f.ll : Infinity; }, 0, m - gap, 1e-12);
-      fit = weibullFixedA(x, w, r.x);
-      fit.boundary = r.x > m - gap * 1.5;
+      const r = Num.golden(a => { const f = weibullFixedA(x, w, a, t); return f ? -f.ll : Infinity; }, 0, m - gap, 1e-12);
+      fit = weibullFixedA(x, w, r.x, t);
+      /* «at the edge»: the location ends within 1 % of the smallest diameter (or within 3 gaps); there the
+         three-parameter model is not identified apart from a two-parameter one shifted to the minimum */
+      fit.boundary = r.x > m - max(3 * gap, 0.01 * m);
+      fit.edgeGap = m - r.x;
+      /* the other edge: a = 0 is the two-parameter model */
+      fit.atZero = r.x < 1e-4 * m;
     }
-  } else fit = weibullFixedA(x, w, 0);
-  const cdf = v => v <= fit.a ? 0 : 1 - exp(-pow((v - fit.a) / fit.b, fit.c));
-  const pdf = v => v <= fit.a ? 0 : (fit.c / fit.b) * pow((v - fit.a) / fit.b, fit.c - 1) * exp(-pow((v - fit.a) / fit.b, fit.c));
+  } else fit = weibullFixedA(x, w, 0, t);
+  const tc = fit.tau > 0 ? pow(fit.tau / fit.b, fit.c) : 0, St = exp(-tc);
+  const lo = max(fit.a, t);
+  const cdf = v => v <= lo ? 0 : 1 - exp(-pow((v - fit.a) / fit.b, fit.c) + tc);
+  const pdf = v => v <= lo ? 0 : (fit.c / fit.b) * pow((v - fit.a) / fit.b, fit.c - 1) * exp(-pow((v - fit.a) / fit.b, fit.c)) / St;
   const k = o.three && o.location == null ? 3 : 2;
-  const sw = w.reduce((s, v) => s + v, 0);
-  return Object.assign(fit, { cdf, pdf, k, n: x.length, sw, aic: -2 * fit.ll + 2 * k, mean: fit.a + fit.b * exp(Num.lgamma(1 + 1 / fit.c)) });
+  const sw = w.reduce((s, v) => s + v, 0), sw2 = w.reduce((s, v) => s + v * v, 0);
+  /* the mean of the (truncated) model: lo + ∫ S(x) dx, by Simpson up to where S < 1e-13 */
+  let mean;
+  if (!(fit.tau > 0)) mean = fit.a + fit.b * exp(Num.lgamma(1 + 1 / fit.c));
+  else {
+    const top = fit.a + fit.b * pow(tc + 30, 1 / fit.c), K = 4000, hh = (top - lo) / K;
+    let sum = 0;
+    for (let i = 0; i <= K; i++) { const v = lo + i * hh, sv = 1 - cdf(v); sum += sv * (i === 0 || i === K ? 1 : i % 2 ? 4 : 2); }
+    mean = lo + sum * hh / 3;
+  }
+  return Object.assign(fit, { cdf, pdf, k, n: x.length, sw, nEff: sw * sw / sw2, trunc: t, aic: -2 * fit.ll + 2 * k, mean });
 };
 /* Kolmogorov–Smirnov statistic of a sample against a cdf, with the asymptotic p of Kolmogorov
-   (conservative when the parameters were estimated from the same sample) */
-I.ks = function (x, cdf) {
-  const s = Num.finite(x).slice().sort((a, b) => a - b), n = s.length;
-  let D = 0;
-  for (let i = 0; i < n; i++) { const F = cdf(s[i]); D = max(D, (i + 1) / n - F, F - i / n); }
-  const lam = (sqrt(n) + 0.12 + 0.11 / sqrt(n)) * D;
-  let p = 0;
-  for (let k = 1; k < 100; k++) p += 2 * pow(-1, k - 1) * exp(-2 * k * k * lam * lam);
-  /* the exact asymptotic form, as R's ks.test(exact = FALSE): λ = √n·D */
-  const l2 = sqrt(n) * D;
-  let p2 = 0;
-  for (let k = 1; k < 100; k++) p2 += 2 * pow(-1, k - 1) * exp(-2 * k * k * l2 * l2);
-  return { D, n, p: min(1, max(0, p2)), pStephens: min(1, max(0, p)) };
+   (conservative when the parameters were estimated from the same sample). With weights w the empirical
+   distribution is the weighted one, Fn(x) = Σ wᵢ[xᵢ ≤ x]/Σ wᵢ, and the p uses Kish's effective size
+   n_ef = (Σ wᵢ)²/Σ wᵢ²; with equal weights both are the usual ones. */
+I.ks = function (x, cdf, wts) {
+  const pts = [];
+  x.forEach((v, i) => { if (isFinite(v)) pts.push([v, wts ? wts[i] : 1]); });
+  pts.sort((a, b) => a[0] - b[0]);
+  const sw = pts.reduce((s, p) => s + p[1], 0), sw2 = pts.reduce((s, p) => s + p[1] * p[1], 0);
+  const n = pts.length, nEff = sw * sw / sw2;
+  let D = 0, cum = 0;
+  for (let i = 0; i < n;) {
+    let j = i, wsum = 0;
+    while (j < n && pts[j][0] === pts[i][0]) { wsum += pts[j][1]; j++; }
+    const F = cdf(pts[i][0]), before = cum / sw;
+    cum += wsum;
+    D = max(D, cum / sw - F, F - before);
+    i = j;
+  }
+  const kol = l => { let p = 0; for (let k = 1; k < 100; k++) p += 2 * pow(-1, k - 1) * exp(-2 * k * k * l * l); return min(1, max(0, p)); };
+  /* the exact asymptotic form, as R's ks.test(exact = FALSE): λ = √n·D; Stephens' finite-n form apart */
+  return { D, n, nEff, p: kol(sqrt(nEff) * D), pStephens: kol((sqrt(nEff) + 0.12 + 0.11 / sqrt(nEff)) * D) };
 };
 /* χ² of observed class counts against the expected ones from a cdf; classes with expected < 5 are merged
    with their neighbour from the tails inward (Cochran's rule) */

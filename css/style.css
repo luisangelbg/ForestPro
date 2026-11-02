@@ -101,7 +101,10 @@ sub, sup { line-height: 0; }
 .section-sub { color: var(--text-muted); margin: 0 0 18px; max-width: 860px; }
 
 /* ---------- Workflow strip and block cards (home) ---------- */
-.workflow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; padding: 6px 0 12px; }
+/* six steps: two rows of three (or one row of six on a very wide screen, two columns on a phone), never five and one */
+.workflow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 6px 0 12px; }
+@media (min-width: 560px) { .workflow { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1700px) { .workflow { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 .wf-step { position: relative; padding: 12px 14px 12px 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; border-top: 3px solid var(--primary); }
 .wf-step .wf-n { font-size: 0.68rem; color: var(--accent-text); font-weight: 700; letter-spacing: .08em; }
 .wf-step .wf-t { font-weight: 600; font-size: 0.86rem; }
@@ -157,6 +160,10 @@ input[type=number] { font-variant-numeric: tabular-nums; }
 .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .field > label, .field-label { font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .field input, .field select { width: 100%; box-sizing: border-box; }
+/* symbols and units keep their case inside the labels written in capitals (Mg is not MG, λ is not Λ) */
+.nc { text-transform: none; }
+/* fields whose lists carry long names take two or three columns of the grid on a wide screen */
+@media (min-width: 761px) { .form-grid > .field.wide { grid-column: span 2; } .form-grid > .field.wider { grid-column: span 3; } }
 .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; cursor: pointer; margin: 4px 0; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0 0; }
 .inline-label { font-size: 0.86rem; color: var(--text-muted); display: inline-flex; gap: 7px; align-items: center; flex-wrap: wrap; }
@@ -176,6 +183,7 @@ input[type=number] { font-variant-numeric: tabular-nums; }
 .edit-grid { font-size: 0.82rem; width: max-content; min-width: 100%; }
 .edit-grid td { padding: 3px 4px; }
 .edit-grid input, .edit-grid select { padding: 4px 6px; font-size: 0.82rem; max-width: 160px; }
+.edit-grid select { max-width: 420px; }
 .edit-grid input[type=number] { width: 84px; }
 .grid-del { width: 28px; height: 28px; font-size: 1rem; }
 
@@ -186,6 +194,13 @@ tbody td { padding: 6px 11px; border-bottom: 1px solid var(--border); }
 tbody tr:last-child td { border-bottom: none; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .res-table td, .res-table th { white-space: nowrap; }
+/* result tables fit the column: headers wrap to two lines, cells keep their numbers on one; a table with long
+   text (the catalogue of equations) also wraps its cells */
+.table-scroll .res-table thead th { white-space: normal; vertical-align: bottom; min-width: 3.2em; overflow-wrap: normal; hyphens: manual; }
+.table-scroll .res-table td, .table-scroll .res-table th { padding-left: 8px; padding-right: 8px; }
+.table-scroll .res-table td:not(.num) { white-space: normal; min-width: 5.5em; }
+.table-scroll .res-table.wrap td { min-width: 7em; }
+.edit-grid th, .edit-grid th.num { text-align: left; vertical-align: bottom; }
 .data-grid { font-size: 0.78rem; width: max-content; min-width: 100%; }
 .data-grid td { padding: 3px 10px; white-space: nowrap; }
 .tbl-card { margin: 12px 0 6px; min-width: 0; }
@@ -243,7 +258,7 @@ tr.row-sel td { background: color-mix(in srgb, var(--primary) 9%, transparent); 
 .pl .pl-title { fill: var(--fig-ink); font-size: 13px; font-weight: 700; }
 .pl .pl-pts circle { stroke: var(--fig-bg); stroke-width: .7; }
 .pl .pl-legend text { fill: var(--fig-ink); font-size: 11px; }
-.pl .pl-legend-title { font-weight: 700; fill: var(--fig-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+.pl .pl-legend-title { font-weight: 700; fill: var(--fig-muted); font-size: 10px; letter-spacing: .02em; }
 .pl .pl-err { stroke: var(--fig-ink); stroke-width: 1.2; fill: none; }
 .pl .pl-vlab, .pl .pl-ptlab { fill: var(--fig-ink); font-size: 10px; font-variant-numeric: tabular-nums; }
 .pl .pl-dendro path { fill: none; stroke: var(--fig-ink); stroke-width: 1.4; }

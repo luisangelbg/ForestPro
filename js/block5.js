@@ -45,8 +45,8 @@ function build() {
   el('b5tree').addEventListener('change', () => { if (S.series) runModels(); });
   R.inc = mk('div', { class: 'res-host' }); a.appendChild(R.inc);
   UI.method(a, { text: [
-    '<p>ICA entre dos mediciones = (Y<sub>2</sub> − Y<sub>1</sub>)/(t<sub>2</sub> − t<sub>1</sub>); IMA = Y/t. Mientras el ICA supera al IMA, el IMA crece; el máximo del IMA (turno biológico o de máxima producción en volumen) está donde las dos curvas se cruzan. Si no hay volumen medido, se calcula como g·H·f con el coeficiente mórfico.</p>',
-    '<p>CAI between two measurements = (Y<sub>2</sub> − Y<sub>1</sub>)/(t<sub>2</sub> − t<sub>1</sub>); MAI = Y/t. While CAI exceeds MAI, MAI keeps rising; the maximum MAI (the biological rotation, or of maximum volume production) is where the two curves cross. If no volume was measured, it is computed as g·H·f with the form factor.</p>'],
+    '<p>ICA entre dos mediciones = (Y<sub>2</sub> − Y<sub>1</sub>)/(t<sub>2</sub> − t<sub>1</sub>), el ICA periódico de ese intervalo; IMA = Y/t. Mientras el ICA supera al IMA, el IMA crece; el máximo del IMA (turno biológico o de máxima producción en volumen) está donde las dos curvas se cruzan. El IMA sube en un intervalo exactamente cuando el ICA de ese intervalo supera al IMA de su inicio; por eso el cruce que se informa compara ICA − IMA así, lo ubica en el punto medio de cada intervalo y lo interpola entre el intervalo que termina en el IMA máximo y el siguiente: queda a menos de medio intervalo de la edad del IMA máximo. Con incrementos anuales ruidosos el ICA cruza antes al IMA en máximos locales, que no son el turno. Si no hay volumen medido, se calcula como g·H·f con el coeficiente mórfico.</p>',
+    '<p>CAI between two measurements = (Y<sub>2</sub> − Y<sub>1</sub>)/(t<sub>2</sub> − t<sub>1</sub>), the periodic CAI of that interval; MAI = Y/t. While CAI exceeds MAI, MAI keeps rising; the maximum MAI (the biological rotation, or of maximum volume production) is where the two curves cross. MAI rises over an interval exactly when the CAI of that interval exceeds the MAI at its start; so the crossing reported compares CAI − MAI that way, places it at the middle of each interval and interpolates it between the interval that ends at the largest MAI and the next one: it lies within half an interval of the age of the largest MAI. With noisy annual increments CAI crosses MAI earlier at local maxima, which are not the rotation. If no volume was measured, it is computed as g·H·f with the form factor.</p>'],
     refs: ['Assmann, E. (1970). <i>The Principles of Forest Yield Study</i>. Pergamon.', 'Davis, L. S., Johnson, K. N., Bettinger, P. S. y Howard, T. E. (2001). <i>Forest Management</i>, 4.ª ed. McGraw-Hill.'] });
 
   /* B. growth models */
@@ -67,10 +67,10 @@ function build() {
     { key: 'v_ha', es: 'Volumen (m³/ha)', en: 'Volume (m³/ha)', num: true, aliases: ['v', 'vol'] },
     { key: 'n_ha', es: 'Árboles por hectárea', en: 'Trees per hectare', num: true, aliases: ['n', 'densidad', 'nha'] }],
     examples: [{ id: 'pino', es: 'Pino: 30 parcelas permanentes, 6 remediciones', en: 'Pine: 30 permanent plots, 6 remeasurements', d: ['Altura dominante, densidad, diámetro cuadrático, área basal y volumen por hectárea de cada parcela a cada edad.', 'Dominant height, density, quadratic diameter, basal area and volume per hectare of each plot at each age.'], rows: () => FPData.rows('pino_remediciones') }],
-    onData: rows => { S.rem = rows; runSite(); runClutter(); } });
+    onData: rows => { S.rem = rows; ['b5S', 'b5t0', 'b5g0'].forEach(id => { if (el(id)) delete el(id).dataset.user; }); runSite(); runClutter(); } });
   const cf = mk('div', { class: 'form-grid' });
   cf.innerHTML = `<div class="field"><label for="b5tb">${L2('Edad base (años)', 'Base age (years)')}</label><input type="number" id="b5tb" value="20" step="1"></div>` +
-    `<div class="field"><label for="b5sm">${L2('Familia de curvas', 'Family of curves')}</label><select id="b5sm">${Object.keys(GR().SITE).map(k => `<option value="${k}"${k === 'chapADA' ? ' selected' : ''}${optL(GR().SITE[k].es, GR().SITE[k].en)}</option>`).join('')}</select></div>` +
+    `<div class="field wider"><label for="b5sm">${L2('Familia de curvas', 'Family of curves')}</label><select id="b5sm">${Object.keys(GR().SITE).map(k => `<option value="${k}"${k === 'chapADA' ? ' selected' : ''}${optL(GR().SITE[k].es, GR().SITE[k].en)}</option>`).join('')}</select></div>` +
     `<div class="field"><label for="b5nc">${L2('Clases de sitio', 'Site classes')}</label><select id="b5nc"><option>3</option><option selected>4</option><option>5</option></select></div>`;
   c.appendChild(cf);
   ['b5tb', 'b5sm', 'b5nc'].forEach(id => el(id).addEventListener('change', () => { if (S.rem) { runSite(); runClutter(); } }));
@@ -87,6 +87,12 @@ function build() {
     .map(([id, es, en, v]) => `<div class="field"><label for="${id}">${L2(es, en)}</label><input type="number" id="${id}" value="${v}" step="any"></div>`).join('');
   d.appendChild(df);
   ['b5S', 'b5t0', 'b5g0', 'b5n0', 'b5mort', 'b5tEnd', 'b5step'].forEach(id => el(id).addEventListener('change', () => { if (S.clutter) drawYield(); }));
+  /* what the user types in these three stays: the data only propose them (input fires only for the user) */
+  ['b5S', 'b5t0', 'b5g0'].forEach(id => {
+    el(id).addEventListener('input', () => { if (el(id).value === '') delete el(id).dataset.user; else el(id).dataset.user = id === 'b5S' ? String(+el('b5tb').value || 20) : '1'; });
+    /* emptied: the data propose it again */
+    el(id).addEventListener('change', () => { if (el(id).value === '' && S.clutter) runClutter(); });
+  });
   R.clut = mk('div', { class: 'res-host' }); d.appendChild(R.clut);
   R.yield = mk('div', { class: 'res-host' }); d.appendChild(R.yield);
   UI.method(d, { text: [
@@ -121,7 +127,7 @@ function drawInc() {
   UI.figure(R.inc, { title: [`ICA (punteado) e IMA (continuo): ${vn.toLowerCase()}`, `CAI (dashed) and MAI (solid): ${vn.toLowerCase()}`], svg: Plot.xy({ series: ser, xlab: T('Edad (años)', 'Age (years)'), ylab: T('Incremento (', 'Increment (') + unit + T('/año)', '/yr)'), name: 'b5-ica-ima', w: 680, h: 380, zeroY: true }), key: 'b5-inc' });
   UI.table(R.inc, { title: ['Turno biológico de cada árbol', 'Biological rotation of each tree'], file: 'forestpro_turno', columns: [
     { key: 'tree', label: ['Árbol', 'Tree'] }, { key: 'tMaxIMA', label: ['Edad del IMA máximo', 'Age of maximum MAI'], num: true, fmt: n1 },
-    { key: 'maxIMA', label: ['IMA máximo', 'Maximum MAI'], num: true, html: true, get: r => fmtSig(r.maxIMA, 4), raw: r => r.maxIMA }, { key: 'tCross', label: ['Cruce ICA = IMA (interpolado)', 'CAI = MAI crossing (interpolated)'], num: true, fmt: n1 }], rows: res });
+    { key: 'maxIMA', label: ['IMA máximo', 'Maximum MAI'], num: true, html: true, get: r => fmtSig(r.maxIMA, 4), raw: r => r.maxIMA }, { key: 'tCross', label: ['Cruce ICA = IMA (ICA periódico)', 'CAI = MAI crossing (periodic CAI)'], num: true, fmt: n1 }], rows: res });
   const r0 = res.find(r => r.tree === sel.value) || res[0];
   UI.table(R.inc, { title: [`Serie del árbol ${r0.tree}`, `Series of tree ${r0.tree}`], file: 'forestpro_incrementos_' + slug(r0.tree), columns: [
     { key: 't', label: ['Edad', 'Age'], num: true }, { key: 'y', label: [vn, vn], num: true, html: true, get: r => fmtSig(r.y, 5), raw: r => r.y }, { key: 'ica', label: ['ICA', 'CAI'], num: true, html: true, get: r => fmtSig(r.ica, 4), raw: r => r.ica }, { key: 'ima', label: ['IMA', 'MAI'], num: true, html: true, get: r => fmtSig(r.ima, 4), raw: r => r.ima }], rows: r0.rows, limit: 40 });
@@ -193,7 +199,7 @@ function drawSite() {
     ser.push({ type: 'band', x: xs, y: xs.map(t => sf.curve(c.lo, t)), y2: xs.map(t => sf.curve(c.hi, t)), color: Plot.color(k), opacity: 0.08 });
   });
   ser.push({ type: 'vline', x: tb, color: 'var(--fig-ink)', dash: '3 3' });
-  UI.figure(R.site, { title: ['Curvas de índice de sitio y trayectorias de las parcelas', 'Site index curves and plot trajectories'], svg: Plot.xy({ series: ser, xlab: T('Edad (años)', 'Age (years)'), ylab: T('Altura dominante (m)', 'Dominant height (m)'), name: 'b5-indice-sitio', w: 680, h: 420, zeroY: true }), note: [`La línea vertical marca la edad base (${tb} años). Gris: cada parcela.`, `The vertical line marks the base age (${tb} years). Grey: each plot.`], key: 'b5-site' });
+  UI.figure(R.site, { title: ['Curvas de índice de sitio y trayectorias de las parcelas', 'Site index curves and plot trajectories'], svg: Plot.xy({ series: ser, xlab: T('Edad (años)', 'Age (years)'), ylab: T('Altura dominante (m)', 'Dominant height (m)'), name: 'b5-indice-sitio', w: 680, h: 420, zeroY: true }), note: [`La línea vertical marca la edad base (${tb} años). Gris: cada parcela.`, `The vertical line marks the base age (${tb} years). Gray: each plot.`], key: 'b5-site' });
   UI.table(R.site, { title: ['Clases de sitio', 'Site classes'], file: 'forestpro_clases_sitio', columns: [
     { key: 'cls', label: ['Clase', 'Class'], get: c => GR().roman(c.cls), raw: c => c.cls }, { key: 'lo', label: ['IS desde (m)', 'SI from (m)'], num: true, fmt: n1 }, { key: 'hi', label: ['IS hasta (m)', 'SI to (m)'], num: true, fmt: n1 }, { key: 'n', label: ['Parcelas', 'Plots'], num: true }], rows: cl.classes });
   UI.table(R.site, { title: ['Índice de sitio de cada parcela', 'Site index of each plot'], file: 'forestpro_sitio_parcelas', columns: [
@@ -213,11 +219,14 @@ function runClutter() {
   const c = GR().clutter(S.rem.map(r => ({ plot: r.parcela, t: r.edad, g: r.g_ha, v: r.v_ha, s: sMap.get(String(r.parcela)) })));
   if (!c.ok) { showMessage(R.clut, 'warning', L2('Hacen falta al menos 6 pares de remediciones.', 'At least 6 remeasurement pairs are needed.')); return; }
   S.clutter = c;
-  /* sensible defaults from the data */
+  /* sensible defaults from the data, recomputed with every fit (a new base age changes the site indices);
+     what the user typed is kept */
   const young = S.rem.filter(r => r.edad === Math.min(...S.rem.map(x => x.edad)));
-  if (!el('b5S').value) el('b5S').value = n1(Num.median(S.site.cl.plots.map(p => p.si))).replace(/,/g, '');
-  if (!el('b5g0').value) el('b5g0').value = n1(Num.mean(S.rem.filter(r => r.edad <= Math.min(...S.rem.map(x => x.edad)) + 1).map(r => r.g_ha))).replace(/,/g, '');
-  el('b5t0').value = Math.round(Num.mean(young.map(r => r.edad)));
+  const tb = S.site.tb, sIn = el('b5S');
+  if (!sIn.dataset.user) sIn.value = n1(Num.median(S.site.cl.plots.map(p => p.si))).replace(/,/g, '');
+  if (!el('b5g0').dataset.user) el('b5g0').value = n1(Num.mean(S.rem.filter(r => r.edad <= Math.min(...S.rem.map(x => x.edad)) + 1).map(r => r.g_ha))).replace(/,/g, '');
+  if (!el('b5t0').dataset.user) el('b5t0').value = Math.round(Num.mean(young.map(r => r.edad)));
+  S.siteWarn = sIn.dataset.user && +sIn.dataset.user !== tb ? +sIn.dataset.user : null;
   const rows = [{ par: 'α₀', est: c.alpha[0], se: c.seAlpha[0] }, { par: 'α₁', est: c.alpha[1], se: c.seAlpha[1] }].concat(['β₀', 'β₁', 'β₂', 'β₃'].map((p, i) => ({ par: p, est: c.beta[i], se: c.seBeta[i] })));
   UI.table(R.clut, { title: [`Sistema de Clutter (${c.n} pares de remediciones)`, `Clutter system (${c.n} remeasurement pairs)`], file: 'forestpro_clutter', columns: [
     { key: 'par', label: ['Parámetro', 'Parameter'] }, { key: 'est', label: ['Estimación', 'Estimate'], num: true, html: true, get: r => fmtSig(r.est, 5), raw: r => r.est }, { key: 'se', label: ['Error estándar', 'Std. error'], num: true, html: true, get: r => fmtSig(r.se, 4), raw: r => r.se }],
@@ -230,6 +239,7 @@ function drawYield(edited) {
   if (!(o.S > 0 && o.t0 > 0 && o.g0 > 0 && o.n0 > 0 && o.tEnd > o.t0)) return;
   const y = edited || GR().yieldTable(o);
   S.yield = y;
+  if (S.siteWarn) showMessage(R.yield, 'warning', L2(`El índice de sitio que escribiste (${n1(o.S)} m) era para una edad base de ${S.siteWarn} años y ahora la edad base es de ${S.site.tb}: el sistema de Clutter se ajustó con los índices a ${S.site.tb} años. Revisa el índice o bórralo para que la app proponga la mediana de las parcelas.`, `The site index you typed (${n1(o.S)} m) was for a base age of ${S.siteWarn} years and the base age is now ${S.site.tb}: the Clutter system was fitted with the indices at ${S.site.tb} years. Check the index, or clear it so that the app proposes the median of the plots.`));
   UI.tiles(R.yield.appendChild(mk('div')), [
     [['Turno de máximo IMA', 'Rotation of maximum MAI'], n1(y.tRot) + T(' años', ' years'), y.atEnd ? ['el IMA aún crece al final de la tabla', 'MAI still rising at the end of the table'] : null, y.atEnd ? 'warn' : 'ok'],
     [['IMA máximo', 'Maximum MAI'], n1(y.maxIMA) + ' m³/ha/' + T('año', 'yr')],

@@ -48,9 +48,9 @@ function build() {
   R.msgA = mk('div', { class: 'messages' }); a.appendChild(R.msgA);
   R.status = mk('p', { class: 'data-status' }); a.appendChild(R.status);
   const fg = mk('div', { class: 'form-grid' });
-  fg.innerHTML = `<div class="field"><label for="b4def">${L2('Ecuación por omisión', 'Default equation')}</label><select id="b4def"></select></div>` +
+  fg.innerHTML = `<div class="field wider"><label for="b4def">${L2('Ecuación por omisión', 'Default equation')}</label><select id="b4def"></select></div>` +
     `<div class="field"><label for="b4E">${L2('E (estrés ambiental, si la ecuación lo pide)', 'E (environmental stress, if the equation asks for it)')}</label><input type="number" id="b4E" value="0" step="any"></div>` +
-    `<div class="field"><label for="b4rootSel">${L2('Biomasa de raíces', 'Root biomass')}</label><select id="b4rootSel"></select></div>` +
+    `<div class="field wide"><label for="b4rootSel">${L2('Biomasa de raíces', 'Root biomass')}</label><select id="b4rootSel"></select></div>` +
     `<div class="field"><label for="b4rs">${L2('Razón raíz/tallo (si es constante)', 'Root:shoot ratio (if constant)')}</label><input type="number" id="b4rs" value="0.24" step="0.01"></div>` +
     `<div class="field"><label for="b4cf">${L2('Fracción de carbono', 'Carbon fraction')}</label><input type="number" id="b4cf" value="0.47" step="0.01"></div>` +
     `<div class="field"><label for="b4dead">${L2('Fracción que queda en muertos en pie', 'Fraction left in standing dead')}</label><input type="number" id="b4dead" value="1" step="0.05" min="0" max="1"></div>`;
@@ -61,7 +61,7 @@ function build() {
   rs.value = 'trop_mount';
   ['b4def', 'b4E', 'b4rootSel', 'b4rs', 'b4cf', 'b4dead'].forEach(id => el(id).addEventListener('change', () => { if (S.res) compute(); }));
   a.appendChild(mk('h3', null, L2('Reglas: ecuación por especie o género', 'Rules: equation by species or genus')));
-  a.appendChild(mk('p', { class: 'hint' }, L2('Una especie («Cordia alliodora») o un género («Inga») y la ecuación que le toca. Una regla de especie gana a una de género.', 'A species («Cordia alliodora») or a genus («Inga») and the equation that applies. A species rule wins over a genus rule.')));
+  a.appendChild(mk('p', { class: 'hint' }, L2('Una especie («Cordia alliodora») o un género («Inga») y la ecuación que le toca. Una regla de especie gana a una de género.', 'A species (“Cordia alliodora”) or a genus (“Inga”) and the equation that applies. A species rule wins over a genus rule.')));
   R.rules = mk('div'); a.appendChild(R.rules);
   drawRules();
   a.appendChild(mk('h3', null, L2('Tus ecuaciones', 'Your equations')));
@@ -81,7 +81,7 @@ function build() {
   R.densGrid = mk('div'); b.appendChild(R.densGrid);
   UI.grid(R.densGrid, [{ key: 'especie', label: ['Especie', 'Species'], w: 190 }, { key: 'densidad', label: ['Densidad (g/cm³)', 'Density (g/cm³)'], num: true }, { key: 'nivel', label: ['Nivel', 'Level'], w: 90 }, { key: 'fuente', label: ['Fuente', 'Source'], w: 200 }], S.dens, { onChange: () => { if (S.res) compute(); } });
   const gw = mk('div', { class: 'src-row' });
-  gw.innerHTML = `<input type="file" id="b4gwdd" class="sr-only" accept=".csv,.txt,.xlsx,.xls,.ods"><label class="btn btn-secondary btn-sm" for="b4gwdd" tabindex="0" role="button">${L2('Cargar la base mundial (archivo de la GWDD)…', 'Load the global database (GWDD file)…')}</label>` +
+  gw.innerHTML = `<input type="file" id="b4gwdd" class="sr-only" accept=".csv,.txt,.xlsx,.xlsm,.ods"><label class="btn btn-secondary btn-sm" for="b4gwdd" tabindex="0" role="button">${L2('Cargar la base mundial (archivo de la GWDD)…', 'Load the global database (GWDD file)…')}</label>` +
     `<label class="inline-label">${L2('Región', 'Region')} <select id="b4region"><option value="World"${optL('Mundo', 'World')}</option></select></label>`;
   b.appendChild(gw);
   el('b4gwdd').addEventListener('change', loadGWDD);
@@ -101,7 +101,7 @@ function build() {
     ['Repite el cálculo cientos de veces con diámetros, alturas y densidades perturbados por su error y con el error residual de cada ecuación. Da la incertidumbre de las mediciones y del modelo, que se suma a la del muestreo.', 'Repeats the computation hundreds of times with diameters, heights and densities perturbed by their error and with the residual error of each equation. It gives the uncertainty of measurements and model, which adds to that of sampling.']);
   const mf = mk('div', { class: 'form-grid' });
   mf.innerHTML = `<div class="field"><label for="b4n">${L2('Iteraciones', 'Iterations')}</label><select id="b4n"><option>500</option><option selected>1000</option><option>2000</option><option>5000</option></select></div>` +
-    `<div class="field"><label for="b4dErr">${L2('Error del diámetro', 'Diameter error')}</label><select id="b4dErr"><option value="chave2004"${optL('Chave et al. 2004 (95 % pequeño, 5 % grande)', 'Chave et al. 2004 (95 % small, 5 % large)')}</option><option value="cv1">CV 1 %</option><option value="cv2">CV 2 %</option><option value="none"${optL('Sin error', 'No error')}</option></select></div>` +
+    `<div class="field wide"><label for="b4dErr">${L2('Error del diámetro', 'Diameter error')}</label><select id="b4dErr"><option value="chave2004"${optL('Chave et al. 2004 (95 % pequeño, 5 % grande)', 'Chave et al. 2004 (95 % small, 5 % large)')}</option><option value="cv1">CV 1 %</option><option value="cv2">CV 2 %</option><option value="none"${optL('Sin error', 'No error')}</option></select></div>` +
     `<div class="field"><label for="b4hCv">${L2('Error de la altura medida (CV %)', 'Error of measured height (CV %)')}</label><input type="number" id="b4hCv" value="5" step="any"></div>` +
     `<div class="field"><label for="b4hCvEst">${L2('Error de la altura estimada (CV %)', 'Error of estimated height (CV %)')}</label><input type="number" id="b4hCvEst" value="15" step="any"></div>` +
     `<label class="checkbox-label"><input type="checkbox" id="b4resid" checked> ${L2('Error residual de la ecuación', 'Residual error of the equation')}</label>`;
@@ -129,7 +129,7 @@ function build() {
     { key: 'diametro_cm', es: 'Diámetro en el cruce (cm)', en: 'Diameter at the crossing (cm)', num: true, req: true, aliases: ['diametro', 'diameter', 'd'] },
     { key: 'clase', es: 'Clase de descomposición (1–3)', en: 'Decay class (1–3)', num: true, aliases: ['class', 'decay'] }],
     examples: [{ id: 'mesofilo', es: 'Bosque mesófilo: 12 transectos de 30 m', en: 'Cloud forest: 12 transects of 30 m', d: ['Diámetro de cada pieza en el punto donde la línea la cruza y su clase de descomposición.', 'Diameter of each piece where the line crosses it, and its decay class.'], rows: () => FPData.rows('mesofilo_madera_caida').map(r => ({ transecto: r.transecto, longitud_m: r.longitud_m, diametro_cm: r.diametro_cm, clase: r.clase })) }],
-    onData: rows => { S.cwd = rows; drawCWD(); } });
+    onData: (rows, meta) => { S.cwd = rows; S.cwdSrc = srcOf(meta); drawCWD(); } });
   R.cwd = mk('div', { class: 'res-host' }); e.appendChild(R.cwd);
   e.appendChild(mk('h3', null, L2('Hojarasca', 'Litter')));
   UI.dataCard(e, { id: 'b4l', fields: [
@@ -137,14 +137,14 @@ function build() {
     { key: 'peso_seco_g', es: 'Peso seco (g)', en: 'Dry weight (g)', num: true, req: true, aliases: ['hojarasca g', 'peso', 'dry weight'] },
     { key: 'marco_m2', es: 'Superficie del marco (m²)', en: 'Frame area (m²)', num: true, req: true, aliases: ['marco', 'frame'] }],
     examples: [{ id: 'cafetal', es: 'Cafetal: un marco de 0.25 m² por parcela', en: 'Coffee farm: one 0.25 m² frame per plot', d: ['Peso seco de la hojarasca recogida en el marco.', 'Dry weight of the litter collected in the frame.'], rows: () => FPData.rows('cafetal_parcelas').map(r => ({ parcela: r.parcela, peso_seco_g: r.hojarasca_g, marco_m2: r.marco_m2 })) }],
-    onData: rows => { S.lit = rows; drawLitter(); } });
+    onData: (rows, meta) => { S.lit = rows; S.litSrc = srcOf(meta); drawLitter(); } });
   R.lit = mk('div', { class: 'res-host' }); e.appendChild(R.lit);
   e.appendChild(mk('h3', null, L2('Carbono orgánico del suelo', 'Soil organic carbon')));
   UI.dataCard(e, { id: 'b4s', fields: [
     { key: 'parcela', es: 'Parcela o perfil', en: 'Plot or profile', req: true, aliases: ['plot', 'perfil', 'muestra', 'rep', 'repeticion', 'sitio'] },
     { key: 'prof_sup', es: 'Profundidad superior (cm)', en: 'Upper depth (cm)', num: true, aliases: ['desde', 'top', 'prof sup'] },
     { key: 'prof_inf', es: 'Profundidad inferior (cm)', en: 'Lower depth (cm)', num: true, aliases: ['hasta', 'bottom', 'prof inf'] },
-    { key: 'capa', es: 'Capa (p. ej. «0-10»), si no hay profundidades', en: 'Layer (e.g. «0-10»), if there are no depths', aliases: ['layer', 'horizonte', 'profundidad'] },
+    { key: 'capa', es: 'Capa (p. ej. «0-10»), si no hay profundidades', en: 'Layer (e.g. “0-10”), if there are no depths', aliases: ['layer', 'horizonte', 'profundidad'] },
     { key: 'espesor_cm', es: 'Espesor (cm), si no hay profundidades ni capa', en: 'Thickness (cm), if there are no depths or layer', num: true, aliases: ['espesor', 'thickness', 'thick'] },
     { key: 'co_pct', es: 'Carbono orgánico (%)', en: 'Organic carbon (%)', num: true, req: true, aliases: ['co', 'cos', 'soc', 'carbono organico', 'c org', 'oc'] },
     { key: 'dap_g_cm3', es: 'Densidad aparente (g/cm³)', en: 'Bulk density (g/cm³)', num: true, req: true, aliases: ['densidad aparente', 'da', 'bd', 'bulk density'] },
@@ -152,7 +152,7 @@ function build() {
     { key: 'grupo', es: 'Sistema o grupo (opcional)', en: 'System or group (optional)', aliases: ['sistema', 'manejo', 'tratamiento', 'group', 'uso'] },
     { key: 'anio', es: 'Año (opcional)', en: 'Year (optional)', aliases: ['año', 'year', 'fecha'] }],
     examples: [{ id: 'cafetal', es: 'Cafetal: 3 capas de 0 a 30 cm por parcela', en: 'Coffee farm: 3 layers from 0 to 30 cm per plot', d: ['El mismo formato de capas que usan los análisis de suelo (carbono %, densidad aparente y fragmentos gruesos).', 'The same layer format soil analyses use (carbon %, bulk density and coarse fragments).'], rows: () => FPData.rows('cafetal_suelo') }],
-    onData: rows => { S.soil = soilLayers(rows); S.soilGroup = null; drawSoil(); } });
+    onData: (rows, meta) => { S.soil = soilLayers(rows); S.soilSrc = srcOf(meta); S.soilGroup = null; drawSoil(); } });
   R.soil = mk('div', { class: 'res-host' }); e.appendChild(R.soil);
   UI.method(e, { text: [
     '<p><b>Madera caída</b> (Van Wagner 1968): V = π²·Σd²/(8L), con d en cm y L en m da m³/ha directamente; la masa es V por la densidad de su clase de descomposición (mídela en tu sitio; los valores por omisión son solo un punto de partida). <b>Hojarasca:</b> Mg/ha = gramos secos / m² del marco × 0.01. <b>Suelo:</b> Mg C/ha de una capa = C % × densidad aparente (g/cm³) × espesor (cm) × (1 − fragmentos gruesos/100); se suman las capas de cada perfil.</p>',
@@ -181,9 +181,9 @@ function build() {
   ['b4paired', 'b4years'].forEach(id => el(id).addEventListener('change', () => { if (S.chg) drawChange(); }));
   R.chg = mk('div', { class: 'res-host' }); f.appendChild(R.chg);
   UI.method(f, { text: [
-    '<p>Cada reservorio se estima con su propia muestra (parcelas, transectos, marcos o perfiles) y su error estándar. El total es la suma de las medias y su error estándar la raíz de la suma de los cuadrados, suponiendo errores independientes; el intervalo usa ±1.96·EE. <b>Cambio:</b> con las mismas parcelas, la media de las diferencias parcela a parcela y su error estándar (t pareada); con muestras independientes, la diferencia de medias con el error de Welch. La tasa anual divide entre los años transcurridos.</p>',
-    '<p>Each pool is estimated with its own sample (plots, transects, frames or profiles) and its standard error. The total is the sum of the means and its standard error the square root of the sum of squares, assuming independent errors; the interval uses ±1.96·SE. <b>Change:</b> with the same plots, the mean of the plot-by-plot differences and its standard error (paired t); with independent samples, the difference of means with Welch\'s error. The annual rate divides by the years elapsed.</p>'],
-    refs: ['IPCC (2006). <i>2006 IPCC Guidelines</i>, vol. 1, cap. 3 (ec. 3.1 y 3.2) y vol. 4, cap. 2.', 'Welch, B. L. (1947). The generalization of «Student\'s» problem when several different population variances are involved. <i>Biometrika</i> 34:28–35.'] });
+    '<p>Cada reservorio se estima con su propia muestra (parcelas, transectos, marcos o perfiles) y su error estándar. El total es la suma de las medias. Su error no se obtiene sumando en cuadratura los reservorios que salen de las mismas parcelas, porque no son independientes: la biomasa aérea, las raíces (que se calculan de ella) y los muertos en pie suben y bajan juntos de una parcela a otra, y la cuadratura subestimaría el error. Por eso los reservorios medidos en las parcelas del inventario (árboles vivos, raíces, muertos en pie y, si traen las mismas parcelas, la hojarasca y el suelo) se suman parcela por parcela, y el error del total sale de esos totales por parcela con el mismo estimador del inventario (aleatorio simple o estratificado). Solo los reservorios de otra muestra (los transectos de madera caída, o una hojarasca o un suelo de otras parcelas) y el valor que escribas para arbustos se agregan en cuadratura, como independientes (IPCC 2006, vol. 1, ec. 3.1). El intervalo usa ±1.96·EE. El balance usa los datos de un solo sitio: una tarjeta cargada con el ejemplo o el archivo de otro sitio que el inventario queda fuera, con un aviso. <b>Cambio:</b> con las mismas parcelas, la media de las diferencias parcela a parcela y su error estándar (t pareada); con muestras independientes, la diferencia de medias con el error de Welch. La tasa anual divide entre los años transcurridos.</p>',
+    '<p>Each pool is estimated with its own sample (plots, transects, frames or profiles) and its standard error. The total is the sum of the means. Its error is not obtained by adding in quadrature the pools that come from the same plots, because they are not independent: aboveground biomass, roots (computed from it) and standing dead trees rise and fall together from plot to plot, and quadrature would understate the error. So the pools measured on the plots of the inventory (live trees, roots, standing dead and, if they carry the same plots, litter and soil) are added plot by plot, and the error of the total comes from those plot totals with the same estimator as the inventory (simple random or stratified). Only the pools from another sample (the downed-wood transects, or litter or soil from other plots) and the value you type for shrubs are added in quadrature, as independent (IPCC 2006, vol. 1, eq. 3.1). The interval uses ±1.96·SE. The balance uses the data of a single site: a card loaded with the example or the file of a site other than the inventory\'s is left out, with a warning. <b>Change:</b> with the same plots, the mean of the plot-by-plot differences and its standard error (paired t); with independent samples, the difference of means with Welch\'s error. The annual rate divides by the years elapsed.</p>'],
+    refs: ['IPCC (2006). <i>2006 IPCC Guidelines</i>, vol. 1, cap. 3 (ec. 3.1 y 3.2) y vol. 4, cap. 2.', 'Welch, B. L. (1947). The generalization of “Student’s” problem when several different population variances are involved. <i>Biometrika</i> 34:28–35.'] });
 }
 
 /* ---------------- equations: selects, rules, custom ---------------- */
@@ -207,11 +207,11 @@ function drawCustom() {
 function drawCatalog() {
   R.catalog.innerHTML = '';
   const det = mk('details', { class: 'method-box' });
-  det.innerHTML = `<summary>${L2('Ver el catálogo de ecuaciones', 'See the catalogue of equations')} (${allEqs().length})</summary>`;
+  det.innerHTML = `<summary>${L2('Ver el catálogo de ecuaciones', 'See the catalog of equations')} (${allEqs().length})</summary>`;
   const body = mk('div', { class: 'method-body' });
   det.appendChild(body);
   R.catalog.appendChild(det);
-  UI.table(body, { file: 'forestpro_ecuaciones', columns: [
+  UI.table(body, { file: 'forestpro_ecuaciones', cls: 'res-table wrap', columns: [
     { key: 'name', label: ['Ecuación', 'Equation'], html: true }, { key: 'eq', label: ['Forma (AGB en kg)', 'Form (AGB in kg)'] },
     { key: 'needs', label: ['Variables', 'Variables'] }, { key: 'sigma', label: ['σ (ln)'], num: true, fmt: n3 },
     { key: 'range', label: ['DAP válido (cm)', 'Valid DBH (cm)'] }, { key: 'src', label: ['Fuente', 'Source'], html: true }],
@@ -231,6 +231,8 @@ async function loadGWDD() {
   const file = el('b4gwdd').files[0];
   if (!file) return;
   try {
+    /* the old binary workbook (.xls) is not read: the reader handles CSV, XLSX and ODS */
+    if (/\.xls$/i.test(file.name)) throw new Error(T('es un libro del formato viejo (.xls); guárdalo como .xlsx o .csv.', 'it is an old-format workbook (.xls); save it as .xlsx or .csv.'));
     const tab = DataIO.readAny(new Uint8Array(await file.arrayBuffer()), file.name, { sheet: 'Data' });
     const fi = DataIO.findColumn(tab.names, ['family', 'familia']), bi = DataIO.findColumn(tab.names, ['binomial', 'species', 'especie', 'taxon']);
     const wi = DataIO.findColumn(tab.names, ['wood density g cm 3 oven dry mass fresh volume', 'wood density', 'wd', 'densidad']), ri = DataIO.findColumn(tab.names, ['region', 'regionid']);
@@ -362,7 +364,7 @@ function drawResults() {
   UI.figure(two, { title: ['Biomasa aérea por especie', 'Aboveground biomass by species'], svg: Plot.bars({ cats: top.map(x => x[0]), series: [{ label: 'Mg/ha', values: top.map(x => x[1]), color: 'var(--musgo)' }], ylab: T('Biomasa aérea (Mg/ha)', 'Aboveground biomass (Mg/ha)'), name: 'b4-biomasa-especies', w: 600, h: 360 }), key: 'b4-sp' });
   /* AGB against D by equation */
   const eqs = [...new Set(live.filter(t => isFinite(t.agb) && t.agb > 0).map(t => t.eq.id))];
-  const ser = eqs.map((id, k) => { const a = live.filter(t => t.eq.id === id && t.agb > 0); return { type: 'points', x: a.map(t => t.D), y: a.map(t => t.agb), color: Plot.color(k), label: eqName(eqById(id)).slice(0, 38), r: 2.8 }; });
+  const ser = eqs.map((id, k) => { const a = live.filter(t => t.eq.id === id && t.agb > 0); return { type: 'points', x: a.map(t => t.D), y: a.map(t => t.agb), color: Plot.color(k), label: eqName(eqById(id)), r: 2.8 }; });
   UI.figure(R.res, { title: ['Biomasa de cada árbol según su ecuación', 'Biomass of each tree by its equation'], svg: Plot.xy({ series: ser, xlog: true, ylog: true, xlab: T('DAP (cm, escala log)', 'DBH (cm, log scale)'), ylab: T('Biomasa aérea (kg, escala log)', 'Aboveground biomass (kg, log scale)'), name: 'b4-biomasa-arbol', w: 680, h: 400, legend: 'bottom' }), key: 'b4-trees' });
   UI.table(R.res, { title: ['Por parcela', 'By plot'], file: 'forestpro_biomasa_parcelas', columns: [
     { key: 'plot', label: ['Parcela', 'Plot'] }, { key: 'stratum', label: ['Estrato', 'Stratum'] }, { key: 'agb', label: ['Aérea (Mg/ha)', 'Aboveground (Mg/ha)'], num: true, fmt: n1 },
@@ -454,7 +456,7 @@ function drawLitter() {
   R.lit.innerHTML = '';
   const v = S.lit.map(r => ({ plot: r.parcela, m: BM().litter(r.peso_seco_g, r.marco_m2) }));
   const e = Invent.srs(v.map(r => r.m), { conf: 0.95 });
-  S.litEst = e;
+  S.litEst = e; S.litRows = v;
   UI.tiles(R.lit.appendChild(mk('div')), [
     [['Hojarasca', 'Litter'], n2(e.mean) + ' Mg/ha', ['± ' + n2(e.half) + ' (' + fmtNum(e.errPct, 0) + ' %)', '± ' + n2(e.half) + ' (' + fmtNum(e.errPct, 0) + ' %)']],
     [['Carbono', 'Carbon'], n2(e.mean * (+el('b4cf').value || 0.47)) + ' Mg C/ha'],
@@ -479,7 +481,7 @@ function soilLayers(rows) {
 }
 function drawSoil() {
   R.soil.innerHTML = '';
-  if (!S.soil.length) { showMessage(R.soil, 'warning', L2('Ninguna capa tiene profundidades: hacen falta las profundidades superior e inferior, la capa escrita como «0-10» o el espesor.', 'No layer has depths: the upper and lower depths, the layer written as «0-10» or the thickness are needed.')); return; }
+  if (!S.soil.length) { showMessage(R.soil, 'warning', L2('Ninguna capa tiene profundidades: hacen falta las profundidades superior e inferior, la capa escrita como «0-10» o el espesor.', 'No layer has depths: the upper and lower depths, the layer written as “0-10” or the thickness are needed.')); return; }
   /* several systems or years (as SoilPro exports them): one at a time */
   const gkey = r => [r.grupo, r.anio].filter(v => v != null && v !== '').join(' · ');
   const groups = [...new Set(S.soil.map(gkey))];
@@ -497,7 +499,7 @@ function drawSoil() {
   const rows = [...by.entries()].map(([plot, c]) => ({ plot, c }));
   const depth = Math.max(...src.map(r => r.prof_inf));
   const e = Invent.srs(rows.map(r => r.c), { conf: 0.95 });
-  S.soilEst = e;
+  S.soilEst = e; S.soilRows = rows;
   UI.tiles(R.soil.appendChild(mk('div')), [
     [['Carbono orgánico del suelo', 'Soil organic carbon'], n1(e.mean) + ' Mg C/ha', ['0–' + depth + ' cm · ± ' + n1(e.half), '0–' + depth + ' cm · ± ' + n1(e.half)]],
     [['Perfiles', 'Profiles'], String(rows.length)],
@@ -505,33 +507,73 @@ function drawSoil() {
   UI.table(R.soil, { title: ['Por perfil', 'By profile'], file: 'forestpro_carbono_suelo', columns: [{ key: 'plot', label: ['Parcela', 'Plot'] }, { key: 'c', label: ['Mg C/ha'], num: true, fmt: n1 }], rows, limit: 30 });
   drawPools();
 }
+/* where the data of a card come from: an example (its id names the site) or a file / typed table (no id) */
+const srcOf = meta => ({ example: meta && meta.example ? meta.example : null, name: meta && meta.name ? meta.name : '' });
 function drawPools() {
   if (!R.pools) return;
   R.pools.innerHTML = '';
   const cf = +el('b4cf').value || 0.47;
+  /* the site of the balance: that of the inventory, or of the first pool loaded when there is none */
+  const ref = S.est ? { example: state.inv.example || null, name: state.inv.name || '' } : [S.cwd && S.cwdSrc, S.lit && S.litSrc, S.soil && S.soilSrc].find(Boolean) || null;
+  const invPlots = S.est ? S.res.plots.map(p => String(p.plot)) : [];
+  const covers = rows => { if (!invPlots.length || !rows) return false; const m = new Set(rows.map(r => String(r.plot))); return invPlots.every(p => m.has(p)); };
+  const same = src => !ref || (src && src.example) === ref.example;
+  const excluded = [];
+  /* pools on the plots of the inventory (summed plot by plot) and pools from another sample (independent) */
   const pools = [];
+  const byPlot = [];
   if (S.est) {
-    const eA = estimateOf(S.res.plots.map(p => Object.assign({}, p, { ca: p.agb * cf, cb: p.bgb * cf, cd: p.cDead })), 'ca');
-    const eB = estimateOf(S.res.plots.map(p => Object.assign({}, p, { cb: p.bgb * cf })), 'cb');
-    const eD = estimateOf(S.res.plots.map(p => Object.assign({}, p, { cd: p.cDead })), 'cd');
-    pools.push({ k: ['Árboles vivos: aérea', 'Live trees: aboveground'], m: eA.mean, se: eA.se, c: 'var(--bosque)' });
-    pools.push({ k: ['Árboles vivos: raíces', 'Live trees: roots'], m: eB.mean, se: eB.se, c: 'var(--corteza)' });
-    if (eD.mean > 0) pools.push({ k: ['Muertos en pie', 'Standing dead'], m: eD.mean, se: eD.se, c: '#9AA39A' });
+    byPlot.push({ k: ['Árboles vivos: aérea', 'Live trees: aboveground'], c: 'var(--bosque)', v: p => p.agb * cf });
+    byPlot.push({ k: ['Árboles vivos: raíces', 'Live trees: roots'], c: 'var(--corteza)', v: p => p.bgb * cf });
+    if (S.res.plots.some(p => p.cDead > 0)) byPlot.push({ k: ['Muertos en pie', 'Standing dead'], c: '#9AA39A', v: p => p.cDead });
   }
-  if (S.cwdEst) pools.push({ k: ['Madera caída', 'Downed wood'], m: S.cwdEst.mean * cf, se: S.cwdEst.se * cf, c: '#B5652B' });
-  if (S.litEst) pools.push({ k: ['Hojarasca', 'Litter'], m: S.litEst.mean * cf, se: S.litEst.se * cf, c: '#C2A83E' });
+  const plotPool = (est, rows, src, k, c, scale) => {
+    if (!est) return;
+    if (covers(rows)) { const mp = new Map(rows.map(r => [String(r.plot), r.val])); byPlot.push({ k, c, v: p => mp.get(String(p.plot)) * scale }); return; }
+    if (!same(src)) { excluded.push([k, src]); return; }
+    pools.push({ k, m: est.mean * scale, se: est.se * scale, c, indep: true });
+  };
+  if (S.cwdEst) { if (same(S.cwdSrc)) pools.push({ k: ['Madera caída', 'Downed wood'], m: S.cwdEst.mean * cf, se: S.cwdEst.se * cf, c: '#B5652B', indep: true }); else excluded.push([['Madera caída', 'Downed wood'], S.cwdSrc]); }
+  plotPool(S.litEst, S.litRows && S.litRows.map(r => ({ plot: r.plot, val: r.m })), S.litSrc, ['Hojarasca', 'Litter'], '#C2A83E', cf);
   const sh = +el('b4shrub').value || 0;
-  if (sh > 0) pools.push({ k: ['Arbustos y otros', 'Shrubs and others'], m: sh, se: +el('b4shrubSe').value || 0, c: 'var(--musgo)' });
-  if (S.soilEst) pools.push({ k: ['Suelo', 'Soil'], m: S.soilEst.mean, se: S.soilEst.se, c: '#6D4C2F' });
+  if (sh > 0) pools.push({ k: ['Arbustos y otros', 'Shrubs and others'], m: sh, se: +el('b4shrubSe').value || 0, c: 'var(--musgo)', indep: true });
+  plotPool(S.soilEst, S.soilRows && S.soilRows.map(r => ({ plot: r.plot, val: r.c })), S.soilSrc, ['Suelo', 'Soil'], '#6D4C2F', 1);
+  if (excluded.length) showMessage(R.pools, 'warning', L2(
+    `No entran en el balance porque vienen de otro sitio que ${S.est ? 'el inventario' : 'el primer reservorio cargado'} (${esc(ref.name)}): ${excluded.map(([k, s]) => `${k[0].toLowerCase()} (${esc(s.name)})`).join('; ')}. Carga en esa tarjeta los datos del mismo sitio.`,
+    `Left out of the balance because they come from a site other than ${S.est ? 'the inventory' : 'the first pool loaded'} (${esc(ref.name)}): ${excluded.map(([k, s]) => `${k[1].toLowerCase()} (${esc(s.name)})`).join('; ')}. Load the data of the same site in that card.`));
+  /* the pools on the plots: each one with the estimator of the inventory, and their plot-by-plot sum */
+  let eSum = null;
+  if (byPlot.length) {
+    const plots = S.res.plots.map(p => { const o = Object.assign({}, p); byPlot.forEach((b, j) => { o['_p' + j] = b.v(p); }); o._sum = byPlot.reduce((s, b, j) => s + o['_p' + j], 0); return o; });
+    byPlot.forEach((b, j) => { const e = estimateOf(plots, '_p' + j); pools.push({ k: b.k, m: e.mean, se: e.se, c: b.c, indep: false }); });
+    eSum = estimateOf(plots, '_sum');
+  }
   if (!pools.length) { R.pools.appendChild(mk('p', { class: 'hint' }, L2('Calcula la biomasa o carga algún reservorio para ver el resumen.', 'Compute the biomass or load a pool to see the summary.'))); return; }
-  const tot = pools.reduce((s, p) => s + p.m, 0), seT = Math.sqrt(pools.reduce((s, p) => s + p.se * p.se, 0));
-  const rows = pools.map(p => ({ k: T(p.k[0], p.k[1]), m: p.m, se: p.se, lo: p.m - 1.96 * p.se, hi: p.m + 1.96 * p.se, pct: 100 * p.m / tot, co2: p.m * BM().CO2 }));
-  rows.push({ k: T('Total', 'Total'), m: tot, se: seT, lo: tot - 1.96 * seT, hi: tot + 1.96 * seT, pct: 100, co2: tot * BM().CO2, _class: 'row-total' });
+  /* the order of the figure and the table: trees, dead wood, litter, shrubs, soil */
+  const ORDER = ['Árboles vivos: aérea', 'Árboles vivos: raíces', 'Muertos en pie', 'Madera caída', 'Hojarasca', 'Arbustos y otros', 'Suelo'];
+  pools.sort((a, b) => ORDER.indexOf(a.k[0]) - ORDER.indexOf(b.k[0]));
+  const ind = pools.filter(p => p.indep);
+  const comb = BM().combinePools(eSum ? { mean: eSum.mean, se: eSum.se } : null, ind.map(p => ({ mean: p.m, se: p.se })));
+  const tot = comb.mean, seT = comb.se;
+  const seNaive = Math.sqrt(pools.reduce((s, p) => s + p.se * p.se, 0));
+  const how = p => p.indep ? T('independiente', 'independent') : T('suma por parcela', 'summed by plot');
+  const rows = pools.map(p => ({ k: T(p.k[0], p.k[1]), m: p.m, se: p.se, lo: p.m - 1.96 * p.se, hi: p.m + 1.96 * p.se, pct: 100 * p.m / tot, co2: p.m * BM().CO2, how: how(p) }));
+  rows.push({ k: T('Total', 'Total'), m: tot, se: seT, lo: tot - 1.96 * seT, hi: tot + 1.96 * seT, pct: 100, co2: tot * BM().CO2, how: '', _class: 'row-total' });
   UI.tiles(R.pools.appendChild(mk('div')), [[['Carbono total del sistema', 'Total carbon of the system'], n1(tot) + ' Mg C/ha', ['± ' + n1(1.96 * seT) + ' · ' + n1(tot * BM().CO2) + ' Mg CO₂e/ha', '± ' + n1(1.96 * seT) + ' · ' + n1(tot * BM().CO2) + ' Mg CO₂e/ha']]]);
   UI.figure(R.pools, { title: ['Carbono por reservorio', 'Carbon by pool'], svg: Plot.bars({ cats: [T('Sistema', 'System')], stacked: true, series: pools.map(p => ({ label: T(p.k[0], p.k[1]), values: [p.m], color: p.c })), legendAlways: true, ylab: 'Mg C/ha', name: 'b4-reservorios', w: 520, h: 360 }), key: 'b4-pools' });
   UI.table(R.pools, { title: ['Reservorios de carbono', 'Carbon pools'], file: 'forestpro_reservorios', columns: [
     { key: 'k', label: ['Reservorio', 'Pool'] }, { key: 'm', label: ['Mg C/ha'], num: true, fmt: n1 }, { key: 'se', label: ['Error estándar', 'Std. error'], num: true, fmt: n2 },
-    { key: 'lo', label: ['Inferior 95 %', 'Lower 95 %'], num: true, fmt: n1 }, { key: 'hi', label: ['Superior 95 %', 'Upper 95 %'], num: true, fmt: n1 }, { key: 'pct', label: ['% del total', '% of total'], num: true, fmt: n1 }, { key: 'co2', label: ['Mg CO₂e/ha'], num: true, fmt: n1 }], rows });
+    { key: 'lo', label: ['Inferior 95 %', 'Lower 95 %'], num: true, fmt: n1 }, { key: 'hi', label: ['Superior 95 %', 'Upper 95 %'], num: true, fmt: n1 }, { key: 'pct', label: ['% del total', '% of total'], num: true, fmt: n1 }, { key: 'co2', label: ['Mg CO₂e/ha'], num: true, fmt: n1 },
+    { key: 'how', label: ['En el error del total', 'In the error of the total'] }], rows });
+  /* short names for the sentence */
+  const SHORT = { 'Árboles vivos: aérea': ['la biomasa aérea', 'aboveground biomass'], 'Árboles vivos: raíces': ['las raíces', 'roots'], 'Muertos en pie': ['los muertos en pie', 'standing dead'], 'Madera caída': ['la madera caída', 'downed wood'], 'Hojarasca': ['la hojarasca', 'litter'], 'Arbustos y otros': ['los arbustos', 'shrubs'], 'Suelo': ['el suelo', 'soil'] };
+  const sn = (p, j) => (SHORT[p.k[0]] || p.k)[j];
+  const byP = pools.filter(p => !p.indep), list = (a, y) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' ' + y + ' ' + a[a.length - 1];
+  const bE = byP.map(p => sn(p, 0)), bN = byP.map(p => sn(p, 1)), iE = ind.map(p => sn(p, 0)), iN = ind.map(p => sn(p, 1));
+  const nPl = S.res ? S.res.plots.length : 0;
+  UI.interp(R.pools, [
+    (bE.length ? `El error del total suma ${list(bE, 'y')} parcela por parcela (${nPl} parcelas)` : 'El error del total') + (iE.length ? `${bE.length ? ' y agrega en cuadratura' : ' combina en cuadratura'} ${list(iE, 'y')}, que ${iE.length > 1 ? 'vienen' : 'viene'} de otra muestra` : '') + `: ±${n1(1.96 * seT)} Mg C/ha.` + (bE.length > 1 ? ` Sumar en cuadratura los reservorios de las mismas parcelas, como si fueran independientes, daría ±${n1(1.96 * seNaive)}.` : ''),
+    (bN.length ? `The error of the total adds ${list(bN, 'and')} plot by plot (${nPl} plots)` : 'The error of the total') + (iN.length ? `${bN.length ? ' and adds in quadrature' : ' combines in quadrature'} ${list(iN, 'and')}, which ${iN.length > 1 ? 'come' : 'comes'} from another sample` : '') + `: ±${n1(1.96 * seT)} Mg C/ha.` + (bN.length > 1 ? ` Adding the pools of the same plots in quadrature, as if they were independent, would give ±${n1(1.96 * seNaive)}.` : '')]);
   state.biomass = Object.assign(state.biomass || {}, { pools: rows.map(r => ({ k: r.k, m: r.m, se: r.se })), total: tot, seTotal: seT });
 }
 function drawChange() {
@@ -545,7 +587,7 @@ function drawChange() {
     [['Prueba', 'Test'], 'p ' + (r.p < 0.001 ? '< 0.001' : '= ' + fmtNum(r.p, 3)), [paired ? `t pareada, ${r.df} gl` : `Welch, ${fmtNum(r.df, 1)} gl`, paired ? `paired t, ${r.df} df` : `Welch, ${fmtNum(r.df, 1)} df`]],
   ]);
   const ser = [{ type: 'segments', segs: rows.map(x => [1, x.c1, 2, x.c2]), color: 'var(--fig-muted)', width: 1 }, { type: 'points', x: rows.map(() => 1), y: rows.map(x => x.c1), color: 'var(--accent)' }, { type: 'points', x: rows.map(() => 2), y: rows.map(x => x.c2), color: 'var(--primary)' }];
-  UI.figure(R.chg, { title: ['Carbono de cada parcela en las dos mediciones', 'Carbon of each plot at the two measurements'], svg: Plot.xy({ series: ser, xlim: [0.6, 2.4], xticks: 2, xLabels: v => Math.abs(v - 1) < 0.01 ? T('Medición 1', 'Measurement 1') : Math.abs(v - 2) < 0.01 ? T('Medición 2', 'Measurement 2') : '', ylab: 'Mg C/ha', name: 'b4-cambio', w: 460, h: 360, legend: false }), key: 'b4-change' });
+  UI.figure(R.chg, { title: ['Carbono de cada parcela en las dos mediciones', 'Carbon of each plot at the two measurements'], svg: Plot.xy({ series: ser, xlim: [0.6, 2.4], xtickVals: [1, 2], xLabels: v => Math.abs(v - 1) < 0.01 ? T('Medición 1', 'Measurement 1') : Math.abs(v - 2) < 0.01 ? T('Medición 2', 'Measurement 2') : '', ylab: 'Mg C/ha', name: 'b4-cambio', w: 460, h: 360, legend: false }), key: 'b4-change' });
   UI.interp(R.chg, [`En ${fmtNum(yrs, 1)} años el carbono ${r.mean >= 0 ? 'aumentó' : 'disminuyó'} ${n2(Math.abs(r.mean))} Mg C/ha (${n2(Math.abs(r.rate))} Mg C/ha por año); ${r.lo > 0 || r.hi < 0 ? 'el intervalo del 95 % no incluye el cero: el cambio es distinguible del error de muestreo.' : 'el intervalo del 95 % incluye el cero: con estas parcelas el cambio no se distingue del error de muestreo.'}${paired ? ' Medir las mismas parcelas quita de la varianza las diferencias permanentes entre ellas.' : ''}`,
     `In ${fmtNum(yrs, 1)} years carbon ${r.mean >= 0 ? 'rose' : 'fell'} by ${n2(Math.abs(r.mean))} Mg C/ha (${n2(Math.abs(r.rate))} Mg C/ha per year); ${r.lo > 0 || r.hi < 0 ? 'the 95 % interval excludes zero: the change stands out from the sampling error.' : 'the 95 % interval includes zero: with these plots the change cannot be told from the sampling error.'}${paired ? ' Remeasuring the same plots removes the permanent differences between them from the variance.' : ''}`]);
   state.biomass = Object.assign(state.biomass || {}, { change: { mean: r.mean, rate: r.rate, lo: r.lo, hi: r.hi } });

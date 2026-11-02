@@ -132,5 +132,68 @@ t(9, 'Conversión de ida y vuelta: acre → ha → acre', E => near(E.Tools.conv
 t(9, 'Costo de 100 hoy e ingreso de 121 en dos años: VPN = 0 al 10 % y TIR = 10 %', E => { const e = E.Tools.econ([{ t: 0, cost: 100, income: 0 }, { t: 2, cost: 0, income: 121 }], 0, 0.1); near(e.npv, 0, 1e-9); near(e.irr, 0.1, 1e-10); near(e.bc, 1, 1e-12); });
 t(9, 'Faustmann: un turno de 1 año con VPN v vale v·(1 + r)/r', E => { const e = E.Tools.econ([{ t: 0, cost: 0, income: 0 }, { t: 1, cost: 0, income: 11 }], 0, 0.1); near(e.lev, e.npv * 1.1 / 0.1, 1e-12); near(e.lev, 110, 1e-9); });
 
+/* ---------- corrections of 2026-11-01 ---------- */
+t(3, 'Tamaño de muestra estratificado: los nₕ enteros suman la n que se informa (mínimo 2 por estrato)', E => {
+  const st = [{ name: 'A', w: 600, s: 9, mean: 30 }, { name: 'B', w: 300, s: 4, mean: 25 }, { name: 'C', w: 100, s: 2, mean: 20 }];
+  ['neyman', 'prop'].forEach(al => { const a = E.Invent.stratSampleSize({ strata: st, err: 10, alloc: al }); near(a.nh.reduce((x, y) => x + y, 0), a.n, 0); ok(a.nh.every(v => v >= 2 && Number.isInteger(v)), 'nₕ enteros ≥ 2'); ok(a.n >= a.nRaw, 'n ≥ n sin redondear'); });
+});
+t(3, 'K–S ponderado: con pesos iguales es el de siempre; el tamaño efectivo de Kish es (Σw)²/Σw²', E => {
+  const x = [3.1, 4.7, 5.2, 6.8, 7.7, 9.4, 11.0, 12.6, 15.3, 20.9], F = v => 1 - Math.exp(-Math.pow(v / 9, 1.6));
+  const a = E.Invent.ks(x, F), b = E.Invent.ks(x, F, x.map(() => 7));
+  near(a.D, b.D, 1e-12); near(a.p, b.p, 1e-12); near(b.nEff, 10, 1e-12);
+  const c = E.Invent.ks(x, F, x.map((_, i) => i < 5 ? 100 : 10)); near(c.nEff, Math.pow(550, 2) / 50500, 1e-12);
+});
+t(3, 'Weibull truncada: con corte 0 es la de siempre; el ajuste truncado descarta los árboles bajo el corte', E => {
+  const d = [2.6, 3.1, 4.0, 4.4, 5.5, 6.1, 7.3, 8.8, 9.9, 12.5, 14.0, 18.2, 22.7, 30.1];
+  const a = E.Invent.weibull(d), b = E.Invent.weibull(d, { trunc: 0 });
+  near(a.c, b.c, 1e-12); near(a.b, b.b, 1e-12);
+  const t25 = E.Invent.weibull(d, { trunc: 2.5 }), t4 = E.Invent.weibull(d, { trunc: 4 });
+  ok(t4.n === d.filter(v => v >= 4).length, 'n con corte'); near(t25.cdf(2.5), 0, 1e-15); near(t25.cdf(1e6), 1, 1e-12);
+  ok(t25.mean > 2.5 && isFinite(t25.mean), 'media truncada');
+});
+t(3, 'Weibull de 3 parámetros: la ubicación pegada al mínimo se marca en el borde', E => {
+  /* a reverse J (shape < 1): the profile likelihood climbs up to the smallest diameter */
+  const d = []; for (let i = 1; i <= 60; i++) d.push(+(5 + 40 * Math.pow(i / 61, 2.2)).toFixed(2));
+  const w = E.Invent.weibull(d, { three: true });
+  ok(w.boundary, 'en el borde'); ok(w.edgeGap < 0.01 * Math.min(...d) + 1e-9, 'a menos de 1 % del mínimo');
+});
+t(4, 'Reservorios: la suma por parcela capta la covarianza que la cuadratura ignora', E => {
+  const ag = [40, 55, 30, 62, 48, 35], root = ag.map(v => v * 0.27);
+  const sAg = E.Invent.srs(ag), sRoot = E.Invent.srs(root), sSum = E.Invent.srs(ag.map((v, i) => v + root[i]));
+  const c = E.Biomass.combinePools({ mean: sSum.mean, se: sSum.se }, [{ mean: 3, se: 0.4 }]);
+  near(c.mean, sAg.mean + sRoot.mean + 3, 1e-12);
+  near(c.se, Math.sqrt((sAg.se + sRoot.se) ** 2 + 0.16), 1e-12);
+  ok(c.se > Math.sqrt(sAg.se ** 2 + sRoot.se ** 2 + 0.16), 'mayor que la cuadratura');
+});
+t(5, 'Cruce ICA = IMA: queda a menos de medio intervalo de la edad del IMA máximo', E => {
+  const s = [5, 10, 15, 20, 25, 30, 35, 40].map(t => ({ t, y: 300 * Math.pow(1 - Math.exp(-0.06 * t), 2.4) }));
+  const r = E.Growth.increments(s);
+  ok(Math.abs(r.tCross - r.tMaxIMA) <= 2.5 + 1e-9, r.tCross + ' frente a ' + r.tMaxIMA);
+  const rising = E.Growth.increments(s.slice(0, 3)); ok(!isFinite(rising.tCross), 'sin cruce si el IMA aún crece');
+});
+t(5, 'La tabla de producción termina en la edad final aunque el intervalo no caiga en ella', E => {
+  const c = { alpha: [3.5, 0.02], beta: [1.5, -10, 0.02, 1.0] };
+  const y = E.Growth.yieldTable({ clutter: c, S: 18, t0: 5, g0: 8, n0: 1200, mort: 1.5, tEnd: 40, step: 2 });
+  const ts = y.rows.map(r => r.t);
+  ok(ts[ts.length - 1] === 40 && ts[ts.length - 2] === 39 && ts[0] === 5, 'edades: ' + ts.join(' '));
+});
+t(7, 'Plano de plantación centrado: el margen sobrante se reparte entre los dos bordes', E => {
+  const r = E.Agro.layout({ kind: 'square', W: 103, L: 47, a: 10 });
+  const xs = r.pts.map(p => p.x), ys = r.pts.map(p => p.y);
+  near(Math.min(...xs), 103 - Math.max(...xs), 1e-9); near(Math.min(...ys), 47 - Math.max(...ys), 1e-9); near(r.n, 40, 0);
+});
+t(0, 'Figuras: los segmentos entran en la escala y las marcas categóricas caen en 1, 2, …', E => {
+  if (!E.Plot) return;
+  const s = E.Plot.xy({ series: [{ type: 'segments', segs: [[1, 10, 1, 90]] }, { type: 'points', x: [1, 2], y: [40, 50] }], xlim: [0.6, 2.4], xtickVals: [1, 2], xLabels: v => 'M' + v, legend: false });
+  const yr = /data-yr="([^"]+)"/.exec(s)[1].split(' ').map(Number);
+  ok(yr[1] >= 90, 'el intervalo no se corta: ' + yr); ok(s.includes('>M1<') && s.includes('>M2<'), 'las dos marcas');
+});
+t(0, 'Figuras: la leyenda de abajo no se encima con el título del eje x', E => {
+  if (!E.Plot) return;
+  const s = E.Plot.xy({ series: [{ type: 'points', x: [1, 2], y: [1, 2], label: 'Una etiqueta bastante larga de ecuación (ec. 4)' }, { type: 'line', x: [1, 2], y: [2, 1], label: 'Otra etiqueta larga para la segunda serie' }], xlab: 'x', legend: 'bottom', w: 500, h: 320 });
+  const xl = +/data-role="xlab" x="[^"]+" y="([^"]+)"/.exec(s)[1], lg = +/data-role="legend" class="pl-legend" transform="translate\([^ ]+ ([^)]+)\)/.exec(s)[1];
+  ok(lg - xl >= 18, `leyenda a ${lg - xl} px del título`);
+});
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

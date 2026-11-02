@@ -27,6 +27,16 @@ t(0, 'Inglés: textos que salían en español', () => {
   has('index.html', 'manual/en/manual-completo.html');
   has('index.html', '<script src="js/lang-en.js"></script>');
 });
+t(0, 'Inglés: el pie de la portada y lo que sigue al idioma activo (piezas del Bloque 9, aviso del balance del Bloque 4)', () => {
+  has('tools/parts/_home.html', '<span data-l="es">Validación contra implementaciones independientes</span><span data-l="en">Validation against independent implementations</span>');
+  hasNot('tools/parts/_home.html', 'Validation against R');
+  hasNot('tools/parts/_home.html', 'Validación contra R');
+  has('js/block9.js', 'if (ex) pc.name = T(ex[0], ex[1]);');
+  has('js/ui.js', 'nameL: [e.es, e.en]');
+  has('js/block4.js', '(${esc(srcName(ref, 0))})');
+  has('js/block4.js', '(${esc(srcName(ref, 1))})');
+  hasNot('js/block4.js', 'esc(s.name)');
+});
 t(10, 'Inglés: el informe con fecha en-US y el pie sin nombrar programas', () => {
   has('js/block10.js', "lang === 'en' ? 'en-US' : 'es-MX'");
   hasNot('js/block10.js', 'en-GB');

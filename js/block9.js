@@ -350,7 +350,10 @@ function econ() {
 
 ExampleHooks['pino:9'] = () => { build(); [...el('b9root').querySelectorAll('.btn-primary')].filter(b => /ejemplo|example/i.test(b.textContent)).forEach(b => b.click()); [...el('b9root').querySelectorAll('button')].find(b => /Calcular el rendimiento/.test(b.textContent)).click(); };
 document.addEventListener('DOMContentLoaded', build);
-document.addEventListener('langchange', () => { if (!el('b9root') || !el('b9root').dataset.built) return; const k = el('b9kind').value; fillUnits(); el('b9kind').value = k; convert();
+document.addEventListener('langchange', () => { if (!el('b9root') || !el('b9root').dataset.built) return;
+  /* the pieces of the example (Tabla / Board…) take the name of the active language; a name the user typed stays */
+  if (S.pieces) S.pieces.forEach(pc => { const ex = EX_PIECES.find(p => p[0] === pc.name || p[1] === pc.name); if (ex) pc.name = T(ex[0], ex[1]); });
+  if (S.lumRes) tallyLumber(); const k = el('b9kind').value; fillUnits(); el('b9kind').value = k; convert();
   /* the results carry words of the language they were drawn in */
   if (S.logRes) scaleLogs(); if (S.lumRes) tallyLumber(); if (R.yield.childElementCount) sawYield(); if (R.form.childElementCount) formCalc(); if (R.econ.childElementCount) econ(); });
 })();

@@ -510,13 +510,15 @@ function drawSoil() {
   drawPools();
 }
 /* where the data of a card come from: an example (its id names the site) or a file / typed table (no id) */
-const srcOf = meta => ({ example: meta && meta.example ? meta.example : null, name: meta && meta.name ? meta.name : '' });
+const srcOf = meta => ({ example: meta && meta.example ? meta.example : null, name: meta && meta.name ? meta.name : '', nameL: meta && meta.nameL ? meta.nameL : null });
+/* the name of a source in a language: an example has both; a file keeps its own */
+const srcName = (s, i) => (s && s.nameL ? s.nameL[i] : (s && s.name) || '');
 function drawPools() {
   if (!R.pools) return;
   R.pools.innerHTML = '';
   const cf = +el('b4cf').value || 0.47;
   /* the site of the balance: that of the inventory, or of the first pool loaded when there is none */
-  const ref = S.est ? { example: state.inv.example || null, name: state.inv.name || '' } : [S.cwd && S.cwdSrc, S.lit && S.litSrc, S.soil && S.soilSrc].find(Boolean) || null;
+  const ref = S.est ? { example: state.inv.example || null, name: state.inv.name || '', nameL: state.inv.nameL || null } : [S.cwd && S.cwdSrc, S.lit && S.litSrc, S.soil && S.soilSrc].find(Boolean) || null;
   const invPlots = S.est ? S.res.plots.map(p => String(p.plot)) : [];
   const covers = rows => { if (!invPlots.length || !rows) return false; const m = new Set(rows.map(r => String(r.plot))); return invPlots.every(p => m.has(p)); };
   const same = src => !ref || (src && src.example) === ref.example;
@@ -541,8 +543,8 @@ function drawPools() {
   if (sh > 0) pools.push({ k: ['Arbustos y otros', 'Shrubs and others'], m: sh, se: +el('b4shrubSe').value || 0, c: 'var(--musgo)', indep: true });
   plotPool(S.soilEst, S.soilRows && S.soilRows.map(r => ({ plot: r.plot, val: r.c })), S.soilSrc, ['Suelo', 'Soil'], '#6D4C2F', 1);
   if (excluded.length) showMessage(R.pools, 'warning', L2(
-    `No entran en el balance porque vienen de otro sitio que ${S.est ? 'el inventario' : 'el primer reservorio cargado'} (${esc(ref.name)}): ${excluded.map(([k, s]) => `${k[0].toLowerCase()} (${esc(s.name)})`).join('; ')}. Carga en esa tarjeta los datos del mismo sitio.`,
-    `Left out of the balance because they come from a site other than ${S.est ? 'the inventory' : 'the first pool loaded'} (${esc(ref.name)}): ${excluded.map(([k, s]) => `${k[1].toLowerCase()} (${esc(s.name)})`).join('; ')}. Load the data of the same site in that card.`));
+    `No entran en el balance porque vienen de otro sitio que ${S.est ? 'el inventario' : 'el primer reservorio cargado'} (${esc(srcName(ref, 0))}): ${excluded.map(([k, s]) => `${k[0].toLowerCase()} (${esc(srcName(s, 0))})`).join('; ')}. Carga en esa tarjeta los datos del mismo sitio.`,
+    `Left out of the balance because they come from a site other than ${S.est ? 'the inventory' : 'the first pool loaded'} (${esc(srcName(ref, 1))}): ${excluded.map(([k, s]) => `${k[1].toLowerCase()} (${esc(srcName(s, 1))})`).join('; ')}. Load the data of the same site in that card.`));
   /* the pools on the plots: each one with the estimator of the inventory, and their plot-by-plot sum */
   let eSum = null;
   if (byPlot.length) {

@@ -80,7 +80,7 @@ function build() {
     ['Una fila por árbol con su parcela; una fila por parcela con su diseño. Si no cargas parcelas, todas toman el diseño de abajo.', 'One row per tree with its plot; one row per plot with its design. If you do not load plots, all take the design below.']);
   a.appendChild(mk('h3', null, L2('Árboles', 'Trees')));
   /* a new table of trees or plots is a new inventory: the design and the measurement threshold are chosen again */
-  S.cardT = UI.dataCard(a, { id: 'b3t', fields: FT, examples: EXT, onData: (rows, meta) => { S.trees = rows; S.treesName = meta.name; S.treesExample = meta.example || null; S.designSet = false; if (meta.example) { S.cardP.load(meta.example); return; } assemble(); } });
+  S.cardT = UI.dataCard(a, { id: 'b3t', fields: FT, examples: EXT, onData: (rows, meta) => { S.trees = rows; S.treesName = meta.name; S.treesNameL = meta.nameL || null; S.treesExample = meta.example || null; S.designSet = false; if (meta.example) { S.cardP.load(meta.example); return; } assemble(); } });
   a.appendChild(mk('h3', null, L2('Parcelas (opcional)', 'Plots (optional)')));
   S.cardP = UI.dataCard(a, { id: 'b3p', fields: FP, examples: EXP, onData: rows => { S.plots = rows; S.designSet = false; assemble(); } });
   const dg = mk('details', { class: 'method-box' });
@@ -221,7 +221,7 @@ function assemble() {
   const per = Invent.perPlot(trees, plotOf, { plots: plotIds });
   per.forEach(p => { const pp = pmap.get(p.plot) || {}; p.stratum = pp.estrato || (p.trees[0] || {}).stratum || ''; p.cluster = pp.conglomerado || ''; p.lat = pp.lat; p.lon = pp.lon; p.stratumArea = pp.area_estrato_ha; p.design = plotOf(p.plot); });
   S.per = per; S.inv = trees; S.hdFit = hdFit; S.nEst = nEst;
-  state.inv = { name: S.treesName || '', example: S.treesExample || null, trees: trees.map(t => ({ plot: t.plot, stratum: t.stratum, especie: t.sp, familia: t.family, dap: t.d, altura: t.h, hEst: !!t.hEst, estado: t.status, alive: t.alive, x: t.x, y: t.y, ef: t.ef, v: t.v, cluster: t.cluster, copa: (S.trees[t.id - 1] || {}).copa })),
+  state.inv = { name: S.treesName || '', nameL: S.treesNameL || null, example: S.treesExample || null, trees: trees.map(t => ({ plot: t.plot, stratum: t.stratum, especie: t.sp, familia: t.family, dap: t.d, altura: t.h, hEst: !!t.hEst, estado: t.status, alive: t.alive, x: t.x, y: t.y, ef: t.ef, v: t.v, cluster: t.cluster, copa: (S.trees[t.id - 1] || {}).copa })),
     plots: per.map(p => ({ plot: p.plot, stratum: p.stratum, cluster: p.cluster, lat: p.lat, lon: p.lon, stratumArea: p.stratumArea, design: p.design, N: p.N, G: p.G, V: p.V })), area: +el('b3area').value };
   /* the design that fits the data best by default */
   const strata = [...new Set(per.map(p => p.stratum).filter(Boolean))];

@@ -75,6 +75,10 @@ Correcciones halladas al escribir el manual. La versión sigue siendo la 1.0.0.
 
 - **Informe:** el pie dice «la validación contra implementaciones independientes» / «the validation against
   independent implementations» (antes nombraba R).
+- **Portada:** el pie enlaza a «Validación contra implementaciones independientes» / «Validation against independent
+  implementations» (antes «Validación contra R»).
+- **Al cambiar de idioma:** las piezas del ejemplo de madera aserrada del Bloque 9 (Tabla/Board, Polín/Stud…) y los
+  nombres de los ejemplos en el aviso del balance del Bloque 4 siguen el idioma activo (antes, el de la carga).
 - **Bloque 7:** las barras del histograma de grises se ven (sin hueco ni borde entre las 256 clases; opción `solid`
   de `Plot.bars`).
 
@@ -83,7 +87,7 @@ Correcciones halladas al escribir el manual. La versión sigue siendo la 1.0.0.
 - 8 327 comparaciones con R sin desacuerdos (antes 8 261): nuevas la Weibull ponderada y truncada con sus pruebas, el
   reparto del tamaño de muestra estratificado y el balance de reservorios; regeneradas las referencias de los Bloques
   3, 4 y 5 (`tests/LEEME_VALIDACION.md`). 72 pruebas unitarias (antes 62).
-- Interfaz inglesa: 83 pruebas (11 nuevas: 6 en `tests/unit.js` y 5 que leen el código en `tests/t_english.js`,
+- Interfaz inglesa: 84 pruebas (12 nuevas: 6 en `tests/unit.js` y 6 que leen el código en `tests/t_english.js`,
   sólo en node); la validación sigue en 8 327 comparaciones sin desacuerdos.
 
 ## [1.0.0] — 2026-10-04

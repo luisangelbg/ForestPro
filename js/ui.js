@@ -320,7 +320,7 @@ UI.dataCard = function (host, o) {
     if (!e) return;
     const rows = e.rows();
     exLoaded = { id: e.id, key: JSON.stringify(rows) };
-    finish(rows.map(r => Object.assign({}, r)), { name: T(e.es, e.en), example: e.id, note: e.note });
+    finish(rows.map(r => Object.assign({}, r)), { name: T(e.es, e.en), nameL: [e.es, e.en], example: e.id, note: e.note });
   });
   fileIn.addEventListener('change', async () => {
     const file = fileIn.files[0];
@@ -387,7 +387,7 @@ UI.dataCard = function (host, o) {
     const rows = e.rows(), key = JSON.stringify(rows);
     if (key === exLoaded.key) { const b = status.querySelector('b'); if (b) b.textContent = T(e.es, e.en); return; }
     exLoaded.key = key;
-    finish(rows.map(r => Object.assign({}, r)), { name: T(e.es, e.en), example: e.id, note: e.note, relabel: true });
+    finish(rows.map(r => Object.assign({}, r)), { name: T(e.es, e.en), nameL: [e.es, e.en], example: e.id, note: e.note, relabel: true });
   });
   const api = { load: exId => { if (exId) { exSel.value = exId; showExNote(); } exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box, fields: o.fields, examples: (o.examples || []).map(e => e.id) };
   UI.cards[id] = api;

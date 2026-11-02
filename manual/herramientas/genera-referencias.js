@@ -8,8 +8,8 @@
    el programa citan exactamente lo mismo.
    Uso:   node manual/herramientas/genera-referencias.js              (es/11-apendices.html)
           node manual/herramientas/genera-referencias.js --idioma en  (en/11-apendices.html: los títulos de los apartados
-                                                                        en inglés y, en las referencias, «y» → «and»,
-                                                                        «4.ª ed.» → «4th ed.», «cap.» → «ch.», «vol.» igual) */
+                                                                        en inglés y las referencias convertidas con la misma
+                                                                        función que usa la app, LangEN.ref de js/lang-en.js) */
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -49,15 +49,13 @@ function refsDe(texto) {
 const caja = { console, Math, JSON, Number, String, Array, Object, Map, Set, isFinite, isNaN, T: es => es };
 caja.window = caja; caja.globalThis = caja;
 vm.createContext(caja);
-['num.js', 'eng-biomass.js'].forEach(f => vm.runInContext(fs.readFileSync(path.join(raiz, 'js', f), 'utf8'), caja, { filename: f }));
+['num.js', 'eng-biomass.js', 'lang-en.js'].forEach(f => vm.runInContext(fs.readFileSync(path.join(raiz, 'js', f), 'utf8'), caja, { filename: f }));
 /* only the bibliographic part of each source (some add a note after it, «E es el índice…») */
 const fuentesEq = caja.Biomass.EQS.map(e => e.src).filter(Boolean);
 
 /* a work is known by its authors and year; the longest form wins */
 const clave = s => { const t = s.replace(/<[^>]+>/g, ''); const m = /^(.*?\(\d{4}[a-z]?\))/.exec(t); return (m ? m[1] : t.slice(0, 60)).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' '); };
 const orden = s => s.replace(/<[^>]+>/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const aIngles = s => s.replace(/(\d)\.ª ed\./g, (m, n) => n + ({ 1: 'st', 2: 'nd', 3: 'rd' }[n] || 'th') + ' ed.')
-  .replace(/ y ([A-ZÁÉÍÓÚ][a-záéíóúñ'-]+, )/g, ' and $1').replace(/, y ([A-ZÁÉÍÓÚ])/g, ', and $1').replace(/\bcap\. /g, 'ch. ').replace(/\bcuadros\b/g, 'tables').replace(/\bcuadro\b/g, 'table');
 
 const grupos = [];
 for (let n = 2; n <= 9; n++) {
@@ -78,7 +76,7 @@ grupos.forEach((g, gi) => g.refs.forEach(r => {
 
 let total = 0, html = '\n', nG = 0;
 grupos.forEach((g, gi) => {
-  const lista = [...dueño.entries()].filter(([, d]) => d === gi).map(([k]) => mejor.get(k)).map(r => (en ? aIngles(r) : r)).sort((a, b) => orden(a).localeCompare(orden(b), lang));
+  const lista = [...dueño.entries()].filter(([, d]) => d === gi).map(([k]) => mejor.get(k)).map(r => (en ? caja.LangEN.ref(r) : r)).sort((a, b) => orden(a).localeCompare(orden(b), lang));
   if (!lista.length) return;
   total += lista.length; nG++;
   html += `  <h3>F.${nG} · ${g.titulo}</h3>\n  <ul class="refs">\n` + lista.map(r => `    <li>${r}</li>`).join('\n') + '\n  </ul>\n';

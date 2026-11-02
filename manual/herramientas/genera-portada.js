@@ -105,8 +105,8 @@ s += `<text x="${W / 2}" y="104" text-anchor="middle" font-family="Jost" font-we
 <text x="${W / 2}" y="194" text-anchor="middle" font-family="Cormorant" font-weight="600" font-size="92" fill="${P.tinta}">Forest<tspan fill="${P.bosque}">Pro</tspan></text>
 <line x1="${W / 2 - 70}" y1="220" x2="${W / 2 + 70}" y2="220" stroke="${P.oroLin}" stroke-width="1.4"/>`;
 const t1 = L('Manual de usuario', 'User’s Manual'), t2 = L('User’s Manual', 'Manual de usuario');
-const l1 = L('Del árbol medido a la tonelada de carbono', 'From the measured tree to the tonne of carbon');
-const l2 = L('From the measured tree to the tonne of carbon', 'Del árbol medido a la tonelada de carbono');
+const l1 = L('Del árbol medido a la tonelada de carbono', 'From the measured tree to the metric ton of carbon');
+const l2 = L('From the measured tree to the metric ton of carbon', 'Del árbol medido a la tonelada de carbono');
 s += `
 <text x="${W / 2}" y="258" text-anchor="middle" font-family="Cormorant" font-weight="600" font-size="38" fill="${P.tinta}">${t1}</text>
 <text x="${W / 2}" y="287" text-anchor="middle" font-family="Cormorant" font-style="italic" font-weight="500" font-size="25" fill="${P.oro}">${t2}</text>

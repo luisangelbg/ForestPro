@@ -1,4 +1,4 @@
-// ventana 1600x1000
+// ventana 1400x1000
 /* Capítulo 2: Ecuaciones de volumen con «Usar los árboles cubicados arriba» (pino de ejemplo): comparación, coeficientes y figuras */
 (async () => {
   await bloque(2, 'pino');

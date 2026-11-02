@@ -1,4 +1,4 @@
-// ventana 1600x1000
+// ventana 1400x1000
 /* Capítulo 3: índice de valor de importancia del cafetal de ejemplo, tabla y componentes */
 (async () => {
   await bloque(3, 'cafetal');

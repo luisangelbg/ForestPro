@@ -10,7 +10,7 @@
   const t = tarjeta(10, L('Informe', 'Report'));
   [...t.querySelectorAll('button')].find(b => /^(Vista previa|Preview)$/.test(b.innerText.trim())).click();
   await W(2500);
-  const fr = t.querySelector('iframe.report-frame');
+  const fr = t.querySelector('iframe.report-frame'); fr.style.height = '930px'; await W(800);
   irA(fr, 200); await W(1200);
   return caja([fr], 4);
 })()

@@ -59,8 +59,8 @@
     <p>Las <b>reglas de troza</b> no miden volumen: predicen cuánta madera aserrada rendirá la troza, descontando de antemano el aserrín y las costeras. Usan el diámetro de la punta delgada <b>sin corteza</b>, en pulgadas (<i>D</i>), y el largo en pies (<i>L</i>). <b>Doyle</b>: (<i>D</i> − 4)²<i>L</i>/16. <b>Scribner</b>, por la fórmula de Bruce: (0.79<i>D</i>² − 2<i>D</i> − 4)<i>L</i>/16. <b>Internacional ¼″</b>: secciones de 4 pies, cada una con media pulgada más de diámetro que la anterior, 0.22<i>D</i>² − 0.71<i>D</i> pies tabla por sección y el factor 0.905 de la sierra de un cuarto de pulgada; la fracción final cuenta en proporción a su largo (Husch et al. 2003; Avery y Burkhart 2002; Bruce 1925; Clark 1906).</p>
   </div>
 
-  <p>La tabla <span class="ui">Volumen por troza</span> trae, para cada troza y en total, el diámetro sin corteza en pulgadas (<span class="ui">D (pulg)</span>) y el largo en pies (<span class="ui">L (pies)</span>) con que trabajan las reglas, los cuatro volúmenes y los pies tabla de las tres reglas. En la pantalla de 1 400 píxeles la tabla es más ancha que la tarjeta y la última columna se alcanza desplazándola hacia un lado; la figura 9.2 la muestra completa.</p>
-  <figure>
+  <p>La tabla <span class="ui">Volumen por troza</span> trae, para cada troza y en total, el diámetro sin corteza en pulgadas (<span class="ui">D (pulg)</span>) y el largo en pies (<span class="ui">L (pies)</span>) con que trabajan las reglas, los cuatro volúmenes y los pies tabla de las tres reglas.</p>
+  <figure class="w80">
     <div class="marco"><img src="../img/b9-trozas-tabla.png" alt="La tabla Volumen por troza con las doce trozas y su total: diámetro en pulgadas, largo en pies, cuatro volúmenes en metros cúbicos y tres reglas en pies tabla"></div>
     <figcaption><b>Figura 9.2.</b> El volumen de cada troza. En total: 3.2747 m³ por Smalian, 3.2193 por Huber, 3.2378 por Newton y 3.2601 por cono truncado; 380 pies tabla por Doyle, 539 por Scribner y 599 por la Internacional ¼″. La troza T10, de 6.5 pulgadas sin corteza, da 3 pies tabla por Doyle y 10 por la Internacional.</figcaption>
   </figure>
@@ -115,7 +115,7 @@
   <!-- 9.5 -->
   <h2 id="s9-5"><span class="num">9.5</span>Conversión de unidades</h2>
   <p class="lead">Del sistema inglés al métrico y al revés, con las definiciones exactas: lo que hace falta para leer un inventario, una tabla de rendimiento o una regla de troza de otro país.</p>
-  <p><span class="ui">Magnitud</span> elige qué se convierte; <span class="ui">Valor</span> y <span class="ui">De</span>, el número y su unidad. La tabla <span class="ui">… equivalen a</span> da el valor en cada una de las demás unidades de esa magnitud, y se recalcula al escribir:</p>
+  <p><span class="ui">Magnitud</span> elige qué se convierte; <span class="ui">Valor</span> y <span class="ui">De</span>, el número y su unidad. La tabla <span class="ui">… equivalen a</span> («1 metro equivale a», con el valor 1) da el valor en cada una de las demás unidades de esa magnitud, y se recalcula al escribir:</p>
   <table class="compacta">
     <thead><tr><th style="width:1.9in">Magnitud</th><th>Unidades</th></tr></thead>
     <tbody>
@@ -156,10 +156,10 @@
     <div class="marco"><img src="../img/b9-vpn.png" alt="Dos gráficas: barras de ingresos y costos por año del pino, y la curva del valor presente neto según la tasa de descuento con la TIR y la tasa elegida"></div>
     <figcaption><b>Figura 9.9.</b> Arriba, casi todo el ingreso llega en el año 25 ($300,000 de la corta final), con dos aclareos en los años 12 y 18. Abajo, el VPN pasa de unos $216,000 sin descontar a valores negativos por encima de la TIR de 8.50 %; la tasa elegida (8 %) queda justo antes del cruce.</figcaption>
   </figure>
-  <p>La tabla <span class="ui">Flujo de efectivo descontado</span> da, por año, los costos (con el costo anual incluido), los ingresos, el neto, el neto descontado y el acumulado descontado, que en el pino pasa de −$30,227 en el año 24 a $3,956 en el 25. Su nota dice que los años con sólo el costo anual no se muestran, pero sí aparecen en la tabla (del año 4 al 24, los que no tienen otro movimiento salen con 900 de costo).</p>
+  <p>La tabla <span class="ui">Flujo de efectivo descontado</span> da, por año, los costos (con el costo anual incluido), los ingresos, el neto, el neto descontado y el acumulado descontado, que en el pino pasa de −$30,227 en el año 24 a $3,956 en el 25. Sólo muestra los años con un movimiento propio (en el pino, 0, 1, 2, 3, 5, 8, 12, 18 y 25); su nota lo aclara: «Los años sin más movimiento que el costo anual no se muestran; sí se cuentan.»</p>
   <div class="caja ejemplo">
     <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · la misma plantación con otra tasa y otro turno</div>
-    <p>Con la tasa al 10 %, el pino deja de pagar: el VPN cae a −$9,333 por hectárea, la relación beneficio/costo a 0.81, el valor esperado del suelo a −$10,282 y la recuperación dice «no se recupera»; la TIR sigue en 8.50 %, porque no depende de la tasa elegida. Con la tasa al 8 % y el turno en 18 años, la corta final queda fuera («1 movimientos caen después del turno y no se cuentan.») y el VPN se hunde a −$29,186: sin la corta final, los aclareos no pagan el establecimiento.</p>
+    <p>Con la tasa al 10 %, el pino deja de pagar: el VPN cae a −$9,333 por hectárea, la relación beneficio/costo a 0.81, el valor esperado del suelo a −$10,282 y la recuperación dice «no se recupera»; la TIR sigue en 8.50 %, porque no depende de la tasa elegida. Con la tasa al 8 % y el turno en 18 años, la corta final queda fuera («1 movimiento cae después del turno y no se cuenta.») y el VPN se hunde a −$29,186: sin la corta final, los aclareos no pagan el establecimiento.</p>
   </div>
   <div class="caja importante">
     <div class="caja-t"><span class="ico">!</span>Compara turnos con el valor del suelo, no con el VPN</div>
@@ -189,7 +189,7 @@
       <li><b>«Escribe el volumen en rollo y el aserrado (o cubica y cuenta arriba).»</b> Faltan los dos volúmenes del rendimiento; se llenan solos después de <span class="ui">Cubicar</span> y <span class="ui">Contar</span>.</li>
       <li><b>«Escribe el volumen o el factor de forma.»</b> En el factor de forma quedaron vacíos los dos; deja vacío sólo el que quieras calcular.</li>
       <li><b>«Revisa la tasa de descuento.»</b> La tasa no es un número o es de −100 % o menos.</li>
-      <li><b>«… movimientos caen después del turno y no se cuentan.»</b> El turno que escribiste es menor que el último año de la tabla; vacía el campo para usar el último año.</li>
+      <li><b>«… movimientos caen después del turno y no se cuentan.»</b> (con uno solo, «1 movimiento cae después del turno y no se cuenta.») El turno que escribiste es menor que el último año de la tabla; vacía el campo para usar el último año.</li>
     </ul>
   </div>
 

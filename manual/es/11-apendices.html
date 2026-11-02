@@ -11,7 +11,10 @@
 <script src="../paginar.js"></script>
 <style>
   table.ficheros code, table.columnas code { white-space: nowrap; }
-  table.columnas td { font-size: 8.6pt; }
+  table.columnas td { font-size: 8pt; padding: 0.018in 0.06in; line-height: 1.25; }
+  table.apx td { padding: 0.024in 0.07in; line-height: 1.3; }
+  ul.refs { font-size: 8.8pt; line-height: 1.3; }
+  ul.refs li { margin-bottom: 0.035in; }
   pre.archivo { font-family: var(--mono); font-size: 8.2pt; line-height: 1.4; background: #f4f6f1; border: 1px solid var(--linea); border-left: 3px solid var(--acento); border-radius: 0 4px 4px 0; padding: 0.07in 0.12in; margin: 0.05in 0 0.16in; white-space: pre-wrap; break-inside: avoid; }
 </style>
 </head>
@@ -40,11 +43,11 @@
   <p class="lead">ForestPro corre en el navegador y no envía nada a ningún servidor: todos los archivos entran desde tu computadora y salen a la carpeta de descargas. La app no guarda tu trabajo por su cuenta: si cierras la pestaña sin guardar el proyecto (sección 10.3), lo de esa sesión se pierde.</p>
 
   <h3>A.1 · Lo que la app lee</h3>
-  <table class="compacta ficheros">
+  <table class="apx compacta ficheros">
     <thead><tr><th style="width:1.35in">Qué</th><th style="width:1.5in">Dónde y extensión</th><th>Cómo lo lee</th></tr></thead>
     <tbody>
       <tr><td><b>Tablas de datos</b></td><td>Las 18 tarjetas de datos de los bloques 2 a 8 · <code>.csv</code>, <code>.txt</code>, <code>.tsv</code>, <code>.xlsx</code>, <code>.xlsm</code>, <code>.ods</code>, o pegadas</td><td>Un renglón por registro, con una fila de nombres. Las columnas se emparejan por su nombre (abajo) y las que no se reconocen se eligen a mano. De un libro se lee la primera hoja, y un menú <span class="ui">Hoja:</span> deja elegir otra. Las filas a las que les falta un campo obligatorio se dejan fuera con un aviso.</td></tr>
-      <tr><td><b>Base mundial de densidad</b></td><td>Bloque 4, <span class="ui">Cargar la base mundial (archivo de la GWDD)…</span> · <code>.csv</code>, <code>.txt</code>, <code>.xlsx</code>, <code>.ods</code></td><td>El archivo de la Global Wood Density Database. Busca la hoja <code>Data</code> y las columnas de familia, especie (<i>Binomial</i>), densidad (<i>Wood density</i>) y región; sin especie o sin densidad, no la lee. Las regiones que trae llenan el menú <span class="ui">Región</span>.</td></tr>
+      <tr><td><b>Base mundial de densidad</b></td><td>Bloque 4, <span class="ui">Cargar la base mundial (archivo de la GWDD)…</span> · <code>.csv</code>, <code>.txt</code>, <code>.xlsx</code>, <code>.xlsm</code>, <code>.ods</code></td><td>El archivo de la Global Wood Density Database. Busca la hoja <code>Data</code> y las columnas de familia, especie (<i>Binomial</i>), densidad (<i>Wood density</i>) y región; sin especie o sin densidad, no la lee. Un libro del formato viejo (<code>.xls</code>) se rechaza con un mensaje que pide guardarlo como <code>.xlsx</code> o <code>.csv</code>. Las regiones que trae llenan el menú <span class="ui">Región</span>.</td></tr>
       <tr><td><b>Fotografía del dosel</b></td><td>Bloque 7, <span class="ui">Abrir una foto…</span> · cualquier imagen que el navegador abra (JPG, PNG…)</td><td>Hemisférica u hacia arriba; se analiza en la página y no se guarda en el proyecto.</td></tr>
       <tr><td><b>Polígonos y puntos</b></td><td>Bloque 8, <span class="ui">Importar GPX, KML o GeoJSON…</span> · <code>.gpx</code>, <code>.kml</code>, <code>.geojson</code>, <code>.json</code></td><td>GPX: los puntos (<code>wpt</code>) y los recorridos (<code>trk</code>) de tres puntos o más, como polígonos. KML: las marcas con <code>Point</code> o <code>Polygon</code> (su borde exterior). GeoJSON: <code>FeatureCollection</code>, <code>Feature</code> o una geometría suelta de tipo <code>Point</code>, <code>MultiPoint</code>, <code>Polygon</code> o <code>MultiPolygon</code> (el anillo exterior); el nombre sale de la propiedad <code>name</code> o <code>nombre</code>. Todo en longitud y latitud.</td></tr>
       <tr><td><b>Proyecto</b></td><td>Bloque 10, <span class="ui">Abrir un proyecto…</span> · <code>.json</code></td><td>Un archivo escrito por la app, con <code>"app": "ForestPro"</code> y su lista de pasos (A.4); cualquier otro JSON se rechaza.</td></tr>
@@ -65,7 +68,7 @@
 
   <h3>A.2 · Las columnas de cada tarjeta de datos</h3>
   <p>La primera columna es la clave, que es el nombre con que la reconoce la app sin preguntar; el asterisco marca los campos obligatorios. Los sinónimos se comparan como se explica arriba, y el rótulo y la clave cuentan también.</p>
-  <table class="compacta columnas">
+  <table class="apx compacta columnas">
     <thead><tr><th style="width:1.15in">Clave</th><th style="width:2.1in">Campo en la app</th><th>Sinónimos que reconoce</th></tr></thead>
     <tbody>
       <tr><td colspan="3"><span class="chip k2">2</span> <b>Árboles en pie</b> (<code>b2t</code>)</td></tr>
@@ -178,6 +181,7 @@
       <tr><td><code>nombre</code></td><td>Nombre</td><td>name, parcela, id</td></tr>
     </tbody>
   </table>
+  <p>El <span class="ui">DAP mínimo medido (cm)</span> de <span class="ruta">Bloque 3<span class="sep">›</span>Estructura del rodal</span> no es una columna sino un campo: el diámetro desde el que se midieron los árboles (2.5 cm en el mesófilo de ejemplo, 5 cm en el cafetal), que trunca la Weibull y fija el inicio de las clases (B.2). No lo confundas con <code>dap_corte_cm</code>, el diámetro que separa la parcela grande de la chica en las parcelas anidadas.</p>
   <p>Los CSV de ejemplo de la carpeta <code>data/</code> usan estos nombres, con punto decimal y en UTF-8, así que se cargan sin emparejar nada. La tarjeta del suelo lee también el formato de capas de los análisis de suelo, con su sistema, su año, su capa escrita como «0-10» y su espesor; con varios sistemas o años, los calcula de uno en uno. Una plantilla de cualquier tarjeta, con las claves y tres filas del primer ejemplo, sale de su botón <span class="ui">⤓ Plantilla</span> como <code>forestpro_&lt;tarjeta&gt;_plantilla.csv</code> (por ejemplo, <code>forestpro_b3t_plantilla.csv</code>):</p>
   <pre class="archivo">parcela,estrato,especie,familia,dap,altura,copa,estado,x,y
 P01,,Inga vera,Fabaceae,29.7,14.6,6.1,vivo,-7.1,2.6
@@ -186,7 +190,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   <p class="small">La plantilla de los árboles del Bloque 3, con las tres primeras filas del cafetal de ejemplo. Su columna de estrato va vacía porque el cafetal toma sus estratos de la tabla de parcelas.</p>
 
   <h3>A.3 · Lo que la app escribe</h3>
-  <table class="compacta ficheros">
+  <table class="apx compacta ficheros">
     <thead><tr><th style="width:0.55in">Bloque</th><th style="width:2.5in">Archivo</th><th>Qué contiene</th></tr></thead>
     <tbody>
       <tr><td>2 a 9</td><td><code>forestpro_&lt;tabla&gt;.csv</code> · <code>.xlsx</code></td><td>Cada tabla de resultados desde sus botones <span class="ui">⤓ CSV</span> y <span class="ui">⤓ XLSX</span>. Los nombres son, por bloque: <b>2</b> <code>arboles</code>, <code>especies</code>, <code>cubicacion</code>, <code>trozas</code>, <code>modelos_volumen</code>, <code>coef_…</code>, <code>ahusamiento</code>, <code>altura_diametro</code>, <code>coef_hd_…</code>, <code>alturas_estimadas</code>; <b>3</b> <code>parcelas_ha</code>, <code>densidad</code>, <code>disenos</code>, <code>estratos</code>, <code>asignacion</code>, <code>relascopia</code>, <code>tabla_rodal</code>, <code>weibull</code>, <code>ivi</code>; <b>4</b> <code>ecuaciones</code>, <code>densidades</code>, <code>biomasa_arboles</code>, <code>biomasa_parcelas</code>, <code>monte_carlo</code>, <code>madera_caida</code>, <code>carbono_suelo</code>, <code>reservorios</code>; <b>5</b> <code>incrementos_…</code>, <code>turno</code>, <code>modelos_crecimiento</code>, <code>coef_crecimiento</code>, <code>indice_sitio</code>, <code>sitio_parcelas</code>, <code>clases_sitio</code>, <code>clutter</code>, <code>tabla_produccion</code>; <b>6</b> <code>indices_diversidad</code>, <code>hill</code>, <code>matriz_comunidad</code>, <code>estratos_altura</code>, <code>pretzsch</code>; <b>7</b> <code>sombra_parcelas</code>, <code>sombra_manejo</code>, <code>anillos</code>, <code>sombra_rendimiento</code>, <code>presupuesto_carbono</code>; <b>8</b> <code>poligonos</code>, <code>cuadricula</code>, <code>variograma</code>; <b>9</b> <code>trozas</code>, <code>aserrada</code>, <code>conversion</code>, <code>flujo</code>.</td></tr>
@@ -204,7 +208,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
 
   <h3>A.4 · El archivo del proyecto</h3>
   <p>Es texto JSON, con estos campos:</p>
-  <table class="compacta">
+  <table class="apx compacta">
     <thead><tr><th style="width:1.1in">Campo</th><th>Contenido</th></tr></thead>
     <tbody>
       <tr><td><code>app</code></td><td>Siempre <code>"ForestPro"</code>; sin él, el archivo no se abre.</td></tr>
@@ -227,7 +231,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   <p class="lead">Los valores por omisión, los límites y las reglas que la app aplica para calcular, clasificar o avisar, con el bloque donde actúan. Son los mismos que explica cada capítulo; aquí están juntos para consultarlos de un vistazo.</p>
 
   <h3>B.1 · Conversiones y constantes de todos los bloques</h3>
-  <table class="compacta">
+  <table class="apx compacta">
     <tbody>
       <tr><td style="width:2.2in"><b>Área basal</b></td><td>g = π·DAP²/40 000 (m², DAP en cm), con el DAP a 1.30 m.</td></tr>
       <tr><td><b>Carbono</b></td><td>Fracción de carbono 0.47 de la biomasa seca por omisión (IPCC 2006, cuadro 4.3); se puede cambiar en el Bloque 4.</td></tr>
@@ -238,24 +242,27 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   </table>
 
   <h3>B.2 · Inventario y muestreo (Bloque 3)</h3>
-  <table class="compacta">
+  <table class="apx compacta">
     <tbody>
       <tr><td style="width:2.2in"><b>Error de muestreo</b></td><td>El mosaico va en verde hasta 10 %, en ámbar de 10 a 20 % y en rojo arriba de 20 %. Si pasa de 10 %, la interpretación dice cuántas parcelas harían falta para bajar a 10 % con el mismo coeficiente de variación; si no, que cumple el 10 % que piden muchos planes de manejo.</td></tr>
       <tr><td><b>Diseños</b></td><td>El estratificado necesita al menos 2 estratos con superficie y 2 parcelas en cada uno; el de conglomerados, la columna de conglomerado en las parcelas. Un efecto del diseño mayor que 1 dice que las parcelas de un conglomerado se parecen y aportan menos información que si fueran independientes.</td></tr>
       <tr><td><b>Alturas faltantes</b></td><td>Sin altura, el volumen sólo se calcula si se activa la estimación de alturas (curva de Näslund ajustada a los árboles con altura).</td></tr>
       <tr><td><b>Relascopía</b></td><td>Entre 7 y 15 árboles por punto es lo recomendado; con menos, un factor de área basal menor daría más árboles y menos error; con más, uno mayor ahorraría tiempo.</td></tr>
+      <tr><td><b>Weibull truncada y ponderada</b></td><td>La Weibull se ajusta por máxima verosimilitud con el factor de expansión de cada árbol como peso. Con un <span class="ui">DAP mínimo medido (cm)</span>, la densidad se trunca en ese diámetro (los árboles más delgados no se midieron, no faltan), las clases empiezan en él y la curva se llama «Weibull 2p truncada». La prueba de Kolmogorov–Smirnov y la χ² usan la distribución ponderada y el tamaño efectivo de Kish, <i>n</i><sub>ef</sub> = (Σ<i>w</i>)²/Σ<i>w</i>², en lugar del número de árboles (renglones «Árboles / tamaño efectivo (Kish)» y «Kolmogorov–Smirnov D (ponderado)»).</td></tr>
+      <tr><td><b>Weibull de 3 parámetros</b></td><td>Si la ubicación queda a menos de 1 % del menor diámetro, la app avisa que el modelo no se distingue de uno de 2 parámetros que empieza en el mínimo (con forma menor que 1, que la verosimilitud no tiene máximo interior); si queda en 0, que se reduce al de 2 parámetros.</td></tr>
       <tr><td><b>Distribución de diámetros</b></td><td>Forma de Weibull <i>c</i> &lt; 1.2: J invertida (bosque irregular o en regeneración); 1.2 ≤ <i>c</i> &lt; 3: sesgada a la derecha; <i>c</i> ≥ 3: campana casi simétrica (rodal coetáneo). Si la prueba de Kolmogorov–Smirnov da <i>p</i> &lt; 0.05, los diámetros no siguen bien una sola Weibull. Hacen falta al menos 10 árboles vivos.</td></tr>
       <tr><td><b>Densidad del rodal</b></td><td>Índice de Reineke con el diámetro de referencia de 25 cm y la pendiente 1.605. Índice de Hart–Becking: menor de 17 %, rodal denso, candidato a aclareo; mayor de 25 %, rodal abierto.</td></tr>
     </tbody>
   </table>
 
   <h3>B.3 · Biomasa y carbono (Bloque 4)</h3>
-  <table class="compacta">
+  <table class="apx compacta">
     <tbody>
       <tr><td style="width:2.2in"><b>Densidad de la madera</b></td><td>Se busca por especie; si no está, la media del género; si tampoco, la de la familia (sólo con la base mundial cargada); y si nada, la media de la parcela, con un aviso que nombra las especies.</td></tr>
       <tr><td><b>Raíces</b></td><td>Razón raíz/tallo constante (0.24 al abrir), la del cuadro 4.4 del IPCC (2006) según la zona y la biomasa aérea por hectárea (por ejemplo, en coníferas templadas: 0.40 con menos de 50 Mg/ha, 0.29 de 50 a 150 y 0.20 con más de 150), o la ecuación de Cairns et al. (1997) por hectárea.</td></tr>
       <tr><td><b>Muertos en pie</b></td><td>Conservan la fracción de su biomasa que digas en <span class="ui">Fracción que queda en muertos en pie</span> (1 al abrir).</td></tr>
       <tr><td><b>Árboles sin lo que pide su ecuación</b></td><td>No suman biomasa, y la app dice cuántos son y qué les falta.</td></tr>
+      <tr><td><b>Error del total de reservorios</b></td><td>Los reservorios medidos en las mismas parcelas del inventario (árboles vivos, raíces, muertos en pie y, si traen todas las parcelas, la hojarasca y el suelo) se suman parcela por parcela, y el error del total sale de esos totales con el estimador del inventario; sólo la madera caída, una hojarasca o un suelo de otras parcelas y los arbustos se agregan en cuadratura, como independientes (IPCC 2006, vol. 1, ec. 3.1). La columna «En el error del total» dice «suma por parcela» o «independiente». El intervalo es ±1.96·EE. Una tarjeta cargada con datos de otro sitio queda fuera del balance, con un aviso.</td></tr>
       <tr><td><b>Incertidumbre</b></td><td>El mosaico de la incertidumbre combinada va en verde por debajo de 10 % de la media, en ámbar hasta 20 % y en rojo arriba. Error del diámetro de Chave et al. (2004); de la altura, 5 % si se midió y 15 % si se estimó (CV, al abrir); 1 000 iteraciones por omisión.</td></tr>
       <tr><td><b>Madera caída</b></td><td>Van Wagner (1968), con densidades de 0.45, 0.34 y 0.23 g/cm³ para las clases de descomposición 1, 2 y 3 al abrir; mídelas en tu sitio.</td></tr>
       <tr><td><b>Suelo</b></td><td>Mg C/ha de una capa = C % × densidad aparente × espesor (cm) × (1 − fragmentos gruesos/100); las capas de cada perfil se suman. Cada capa necesita sus profundidades, su capa escrita como «0-10» o su espesor.</td></tr>
@@ -263,7 +270,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   </table>
 
   <h3>B.4 · Dasometría, crecimiento y diversidad (Bloques 2, 5 y 6)</h3>
-  <table class="compacta">
+  <table class="apx compacta">
     <tbody>
       <tr><td style="width:2.2in"><b>Ecuaciones de volumen</b> (2)</td><td>Gana el modelo con menor índice de Furnival, que compara modelos con y sin logaritmo. Si la dispersión de los residuales de los árboles grandes pasa de 1.8 veces la de los chicos, la app señala heterocedasticidad. Al menos 6 árboles.</td></tr>
       <tr><td><b>Relación altura–diámetro</b> (2)</td><td>Al menos 6 árboles con altura medida.</td></tr>
@@ -277,7 +284,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   </table>
 
   <h3>B.5 · Agroforestería, mapas y utilidades (Bloques 7, 8 y 9)</h3>
-  <table class="compacta">
+  <table class="apx compacta">
     <tbody>
       <tr><td style="width:2.2in"><b>Cobertura de copas</b> (7)</td><td>Con traslape aleatorio, C = 1 − exp(−Σ<i>a</i>/A); necesita el diámetro de copa. El umbral de la fotografía, si se deja vacío, es el de Otsu.</td></tr>
       <tr><td><b>Sombra y rendimiento</b> (7)</td><td>Al menos 5 parcelas. La sombra óptima sólo se informa si la curva tiene máximo; la curvatura cuenta como significativa con <i>p</i> &lt; 0.05.</td></tr>
@@ -294,7 +301,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   <!-- ================================================================= C -->
   <h2 id="ap-c"><span class="num">C</span>Glosario</h2>
   <p>Los términos forestales que usa el manual, con el sentido en que los usa la app.</p>
-  <table class="compacta">
+  <table class="apx compacta">
     <thead><tr><th style="width:1.65in">Término</th><th>Significado</th></tr></thead>
     <tbody>
       <tr><td><b>Aclareo</b></td><td>Corta de una parte de los árboles de un rodal para que los que quedan crezcan mejor; precomercial si la madera no se vende.</td></tr>
@@ -356,7 +363,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   <!-- ================================================================= D -->
   <h2 id="ap-d"><span class="num">D</span>Cuando algo no sale</h2>
   <p>Los mensajes de la app, tal como aparecen, con lo que suelen querer decir y qué hacer. Los puntos suspensivos son la parte del mensaje que cambia (un nombre, un número).</p>
-  <table class="compacta">
+  <table class="apx compacta">
     <thead><tr><th style="width:2.6in">Mensaje</th><th>Qué pasa y qué hacer</th></tr></thead>
     <tbody>
       <tr><td colspan="2"><b>Archivos y tarjetas de datos</b></td></tr>
@@ -378,15 +385,19 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
       <tr><td>«El diseño estratificado necesita al menos 2 estratos con superficie y 2 parcelas cada uno.»</td><td>Falta la superficie de los estratos o hay estratos con una sola parcela.</td></tr>
       <tr><td>«El diseño en conglomerados necesita la columna de conglomerado en las parcelas.»</td><td>Carga la tabla de parcelas con su columna de conglomerado.</td></tr>
       <tr><td>«Hacen falta al menos 10 árboles vivos.»</td><td>La estructura del rodal necesita diez árboles vivos.</td></tr>
-      <tr><td>«La ubicación de la Weibull de 3 parámetros quedó pegada al diámetro mínimo…»</td><td>Con una forma menor que 1, la Weibull de tres parámetros no tiene solución interior; usa la de dos.</td></tr>
+      <tr><td>«La ubicación de la Weibull de 3 parámetros quedó pegada al diámetro mínimo (a = … cm): con forma menor que 1 la verosimilitud no tiene máximo interior. Usa la de 2 parámetros.»</td><td>Usa la de dos parámetros; si hubo un diámetro mínimo de medición, escríbelo en <span class="ui">DAP mínimo medido (cm)</span>.</td></tr>
+      <tr><td>«La ubicación de la Weibull de 3 parámetros quedó en el borde: a = … cm, a … cm del menor diámetro. …»</td><td>El modelo de tres parámetros no se distingue de uno de dos que empieza en el mínimo; usa la de dos parámetros truncada en el DAP mínimo medido.</td></tr>
+      <tr><td>«La ubicación de la Weibull de 3 parámetros quedó en 0: el modelo se reduce al de 2 parámetros.»</td><td>Sólo informa; el resultado es el de la Weibull de dos parámetros.</td></tr>
       <tr><td colspan="2"><b>Biomasa, crecimiento y diversidad (Bloques 4 a 6)</b></td></tr>
       <tr><td>«Todavía no hay inventario: carga uno en el Bloque 3 o un ejemplo aquí.»</td><td>Carga el inventario en el Bloque 3 o un ejemplo del bloque.</td></tr>
-      <tr><td>«No se pudo leer la base: …»</td><td>El archivo de la base mundial no tiene las columnas de especie y densidad («No se encontraron las columnas de especie y densidad.») o no se pudo abrir.</td></tr>
+      <tr><td>«No se pudo leer la base: …»</td><td>El archivo de la base mundial no tiene las columnas de especie y densidad («No se encontraron las columnas de especie y densidad.»), es un libro viejo («es un libro del formato viejo (.xls); guárdalo como .xlsx o .csv.») o no se pudo abrir.</td></tr>
       <tr><td>«… especies no están en la tabla ni a nivel de género (…): reciben la media de su parcela.»</td><td>Agrega esas especies a la tabla de densidades si conoces su densidad.</td></tr>
       <tr><td>«… árboles no tienen lo que pide su ecuación (…) y no suman biomasa.»</td><td>A esos árboles les falta la altura, la densidad u otra variable de su ecuación. Estima las alturas o cambia de ecuación.</td></tr>
       <tr><td>«Primero calcula la biomasa del inventario.»</td><td>El Monte Carlo necesita la biomasa calculada.</td></tr>
+      <tr><td>«No entran en el balance porque vienen de otro sitio que el inventario (…): …. Carga en esa tarjeta los datos del mismo sitio.»</td><td>Una tarjeta de reservorios tiene el ejemplo o el archivo de otro sitio; el balance sólo suma datos de un sitio.</td></tr>
       <tr><td>«Ninguna capa tiene profundidades: …»</td><td>Cada capa del suelo necesita sus profundidades, su capa escrita como «0-10» o su espesor.</td></tr>
       <tr><td>«Hacen falta al menos 5 edades.» · «… 6 pares de remediciones.»</td><td>Los modelos de crecimiento y la proyección necesitan más mediciones.</td></tr>
+      <tr><td>«El índice de sitio que escribiste (… m) era para una edad base de … años y ahora la edad base es de …: …»</td><td>Cambiaste la edad base después de escribir el índice de sitio de la proyección; revísalo o bórralo para que la app proponga la mediana de las parcelas.</td></tr>
       <tr><td>«No se pudo ajustar la familia de curvas (hacen falta remediciones de las mismas parcelas para las polimórficas).»</td><td>Las curvas polimórficas piden parcelas medidas dos veces o más; usa las anamórficas.</td></tr>
       <tr><td>«La proyección necesita el área basal y el volumen por hectárea de las remediciones y el índice de sitio de cada parcela.»</td><td>Carga las remediciones con <code>g_ha</code> y <code>v_ha</code> y calcula antes el índice de sitio.</td></tr>
       <tr><td>«Hacen falta al menos 3 sitios.» · «Hacen falta al menos 10 árboles.»</td><td>La similitud necesita tres sitios; el patrón espacial, diez árboles.</td></tr>
@@ -423,7 +434,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
   <h3>E.1 · Qué es y qué no es</h3>
   <p>ForestPro está escrito para este programa: las rutinas numéricas, el ajuste de modelos no lineales, los estimadores de muestreo, la biomasa y su incertidumbre, los índices de diversidad, el variograma y el kriging, el lector de CSV, XLSX y ODS, los escritores de XLSX y ZIP, las figuras, el mapa, el informe y las ilustraciones están en su propio código, que se puede leer. No usa bibliotecas de terceros, no tiene código minificado ni pasos de compilación, no trae tipografías (usa las letras del equipo) y no carga nada de la red: por eso abre con doble clic y sin conexión. Los conjuntos de ejemplo del cafetal, del bosque mesófilo y de la plantación de pino son simulados con un guion propio; no son mediciones de ningún sitio.</p>
   <p>Implementa métodos publicados —ecuaciones alométricas, relaciones raíz/tallo, modelos de volumen, ahusamiento, altura–diámetro y crecimiento, estimadores de muestreo, índices de diversidad y de estructura, reglas de troza, fórmulas financieras—, cada uno citado a su fuente en el recuadro «Método y fuentes» de su tarjeta y en el apéndice F. Lo que viene de terceros es poco, y el archivo <code>LICENSES-TERCEROS.md</code> lo declara con el texto de sus licencias:</p>
-  <table class="compacta">
+  <table class="apx compacta">
     <thead><tr><th style="width:1.6in">Elemento</th><th style="width:1.9in">Origen</th><th>Situación</th></tr></thead>
     <tbody>
       <tr><td><b>Íconos de línea</b> del navegador, del estudio de figuras y de los efectos de la suite</td><td>El proyecto Lucide, versión 1.49.0; algunos derivan del proyecto Feather</td><td>Licencia ISC, y MIT los de Feather: permisivas y compatibles con la GPL. Se dibujan con un trazo más delgado, un cambio que la licencia permite.</td></tr>
@@ -506,7 +517,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Pearson, T. R. H., Brown, S. L. y Birdsey, R. A. (2007). <i>Measurement Guidelines for the Sequestration of Forest Carbon</i>. USDA Forest Service, GTR NRS-18.</li>
     <li>Réjou-Méchain, M. et al. (2017). BIOMASS: an R package for estimating above-ground biomass and its uncertainty in tropical forests. <i>Methods in Ecology and Evolution</i> 8:1163–1167.</li>
     <li>Van Wagner, C. E. (1968). The line intersect method in forest fuel sampling. <i>Forest Science</i> 14:20–26.</li>
-    <li>Welch, B. L. (1947). The generalization of «Student's» problem when several different population variances are involved. <i>Biometrika</i> 34:28–35.</li>
+    <li>Welch, B. L. (1947). The generalization of “Student’s” problem when several different population variances are involved. <i>Biometrika</i> 34:28–35.</li>
     <li>Zanne, A. E. et al. (2009). Data from: Towards a worldwide wood economics spectrum. Dryad, doi:10.5061/dryad.234.</li>
   </ul>
   <h3>F.4 · Bloque 5 · Crecimiento y rendimiento</h3>
@@ -533,7 +544,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Clark, P. J. y Evans, F. C. (1954). Distance to nearest neighbor as a measure of spatial relationships in populations. <i>Ecology</i> 35:445–453.</li>
     <li>Colwell, R. K., Mao, C. X. y Chang, J. (2004). Interpolating, extrapolating, and comparing incidence-based species accumulation curves. <i>Ecology</i> 85:2717–2727.</li>
     <li>de Leeuw, J. y Mair, P. (2009). Multidimensional scaling using majorization: SMACOF in R. <i>J. Stat. Softw.</i> 31(3).</li>
-    <li>Donnelly, K. P. (1978). Simulations to determine the variance and edge effect of total nearest neighbour distance. En <i>Simulation Methods in Archaeology</i>, pp. 91–95. Cambridge University Press.</li>
+    <li>Donnelly, K. P. (1978). Simulations to determine the variance and edge effect of total nearest neighbor distance. En <i>Simulation Methods in Archaeology</i>, pp. 91–95. Cambridge University Press.</li>
     <li>Fisher, R. A., Corbet, A. S. y Williams, C. B. (1943). The relation between the number of species and the number of individuals. <i>J. Anim. Ecol.</i> 12:42–58.</li>
     <li>Hill, M. O. (1973). Diversity and evenness: a unifying notation and its consequences. <i>Ecology</i> 54:427–432.</li>
     <li>Hurlbert, S. H. (1971). The nonconcept of species diversity. <i>Ecology</i> 52:577–586.</li>
@@ -543,7 +554,7 @@ P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
     <li>Ohser, J. (1983). On estimators for the reduced second moment measure of point processes. <i>Math. Operationsforsch. Statist.</i> 14:63–71.</li>
     <li>Pretzsch, H. (1996). Strukturvielfalt als Ergebnis waldbaulichen Handelns. <i>DVFFA, Sektion Ertragskunde</i>, pp. 134–154.</li>
     <li>Pretzsch, H. (2009). <i>Forest Dynamics, Growth and Yield</i>. Springer.</li>
-    <li>Ripley, B. D. (1977). Modelling spatial patterns. <i>J. R. Stat. Soc. B</i> 39:172–212.</li>
+    <li>Ripley, B. D. (1977). Modeling spatial patterns. <i>J. R. Stat. Soc. B</i> 39:172–212.</li>
     <li>Sokal, R. R. y Rohlf, F. J. (1962). The comparison of dendrograms by objective methods. <i>Taxon</i> 11:33–40.</li>
     <li>Souza, D. R. et al. (2003). Análise estrutural em floresta ombrófila densa de terra firme. <i>Revista Árvore</i> 27:75–83.</li>
   </ul>

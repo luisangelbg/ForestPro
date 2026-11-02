@@ -38,22 +38,19 @@
     <div class="marco"><img src="../img/b10-informe.png" alt="La tarjeta Informe con el título, el predio, el responsable, la fecha y la presentación escritos, las casillas de los bloques, los tres botones y el mensaje de la vista previa"></div>
     <figcaption><b>Figura 10.1.</b> La tarjeta <span class="ui">Informe</span> con sus campos llenos y <span class="ui">Vista previa</span> oprimida: «Informe con 4 bloques, 16 figuras y 20 tablas.» Entran los cuatro bloques con resultados (inventario, biomasa, agroforestería y utilidades); los otros cuatro siguen marcados, pero no aparecen porque no tienen nada que mostrar.</figcaption>
   </figure>
-  <div class="caja importante">
-    <div class="caja-t"><span class="ico">!</span>Las casillas van numeradas con uno menos</div>
-    <p>En <span class="ui">Bloques que entran</span> las casillas dicen «1. Dasometría», «2. Inventario y muestreo»… hasta «8. Utilidades forestales»: cada número es uno menos que el del bloque (Dasometría es el Bloque 2). El informe repite esa numeración en los títulos de sus secciones («2. Inventario y muestreo»), y la búsqueda (<code>Ctrl + K</code>) también. Guíate por el nombre, no por el número.</p>
-  </div>
+  <p>Las casillas llevan el número y el nombre de su bloque, de «2. Dasometría» a «9. Utilidades forestales», y el informe usa los mismos números en su contenido y en los títulos de sus secciones («3. Inventario y muestreo»).</p>
   <p>La nota de la tarjeta dice qué entra: «Entra lo que cada bloque muestra en este momento; un bloque sin resultados no aparece. Las figuras van con los colores del tema claro y con lo que hayas cambiado en el editor ✎.» Es decir, el informe es una fotografía de la pantalla: si cambias un control en un bloque y vuelves, el informe cambia. Tres botones:</p>
   <table class="compacta">
     <thead><tr><th style="width:2.3in">Botón</th><th>Qué hace</th></tr></thead>
     <tbody>
       <tr><td><span class="ui">Vista previa</span></td><td>Arma el informe y lo muestra debajo, en un recuadro con su propia barra de desplazamiento. El mensaje dice cuántos bloques, figuras y tablas entraron. La vista previa se rehace sola al volver al bloque o al cambiar de idioma.</td></tr>
       <tr><td><span class="ui">⤓ Descargar el informe (HTML)</span></td><td>Arma el informe y lo descarga como <code>forestpro_informe_&lt;predio&gt;.html</code>; con el cafetal, <code>forestpro_informe_cafetal_bajo_sombra_ejemplo.html</code>, de cerca de 1.6 MB.</td></tr>
-      <tr><td><span class="ui">Abrir para imprimir o guardar como PDF</span></td><td>Lo abre en una pestaña nueva, con su botón <span class="ui">Imprimir o guardar como PDF</span>. Si el navegador bloquea la ventana, la app lo dice: «El navegador bloqueó la ventana nueva: descarga el informe y ábrelo para imprimirlo.»</td></tr>
+      <tr><td><span class="ui">Abrir para imprimir o guardar como PDF</span></td><td>Lo abre en una pestaña nueva, con el botón <span class="ui">Imprimir o guardar como PDF</span> en una barra pegada arriba, que no sale en la impresión. Si el navegador bloquea la ventana, la app lo dice: «El navegador bloqueó la ventana nueva: descarga el informe y ábrelo para imprimirlo.»</td></tr>
     </tbody>
   </table>
   <figure class="w70">
     <div class="marco"><img src="../img/b10-vista.png" alt="La vista previa del informe: el logotipo, el título, el predio, el responsable y la fecha, el contenido con cuatro bloques, la presentación y el comienzo del resumen"></div>
-    <figcaption><b>Figura 10.2.</b> El principio del informe: la portada con el logotipo, «Inventario forestal y carbono», el predio, «Brigada de inventario · 1 de noviembre de 2026» y «Generado con ForestPro 1.0.0 · LABG»; el contenido; la presentación; y el resumen, con los mosaicos de cada bloque: 25 parcelas, 719 árboles y 10 especies en el inventario; 77.0 Mg/ha de biomasa aérea, 46.0 Mg C/ha de carbono y 168.5 Mg CO₂e/ha en la biomasa.</figcaption>
+    <figcaption><b>Figura 10.2.</b> El principio del informe: arriba, la barra con <span class="ui">Imprimir o guardar como PDF</span>, que sigue a la vista al desplazarse; la portada con el logotipo, «Inventario forestal y carbono», el predio, «Brigada de inventario · 1 de noviembre de 2026» y «Generado con ForestPro 1.0.0 · LABG»; el contenido, con el número de cada bloque; la presentación; y el resumen, con los mosaicos de cada bloque: 25 parcelas, 719 árboles y 10 especies en el inventario; 77.0 Mg/ha de biomasa aérea, 46.0 Mg C/ha de carbono y 168.5 Mg CO₂e/ha en los árboles, y el carbono del predio, 4,596 Mg C (de 3,534 a 5,659).</figcaption>
   </figure>
   <h3>Lo que trae el informe</h3>
   <table class="compacta">
@@ -63,7 +60,7 @@
       <tr><td><b>Contenido</b></td><td>Los bloques que entraron, con enlaces; sólo si son dos o más.</td></tr>
       <tr><td><b>Presentación</b></td><td>El texto de <span class="ui">Presentación o notas (opcional)</span>, si escribiste algo.</td></tr>
       <tr><td><b>Resumen</b></td><td>Los primeros mosaicos de cada bloque: los pocos números que importan, juntos.</td></tr>
-      <tr><td><b>Una sección por bloque</b></td><td>Los datos que se usaron (el nombre de cada conjunto cargado y su número de filas) y, tarjeta por tarjeta, sus mosaicos, figuras, tablas, interpretaciones, avisos y métodos. Una tarjeta sin resultados no aparece. Con el cafetal y el pino entran 19 tarjetas.</td></tr>
+      <tr><td><b>Una sección por bloque</b></td><td>Los datos que se usaron (el nombre de cada conjunto cargado y su número de filas) y, tarjeta por tarjeta, sus mosaicos, figuras, tablas, interpretaciones, avisos y métodos. Una tarjeta sin resultados no aparece. Con el cafetal y el pino entran 19 tarjetas; en la del Bloque 4, el carbono total del sistema, con los reservorios que el bloque tiene cargados, es de 47.6 ± 10.8 Mg C/ha (174.4 Mg CO₂e/ha).</td></tr>
       <tr><td><b>Cómo citar ForestPro</b></td><td>La cita en APA y en BibTeX (sección 10.4).</td></tr>
       <tr><td><b>Pie</b></td><td>Una nota que dice que los cálculos se hicieron en el navegador y que los datos no salieron del equipo.</td></tr>
     </tbody>

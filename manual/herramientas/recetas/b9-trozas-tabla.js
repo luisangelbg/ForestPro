@@ -1,5 +1,5 @@
-// ventana 1700x1000
-/* Capítulo 9: la tabla «Volumen por troza» de las 12 trozas de pino (ventana ancha para que quepan sus diez columnas) */
+// ventana 1400x1000
+/* Capítulo 9: la tabla «Volumen por troza» de las 12 trozas de pino */
 (async () => {
   await bloque(9, 'pino');
   const t = tarjeta(9, L('Cubicación de trozas', 'Log scaling'));

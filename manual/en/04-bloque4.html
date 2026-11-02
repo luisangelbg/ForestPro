@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-4" data-pestana="4" data-orden="4" style="--acento: var(--b4)">
+  <div class="cap-apertura">
+    <div class="cap-num">4</div>
+    <div class="cap-etiqueta">Chapter four · Block 4</div>
+    <h1 data-corto="Biomass and carbon">Biomass and carbon</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">The step from the inventory to tonnes: the biomass of each tree from the allometric equation that applies to it and the density of its wood, expanded to the hectare with the factors of Block 3 and converted to carbon and CO₂ equivalent. Every figure comes with its uncertainty —that of sampling and, with the Monte Carlo, that of the measurements and the equation—, and the block adds the other pools (necromass, litter, soil) and measures the change between two inventories.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k4"></span><span class="k4"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>4.1</b>Data and equations</li>
+      <li><b>4.2</b>Wood density</li>
+      <li><b>4.3</b>Biomass and carbon of the inventory</li>
+      <li><b>4.4</b>Uncertainty by Monte Carlo</li>
+      <li><b>4.5</b>Necromass, litter and soil</li>
+      <li><b>4.6</b>Pools and change between inventories</li>
+    </ul>
+  </div>
+
+  <p>Block 4 carries the subtitle “Allometric equations, wood density, above- and belowground biomass, necromass, carbon and CO₂e with their uncertainty.” It works on the inventory of Block 3: the trees with their plot, their diameter, their height and their expansion factor. There is no need to load it again; if you already opened an inventory there, just enter the block and click <span class="ui">Use the Block 3 inventory</span>. The block’s own four data cards —downed wood, litter, soil and change in stocks— are independent of the inventory, and each is loaded on its own.</p>
+  <p>The examples of this chapter are the <b>example shaded coffee farm</b> (25 plots of 1,000 m², 719 shade trees), opened with the <span class="ui">Open in Biomass</span> button of its card in <span class="ruta">Block 1<span class="sep">›</span>Example data</span>; the <b>example cloud forest</b> for downed wood, and the <b>example pine plantation</b> for the change between two measurements (Section I.7). All are simulated.</p>
+
+  <!-- 4.1 -->
+  <h2 id="s4-1"><span class="num">4.1</span>Data and equations</h2>
+  <p class="lead">The first card decides where the trees come from and which equation computes each one. Everything else in the block depends on these choices: when you change any of them, the app recomputes the biomass, the tables and the pools.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b4-datos.png" alt="The Data and equations card with the example coffee farm, its controls and the three equation rules">
+      <span class="marca" style="left:1.7%;top:12.6%">1</span>
+      <span class="marca" style="left:1.9%;top:22%">2</span>
+      <span class="marca" style="left:73.2%;top:20.9%">3</span>
+      <span class="marca" style="left:1.9%;top:32.1%">4</span>
+      <span class="marca" style="left:49.4%;top:30.9%">5</span>
+      <span class="marca" style="left:73.2%;top:31.9%">6</span>
+      <span class="marca" style="left:1.9%;top:41%">7</span>
+      <span class="marca" style="left:1.7%;top:50.9%">8</span>
+      <span class="marca" style="left:1.7%;top:79.3%">9</span>
+      <span class="marca" style="left:1.8%;top:96.5%">10</span>
+    </div>
+    <figcaption><b>Figure 4.1.</b> <span class="ui">Data and equations</span> with the example coffee farm: 25 plots and 719 trees, the pantropical equation of Chave et al. (2014) by default, the root:shoot ratio of tropical mountain systems and three rules specific to the coffee farm.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Source of the trees.</b> The list chooses between <span class="ui">Shaded coffee farm</span> and <span class="ui">Cloud forest</span>; <span class="ui">Load example</span> opens that inventory (and its settings) and <span class="ui">Use the Block 3 inventory</span> takes the one already loaded. Below, the status line gives the name, the plots and the trees.</li>
+    <li><span class="n">2</span><b><span class="ui">Default equation</span>.</b> The one applied to every tree without a rule of its own.</li>
+    <li><span class="n">3</span><b><span class="ui">E (environmental stress, if the equation asks for it)</span>.</b> Only eq. 7 of Chave et al. (2014), without height, uses it.</li>
+    <li><span class="n">4</span><b><span class="ui">Root biomass</span>.</b> The IPCC (2006) ecological zone, Cairns et al. (1997) or a constant ratio.</li>
+    <li><span class="n">5</span><b><span class="ui">Root:shoot ratio (if constant)</span>.</b> 0.24 by default; it only counts with <span class="ui">Constant ratio</span>.</li>
+    <li><span class="n">6</span><b><span class="ui">Carbon fraction</span>.</b> 0.47 by default.</li>
+    <li><span class="n">7</span><b><span class="ui">Fraction left in standing dead</span>.</b> From 0 to 1; 1 by default.</li>
+    <li><span class="n">8</span><b><span class="ui">Rules: equation by species or genus</span>.</b> An editable table of exceptions.</li>
+    <li><span class="n">9</span><b><span class="ui">Your equations</span>.</b> Local equations with their form and coefficients.</li>
+    <li><span class="n">10</span><b><span class="ui">See the catalog of equations (31)</span>.</b> The equations included, with their source.</li>
+  </ul>
+
+  <h3>Where the trees come from</h3>
+  <p>The block has no data card for the trees: it takes them from Block 3, with everything computed there —the expansion factor of each tree according to the size of its plot, the heights estimated with Näslund’s curve if requested, the stratum and the area of the property—. If there is no inventory yet, <span class="ui">Use the Block 3 inventory</span> says so: “There is no inventory yet: load one in Block 3 or an example here.” <span class="ui">Load example</span> opens the example inventory as Block 3 would and, along the way, sets the equation, the root zone and the rules that example needs; thus, for the coffee farm, you get the three rules of Figure 4.1.</p>
+  <p>From the inventory, each equation uses what it asks for: the diameter at breast height (DBH, in cm) always; total height (m) the equations “with height”; basic wood density (ρ, g/cm³) almost all the pantropical ones, which the app looks up in the table of Section 4.2, and the diameter 15 cm above the ground (d₁₅) the coffee-shrub equation. A tree that lacks what its equation needs adds no biomass, and the app says so with a warning that names what was missing.</p>
+
+  <h3>The equation of each tree</h3>
+  <p>The <span class="ui">Default equation</span> list groups the 31 equations of the catalog by where they were fitted (Table 4.1). With <span class="ui">Rules: equation by species or genus</span> you give certain trees another equation: in the <span class="ui">Species or genus</span> column you type a species (“Cordia alliodora”) or a genus (“Inga”) and in <span class="ui">Equation</span> you choose its equation; <span class="ui">+ Add row</span> adds a rule and <span class="ui">×</span> removes it. The lookup ignores case and, as the card itself says, “A species rule wins over a genus rule.”</p>
+
+  <table class="compacta">
+    <caption><b>Table 4.1.</b> The groups of the equation list</caption>
+    <thead><tr><th style="width:2.2in">Group</th><th class="num" style="width:0.6in">Equations</th><th>What is there</th></tr></thead>
+    <tbody>
+      <tr><td>Pantropical</td><td class="num">2</td><td>Chave et al. (2014): eq. 4, with height, and eq. 7, without height and with E</td></tr>
+      <tr><td>Dry tropics · Moist tropics · Wet tropics</td><td class="num">3 + 3 + 3</td><td>Chave et al. (2005) with and without height, and Brown (1997), by forest type</td></tr>
+      <tr><td>Agroforestry (coffee and shade)</td><td class="num">7</td><td>Segura et al. (2006) for shade trees in general, <i>Inga</i>, <i>Cordia alliodora</i>, <i>Juglans olanchana</i> and the coffee shrub; van Noordwijk et al. (2002) for pruned coffee and banana</td></tr>
+      <tr><td>Pines</td><td class="num">3</td><td>Brown (1997), Díaz-Franco et al. (2007) and Figueroa-Navarro et al. (2010), the last two for <i>Pinus patula</i></td></tr>
+      <tr><td>Temperate (by species groups)</td><td class="num">10</td><td>Jenkins et al. (2003), one per species group</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="ui">See the catalog of equations (31)</span> unfolds the full table: the name, the <span class="ui">Form (AGB in kg)</span>, the <span class="ui">Variables</span> it needs, the residual error <span class="ui">σ (ln)</span> when the source publishes it, the <span class="ui">Valid DBH (cm)</span> and the <span class="ui">Source</span>; <span class="ui">⤓ CSV</span> or <span class="ui">⤓ XLSX</span> downloads it. The number in parentheses grows when you add equations of your own.</p>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · allometric equations</div>
+    <p>An allometric equation estimates the dry aboveground biomass of a tree (AGB, in kg) from what is measured without felling it. The most general are the pantropical equations of Chave et al. (2014): eq. 4, AGB = 0.0673 · (ρD²H)<sup>0.976</sup>, uses diameter, height and density; eq. 7 does without height and replaces it with E, an index of the environmental stress of the site. Local equations leave density out because they were fitted to a single group of trees. Each equation holds in the range of diameters it was fitted on; outside it is extrapolation, and the app counts how many trees fall there (Section 4.3). The equations of Chave et al. already include the correction for the bias of back-transforming from the log scale, and the app uses them as published.</p>
+  </div>
+
+  <h3>Roots, carbon and dead trees</h3>
+  <p>Root biomass (BGB) is not measured: it is estimated from the aboveground biomass of each plot. <span class="ui">Root biomass</span> offers three routes:</p>
+  <ul>
+    <li><b>The root:shoot ratios of Table 4.4 of IPCC (2006)</b>, one option per ecological zone, from <span class="ui">IPCC 2006: Tropical rain forest</span> to <span class="ui">IPCC 2006: Boreal</span>. In some zones the ratio depends on the aboveground biomass of the plot, and the app chooses it plot by plot. The coffee farm and the cloud forest use <span class="ui">IPCC 2006: Tropical mountain systems</span>, with a ratio of 0.27 in all their plots.</li>
+    <li><span class="ui">Cairns et al. 1997 (per hectare)</span>: eq. 3 of those authors, applied to the aboveground biomass per hectare of each plot. With the example coffee farm it gives 92.9 Mg/ha of total biomass, against 97.8 Mg/ha with the IPCC ratio.</li>
+    <li><span class="ui">Constant ratio</span>: that of <span class="ui">Root:shoot ratio (if constant)</span>, the same for all plots.</li>
+  </ul>
+  <p>Carbon is biomass times the <span class="ui">Carbon fraction</span>: 0.47 by default, the default value of Table 4.3 of IPCC (2006). CO₂ equivalent is carbon times 44/12, the ratio of the molar masses of CO₂ and carbon. Trees the inventory marks as standing dead are computed with their same equation, multiplied by the <span class="ui">Fraction left in standing dead</span> (with 1 the tree keeps all its biomass; with 0.5, half), and do not add to the live trees: they are reported separately as necromass.</p>
+
+  <h3>Your equations</h3>
+  <p>A local equation fitted in your region is usually better than a general one. In <span class="ui">Your equations</span>, <span class="ui">+ Add row</span> opens a row with <span class="ui">Name</span>, <span class="ui">Form</span> (the list of functional forms the app recognizes), the coefficients <span class="ui">a</span>, <span class="ui">b</span>, <span class="ui">c</span> and <span class="ui">d</span>, its residual error <span class="ui">σ (ln)</span> if you know it, the range <span class="ui">D min.</span> – <span class="ui">D max.</span> where it holds and the <span class="ui">Source</span>. The units are those of the catalog: the result in kg, D in cm, H in m and ρ in g/cm³. The equation appears at once in the <span class="ui">Your equations</span> group of the lists above and in the catalog; if you give it no name, it is called “My equation 1”, “My equation 2”…</p>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The equation weighs more than any other choice</div>
+    <p>With the same inventory, changing the equation moves the biomass far more than changing the carbon fraction or the root:shoot ratio. Choose the equation by the region and vegetation type where it was fitted, not by the figure it gives; record in the report which one you used for each species group, and if an important species of your inventory has a published equation of its own, give it to it with a rule, as the coffee farm does with <i>Inga</i>, <i>Cordia alliodora</i> and <i>Musa</i>.</p>
+  </div>
+
+  <!-- 4.2 -->
+  <h2 id="s4-2"><span class="num">4.2</span>Wood density</h2>
+  <p class="lead">Basic wood density —dry mass over green volume, in g/cm³— multiplies almost every pantropical equation: at equal diameter and height, a hardwood tree has more biomass than a lightwood one. This card tells you which density each species of the inventory receives and where it came from.</p>
+  <p>At the top is the editable reference table: <span class="ui">Species</span>, <span class="ui">Density (g/cm³)</span>, <span class="ui">Level</span> and <span class="ui">Source</span>. It holds 42 taxa, those of the examples, with values from the global wood density database (Zanne et al. 2009); <span class="ui">Level</span> says whether the value is the species’ own or the mean of its genus. You can correct a value, add your species with <span class="ui">+ Add row</span> or remove rows with <span class="ui">×</span>; each change recomputes the biomass. The reference table also opens with <span class="ui">Open in Biomass</span> on the <span class="ui">Densities and equations</span> card of <span class="ruta">Block 1<span class="sep">›</span>Example data</span>, which goes straight to it.</p>
+  <p>If you have the complete file of the global database, <span class="ui">Load the global database (GWDD file)…</span> reads it: CSV, text or a workbook (<code>.xlsx</code>, <code>.xlsm</code> or <code>.ods</code>; in a workbook, the <code>Data</code> sheet). An old-format <code>.xls</code> workbook is not read, and the app asks you to save it as <code>.xlsx</code> or <code>.csv</code>. The app looks for the species and density columns —and, if present, family and region— and reports how many records it loaded. With the database loaded, the <span class="ui">Region</span> list appears, which restricts the values to one region of the database or leaves them at <span class="ui">World</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b4-densidad.png" alt="The table Density given to each species of the inventory for the example coffee farm"></div>
+    <figcaption><b>Figure 4.2.</b> The density given to the ten species of the example coffee farm. <i>Inga vera</i> (212 trees) takes it from its species; <i>Inga jinicuil</i> and <i>Erythrina americana</i>, from their genus; <i>Musa</i> sp. is not in the table and receives the mean of its plot, although its equation does not use it.</figcaption>
+  </figure>
+
+  <h3>The search order</h3>
+  <p>For each tree, the app looks for its density in this order and keeps the first one it finds:</p>
+  <ol class="pasos">
+    <li><b>Your table</b>, by the exact species name. The level is whatever the table says.</li>
+    <li><b>The global database, if you loaded it</b>: the mean of the records of the species; if missing, the mean of the species means of the genus; if missing and the inventory carries the family, the mean of the genus means of the family.</li>
+    <li><b>The plot mean</b>: the average density of the other trees of the same plot.</li>
+    <li><b>The inventory mean</b>, if not even that exists.</li>
+  </ol>
+  <p>Without the global database, step 2 runs on your own table: a tree of a species that is missing, but whose genus is present, receives the mean of its genus. The result table, <span class="ui">Density given to each species of the inventory</span>, shows for each species the <span class="ui">Trees</span>, the <span class="ui">Density (g/cm³)</span>, the <span class="ui">Level</span> at which it was found (<span class="ui">species</span>, <span class="ui">genus</span>, <span class="ui">family</span>, <span class="ui">plot mean</span> or <span class="ui">inventory mean</span>) and the <span class="ui">SD for the Monte Carlo</span>: 0.071 g/cm³ if the value is the species’, 0.094 if it is the genus’ and 0.123 if it is the family’s, as in the reference implementation, and one of its own at the plot and inventory levels (0.110 for <i>Musa</i> sp. in Figure 4.2).</p>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Example · a missing species</div>
+    <p>In the example cloud forest, <i>Cyathea fulva</i> (64 trees) is not in the table even at genus level, and its equation —the pantropical one— does use density. The app warns: “1 species are not in the table even at genus level (Cyathea fulva): they get the mean of their plot. Add them to the table if you know their density.” The warning appears only when the equation of those species uses density; that is why <i>Musa</i> sp., in the coffee farm, does not trigger it.</p>
+  </div>
+
+  <!-- 4.3 -->
+  <h2 id="s4-3"><span class="num">4.3</span>Biomass and carbon of the inventory</h2>
+  <p class="lead">“Per tree, per plot and for the whole property, with the sampling interval.” This card has no controls: it fills in as soon as there is an inventory and is redone with each change in the two previous ones.</p>
+  <p>Each live tree contributes its aboveground biomass times its expansion factor; the sum of a plot, divided by a thousand, is its megagrams per hectare (1 Mg = 1 t). Roots are added to that aboveground biomass, and the sum is total biomass, which is converted to carbon and CO₂e. The mean of the property and its interval are computed with the plots as sampling units, with the same estimator as Block 3: stratified when the plots carry their stratum with an area, simple random otherwise.</p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/b4-resultados.png" alt="The biomass, carbon and CO2e tiles of the example coffee farm and the charts of biomass by plot and by species"></div>
+    <figcaption><b>Figure 4.3.</b> The example coffee farm: 77.0 Mg/ha of aboveground biomass, 97.8 with roots, 46.0 Mg C/ha and 168.5 Mg CO₂e/ha, all with ±23.1%; 4,596 Mg C in the property and 35 trees outside the range of their equation. On the left, each plot with its aboveground part and its roots; on the right, the species that contribute the most biomass.</figcaption>
+  </figure>
+
+  <p>The tiles read, from left to right:</p>
+  <ul>
+    <li><span class="ui">Aboveground biomass</span>, <span class="ui">Total biomass (with roots)</span>, <span class="ui">Carbon</span> and <span class="ui">CO₂ equivalent</span>, per hectare, each with the half-width of its 95% interval and the sampling error as a percentage. Since carbon and CO₂e are biomass times constants, all four share the same relative error.</li>
+    <li><span class="ui">Carbon of the property</span>: carbon per hectare times the property area given in Block 3, with its interval. Without an area, the tile does not appear.</li>
+    <li><span class="ui">Outside the range of the equation</span>, in amber: how many live trees have a diameter outside the one their equation holds for, and what percentage they are. In the coffee farm there are 35 (5%): 16 <i>Cordia alliodora</i>, 10 <i>Inga vera</i>, 8 <i>Inga jinicuil</i> and one banana, nearly all trees thicker than the 44 cm up to which the equations of Segura et al. (2006) hold.</li>
+  </ul>
+  <p>Below come three charts —<span class="ui">Biomass by plot</span>, stacked into aboveground and roots and sorted from largest to smallest; <span class="ui">Aboveground biomass by species</span>, with the first ten and the rest as “Others”, and <span class="ui">Biomass of each tree by its equation</span> (Figure 4.4)— and two tables. <span class="ui">By plot</span> gives for each plot its stratum, the <span class="ui">Aboveground (Mg/ha)</span> and <span class="ui">Roots (Mg/ha)</span> biomass, the <span class="ui">Root:shoot</span> used, the <span class="ui">Carbon (Mg C/ha)</span>, the <span class="ui">CO₂e (Mg/ha)</span> and the <span class="ui">Standing dead (Mg/ha)</span>; in the coffee farm, plot P01 has 97.2 Mg/ha of aboveground biomass, 26.2 of roots and 58.0 Mg C/ha. <span class="ui">Tree by tree</span> shows the first 40 trees with their <span class="ui">DBH (cm)</span>, <span class="ui">Height (m)</span>, <span class="ui">ρ (g/cm³)</span>, <span class="ui">Equation</span>, <span class="ui">AGB (kg)</span>, <span class="ui">Expansion factor</span> and whether it is <span class="ui">Alive</span>; the download carries them all.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b4-arboles.png" alt="Log-scale chart of the biomass of each coffee-farm tree against its diameter, colored by equation"></div>
+    <figcaption><b>Figure 4.4.</b> The biomass of each coffee-farm tree against its diameter, on logarithmic axes, with one color per equation. The equations that use diameter alone (<i>Inga</i>, <i>Cordia</i>, banana) draw straight lines; the pantropical one, which also uses height and density, leaves a cloud.</figcaption>
+  </figure>
+  <p>Figure 4.4 lets you check the equations at a glance: a group of points far from the rest at the same diameter points to an equation that does not suit those species, or to a wrong unit.</p>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Worked example · the carbon of the coffee farm</div>
+    <p>The interpretation of the card sums it up like this: “The property holds 46.0 ± 10.6 Mg C/ha (168.5 Mg CO₂e/ha) in its live trees, with roots. <i>Inga vera</i> contributes 32 % of the aboveground biomass.” It also reminds you that the interval reflects sampling only, and that 35 trees fall outside the diameter range of their equation. With the example cloud forest (24 plots, 1,830 trees) the figures are different: 213.6 Mg/ha of aboveground biomass, 127.5 ± 26.5 Mg C/ha and 145 trees (8%) out of range; there, the species that contributes most is <i>Liquidambar styraciflua</i>, with 15%.</p>
+  </div>
+
+  <!-- 4.4 -->
+  <h2 id="s4-4"><span class="num">4.4</span>Uncertainty by Monte Carlo</h2>
+  <p class="lead">The interval of the previous section only says how much the mean could change if other plots had been measured. It says nothing about the errors in measuring diameters and heights, about a density borrowed from another species, or about how wrong the equation is tree by tree. This card propagates them by simulation.</p>
+  <p>The method repeats the whole biomass computation hundreds of times; in each repetition it perturbs the diameter, height and density of each tree by its error, and the biomass by the residual error of its equation. The spread of the results is the uncertainty of the measurements and the model. The controls:</p>
+  <ul>
+    <li><span class="ui">Iterations</span>: 500, 1000 (default), 2000 or 5000.</li>
+    <li><span class="ui">Diameter error</span>: <span class="ui">Chave et al. 2004 (95 % small, 5 % large)</span>, those authors’ model of measurement errors —a standard deviation of 0.0062·D + 0.0904 cm for 95% of the trees and of 4.64 cm for a random 5%, which represents gross recording errors—; or a fixed coefficient of variation, <span class="ui">CV 1 %</span> or <span class="ui">CV 2 %</span>; or <span class="ui">No error</span>.</li>
+    <li><span class="ui">Error of measured height (CV %)</span>, 5 by default, and <span class="ui">Error of estimated height (CV %)</span>, 15 by default, for the heights Block 3 filled in with a height–diameter curve.</li>
+    <li><span class="ui">Residual error of the equation</span>, checked by default: adds the error of each equation that publishes its σ on the log scale.</li>
+  </ul>
+  <p>The computation starts with <span class="ui">Run the Monte Carlo</span>, which first needs the biomass of the inventory. The app uses a fixed seed, so with the same data and options, repeating the run gives the same numbers.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b4-montecarlo.png" alt="The Uncertainty by Monte Carlo card for the example coffee farm with its controls, four tiles and the histogram of the mean biomass"></div>
+    <figcaption><b>Figure 4.5.</b> The Monte Carlo of the example coffee farm with the default values: 77.1 Mg/ha (74.8 – 79.5), ±2.3 Mg/ha from measurements and equations against ±17.8 Mg/ha from sampling. The combined uncertainty, ±17.9 Mg/ha (23.3%), shows in red because it exceeds 20%.</figcaption>
+  </figure>
+
+  <p>The four tiles are the <span class="ui">Aboveground biomass (Monte Carlo)</span> with its 95% interval (the 2.5 and 97.5 percentiles of the iterations); <span class="ui">Measurements and equation</span>, the half-width of that interval; <span class="ui">Sampling</span>, that of Section 4.3, and <span class="ui">Combined total</span>, the two added in quadrature —the square root of the sum of their squares—, as in approach 1 of propagation of IPCC (2006). The border of the last one is green if the combined uncertainty is below 10% of the mean, amber between 10 and 20% and red from 20% up. The histogram shows the distribution of the mean biomass of the property over the iterations, with the interval in dashed lines and the direct computation in a solid line, and the table <span class="ui">By plot (Monte Carlo)</span> gives for each plot the <span class="ui">Direct (Mg/ha)</span> value, the <span class="ui">MC mean (Mg/ha)</span>, its <span class="ui">SD</span>, the <span class="ui">2.5 %</span> and <span class="ui">97.5 %</span> percentiles and the <span class="ui">CV (%)</span>.</p>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · why the mean barely moves</div>
+    <p>The published equations already predict mean biomass: their intercept includes the exp(σ²/2) log correction. That is why the residual noise is drawn as exp(ε − σ²/2), with mean one, and the Monte Carlo mean stays very close to the direct computation (in the coffee farm, 0.2% above): only the curvature of the equation and the bounds of the errors move it. Diameters are drawn from a normal truncated between 0.1 and 500 cm, heights between 1.3 m and the maximum plus 15 m, and densities between 0.08 and 1.39 g/cm³. Unlike the reference implementation, the app does not draw the coefficients of the equation, because the sources do not publish their distribution; in the pantropical equations, the residual error dominates.</p>
+  </div>
+
+  <p>The interpretation ends by saying which source of error dominates. In the coffee farm, “Sampling dominates: more plots would cut the error more than better measurements.” When measurements and equation dominate, the app recommends a local equation or better heights instead.</p>
+
+  <!-- 4.5 -->
+  <h2 id="s4-5"><span class="num">4.5</span>Necromass, litter and soil</h2>
+  <p class="lead">“The other carbon pools, each with its own table.” Live trees are not all the carbon of a forest or a coffee farm: deadwood on the ground, litter and, above all, the soil hold as much again or more. Each is sampled in its own way, and that is why each has its own data card.</p>
+
+  <h3>Downed wood (line intersect)</h3>
+  <p>Downed wood is measured by line intersect: transects of known length are laid out and the diameter of each piece is measured where the line crosses it. The card asks for <span class="ui">Transect</span>*, <span class="ui">Length (m)</span>* and <span class="ui">Diameter at the crossing (cm)</span>*, and, optionally, the <span class="ui">Decay class (1–3)</span>; a piece without a class counts as intermediate. Above, three fields give the density of each class: <span class="ui">Density class 1, sound (g/cm³)</span>, 0.45 by default; <span class="ui">Class 2, intermediate</span>, 0.34, and <span class="ui">Class 3, rotten</span>, 0.23. They are only a starting point: the right thing is to measure them at your site.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b4-madera.png" alt="The Downed wood section with the densities by class, the data card of the cloud forest and three tiles"></div>
+    <figcaption><b>Figure 4.6.</b> The downed wood of the example cloud forest: 12 transects of 30 m with 167 pieces give 149.2 m³/ha, 53.8 ± 9.3 Mg/ha and 25.3 Mg C/ha.</figcaption>
+  </figure>
+  <p>The volume per hectare of each transect comes from Van Wagner’s (1968) formula, V = π²·Σd²/(8L), which with d in cm and L in m gives m³/ha directly; mass is the volume of each piece times the density of its class. The tiles give the <span class="ui">Volume of downed wood</span>, the <span class="ui">Mass</span> with its interval (the transects are the sampling units) and the <span class="ui">Carbon</span>, with the carbon fraction of Section 4.1; the table <span class="ui">By transect</span> gives for each one its length, the <span class="ui">Pieces</span>, <span class="ui">V (m³/ha)</span> and <span class="ui">Mass (Mg/ha)</span>. In the example cloud forest, transect T01 crosses 20 pieces and gives 199.6 m³/ha.</p>
+
+  <h3>Litter and soil organic carbon</h3>
+  <p>Litter is collected in frames of known area and weighed dry. The card asks for <span class="ui">Plot</span>*, <span class="ui">Dry weight (g)</span>* and <span class="ui">Frame area (m²)</span>*; the mass in Mg/ha is the dry weight in grams over the frame area in m², times 0.01. The tiles give the <span class="ui">Litter</span> with its interval and its <span class="ui">Carbon</span>.</p>
+  <p>Soil organic carbon is computed layer by layer: Mg C/ha = C % × bulk density (g/cm³) × thickness (cm) × (1 − coarse fragments/100), and the layers of each profile are added. The card asks for <span class="ui">Plot or profile</span>*, <span class="ui">Organic carbon (%)</span>* and <span class="ui">Bulk density (g/cm³)</span>*, and the limits of each layer in one of three ways: <span class="ui">Upper depth (cm)</span> and <span class="ui">Lower depth (cm)</span>; or the <span class="ui">Layer (e.g. “0-10”), if there are no depths</span>; or the <span class="ui">Thickness (cm), if there are no depths or layer</span>, and then the layers of each profile are stacked from the surface in the order they come. Optional: <span class="ui">Coarse fragments (%)</span>, <span class="ui">System or group (optional)</span> and <span class="ui">Year (optional)</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b4-suelo.png" alt="The litter and soil organic carbon cards of the example coffee farm with their tiles"></div>
+    <figcaption><b>Figure 4.7.</b> The litter of the example coffee farm (one 0.25 m² frame per plot): 7.41 ± 0.86 Mg/ha and 3.48 Mg C/ha. The soil, with three layers from 0 to 30 cm in each of the 25 plots: 87.5 ± 3.2 Mg C/ha.</figcaption>
+  </figure>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>SoilPro’s soil tables</div>
+    <p>The soil card reads the layer format of SoilPro, the soil app of the suite: system, year, replicate, layer written as “0-10” or thickness, organic carbon, bulk density and coarse fragments; its column names are among the synonyms the card recognizes. If the table carries several systems or years, a <span class="ui">System or group</span> list appears to choose which one is computed, one at a time. If no layer has limits, the app says so: “No layer has depths: the upper and lower depths, the layer written as “0-10” or the thickness are needed.”</p>
+  </div>
+  <p>Always compare soil pools at the same depth: the tile states it (“0–30 cm”), and a soil sampled to 0–20 cm can be neither added to nor compared with another to 0–30 cm. The table <span class="ui">By profile</span> gives the carbon of each plot or profile.</p>
+
+  <!-- 4.6 -->
+  <h2 id="s4-6"><span class="num">4.6</span>Pools and change between inventories</h2>
+  <p class="lead">“The carbon of every pool with its error, and how much it changed between two measurements.” The last card gathers what the block computed into a single balance and, with a separate table, measures the change in stocks over time.</p>
+
+  <h3>The pool balance</h3>
+  <p>The summary brings together, in Mg C/ha, whatever pools there are: <span class="ui">Live trees: aboveground</span> and <span class="ui">Live trees: roots</span> (from Section 4.3), <span class="ui">Standing dead</span> if the inventory has them, <span class="ui">Downed wood</span>, <span class="ui">Litter</span> and <span class="ui">Soil</span> if you loaded their tables, and <span class="ui">Shrubs and others</span> if you type a value in <span class="ui">Shrubs and others (Mg C/ha)</span> with <span class="ui">Its standard error</span>, for what was measured outside the app (shrubs, epiphytes, palms). With nothing computed, it says “Compute the biomass or load a pool to see the summary.”</p>
+
+  <p>The <span class="ui">Total carbon of the system</span> tile gives the total with the half-width of its 95% interval and its CO₂ equivalent; the chart <span class="ui">Carbon by pool</span> stacks them in a single bar, and the table <span class="ui">Carbon pools</span> (Figure 4.8) gives each one with its <span class="ui">Std. error</span>, its <span class="ui">Lower 95 %</span> and <span class="ui">Upper 95 %</span> limits, the <span class="ui">% of total</span>, the <span class="ui">Mg CO₂e/ha</span> and, in the last column, <span class="ui">In the error of the total</span>, how that pool enters the error of the total: <span class="ui">summed by plot</span> or <span class="ui">independent</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b4-reservorios.png" alt="The Carbon pools table of the example coffee farm, with the In the error of the total column, and its interpretation"></div>
+    <figcaption><b>Figure 4.8.</b> The pools of the example coffee farm with its litter and its soil: 138.5 Mg C/ha in total (from 127.8 to 149.3; 507.9 Mg CO₂e/ha), of which the soil contributes 63.1% and the live trees, with roots, 33.2%. The five pools come from the same 25 plots and enter the error of the total through their sum by plot.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · the error of a sum of pools</div>
+    <p>The total is the sum of the pool means. Its error, however, is not obtained by adding in quadrature the pools that come from the same plots, because they are not independent: the aboveground part, the roots —computed from it— and the standing dead rise and fall together from one plot to the next. So the app adds those pools <b>plot by plot</b> —and litter and soil too, when they carry the same plots— and computes the error of the total from those plot totals, with the same estimator as the inventory (simple random or stratified). Only the pools from another sample —the downed-wood transects, a litter or a soil from other plots— and the value of <span class="ui">Shrubs and others (Mg C/ha)</span> are added in quadrature, as independent (IPCC 2006, vol. 1, eq. 3.1). The interval is ±1.96 times the standard error.</p>
+  </div>
+  <p>The interpretation compares the two calculations. In the example coffee farm: “The error of the total adds aboveground biomass, roots, standing dead, litter and soil plot by plot (25 plots): ±10.7 Mg C/ha. Adding the pools of the same plots in quadrature, as if they were independent, would give ±8.9.” Quadrature would have understated the error.</p>
+  <p>The balance uses the data of a single site. If a card has the example or the file of a site other than the inventory loaded, that pool is left out with a warning. With the coffee farm as the inventory and the cloud-forest downed wood loaded, the app says: “Left out of the balance because they come from a site other than the inventory (Shaded coffee farm: trees): downed wood (Cloud forest: 12 transects of 30 m). Load the data of the same site in that card.” With the cloud forest as the inventory, in contrast, its downed wood does enter, and the balance of trees and downed wood comes to 159.3 ± 22.6 Mg C/ha.</p>
+
+  <h3>Change in stocks</h3>
+  <p>To know whether a property gains or loses carbon, it must be measured twice. The <span class="ui">Change in stocks</span> card asks for <span class="ui">Plot</span>*, <span class="ui">Carbon at the 1st measurement (Mg/ha)</span>* and <span class="ui">Carbon at the 2nd measurement (Mg/ha)</span>*, and, optionally, <span class="ui">Year or age 1</span> and <span class="ui">Year or age 2</span>. If the year columns are complete, the time between measurements is their mean difference; if not, <span class="ui">Years between measurements (if there are no year columns)</span> is used, 5 by default. With <span class="ui">The same plots (paired)</span> checked, the change is the mean of the plot-by-plot differences, with the paired <i>t</i> test; unchecked, the two measurements are treated as independent samples and the difference of means carries Welch’s (1947) error.</p>
+
+  <p>The tiles give the <span class="ui">Mean change</span> with its 95% interval —green border if the interval lies above zero, red if below and amber if it includes it—, the <span class="ui">Annual rate</span> in Mg C/ha/yr with its interval and its CO₂e equivalent, and the <span class="ui">Test</span> with its <i>p</i> value and degrees of freedom. The interpretation for the example pine plantation says that “the 95 % interval excludes zero: the change stands out from the sampling error”, and adds that remeasuring the same plots removes the permanent differences between them from the variance. That is the reason to remeasure permanent plots instead of drawing two new samples: with the same plots, a small change is detected with far fewer plots.</p>
+
+  <figure class="w50">
+    <div class="marco"><img src="../img/en/b4-cambio.png" alt="Chart of the carbon of each plot of the example pine plantation at measurement 1 and measurement 2, joined by lines"></div>
+    <figcaption><b>Figure 4.9.</b> <span class="ui">Carbon of each plot at the two measurements</span>, with the 30 permanent plots of the example pine plantation. The tiles give +12.99 Mg C/ha (11.67 to 14.30) in 7.8 years, +1.66 Mg C/ha/yr (6.10 Mg CO₂e/ha/yr), <i>p</i> &lt; 0.001 (paired <i>t</i>, 29 df). Each gray line is one plot; all rise.</figcaption>
+  </figure>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>If</b> many trees fall outside the range of their equation</td><td><b>then</b> look for an equation fitted to trees of that size and give it to them with a rule; if none exists, say so in the report.</td></tr>
+      <tr><td><b>If</b> the Monte Carlo says sampling dominates</td><td><b>then</b> more plots will cut the error more than better measurements; if measurements and equation dominate, measure more heights or use a local equation.</td></tr>
+      <tr><td><b>If</b> the combined uncertainty exceeds 20% (red tile)</td><td><b>then</b> the estimate serves to describe the property, but is weak for committing carbon credits.</td></tr>
+      <tr><td><b>If</b> the interval of the change includes zero</td><td><b>then</b> with those plots you cannot claim that carbon rose or fell.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guides for interpretation, not laws.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>The result cards are empty.</b> There is no inventory: load one in Block 3 or with <span class="ui">Load example</span>, then click <span class="ui">Use the Block 3 inventory</span>.</p>
+    <p><b>“… trees lack what their equation needs”.</b> An equation with height and trees without it, or the coffee-shrub equation without d₁₅. Estimate the heights in Block 3, change the equation or set a rule.</p>
+    <p><b>The biomass comes out a thousand times too large or too small.</b> Check the units: DBH in cm, height in m, density in g/cm³ (0.6, not 600), and your equations in kg.</p>
+    <p><b>“Left out of the balance because they come from a site other than…”.</b> A card holds data from another site: load the data of the same property in it.</p>
+  </div>
+</section>
+
+</body>
+</html>

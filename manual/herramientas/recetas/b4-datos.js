@@ -5,7 +5,7 @@
   await bloque(4, 'cafetal');
   const t = tarjeta(4, L('Datos y ecuaciones', 'Data and equations'));
   irA(t, 200); await W(700);
-  const cat = [...t.querySelectorAll('details')].find(d => /catálogo|catalogue/.test(d.querySelector('summary').innerText));
+  const cat = [...t.querySelectorAll('details')].find(d => /catálogo|catalog/i.test(d.querySelector('summary').innerText));
   const rt = t.getBoundingClientRect(), rh = t.querySelector('h2').getBoundingClientRect(), rc = cat.getBoundingClientRect();
   const bx = rt.left + scrollX - 4, by = rh.top + scrollY - 14, bw = rt.width + 8, bh = rc.bottom - rh.top + 26;
   const m = (n, node, dx, dy) => { const r = node.getBoundingClientRect(); return [n, +((r.left + scrollX + (dx || 0) - bx) / bw * 100).toFixed(1), +((r.top + scrollY + r.height / 2 + (dy || 0) - by) / bh * 100).toFixed(1)]; };

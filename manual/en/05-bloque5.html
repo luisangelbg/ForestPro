@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-5" data-pestana="5" data-orden="5" style="--acento: var(--b5)">
+  <div class="cap-apertura">
+    <div class="cap-num">5</div>
+    <div class="cap-etiqueta">Chapter five · Block 5</div>
+    <h1 data-corto="Growth and yield">Growth and yield</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">From the ring to the rotation: how much a tree grows each year and on average, which curve describes its growth, how good the site of each plot is and how much volume the stand will yield at each age. With the stem analysis of a few trees and the remeasurements of permanent plots, the block arrives at the yield table and the rotation of maximum production.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k5"></span><span class="k5"></span><span class="k9"></span></div>
+    <ul class="cap-contenido">
+      <li><b>5.1</b>Increments and biological rotation</li>
+      <li><b>5.2</b>Growth models</li>
+      <li><b>5.3</b>Site index</li>
+      <li><b>5.4</b>Stand projection and yield table</li>
+    </ul>
+  </div>
+
+  <p>Block 5 carries the subtitle “Current and mean annual increments, growth models, site index and stand projection.” It has two data cards: the tree card (Section 5.1), which also feeds the models of Section 5.2, and the card of remeasured plots (Section 5.3), which also feeds the projection of Section 5.4. It does not depend on the inventory of Block 3.</p>
+  <p>The example of the whole chapter is the <b>example pine plantation</b>, opened with <span class="ui">Open in Growth</span> on its card in <span class="ruta">Block 1<span class="sep">›</span>Example data</span>: the stem analysis of six trees and thirty permanent plots measured six times (Section I.7). The data are simulated.</p>
+
+  <!-- 5.1 -->
+  <h2 id="s5-1"><span class="num">5.1</span>Increments and biological rotation</h2>
+  <p class="lead">“With the stem analysis or the remeasurements of a tree: the current annual increment (CAI), the mean annual increment (MAI) and the age at which MAI peaks.” It is the oldest computation in forest mensuration, and still the one that decides when it pays to harvest.</p>
+  <p>The data card asks for <span class="ui">Tree or series</span>* and <span class="ui">Age (years)</span>*, and at least one of the variables <span class="ui">Diameter (cm)</span>, <span class="ui">Height (m)</span> and <span class="ui">Volume (m³)</span>. A “series” can be a tree rebuilt by stem analysis —its rings give the diameter and height at each age— or a tree measured several times. The example <span class="ui">Pine: stem analysis of 6 trees</span> brings 203 rows: trees T1 to T6, with series of 30 to 36 years. Below the card there are three controls:</p>
+  <ul>
+    <li><span class="ui">Variable</span>: <span class="ui">Diameter (cm)</span>, <span class="ui">Height (m)</span>, <span class="ui">Volume (m³)</span> (default) or <span class="ui">Basal area (m²)</span>, computed from the diameter.</li>
+    <li><span class="ui">Form factor (if volume is missing)</span>: 0.45 by default. If the series has no volume but does have diameter and height, the app computes it as basal area × height × form factor. It does so with the example pine plantation, which carries no volume.</li>
+    <li><span class="ui">Tree for the models</span>: the series fitted in Section 5.2 and shown in full in its series table.</li>
+  </ul>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · CAI, MAI and biological rotation</div>
+    <p>The current annual increment between two measurements is what the variable grew between them, divided by the years: CAI = (Y₂ − Y₁)/(t₂ − t₁). The mean annual increment is what has accumulated divided by the age: MAI = Y/t. At first the tree grows ever faster and CAI exceeds MAI, which rises; when CAI falls below MAI, MAI starts to decline. The maximum MAI therefore lies where the two curves cross. In volume, that age is the <b>biological rotation</b>, or rotation of maximum production: harvesting then gives the largest mean volume per year. The economic rotation, which discounts money over time (Block 9), is usually shorter (Assmann 1970; Davis et al. 2001).</p>
+  </div>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b5-incrementos.png" alt="Chart of the dashed CAI and solid MAI of the volume of the six trees of the example pine plantation and the table of the biological rotation of each tree"></div>
+    <figcaption><b>Figure 5.1.</b> The volume of the six trees of the example pine plantation: CAI in dashed lines, which jump from one year to the next, and MAI in solid lines, which rise smoothly. The table gives for each tree the age and value of the maximum MAI.</figcaption>
+  </figure>
+
+  <p>The chart <span class="ui">CAI (dashed) and MAI (solid): volume (m³)</span> draws both curves for all the trees, one color per tree. Below, the table <span class="ui">Biological rotation of each tree</span> gives the <span class="ui">Age of maximum MAI</span>, the <span class="ui">Maximum MAI</span> and the <span class="ui">CAI = MAI crossing (periodic CAI)</span>, and the table <span class="ui">Series of tree T1</span> (or of the chosen tree) gives the variable, CAI and MAI year by year. In the example pine plantation, tree T1 reaches 2.2965 m³ at 35 years, with an MAI of 0.06561 m³/yr.</p>
+  <p>The interpretation gives the mean age of maximum MAI, 33.3 years in the example, and warns: “In 4 trees MAI is still rising at the last measured age: their rotation is beyond the series.” They are T1, T2, T3 and T6, whose maximum falls exactly at their last age; for them, the age in the table is only a lower bound of the rotation.</p>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The crossing with a noisy CAI</div>
+    <p>The year-by-year CAI of a stem analysis goes up and down a lot, because one wide or narrow ring moves it, and it crosses MAI too early at local maxima that are not the rotation. That is why the crossing column does not look for the first crossing: it compares the CAI of each interval with the MAI at its start —MAI rises exactly when that CAI exceeds it—, places each interval at its midpoint and interpolates between the interval that ends at the maximum MAI and the next one. The crossing thus lies within half an interval of the age of maximum MAI: 30.9 years in T4 (maximum at 31) and 34.3 in T5 (maximum at 34). In the trees whose MAI is still rising at the end of the series there is no crossing, and the column shows “—”.</p>
+  </div>
+
+  <!-- 5.2 -->
+  <h2 id="s5-2"><span class="num">5.2</span>Growth models</h2>
+  <p class="lead">“Four sigmoid curves fitted to the chosen series, with the age of the largest current and of the largest mean increment of each.” A fitted curve smooths out the noise of the rings and lets you compute the rotation even if the series has not reached it.</p>
+  <p>The card has no controls of its own: it fits the series of the <span class="ui">Tree for the models</span> in the <span class="ui">Variable</span> chosen in Section 5.1, and is redone when you change them. It needs at least five ages (“At least 5 ages are needed.”). The four models, with A as the asymptote —the maximum size the model attributes to the tree—, are:</p>
+  <table class="compacta">
+    <caption><b>Table 5.1.</b> The four growth models</caption>
+    <thead><tr><th style="width:1.4in">Model</th><th style="width:2.1in">Equation</th><th>Feature</th></tr></thead>
+    <tbody>
+      <tr><td>Chapman–Richards</td><td>Y = A (1 − e<sup>−kt</sup>)<sup>p</sup></td><td>The most flexible: p moves the inflection point (Richards 1959)</td></tr>
+      <tr><td>Gompertz</td><td>Y = A exp(−b e<sup>−kt</sup>)</td><td>Inflection fixed at A/e; does not pass through the origin (Gompertz 1825)</td></tr>
+      <tr><td>Schumacher</td><td>Y = A exp(−b/t)</td><td>Two parameters; a classic in forest yield (Schumacher 1939)</td></tr>
+      <tr><td>Logistic</td><td>Y = A/(1 + b e<sup>−kt</sup>)</td><td>Symmetric, inflection at A/2; does not pass through the origin</td></tr>
+    </tbody>
+  </table>
+  <p>Each model is fitted by nonlinear least squares from several starting points. The table <span class="ui">Comparison of models (tree T1)</span> gives for each its <span class="ui">Equation</span>, the <span class="ui">RMSE</span>, the <span class="ui">R²</span>, the <span class="ui">AIC</span>, the <span class="ui">Asymptote A</span>, the <span class="ui">Age of max CAI</span> —the inflection point, where the curve grows fastest— and the <span class="ui">Age of max MAI</span>; the shaded row is the one with the lowest AIC, the criterion the app uses to choose. Gompertz and the logistic do not pass through the origin, so their maximum MAI is searched only from the youngest observed age; if the maximum falls at an end of the search range, the column shows “— (at the edge)”.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b5-modelos.png" alt="The Growth models card for tree T1 with the comparison of the four models, the Chapman-Richards coefficients and the two charts"></div>
+    <figcaption><b>Figure 5.2.</b> The volume of tree T1. Chapman–Richards has the lowest AIC (−145.4) and puts the maximum CAI at 27.3 years and the maximum MAI at 46.0; the logistic, the worst (−98.6), levels off early at 2.525 m³. On the right, the CAI and MAI of the best model, with vertical lines at its two critical ages.</figcaption>
+  </figure>
+  <p>Below, <span class="ui">Coefficients: Chapman–Richards</span> (or of the winning model) gives each parameter with its standard error, its <i>t</i> and its <i>p</i>: for T1, A = 4.6891, k = 0.050364 and p = 3.9500. The chart <span class="ui">Fitted curves</span> shows the observed data and the four curves, extended beyond the last age; the one on the right, the CAI and MAI of the winning model, which cross exactly at the age of maximum MAI.</p>
+  <p>The interpretation sums it up: “Chapman–Richards has the lowest AIC. By it, the current increment peaks at 27.3 years and the mean increment at 46.0 years.” That 46-year rotation lies beyond the 35 years measured: the curve sets it, not the data. That is why the app adds that the asymptote (4.689 m³) “is an extrapolation: take it as an order of magnitude, not as a fact”. The four models fit almost equally within the data (R² from 0.9948 to 0.9986) and part ways afterwards: the age of maximum MAI ranges from 34.1 years with the logistic to 47.6 with Schumacher.</p>
+
+
+  <!-- 5.3 -->
+  <h2 id="s5-3"><span class="num">5.3</span>Site index</h2>
+  <p class="lead">“The dominant height each plot reaches at the base age: anamorphic or polymorphic curves fitted to the remeasurements, and the site class of each plot.” Dominant height hardly depends on stand density or thinnings, and that is why it is the usual measure of site quality.</p>
+  <p>The data card asks for <span class="ui">Plot</span>*, <span class="ui">Age (years)</span>* and <span class="ui">Dominant height (m)</span>*, one row per plot and measurement. The columns <span class="ui">Basal area (m²/ha)</span>, <span class="ui">Volume (m³/ha)</span> and <span class="ui">Trees per hectare</span> are optional here, but the projection of Section 5.4 needs the first two. The example <span class="ui">Pine: 30 permanent plots, 6 remeasurements</span> brings 180 rows, with ages from 5 to 30 years. The controls:</p>
+  <ul>
+    <li><span class="ui">Base age (years)</span>: the age at which the index is expressed; 20 by default.</li>
+    <li><span class="ui">Family of curves</span>: <span class="ui">Schumacher anamorphic (guide curve ln H = b₀ + b₁/t)</span>, <span class="ui">Chapman–Richards anamorphic (guide curve)</span> or <span class="ui">Chapman–Richards polymorphic (algebraic differences on the rate)</span>, the default.</li>
+    <li><span class="ui">Site classes</span>: 3, 4 (default) or 5.</li>
+  </ul>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · anamorphic and polymorphic curves</div>
+    <p>In an <b>anamorphic</b> family all curves have the shape of a guide curve and only change in scale: the index of a measurement is its height rescaled to the base age. In a <b>polymorphic</b> one, the shape also changes with the site. The app uses algebraic differences (Bailey and Clutter 1974; Cieszewski and Bailey 2000): a Chapman–Richards with common A and p and a site-specific rate k, fitted to the pairs of successive measurements with H₂ = A[1 − (1 − (H₁/A)<sup>1/p</sup>)<sup>t₂/t₁</sup>]<sup>p</sup>. It needs remeasurements of the same plots.</p>
+  </div>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b5-sitio.png" alt="The Site index card with the remeasurements of the example pine plantation, the parameters of the polymorphic family and the curves of four classes over the plot trajectories"></div>
+    <figcaption><b>Figure 5.3.</b> The site index of the example pine plantation with the polymorphic family: A = 37.188 m and p = 1.3501, fitted to 150 remeasurement pairs with a residual σ of 0.781 m. The four classes (SI 26.9, 23.1, 19.3 and 15.5 m at the center of each) over the gray trajectories of the 30 plots; the dashed line is the base age.</figcaption>
+  </figure>
+
+  <p>The index of a plot is the mean of the indices of its measurements. The table <span class="ui">Site classes</span> splits the range of indices into equal parts —class I is the best— with their limits <span class="ui">SI from (m)</span> and <span class="ui">SI to (m)</span> and the <span class="ui">Plots</span> in each: in the example, class I runs from 25.0 to 28.8 m with 7 plots; II, from 21.2 to 25.0 m with 8; III, from 17.4 to 21.2 m with 11, and IV, from 13.7 to 17.4 m with 4. <span class="ui">Site index of each plot</span> gives for each plot its <span class="ui">SI at 20 years (m)</span>, the <span class="ui">SD among measurements</span>, the <span class="ui">Measurements</span> and its <span class="ui">Class</span>; plot R01, for instance, has SI = 19.68 m (class III).</p>
+  <p>The <span class="ui">SD among measurements</span> is the test that the family of curves works: if a plot grows as its curve says, all its measurements give the same index. The interpretation gives the mean of that spread and judges it: below 0.6 m, “the curves follow well the way the plots grow”; above, the app suggests trying another family.</p>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Worked example · three families with the same plots</div>
+    <p>With the example pine plantation and a base age of 20 years, the mean spread of the index among the measurements of a plot is 0.55 m with the polymorphic family, 1.00 m with the Chapman–Richards anamorphic and 1.62 m with the Schumacher one. Only the polymorphic family passes the threshold; for the other two the app calls the spread “large” and proposes the polymorphic ones, which “usually follow better sites that grow at different paces”. The indices range from 13.7 to 28.8 m with the polymorphic family, from 13.0 to 29.3 m with the Chapman–Richards anamorphic and from 13.1 to 29.1 m with the Schumacher one.</p>
+  </div>
+
+  <!-- 5.4 -->
+  <h2 id="s5-4"><span class="num">5.4</span>Stand projection and yield table</h2>
+  <p class="lead">“Clutter's compatible system fitted to the same remeasurements projects basal area and volume; with survival and the site curve it builds the yield table, which you can edit.” It is the step from the tree to the stand: how much volume there will be per hectare at each age, and when the maximum mean increment is reached.</p>
+  <p>The card uses the remeasurements of Section 5.3, with their basal area and volume per hectare, and the site index of each plot. If they are missing, it says so: “The projection needs the basal area and volume per hectare of the remeasurements and the site index of each plot.” At least 6 remeasurement pairs are needed.</p>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · Clutter’s system</div>
+    <p>Clutter (1963) proposed two compatible equations: growth, integrated, gives yield. Future basal area comes from the current one: ln G₂ = ln G₁·(t₁/t₂) + α₀(1 − t₁/t₂) + α₁(1 − t₁/t₂)·S. Volume, from basal area, age and site: ln V₂ = β₀ + β₁/t₂ + β₂·S + β₃·ln G₂. The app fits them to the pairs of successive remeasurements as is usually done: the first without intercept and with the coefficient of ln G₁·t₁/t₂ fixed at 1, by least squares; the second by two-stage least squares (Theil 1953), with ln G₂ replaced by its projection on the exogenous variables. S is the site index of each plot from Section 5.3.</p>
+  </div>
+
+  <p>The seven fields of the projection are <span class="ui">Site index</span>, <span class="ui">Initial age (years)</span>, <span class="ui">Initial basal area (m²/ha)</span>, <span class="ui">Initial trees per hectare</span>, <span class="ui">Annual mortality (%)</span>, <span class="ui">Final age (years)</span> and <span class="ui">Step (years)</span>. If you type nothing in the first three, the app proposes them from the data: as the index, the median of the plot indices (21.4 m in the example); as the initial age, the youngest age measured (5 years), and as the initial basal area, the mean of the youngest plots (18.0 m²/ha). The others come with 1200 trees per hectare, 1.5% annual mortality, a final age of 40 years and a 2-year step. Change them to project the stand you are interested in: each change redoes the table, and what you type in those three fields stays even if you fit the site again. If you clear one, the app proposes it again.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b5-proyeccion.png" alt="The Stand projection card with its seven fields, the coefficients of the Clutter system, three tiles and the charts of projected volume and of CAI and MAI"></div>
+    <figcaption><b>Figure 5.4.</b> The projection of the example pine plantation with the values the app proposes: the Clutter system, fitted to 150 remeasurement pairs, gives a rotation of maximum MAI of 19.0 years, with 23.7 m³/ha/yr and 451 m³/ha at that age. On the right, the CAI and MAI of volume cross at the rotation (vertical line).</figcaption>
+  </figure>
+  <p>The table <span class="ui">Clutter system (150 remeasurement pairs)</span> gives the six coefficients with their standard error —in the example, α₀ = 4.3462 and β₃ = 1.9477— and, below, the residual error of each equation (σ of ln G₂ = 0.0472; σ of ln V₂ = 0.0627). The tiles give the <span class="ui">Rotation of maximum MAI</span>, with a green border, or amber with the note “MAI still rising at the end of the table” if the maximum is not reached before the final age; the <span class="ui">Maximum MAI</span>, and the <span class="ui">Volume at rotation</span>. The charts <span class="ui">Projected volume</span> and <span class="ui">CAI and MAI of volume</span> show the table as curves.</p>
+
+  <h3>The yield table</h3>
+  <p>The table is shown twice. The first is editable: <span class="ui">Age</span>, <span class="ui">Dominant height (m)</span>, <span class="ui">N (trees/ha)</span>, <span class="ui">G (m²/ha)</span> and <span class="ui">V (m³/ha)</span>. Its title explains it: “change a value and Dq, CAI, MAI and the rotation are recomputed”. It serves to correct the projection with what you know —a thinning that lowers N and G at a certain age, a measured volume— or to remove with <span class="ui">×</span> the ages you do not want; <span class="ui">+ Add row</span> adds an age. The second, <span class="ui">Full yield table</span>, adds the quadratic mean diameter <span class="ui">Dq (cm)</span>, the <span class="ui">CAI (m³/ha/yr)</span> and the <span class="ui">MAI (m³/ha/yr)</span>, with the rotation row shaded, and it is the one that is downloaded.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b5-tabla.png" alt="The editable yield table of the example pine plantation, from 5 to 40 years"></div>
+    <figcaption><b>Figure 5.5.</b> The editable yield table of the example pine plantation, from 5 to 39 years every 2 years and the last row at the final age, 40 years: from 1200 trees and 25.1 m³/ha at 5 years to 707 trees and 774.9 m³/ha at 40.</figcaption>
+  </figure>
+  <p>Each column comes from a different piece: dominant height, from the site curve of Section 5.3 with the chosen index; N, from survival at a constant annual rate, N = N₀(1 − m)<sup>t − t₀</sup>; G and V, from the Clutter system, and Dq = √(40,000·G/(π·N)). In the example, MAI reaches 23.74 m³/ha/yr at 19 years and drops to 23.69 at 21: the maximum is flat, and a few years before or after the rotation the mean yield barely changes. The interpretation puts it like this: “With site index 21.4 m, the mean annual volume increment peaks at 19.0 years (23.7 m³/ha/yr). The system was fitted with plots from 5.0 to 30.0 years: beyond, the table is extrapolation.”</p>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The site index and the base age</div>
+    <p>The Clutter system is fitted with the plot indices at the base age of Section 5.3, and the <span class="ui">Site index</span> of the projection must be expressed at that same age. If you did not type it, the app proposes it again when the base age changes (with 25 years, the median becomes 24.9 m). If you typed it and then change the base age, the app keeps it and warns: “The site index you typed (… m) was for a base age of 20 years and the base age is now 25…”. Check the index, or clear it so that the app proposes the median of the plots.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>If</b> the MAI of a tree peaks at its last measured age</td><td><b>then</b> the rotation is beyond the series: use the fitted curve and take it as an estimate.</td></tr>
+      <tr><td><b>If</b> the age of maximum MAI of the curve falls far from the data</td><td><b>then</b> it is extrapolation: compare it across models before using it.</td></tr>
+      <tr><td><b>If</b> the SD of the index among measurements exceeds 0.6 m</td><td><b>then</b> try another family of curves; with remeasurements, the polymorphic ones.</td></tr>
+      <tr><td><b>If</b> the rotation of the table falls outside the ages the system was fitted with</td><td><b>then</b> the table is extrapolation: take it with caution.</td></tr>
+      <tr><td><b>If</b> the rotation tile shows in amber</td><td><b>then</b> raise the final age: MAI is still rising at the end of the table.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guides for interpretation, not laws.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>“At least 5 ages are needed.”</b> The tree chosen for the models has too short a series: choose another or change the variable if data are missing for it.</p>
+    <p><b>“The family of curves could not be fitted…”.</b> The polymorphic families need remeasurements of the same plots; with a single measurement per plot, use an anamorphic one.</p>
+    <p><b>The projection does not appear.</b> The basal area or volume per hectare is missing in the remeasurements, the site index could not be computed or there are fewer than 6 remeasurement pairs.</p>
+  </div>
+</section>
+
+</body>
+</html>

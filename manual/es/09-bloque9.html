@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 9</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-9" data-pestana="9" data-orden="9" style="--acento: var(--b9)">
+  <div class="cap-apertura">
+    <div class="cap-num">9</div>
+    <div class="cap-etiqueta">Capítulo nueve · Bloque 9</div>
+    <h1 data-corto="Utilidades forestales">Utilidades forestales</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Las cuentas de todos los días en el monte y en el aserradero: cuánta madera trae una carga de trozas en metros cúbicos y en pies tabla, cuánto se obtuvo de tablas y polines, qué parte de la troza se fue en aserrín, qué factor de forma tiene un fuste, cómo se pasa un dato del sistema inglés al métrico y si una plantación paga lo que cuesta. Cada sección se usa sola, con sus números o con su ejemplo; la del rendimiento toma los suyos de las dos primeras.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k9"></span><span class="k9"></span><span class="k5"></span></div>
+    <ul class="cap-contenido">
+      <li><b>9.1</b>Cubicación de trozas</li>
+      <li><b>9.2</b>Madera aserrada</li>
+      <li><b>9.3</b>Rendimiento de aserrío</li>
+      <li><b>9.4</b>Factor de forma</li>
+      <li><b>9.5</b>Conversión de unidades</li>
+      <li><b>9.6</b>Costo y rentabilidad de una plantación</li>
+    </ul>
+  </div>
+
+  <p>El bloque no usa la tarjeta de datos de los demás (sección I.6): sus datos son pocos y se escriben en <b>tablas editables</b>, con una fila por troza, por tipo de pieza o por movimiento de dinero. Cada fila tiene su botón <span class="ui">×</span> para quitarla y, debajo de la tabla, <span class="ui">+ Agregar fila</span>. Las celdas se llenan una por una: estas tablas no leen archivos ni bloques pegados. Los resultados aparecen al oprimir el botón de cada sección (<span class="ui">Cubicar</span>, <span class="ui">Contar</span>, <span class="ui">Calcular el rendimiento</span>, <span class="ui">Calcular</span>, <span class="ui">Evaluar</span>); la conversión de unidades responde sola mientras escribes.</p>
+  <p>El ejemplo de la plantación de pino abre las cuatro secciones que lo tienen ya calculadas: desde <span class="ruta">Inicio<span class="sep">›</span>Datos de ejemplo</span>, el botón <span class="ui">Abrir en Utilidades</span> de la tarjeta del pino carga las 12 trozas, lo aserrado de ellas y el flujo de la plantación a 25 años, y calcula el rendimiento. Todas las cifras de este capítulo salen de ese ejemplo, que es simulado.</p>
+
+  <!-- 9.1 -->
+  <h2 id="s9-1"><span class="num">9.1</span>Cubicación de trozas</h2>
+  <p class="lead">Una troza se mide en el patio con una cinta y una forcípula: su largo y los diámetros de sus puntas. Con eso, la sección da su volumen en metros cúbicos por cuatro fórmulas y la madera aserrada que se espera de ella, en pies tabla, por las tres reglas de troza más usadas en el comercio de madera.</p>
+  <p>Arriba están <span class="ui">Cargar ejemplo: 12 trozas de pino</span>, <span class="ui">Tabla vacía</span> (deja una sola fila en blanco) y la casilla <span class="ui">Volumen sin corteza</span>. La tabla pide, por troza:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Columna</th><th>Qué va</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Troza</span></td><td>Un nombre o una clave (T01, T02…).</td></tr>
+      <tr><td><span class="ui">Largo (m)</span></td><td>El largo de la troza, en metros. Obligatorio.</td></tr>
+      <tr><td><span class="ui">D punta delgada (cm)</span> · <span class="ui">D punta gruesa (cm)</span></td><td>Los diámetros de las dos puntas, con corteza, en centímetros. Obligatorios.</td></tr>
+      <tr><td><span class="ui">D a la mitad (cm)</span></td><td>El diámetro a la mitad del largo, si lo mediste; sin él no hay Huber ni Newton.</td></tr>
+      <tr><td><span class="ui">Corteza (mm)</span></td><td>El grosor de la corteza, de un solo lado, en milímetros.</td></tr>
+    </tbody>
+  </table>
+  <p>La nota bajo la tabla lo resume: «Longitud en metros; diámetros con corteza en centímetros (punta delgada, punta gruesa y, si la tienes, a la mitad); grosor de corteza en milímetros, de un solo lado.» Una fila sin largo o sin alguno de los dos diámetros de las puntas no se cubica.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b9-trozas.png" alt="La tarjeta Cubicación de trozas con las doce trozas de pino del ejemplo en la tabla editable, el botón Cubicar y cuatro mosaicos"></div>
+    <figcaption><b>Figura 9.1.</b> Las 12 trozas de pino del ejemplo, de 2.54 a 5.08 m de largo y de 18 a 45 cm de diámetro. Los mosaicos: 12 trozas con corteza; 3.275 m³ por Smalian (1,388 pies tabla de volumen); 3.238 m³ por Newton y 3.219 por Huber; 599 pies tabla por la regla Internacional ¼″, 380 por Doyle y 539 por Scribner.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · volumen y pies tabla no son lo mismo</div>
+    <p>Las cuatro fórmulas de volumen tratan la troza como un sólido. Con el área de cada sección g = π<i>d</i>²/40 000 (m², <i>d</i> en cm) y el largo <i>L</i> en m: <b>Smalian</b> promedia las áreas de las puntas, <i>V</i> = <i>L</i>(<i>g</i>₁ + <i>g</i>₂)/2; <b>Huber</b> usa la de en medio, <i>V</i> = <i>L</i>·<i>g</i><sub>m</sub>; <b>Newton</b> combina las tres, <i>V</i> = <i>L</i>(<i>g</i>₁ + 4<i>g</i><sub>m</sub> + <i>g</i>₂)/6, y es exacta para el paraboloide, el cono y el neiloide; el <b>cono truncado</b> usa sólo las puntas, <i>V</i> = π<i>L</i>(<i>d</i>₁² + <i>d</i>₁<i>d</i>₂ + <i>d</i>₂²)/120 000. Sin corteza, a cada diámetro se le resta dos veces el grosor de corteza.</p>
+    <p>Las <b>reglas de troza</b> no miden volumen: predicen cuánta madera aserrada rendirá la troza, descontando de antemano el aserrín y las costeras. Usan el diámetro de la punta delgada <b>sin corteza</b>, en pulgadas (<i>D</i>), y el largo en pies (<i>L</i>). <b>Doyle</b>: (<i>D</i> − 4)²<i>L</i>/16. <b>Scribner</b>, por la fórmula de Bruce: (0.79<i>D</i>² − 2<i>D</i> − 4)<i>L</i>/16. <b>Internacional ¼″</b>: secciones de 4 pies, cada una con media pulgada más de diámetro que la anterior, 0.22<i>D</i>² − 0.71<i>D</i> pies tabla por sección y el factor 0.905 de la sierra de un cuarto de pulgada; la fracción final cuenta en proporción a su largo (Husch et al. 2003; Avery y Burkhart 2002; Bruce 1925; Clark 1906).</p>
+  </div>
+
+  <p>La tabla <span class="ui">Volumen por troza</span> trae, para cada troza y en total, el diámetro sin corteza en pulgadas (<span class="ui">D (pulg)</span>) y el largo en pies (<span class="ui">L (pies)</span>) con que trabajan las reglas, los cuatro volúmenes y los pies tabla de las tres reglas. En la pantalla de 1 400 píxeles la tabla es más ancha que la tarjeta y la última columna se alcanza desplazándola hacia un lado; la figura 9.2 la muestra completa.</p>
+  <figure>
+    <div class="marco"><img src="../img/b9-trozas-tabla.png" alt="La tabla Volumen por troza con las doce trozas y su total: diámetro en pulgadas, largo en pies, cuatro volúmenes en metros cúbicos y tres reglas en pies tabla"></div>
+    <figcaption><b>Figura 9.2.</b> El volumen de cada troza. En total: 3.2747 m³ por Smalian, 3.2193 por Huber, 3.2378 por Newton y 3.2601 por cono truncado; 380 pies tabla por Doyle, 539 por Scribner y 599 por la Internacional ¼″. La troza T10, de 6.5 pulgadas sin corteza, da 3 pies tabla por Doyle y 10 por la Internacional.</figcaption>
+  </figure>
+  <p>Con <span class="ui">Volumen sin corteza</span>, los volúmenes en metros cúbicos se recalculan con los diámetros menos la corteza: las 12 trozas bajan a 2.828 m³ por Smalian, 2.793 por Newton y 2.775 por Huber. Los pies tabla no cambian (599, 380 y 539), porque las reglas trabajan siempre con el diámetro sin corteza. Si en alguna troza la punta delgada resulta más gruesa que la gruesa, la app avisa: «En … trozas la punta delgada es más gruesa que la gruesa; revisa el orden de las columnas.»</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Un metro cúbico no son 424 pies tabla</div>
+    <p>Un pie tabla es un volumen (144 pulgadas cúbicas) y 1 m³ equivale a 423.776 pies tabla: el mosaico de Smalian dice «1,388 pies tabla de volumen» para eso. Pero los pies tabla de una regla son madera aserrada, ya sin aserrín ni costeras: las mismas trozas dan 599 por la Internacional ¼″. No mezcles las dos cifras al comprar o vender madera; di siempre qué regla usaste.</p>
+  </div>
+
+  <p>La figura <span class="ui">Pies tabla por troza según la regla</span> pone las tres reglas lado a lado, troza por troza, y la interpretación resume lo que significan las diferencias.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b9-reglas.png" alt="Gráfica de barras con los pies tabla de cada troza por las reglas Doyle, Scribner e Internacional, y la interpretación debajo"></div>
+    <figcaption><b>Figura 9.3.</b> Doyle (corteza) queda siempre por debajo de Scribner (ámbar) y de la Internacional ¼″ (verde), y más en las trozas delgadas. La interpretación: Huber da −1.7 % respecto de Smalian, Newton queda entre ambas, y Doyle castiga las 9 trozas de menos de 12 pulgadas.</figcaption>
+  </figure>
+  <!-- 9.2 -->
+  <h2 id="s9-2"><span class="num">9.2</span>Madera aserrada</h2>
+  <p class="lead">La otra punta del aserradero: lo que salió de las trozas, contado por tipo de pieza. La sección suma los pies tabla y los metros cúbicos de una lista de piezas y dice qué parte del volumen es cada tipo.</p>
+  <p>El menú <span class="ui">Unidades</span> elige <span class="ui">Pulgadas y pies</span> (grosor y ancho en pulgadas, largo en pies, con las medidas nominales con que se comercia la madera) o <span class="ui">Centímetros y metros</span> (grosor y ancho en centímetros, largo en metros). La tabla pide <span class="ui">Pieza</span> (el nombre), <span class="ui">Grosor</span>, <span class="ui">Ancho</span>, <span class="ui">Largo</span> y <span class="ui">Piezas</span>, el número de piezas iguales (1 si se deja vacío). <span class="ui">Cargar ejemplo: lo aserrado de las 12 trozas</span> pone siete tipos de piezas de 8¼ pies y <span class="ui">Contar</span> hace la cuenta.</p>
+  <div class="formula">pies tabla = grosor (pulg) × ancho (pulg) × largo (pies) / 12 · m³ = grosor (cm) × ancho (cm) × largo (m) / 10 000</div>
+  <p>Un pie tabla es una pieza de 1 pulgada × 12 pulgadas × 1 pie, 2.359 737 216 dm³ (NIST 2008). Así, una tabla de 1″ × 6″ de 8¼ pies son 4.125 pies tabla, y las 50 del ejemplo, 206.25. Al cambiar de unidades, la tabla cambia los rótulos de sus columnas, pero no convierte los números que ya escribiste.</p>
+  <figure class="w50">
+    <div class="marco"><img src="../img/b9-aserrada.png" alt="La tarjeta Madera aserrada con siete tipos de piezas en pulgadas y pies, tres mosaicos y la tabla por tipo de pieza"></div>
+    <figcaption><b>Figura 9.4.</b> Lo aserrado de las 12 trozas: 179 piezas, 722.9 pies tabla y 1.7059 m³. Las tablas de 1″ × 6″ son el 28.5 % del volumen; la viga de 4″ × 4″, el 6.1 %.</figcaption>
+  </figure>
+
+  <!-- 9.3 -->
+  <h2 id="s9-3"><span class="num">9.3</span>Rendimiento de aserrío</h2>
+  <p class="lead">Cuánta madera aserrada sale de la madera en rollo. Es la cifra que mide un aserradero, y la que dice si una regla de troza le queda corta.</p>
+  <p>Tres campos: <span class="ui">Madera en rollo (m³)</span>, <span class="ui">Madera aserrada (m³)</span> y <span class="ui">Regla de referencia (pies tabla)</span>. «Se llenan solas con los totales de las dos secciones de arriba (Smalian e Internacional ¼″); puedes escribir otros.» La regla es opcional; sin ella no hay sobrerrendimiento.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/b9-rendimiento.png" alt="La tarjeta Rendimiento de aserrío con los tres campos llenos, tres mosaicos y la interpretación"></div>
+    <figcaption><b>Figura 9.5.</b> De las 12 trozas (3.2747 m³ por Smalian) salieron 1.7059 m³ aserrados: un coeficiente de aserrío de 52.1 % (desperdicio 47.9 %), 221 pies tabla por metro cúbico en rollo y un sobrerrendimiento de 20.7 % frente a los 599 pies tabla de la regla Internacional ¼″.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Coeficiente de aserrío</b> = m³ aserrados / m³ en rollo. El resto es aserrín, costeras, recortes y corteza.</li>
+    <li><b>Pies tabla por m³ en rollo</b>: el mismo cociente en pies tabla (0.521 × 423.776 ≈ 221).</li>
+    <li><b>Sobrerrendimiento</b> = pies tabla aserrados / pies tabla de la regla − 1. Positivo si el aserradero saca más de lo que la regla predice (Steele 1984).</li>
+  </ul>
+  <p>La interpretación clasifica el coeficiente: por debajo de 45 % lo llama bajo («trozas delgadas o torcidas, sierras de corte grueso o un patrón de corte que no aprovecha la troza»), por encima de 65 % alto («propio de trozas gruesas y rectas o de sierras delgadas»), y entre los dos, común en aserraderos de sierra cinta o circular con trozas medianas. Si sale más madera aserrada que en rollo, la app lo marca en rojo: «Sale más madera aserrada que en rollo: revisa las unidades o los datos.»</p>
+
+  <!-- 9.4 -->
+  <h2 id="s9-4"><span class="num">9.4</span>Factor de forma</h2>
+  <p class="lead">La fracción del cilindro (área basal × altura) que ocupa el fuste. Con él se estima el volumen de un árbol en pie a partir de su diámetro y su altura, cuando no hay una ecuación de volumen para la especie.</p>
+  <p>Cuatro campos, con valores de muestra: <span class="ui">Diámetro normal (cm)</span> (32), <span class="ui">Altura (m)</span> (24), <span class="ui">Volumen (m³)</span> (0.85) y <span class="ui">Factor de forma</span> (vacío). «Deja vacío lo que quieras calcular: el factor (con volumen) o el volumen (con factor).» <span class="ui">Calcular</span> da el factor, el volumen y el cilindro de referencia, y la tabla <span class="ui">Sólidos de referencia</span> dice qué volumen tendría el árbol con la forma de cada sólido.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b9-forma.png" alt="La tarjeta Factor de forma con 32 cm, 24 m y 0.85 m³, tres mosaicos, la tabla de sólidos de referencia y la interpretación"></div>
+    <figcaption><b>Figura 9.6.</b> Un fuste de 32 cm y 24 m con 0.85 m³: su cilindro (g = 0.0804 m²) tiene 1.9302 m³, así que el factor de forma es 0.440, más cerca del paraboloide (0.500) que del cono (0.333).</figcaption>
+  </figure>
+  <div class="formula"><i>f</i> = <i>V</i> / (<i>g</i> · <i>h</i>), con <i>g</i> el área basal a 1.30 m</div>
+  <p>Es el factor de forma <b>artificial</b>, referido a la altura del pecho (Prodan et al. 1997). Los sólidos de referencia, medidos en su base, tienen <i>f</i> = 1 (cilindro), 1/2 (paraboloide), 1/3 (cono) y 1/4 (neiloide). En coníferas suele estar entre 0.40 y 0.55. Con el factor 0.45 en lugar del volumen, el mismo árbol tendría 0.8686 m³. La interpretación avisa si el factor pasa de 1 («indica un error en el volumen o en las medidas») o baja de 0.3 («raro en un fuste comercial: revisa el volumen»). Si tienes árboles cubicados, las ecuaciones de volumen del Bloque 2 (capítulo 2) sustituyen con ventaja a un factor de forma fijo.</p>
+
+  <!-- 9.5 -->
+  <h2 id="s9-5"><span class="num">9.5</span>Conversión de unidades</h2>
+  <p class="lead">Del sistema inglés al métrico y al revés, con las definiciones exactas: lo que hace falta para leer un inventario, una tabla de rendimiento o una regla de troza de otro país.</p>
+  <p><span class="ui">Magnitud</span> elige qué se convierte; <span class="ui">Valor</span> y <span class="ui">De</span>, el número y su unidad. La tabla <span class="ui">… equivalen a</span> da el valor en cada una de las demás unidades de esa magnitud, y se recalcula al escribir:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Magnitud</th><th>Unidades</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Longitud</span></td><td>metros, centímetros, milímetros, kilómetros, pulgadas, pies, yardas, cadenas (66 pies), millas</td></tr>
+      <tr><td><span class="ui">Superficie</span></td><td>m², hectáreas, km², acres, pies²</td></tr>
+      <tr><td><span class="ui">Volumen</span></td><td>m³, dm³ (litros), pies³, pies tabla, cuerdas (128 pies³ apilados)</td></tr>
+      <tr><td><span class="ui">Masa</span></td><td>kilogramos, gramos, toneladas (Mg), libras, toneladas cortas, toneladas largas</td></tr>
+      <tr><td><span class="ui">Área basal por superficie</span></td><td>m²/ha, pies²/acre</td></tr>
+      <tr><td><span class="ui">Volumen por superficie</span></td><td>m³/ha, pies³/acre, pies tabla/acre, cuerdas/acre</td></tr>
+      <tr><td><span class="ui">Biomasa por superficie</span></td><td>Mg/ha (t/ha), kg/m², toneladas cortas/acre, libras/acre</td></tr>
+      <tr><td><span class="ui">Carbono y CO₂</span></td><td>Mg C/ha, Mg CO₂e/ha</td></tr>
+      <tr><td><span class="ui">Densidad</span></td><td>kg/m³, g/cm³, libras/pie³</td></tr>
+      <tr><td><span class="ui">Árboles por superficie</span></td><td>árboles/ha, árboles/acre, árboles/m²</td></tr>
+    </tbody>
+  </table>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b9-unidades.png" alt="La tarjeta Conversión de unidades con 250 metros cúbicos por hectárea convertidos a pies cúbicos, pies tabla y cuerdas por acre, y la calculadora de leña apilada"></div>
+    <figcaption><b>Figura 9.7.</b> 250 m³/ha equivalen a 3,572.83 pies³/acre, 42,874.02 pies tabla/acre y 27.9128 cuerdas/acre. Abajo, 10 m³ estéreos de leña con un factor de apilado de 0.65 son 6.50 m³ de madera sólida.</figcaption>
+  </figure>
+  <p>Las definiciones son las exactas: 1 pulgada = 2.54 cm, 1 pie = 0.3048 m, 1 acre = 4 046.856 422 4 m², 1 libra = 0.453 592 37 kg, 1 pie tabla = 144 pulgadas cúbicas y 1 cuerda = 128 pies³ de madera apilada (NIST 2008). Las magnitudes por superficie combinan el factor de la unidad y el de la superficie: 120 pies²/acre de área basal son 27.5482 m²/ha. El carbono pasa a CO₂ equivalente multiplicándolo por 44/12: 46 Mg C/ha son 168.67 Mg CO₂e/ha.</p>
+  <h3>Leña apilada</h3>
+  <p>Debajo de la tabla, <span class="ui">Leña apilada (m³ estéreos)</span> y <span class="ui">Factor de apilado (sólido/estéreo)</span> dan la <span class="ui">Madera sólida</span>. Un metro cúbico estéreo es el que ocupa la leña apilada, con sus huecos; el factor de apilado, la parte que es madera. Depende del diámetro y de lo recto de las piezas: 0.6 a 0.7 es lo común en leña, y la app abre con 0.65.</p>
+
+  <!-- 9.6 -->
+  <h2 id="s9-6"><span class="num">9.6</span>Costo y rentabilidad de una plantación</h2>
+  <p class="lead">Una plantación forestal gasta casi todo al principio y cobra casi todo al final, veinte o treinta años después. Para saber si paga hay que llevar cada peso al presente con una tasa de descuento. La sección hace esa cuenta por hectárea con las medidas de la economía forestal.</p>
+  <p>Tres campos: <span class="ui">Tasa de descuento (% anual)</span> (8), <span class="ui">Costo anual fijo (protección, administración)</span> (900), que se carga cada año del 1 al turno, y <span class="ui">Turno (años; vacío = último año del flujo)</span>. La tabla lleva un renglón por movimiento: <span class="ui">Año</span>, <span class="ui">Concepto</span>, <span class="ui">Costo</span> e <span class="ui">Ingreso</span>, por hectárea y en la moneda que uses; «varias filas pueden tener el mismo año». <span class="ui">Cargar ejemplo: pino a 25 años</span> trae once movimientos, de la preparación del terreno a la corta final, y <span class="ui">Evaluar</span> hace la cuenta.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b9-economia.png" alt="La tarjeta Costo y rentabilidad de una plantación con la tasa, el costo anual, la tabla de once movimientos del pino y siete mosaicos"></div>
+    <figcaption><b>Figura 9.8.</b> El pino a 25 años al 8 %: valor presente neto de $3,956 por hectárea, tasa interna de retorno de 8.50 %, relación beneficio/costo de 1.07, valor esperado del suelo de $4,632, anualidad equivalente de $371 al año, costo de establecimiento de $23,500 (años 0 y 1; $140,900 sin descontar en todo el turno) y recuperación en el año 25.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · las siete cifras</div>
+    <p>Con la tasa <i>r</i> y el flujo neto <i>N</i><sub>t</sub> = ingresos − costos del año <i>t</i>: el <b>valor presente neto</b> es VPN = Σ <i>N</i><sub>t</sub>/(1 + <i>r</i>)<sup><i>t</i></sup>; la <b>relación beneficio/costo</b>, el valor presente de los ingresos entre el de los costos; la <b>tasa interna de retorno</b> (TIR), la tasa que anula el VPN, buscada entre −90 % y 200 %; el <b>valor esperado del suelo</b> de Faustmann (1849), VES = VPN·(1 + <i>r</i>)<sup><i>T</i></sup>/((1 + <i>r</i>)<sup><i>T</i></sup> − 1), lo que vale la tierra si se repite el mismo turno <i>T</i> para siempre; la <b>anualidad equivalente</b>, VPN·<i>r</i>/(1 − (1 + <i>r</i>)<sup>−<i>T</i></sup>), el VPN repartido en pagos anuales iguales; y la <b>recuperación</b>, el primer año en que el flujo descontado acumulado deja de ser negativo (Klemperer 1996; Bettinger et al. 2017). Todo es en valores reales: usa una tasa sin inflación y precios constantes.</p>
+  </div>
+  <p>Debajo de los mosaicos vienen dos figuras. <span class="ui">Flujo de efectivo por año</span> pone los ingresos hacia arriba y los costos hacia abajo; <span class="ui">Valor presente neto según la tasa de descuento</span> traza el VPN entre 0 y 15 %, con la tasa elegida y la TIR, que es donde la curva cruza el cero.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/b9-vpn.png" alt="Dos gráficas: barras de ingresos y costos por año del pino, y la curva del valor presente neto según la tasa de descuento con la TIR y la tasa elegida"></div>
+    <figcaption><b>Figura 9.9.</b> Arriba, casi todo el ingreso llega en el año 25 ($300,000 de la corta final), con dos aclareos en los años 12 y 18. Abajo, el VPN pasa de unos $216,000 sin descontar a valores negativos por encima de la TIR de 8.50 %; la tasa elegida (8 %) queda justo antes del cruce.</figcaption>
+  </figure>
+  <p>La tabla <span class="ui">Flujo de efectivo descontado</span> da, por año, los costos (con el costo anual incluido), los ingresos, el neto, el neto descontado y el acumulado descontado, que en el pino pasa de −$30,227 en el año 24 a $3,956 en el 25. Su nota dice que los años con sólo el costo anual no se muestran, pero sí aparecen en la tabla (del año 4 al 24, los que no tienen otro movimiento salen con 900 de costo).</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · la misma plantación con otra tasa y otro turno</div>
+    <p>Con la tasa al 10 %, el pino deja de pagar: el VPN cae a −$9,333 por hectárea, la relación beneficio/costo a 0.81, el valor esperado del suelo a −$10,282 y la recuperación dice «no se recupera»; la TIR sigue en 8.50 %, porque no depende de la tasa elegida. Con la tasa al 8 % y el turno en 18 años, la corta final queda fuera («1 movimientos caen después del turno y no se cuentan.») y el VPN se hunde a −$29,186: sin la corta final, los aclareos no pagan el establecimiento.</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Compara turnos con el valor del suelo, no con el VPN</div>
+    <p>El VPN de un solo turno favorece a los turnos largos sólo porque ocupan la tierra más tiempo. Para elegir entre un turno de 20 y uno de 25 años, compara el valor esperado del suelo de Faustmann, que supone que el turno se repite para siempre. Y como casi todo el ingreso llega al final, el resultado es muy sensible a la tasa y al precio de la corta final: prueba varias tasas antes de decidir.</p>
+  </div>
+
+  <!-- cierre -->
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · utilidades forestales</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>Si</b> mediste el diámetro a la mitad de la troza</td><td><b>entonces</b> usa Newton (o Huber); sin él, cono truncado o Smalian, sabiendo que Smalian sobreestima en trozas de base acampanada.</td></tr>
+      <tr><td><b>Si</b> vas a comprar o vender trozas en pies tabla</td><td><b>entonces</b> pacta la regla: Doyle da mucho menos que la Internacional ¼″ en trozas de menos de 12 pulgadas.</td></tr>
+      <tr><td><b>Si</b> el coeficiente de aserrío baja de 45 %</td><td><b>entonces</b> revisa el diámetro y lo recto de las trozas, el corte de la sierra y el patrón de corte.</td></tr>
+      <tr><td><b>Si</b> el sobrerrendimiento es grande y positivo</td><td><b>entonces</b> la regla subestima lo que tu aserradero obtiene; para tu madera, el rendimiento medido vale más que la regla.</td></tr>
+      <tr><td><b>Si</b> el factor de forma pasa de 1 o baja de 0.3</td><td><b>entonces</b> hay un error en el volumen o en las medidas.</td></tr>
+      <tr><td><b>Si</b> el VPN es positivo y la TIR mayor que la tasa exigida</td><td><b>entonces</b> la plantación paga con esa tasa; para comparar turnos, usa el valor esperado del suelo.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guías para interpretar, no leyes: el precio de tu madera, tu aserradero y tu tasa de descuento mandan.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <ul>
+      <li><b>«Escribe al menos una troza con largo y los dos diámetros de las puntas, o carga el ejemplo.»</b> A todas las filas les falta el largo o un diámetro de punta.</li>
+      <li><b>Los diámetros en pulgadas o el largo en pies.</b> La tabla de trozas pide metros y centímetros; si tus datos vienen en pulgadas y pies, conviértelos antes con la sección 9.5.</li>
+      <li><b>La corteza de los dos lados.</b> La columna <span class="ui">Corteza (mm)</span> es el grosor de un solo lado; la app la resta dos veces.</li>
+      <li><b>«Escribe el volumen en rollo y el aserrado (o cubica y cuenta arriba).»</b> Faltan los dos volúmenes del rendimiento; se llenan solos después de <span class="ui">Cubicar</span> y <span class="ui">Contar</span>.</li>
+      <li><b>«Escribe el volumen o el factor de forma.»</b> En el factor de forma quedaron vacíos los dos; deja vacío sólo el que quieras calcular.</li>
+      <li><b>«Revisa la tasa de descuento.»</b> La tasa no es un número o es de −100 % o menos.</li>
+      <li><b>«… movimientos caen después del turno y no se cuentan.»</b> El turno que escribiste es menor que el último año de la tabla; vacía el campo para usar el último año.</li>
+    </ul>
+  </div>
+
+</section>
+
+</body>
+</html>

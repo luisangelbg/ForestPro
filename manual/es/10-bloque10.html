@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-10" data-pestana="10" data-orden="10" style="--acento: var(--b10)">
+  <div class="cap-apertura">
+    <div class="cap-num">10</div>
+    <div class="cap-etiqueta">Capítulo diez · Bloque 10</div>
+    <h1 data-corto="Informe y proyecto">Informe y proyecto</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Lo que mostraron los bloques, listo para salir de la app: un informe de un solo archivo que se abre en cualquier navegador y se imprime a PDF; todas las tablas de resultados en un libro de cálculo; las figuras, una por una, desde el estudio de figuras; y el proyecto, un archivo pequeño con el que el trabajo se vuelve a abrir tal como quedó, aquí o en otro equipo. El bloque no calcula nada nuevo: reúne lo que ya está en pantalla.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k4"></span><span class="k7"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>10.1</b>Informe</li>
+      <li><b>10.2</b>Todas las tablas</li>
+      <li><b>10.3</b>Proyecto</li>
+      <li><b>10.4</b>Cómo citar</li>
+    </ul>
+  </div>
+
+  <p>Las figuras de este capítulo se hicieron con el cafetal de ejemplo abierto en los bloques 3, 4 y 7 (los botones <span class="ui">Abrir en Inventario</span>, <span class="ui">Abrir en Biomasa</span> y <span class="ui">Abrir en Agroforestería</span> de su tarjeta en <span class="ruta">Inicio<span class="sep">›</span>Datos de ejemplo</span>) y la plantación de pino en el 9 (<span class="ui">Abrir en Utilidades</span>). Con eso, cuatro bloques tienen resultados y su número en la barra de la izquierda se ha vuelto una palomita.</p>
+
+  <!-- 10.1 -->
+  <h2 id="s10-1"><span class="num">10.1</span>Informe</h2>
+  <p class="lead">El informe es un archivo HTML que lleva todo dentro: la portada, un resumen, las figuras, las tablas, las interpretaciones y, si quieres, los métodos con sus fuentes. No depende de la app ni de internet: se abre con doble clic en cualquier navegador, se manda por correo y se imprime a PDF.</p>
+  <p>Arriba se escriben los datos de la portada: <span class="ui">Título</span> (abre con «Informe forestal»), <span class="ui">Predio o proyecto</span>, <span class="ui">Responsable</span>, <span class="ui">Fecha</span> (la de hoy) y <span class="ui">Presentación o notas (opcional)</span>, un texto libre que el informe pone en su propia sección. Debajo, el recuadro <span class="ui">Bloques que entran</span> tiene una casilla por cada bloque de resultados, todas marcadas, y otras dos: <span class="ui">Con los métodos y sus fuentes</span> (el recuadro «Método y fuentes» de cada tarjeta) y <span class="ui">Con los avisos</span> (los mensajes de advertencia de los bloques).</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b10-informe.png" alt="La tarjeta Informe con el título, el predio, el responsable, la fecha y la presentación escritos, las casillas de los bloques, los tres botones y el mensaje de la vista previa"></div>
+    <figcaption><b>Figura 10.1.</b> La tarjeta <span class="ui">Informe</span> con sus campos llenos y <span class="ui">Vista previa</span> oprimida: «Informe con 4 bloques, 16 figuras y 20 tablas.» Entran los cuatro bloques con resultados (inventario, biomasa, agroforestería y utilidades); los otros cuatro siguen marcados, pero no aparecen porque no tienen nada que mostrar.</figcaption>
+  </figure>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Las casillas van numeradas con uno menos</div>
+    <p>En <span class="ui">Bloques que entran</span> las casillas dicen «1. Dasometría», «2. Inventario y muestreo»… hasta «8. Utilidades forestales»: cada número es uno menos que el del bloque (Dasometría es el Bloque 2). El informe repite esa numeración en los títulos de sus secciones («2. Inventario y muestreo»), y la búsqueda (<code>Ctrl + K</code>) también. Guíate por el nombre, no por el número.</p>
+  </div>
+  <p>La nota de la tarjeta dice qué entra: «Entra lo que cada bloque muestra en este momento; un bloque sin resultados no aparece. Las figuras van con los colores del tema claro y con lo que hayas cambiado en el editor ✎.» Es decir, el informe es una fotografía de la pantalla: si cambias un control en un bloque y vuelves, el informe cambia. Tres botones:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.3in">Botón</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Vista previa</span></td><td>Arma el informe y lo muestra debajo, en un recuadro con su propia barra de desplazamiento. El mensaje dice cuántos bloques, figuras y tablas entraron. La vista previa se rehace sola al volver al bloque o al cambiar de idioma.</td></tr>
+      <tr><td><span class="ui">⤓ Descargar el informe (HTML)</span></td><td>Arma el informe y lo descarga como <code>forestpro_informe_&lt;predio&gt;.html</code>; con el cafetal, <code>forestpro_informe_cafetal_bajo_sombra_ejemplo.html</code>, de cerca de 1.6 MB.</td></tr>
+      <tr><td><span class="ui">Abrir para imprimir o guardar como PDF</span></td><td>Lo abre en una pestaña nueva, con su botón <span class="ui">Imprimir o guardar como PDF</span>. Si el navegador bloquea la ventana, la app lo dice: «El navegador bloqueó la ventana nueva: descarga el informe y ábrelo para imprimirlo.»</td></tr>
+    </tbody>
+  </table>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b10-vista.png" alt="La vista previa del informe: el logotipo, el título, el predio, el responsable y la fecha, el contenido con cuatro bloques, la presentación y el comienzo del resumen"></div>
+    <figcaption><b>Figura 10.2.</b> El principio del informe: la portada con el logotipo, «Inventario forestal y carbono», el predio, «Brigada de inventario · 1 de noviembre de 2026» y «Generado con ForestPro 1.0.0 · LABG»; el contenido; la presentación; y el resumen, con los mosaicos de cada bloque: 25 parcelas, 719 árboles y 10 especies en el inventario; 77.0 Mg/ha de biomasa aérea, 46.0 Mg C/ha de carbono y 168.5 Mg CO₂e/ha en la biomasa.</figcaption>
+  </figure>
+  <h3>Lo que trae el informe</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Parte</th><th>Contenido</th></tr></thead>
+    <tbody>
+      <tr><td><b>Portada</b></td><td>El logotipo de la app, el título, el predio, el responsable y la fecha, y la versión del programa.</td></tr>
+      <tr><td><b>Contenido</b></td><td>Los bloques que entraron, con enlaces; sólo si son dos o más.</td></tr>
+      <tr><td><b>Presentación</b></td><td>El texto de <span class="ui">Presentación o notas (opcional)</span>, si escribiste algo.</td></tr>
+      <tr><td><b>Resumen</b></td><td>Los primeros mosaicos de cada bloque: los pocos números que importan, juntos.</td></tr>
+      <tr><td><b>Una sección por bloque</b></td><td>Los datos que se usaron (el nombre de cada conjunto cargado y su número de filas) y, tarjeta por tarjeta, sus mosaicos, figuras, tablas, interpretaciones, avisos y métodos. Una tarjeta sin resultados no aparece. Con el cafetal y el pino entran 19 tarjetas.</td></tr>
+      <tr><td><b>Cómo citar ForestPro</b></td><td>La cita en APA y en BibTeX (sección 10.4).</td></tr>
+      <tr><td><b>Pie</b></td><td>Una nota que dice que los cálculos se hicieron en el navegador y que los datos no salieron del equipo.</td></tr>
+    </tbody>
+  </table>
+  <p>Las figuras van dentro del archivo como dibujos vectoriales, con sus estilos escritos y los colores del tema claro, aunque estés trabajando en el oscuro; la fotografía del dosel del Bloque 7 va como imagen. Las tablas llevan los renglones que muestra la pantalla: una tabla muy larga, que en la tarjeta dice «Se muestran … de … filas; las descargas las llevan todas.», llega igual de corta, y el libro de la sección 10.2 la trae completa. Al imprimir, la hoja es A4 con márgenes de 16 y 14 mm, cada bloque empieza en una hoja nueva y ninguna figura, mosaico o interpretación se parte entre dos hojas.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Para imprimir a PDF</div>
+    <p>En el diálogo de impresión del navegador, elige <b>Guardar como PDF</b> y activa los gráficos de fondo para que los mosaicos y las interpretaciones conserven su color. Si prefieres carta en lugar de A4, cámbialo en el mismo diálogo.</p>
+  </div>
+
+  <!-- 10.2 -->
+  <h2 id="s10-2"><span class="num">10.2</span>Todas las tablas</h2>
+  <p class="lead">Cada tabla de resultados de los bloques 2 a 9 tiene sus botones <span class="ui">⤓ CSV</span> y <span class="ui">⤓ XLSX</span>; esta tarjeta las baja todas de una vez, con sus números completos, no redondeados como en pantalla.</p>
+  <ul>
+    <li><span class="ui">⤓ Libro de Excel (XLSX), una hoja por tabla</span> descarga <code>forestpro_tablas.xlsx</code>. Cada hoja se llama con el número del bloque y el título de la tabla («B9 Volumen por troza»), cortado a 31 caracteres, el límite del formato.</li>
+    <li><span class="ui">⤓ CSV, un archivo por tabla (ZIP)</span> descarga <code>forestpro_tablas_csv.zip</code>, con un CSV por tabla, con el nombre de archivo que la tabla usa en su propio botón (<code>forestpro_trozas.csv</code>, <code>forestpro_flujo.csv</code>…). Van separados por comas, con punto decimal y en UTF-8 con marca de orden de bytes, para que una hoja de cálculo lea bien los acentos.</li>
+  </ul>
+  <p>El mensaje cuenta las tablas; sin resultados dice «Todavía no hay tablas de resultados.». Las tablas de las tarjetas de datos (lo que cargaste) no entran: sólo las de resultados.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b10-tablas.png" alt="Las tarjetas Todas las tablas y Proyecto, con los mensajes 20 tablas exportadas y Proyecto guardado con 4 pasos"></div>
+    <figcaption><b>Figura 10.3.</b> Las tarjetas <span class="ui">Todas las tablas</span> y <span class="ui">Proyecto</span>. Con el cafetal y el pino, el libro lleva 20 tablas («20 tablas exportadas.») y el proyecto, cuatro pasos: los cuatro ejemplos abiertos («Proyecto guardado con 4 pasos.»).</figcaption>
+  </figure>
+
+  <h3>Las figuras: el estudio y el editor ✎</h3>
+  <p>Las figuras no entran en el libro: «Las figuras se exportan una por una desde su tarjeta, en SVG, PNG a 300 ppp o PDF, con el estudio de figuras.» Cada figura de la app tiene dos botones en su esquina: el lápiz con la regla abre el <b>estudio de figuras</b>, y <span class="ui">✎</span> abre el <b>editor</b> de esa figura. Los dos son los mismos en todas las aplicaciones de la suite.</p>
+  <figure>
+    <div class="marco"><img src="../img/b10-estudio.png" alt="El estudio de figuras a pantalla completa con la curva del valor presente neto según la tasa en el centro y el inspector a la derecha"></div>
+    <figcaption><b>Figura 10.4.</b> La figura del VPN según la tasa de la plantación de pino (sección 9.6) en el estudio. Debajo, su tamaño final: 85 × 46.8 mm (3.35 × 1.84 pulgadas) a 600 ppp, 2008 × 1104 píxeles; la línea punteada de arriba marca el ancho de columna y media de una revista (114 mm). A la derecha, el inspector, con la edición fina de la figura abierta.</figcaption>
+  </figure>
+  <p>El estudio pone la figura a la izquierda, a escala y con la silueta de su tamaño de salida, y el inspector a la derecha. La barra de arriba deshace y rehace, compara el antes y el ahora con una cortina, acerca y aleja (<span class="ui">Ajustar</span> la deja del tamaño de la pantalla), muestra una regla, aplica <span class="ui">Preajustes</span> de un clic y, con <span class="ui">Exportar</span>, descarga la figura en PNG, SVG, PDF vectorial o TIFF, en milímetros o pulgadas, a 300, 600 o 1 200 ppp, con fondo transparente si lo pides. Otros botones mueven el inspector a la izquierda o lo dejan flotando, y <span class="ui">Cerrar estudio</span> vuelve a la app. En el inspector, <span class="ui">Buscar un control…</span> encuentra cualquier ajuste por su nombre, y las secciones son <span class="ui">Ajustes de la figura</span> (los controles que la figura tiene en su bloque; las de ForestPro no traen y el estudio dice «Esta figura no trae opciones propias: usa las del estudio (paleta, texto, tamaño) o el editor de la app si lo tiene.»), <span class="ui">Edición fina de esta figura (✎ de la app)</span>, <span class="ui">Paleta y color</span>, <span class="ui">Texto y líneas</span>, <span class="ui">Leyenda</span>, <span class="ui">Tamaño y exportación</span>, <span class="ui">Preajustes</span> e <span class="ui">Historial</span>. La línea del pie recuerda los atajos: «Clic en la figura: su sección · Doble clic en un texto: cambiarlo · Ctrl + rueda: zoom · B: antes y ahora · ?: atajos».</p>
+  <p>El botón <span class="ui">✎</span> abre el mismo editor fino sin salir de la página, en un panel flotante sobre esa figura, con seis pestañas.</p>
+  <figure class="w50">
+    <div class="marco"><img src="../img/b10-editor.png" alt="El panel Editar esta figura sobre la curva del VPN, en su pestaña General"></div>
+    <figcaption><b>Figura 10.5.</b> El editor ✎ de la figura del VPN, en la pestaña <span class="ui">General</span>: el título, el subtítulo y la nota al pie dentro de la figura; la familia tipográfica, los tamaños, el color y los grosores; el fondo y el marco.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.35in">Pestaña</th><th>Qué se edita</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">General</span></td><td>Un <span class="ui">Título (vacío = sin título)</span>, un <span class="ui">Subtítulo</span> y una nota al pie dentro de la figura, con el <span class="ui">Tamaño y alineación del título</span>; la <span class="ui">Familia tipográfica</span>, el <span class="ui">Tamaño de todos los textos</span>, el <span class="ui">Color de todos los textos</span>, el <span class="ui">Grosor de las líneas</span> y el <span class="ui">Tamaño de los puntos</span>; el <span class="ui">Fondo</span> y un <span class="ui">Marco alrededor de toda la figura</span>.</td></tr>
+      <tr><td><span class="ui">Ejes y rejilla</span></td><td>Los títulos de los ejes, sus números, el color y el grosor de los ejes, la rejilla y el recuadro del área de trazado.</td></tr>
+      <tr><td><span class="ui">Series</span></td><td>Cada color de la figura con el nombre de su entrada de leyenda: color, grosor, trazo, opacidad u ocultarla.</td></tr>
+      <tr><td><span class="ui">Leyenda</span></td><td>Mostrarla u ocultarla, ocho posiciones, en fila o en columna, tamaño y recuadro; también se arrastra sobre la figura.</td></tr>
+      <tr><td><span class="ui">Textos</span></td><td>Cada texto uno por uno: otra redacción, tamaño, negrita, cursiva, color u ocultarlo.</td></tr>
+      <tr><td><span class="ui">Anotaciones</span></td><td>Notas, flechas, líneas de referencia en un valor de cualquiera de los ejes, bandas sombreadas y la letra de panel; las notas y las flechas se arrastran.</td></tr>
+    </tbody>
+  </table>
+  <p>Al pie del panel, <span class="ui">Deshacer todo en esta figura</span> la devuelve a como la dibuja el bloque y <span class="ui">Copiar el estilo a todas las figuras</span> lleva los mismos ajustes a las demás. Las ediciones se guardan en este navegador, figura por figura, y se vuelven a poner cada vez que la figura se redibuja —al cambiar los datos, el idioma o el tema—; como se escriben sobre la propia figura, lo que ves es lo que se exporta y lo que entra en el informe.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Lo que el editor no guarda</div>
+    <p>El editor reconoce cada texto por su redacción original: si reescribes «Tasa de descuento (%)» y después cambias la interfaz a inglés, tu texto se queda en español. Edita en el idioma en que vas a exportar. Y las ediciones viven en el navegador, no en el proyecto (sección 10.3): en otro equipo, la figura sale como la dibuja la app.</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Las letras son las del equipo</div>
+    <p>La app no trae letras ni las pide a internet: las figuras usan las del sistema. Un SVG abierto en otra computadora puede verse con una letra parecida; para que se vea igual en todas partes, exporta en PDF vectorial o en PNG.</p>
+  </div>
+
+  <!-- 10.3 -->
+  <h2 id="s10-3"><span class="num">10.3</span>Proyecto</h2>
+  <p class="lead">Guarda el trabajo en un archivo y ábrelo después, aquí o en otro equipo. El proyecto no guarda los resultados, sino la manera de llegar a ellos, y por eso pesa poco y siempre da lo mismo que la app calcula.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Botón</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">⤓ Guardar el proyecto (JSON)</span></td><td>Descarga <code>forestpro_proyecto_&lt;predio&gt;.json</code> (el nombre sale del campo <span class="ui">Predio o proyecto</span> del informe, o de su título) y dice con cuántos pasos: «Proyecto guardado con … pasos.»</td></tr>
+      <tr><td><span class="ui">Abrir un proyecto…</span></td><td>Lee un proyecto guardado. Si la app ya tiene datos, pregunta antes: «Abrir el proyecto reemplaza lo que hay ahora en la app. ¿Continuar?». La página se recarga limpia y repite los pasos, con una franja que cuenta el avance («Abriendo el proyecto · 3/4»). Al terminar, lleva al bloque donde estabas y avisa «Proyecto abierto: todos los bloques se calcularon de nuevo.» o «Proyecto abierto; … pasos no se pudieron repetir.».</td></tr>
+      <tr><td><span class="ui">Empezar de nuevo</span></td><td>Borra todo lo que hay en la app, después de preguntar: «Se borra todo lo que hay en la app (los archivos guardados no se tocan). ¿Continuar?».</td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · un registro, no una copia</div>
+    <p>Mientras trabajas, la app anota en orden lo que haces: los datos que cargas en cada tarjeta de datos (si son de un ejemplo, sólo cuál), los campos que cambias, las tablas editables, los botones que oprimes y los ejemplos que abres desde Inicio. Al abrir el proyecto, la app repite esos pasos en una página limpia, así que cada bloque calcula otra vez lo mismo que mostraba. Lo que no se puede repetir así no se guarda: la fotografía hemisférica que abriste en el Bloque 7, lo que hiciste en el editor de figuras, y la cuadrícula aleatoria del Bloque 8, que sale con otro sorteo. El archivo es texto (JSON): se puede leer, y al final lleva un resumen de los resultados. El apéndice A describe su formato.</p>
+  </div>
+  <p>Con el cafetal y el pino abiertos desde Inicio, el proyecto tiene cuatro pasos, uno por ejemplo. Un trabajo con tus propios datos lleva dentro esos datos, renglón por renglón, porque la app los necesita para repetir el cálculo.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>La app no guarda sola</div>
+    <p>Nada de lo que cargas se guarda en el navegador: si cierras la pestaña o la recargas, el trabajo se pierde. Para que no pase por descuido, la app pide confirmación antes de cerrar o recargar la página cuando ya tiene datos. Guarda el proyecto al terminar cada sesión.</p>
+  </div>
+
+  <!-- 10.4 -->
+  <h2 id="s10-4"><span class="num">10.4</span>Cómo citar</h2>
+  <p class="lead">Si ForestPro te sirvió en un trabajo, cítalo. La tarjeta da la cita en APA, para copiarla en la lista de referencias, y la entrada BibTeX, para un gestor de referencias.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/b10-citar.png" alt="La tarjeta Cómo citar con la cita en APA, la entrada BibTeX y los botones Copiar APA, Copiar BibTeX y forestpro.bib"></div>
+    <figcaption><b>Figura 10.6.</b> La cita del programa en APA y en BibTeX, con la versión 1.0.0 y la licencia GPL-3.0-or-later.</figcaption>
+  </figure>
+  <p><span class="ui">Copiar APA</span> y <span class="ui">Copiar BibTeX</span> la copian al portapapeles («Copiado.»; si el navegador no lo permite, «No se pudo copiar; selecciónalo a mano.»), y <span class="ui">⤓ forestpro.bib</span> descarga la entrada como archivo. La misma cita está en la portada de la app (capítulo 1) y al final de cada informe. La dirección que trae es la del repositorio del programa; el apéndice E da la cita del manual.</p>
+  <p>Cita además los métodos que usaste: las ecuaciones alométricas, el diseño de muestreo, las curvas de índice de sitio. Cada tarjeta los nombra en su recuadro «Método y fuentes», y el informe los lleva si dejas marcada <span class="ui">Con los métodos y sus fuentes</span>; el apéndice F los reúne todos.</p>
+
+  <!-- cierre -->
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión · qué sacar de la app</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>Si</b> vas a entregar o archivar el resultado</td><td><b>entonces</b> descarga el informe HTML: lleva todo dentro y se abre sin la app.</td></tr>
+      <tr><td><b>Si</b> necesitas un PDF</td><td><b>entonces</b> <span class="ui">Abrir para imprimir o guardar como PDF</span> y guárdalo desde el diálogo de impresión.</td></tr>
+      <tr><td><b>Si</b> vas a seguir analizando en otro programa</td><td><b>entonces</b> el libro XLSX o el ZIP de CSV, con los números completos.</td></tr>
+      <tr><td><b>Si</b> una figura va a una tesis o a una revista</td><td><b>entonces</b> expórtala desde el estudio: PDF vectorial o SVG si se va a editar, PNG o TIFF a 600 ppp si la revista pide imagen.</td></tr>
+      <tr><td><b>Si</b> vas a volver al trabajo o pasarlo a otro equipo</td><td><b>entonces</b> guarda el proyecto; el informe no se puede volver a abrir en la app.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">El informe y las tablas son lo que se entrega; el proyecto es lo que permite repetirlo.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <ul>
+      <li><b>«Todavía no hay resultados que llevar al informe. Corre algún análisis en los bloques 2 a 9 (o abre un ejemplo desde Inicio).»</b> Ningún bloque marcado tiene resultados.</li>
+      <li><b>Falta un bloque en el informe.</b> Su casilla está desmarcada o el bloque no tiene resultados en este momento; ábrelo y comprueba que muestra lo que esperas.</li>
+      <li><b>«El archivo no es un proyecto de ForestPro.»</b> El JSON es de otra app o no es un proyecto. Abre un <code>forestpro_proyecto_….json</code> guardado por la app.</li>
+      <li><b>«El proyecto viene de una versión más nueva de ForestPro; puede que algunos pasos no se repitan.»</b> Actualiza la app.</li>
+      <li><b>«Proyecto abierto; … pasos no se pudieron repetir.»</b> Algún botón o campo del registro ya no existe; revisa los bloques afectados.</li>
+      <li><b>«El proyecto se abre sobre lo que ya hay (el navegador no dejó recargar la página limpia).»</b> El navegador no permitió la recarga; si el resultado se ve mezclado, usa <span class="ui">Empezar de nuevo</span> y vuelve a abrir el proyecto.</li>
+      <li><b>Una figura del informe sale distinta de la que editaste en otro equipo.</b> Las ediciones ✎ viven en el navegador donde se hicieron.</li>
+    </ul>
+  </div>
+</section>
+
+</body>
+</html>

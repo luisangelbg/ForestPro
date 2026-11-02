@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-7" data-pestana="7" data-orden="7" style="--acento: var(--b7)">
+  <div class="cap-apertura">
+    <div class="cap-num">7</div>
+    <div class="cap-etiqueta">Chapter seven · Block 7</div>
+    <h1 data-corto="Agroforestry systems">Agroforestry systems</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">On a coffee farm the trees are not the harvest, but they decide much of it: they give shade, store carbon and sustain diversity. This block measures the shade—by counting the trees of the inventory or with a photograph of the canopy—, looks for the shade at which the crop yields most, draws the layout of a new planting and compares the carbon of the system with that of a full-sun monoculture.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k7"></span><span class="k7"></span><span class="k4"></span></div>
+    <ul class="cap-contenido">
+      <li><b>7.1</b>Shade from the inventory</li>
+      <li><b>7.2</b>Shade from a photograph of the canopy</li>
+      <li><b>7.3</b>Shade and crop yield</li>
+      <li><b>7.4</b>Planting layout</li>
+      <li><b>7.5</b>Carbon budget of the system</li>
+    </ul>
+  </div>
+
+  <p>Open the block with <span class="ruta">Block 7<span class="sep">›</span>Agroforestry systems</span>. Its line on screen reads “Shade of coffee farms (by inventory or by hemispherical photograph), shade and yield, planting layouts and carbon budget.” It is designed for coffee and other shaded crops, and its five cards are independent: each has its own example button. The <span class="ui">Open in Agroforestry</span> button of the coffee farm on the home page (Section I.7) fills them all at once: it loads the coffee farm inventory in Block 3, computes the shade, reads the 25 plots of shade and yield, analyzes the synthetic photo and builds the carbon budget. The figures in this chapter are those of that example.</p>
+
+  <!-- 7.1 -->
+  <h2 id="s7-1"><span class="num">7.1</span>Shade from the inventory</h2>
+  <p class="lead">If the inventory has the crown diameter of each shade tree, the app computes for each plot the density, the basal area, the crown cover, the richness of shade species and a complexity index, and summarizes them by management type.</p>
+  <p>The card has no data card of its own: it reads the Block 3 inventory. <span class="ui">Load the example coffee farm</span> loads the coffee farm in Block 3 and comes back here; <span class="ui">Use the Block 3 inventory</span> takes the one already loaded. Live trees count, with the area of each plot according to its design, and the group of each plot (its stratum or its cluster) serves as the management type. If no tree has a crown diameter, the app warns that cover cannot be computed and suggests the photograph (Section 7.2).</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b7-sombra.png" alt="The Shade from the inventory card with the coffee farm example: the tiles, the table by management type and the chart of crown cover by management"></div>
+    <figcaption><b>Figure 7.1.</b> The coffee farm example: on average, 278 shade trees per hectare, 17.5 m²/ha of basal area, 48% crown cover corrected for overlap, 7.5 shade species per plot and a Holdridge complexity of 6.9. Cover falls from 69.4% in the rustic management to 33.2% in the shaded monoculture.</figcaption>
+  </figure>
+  <p>The five tiles are plot averages. If there is more than one management type, the table <span class="ui">By management type</span> gives for each one the plots, trees per hectare, basal area, cover with its standard deviation, species and Holdridge index, sorted from most to least cover, and the chart <span class="ui">Crown cover by management (mean ± SD)</span> draws the mean cover of each management type with its standard deviation. Below, the table <span class="ui">By plot</span> also gives for each plot the sum of the crowns (<span class="ui">Σ crowns (%)</span>) and the mean height.</p>
+  <table class="compacta">
+    <caption><b>Table 7.1.</b> The shade of the coffee farm example by management type (the names are values of the example data, which the app shows in Spanish: rustic, traditional polyculture, commercial polyculture and shaded monoculture)</caption>
+    <thead><tr><th>Management</th><th class="num">Plots</th><th class="num">Trees/ha</th><th class="num">G (m²/ha)</th><th class="num">Cover (%)</th><th class="num">Species</th><th class="num">CI</th></tr></thead>
+    <tbody>
+      <tr><td>rústico</td><td class="num">5</td><td class="num">452</td><td class="num">31.4</td><td class="num">69.4</td><td class="num">9.4</td><td class="num">20.4</td></tr>
+      <tr><td>policultivo tradicional</td><td class="num">5</td><td class="num">334</td><td class="num">18.4</td><td class="num">52.8</td><td class="num">8.6</td><td class="num">6.5</td></tr>
+      <tr><td>policultivo comercial</td><td class="num">10</td><td class="num">226</td><td class="num">13.9</td><td class="num">42.1</td><td class="num">7.8</td><td class="num">3.3</td></tr>
+      <tr><td>monocultivo bajo sombra</td><td class="num">5</td><td class="num">150</td><td class="num">9.7</td><td class="num">33.2</td><td class="num">3.8</td><td class="num">0.8</td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · cover with overlap and complexity</div>
+    <p>Each crown takes up π·<i>c</i>²/4, with <i>c</i> its diameter. The sum of the crowns over the area of the plot can exceed 100% because crowns overlap: plot P14 adds up to 152%. If crowns are placed at random, the share of the ground under at least one crown is C = 1 − exp(−Σ<i>a</i>/A) (Crookston and Stage 1999): with 152% of crowns, 78.0% of the ground is covered. The Holdridge complexity index (Holdridge et al. 1971) multiplies species × trees × basal area (m²) × mean height (m) / 1000, with trees and basal area scaled to 0.1 ha; it grows fast with structure, which is why it separates traditional from simplified managements so well (Moguel and Toledo 1999).</p>
+  </div>
+
+  <!-- 7.2 -->
+  <h2 id="s7-2"><span class="num">7.2</span>Shade from a photograph of the canopy</h2>
+  <p class="lead">When the inventory has no crowns, or to measure the shade at one point, a photo of the canopy taken from below is enough: the app separates sky from foliage and measures the openness.</p>
+  <p><span class="ui">Open a photo…</span> reads an image from your computer (the photo does not leave it; if it is large, it is reduced to 640 pixels per side for the computation). <span class="ui">Example photo (synthetic)</span> draws a test hemispherical photo under a shade canopy. The controls are:</p>
+  <ul>
+    <li><span class="ui">Kind of photo</span>: <span class="ui">Hemispherical (fisheye)</span>, taken with a fisheye lens toward the zenith, or <span class="ui">Ordinary upward</span>, a common photo.</li>
+    <li><span class="ui">Channel</span>: <span class="ui">Blue (recommended)</span> or <span class="ui">Luminance</span>. In blue the sky is much brighter than the leaves, and they separate better.</li>
+    <li><span class="ui">Threshold (empty = Otsu)</span>: the gray level (0 to 255) that separates sky and canopy. Left empty, the app computes it.</li>
+    <li><span class="ui">Circle radius (% of the short side)</span>: the useful circle of the lens (100 by default); it only counts for the hemispherical photo.</li>
+  </ul>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b7-foto.png" alt="The Shade from a photograph of the canopy card with the synthetic example photo: the controls, the tiles, and the original photo next to its segmentation into white sky and green canopy"></div>
+    <figcaption><b>Figure 7.2.</b> The synthetic example photo: with Otsu’s threshold (132), the canopy cover is 51.6% (1 − weighted openness), the canopy openness 48.4% and the gap fraction 49.4%, over 138,536 pixels. On the right, the segmentation: sky in white, canopy in green and, in gray, what lies outside the circle.</figcaption>
+  </figure>
+  <p>The tiles give the <span class="ui">Canopy cover</span>, the <span class="ui">Canopy openness</span> (only with the hemispherical photo), the <span class="ui">Gap fraction</span> with the pixels counted, and the <span class="ui">Threshold</span>, with “Otsu” or “manual.” With the ordinary photo, cover is 1 − the sky fraction. Below come the <span class="ui">Gray histogram and threshold</span> and, for the hemispherical photo, the table <span class="ui">Openness by zenith-angle rings</span>, with the visible sky in 15° rings.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b7-histograma.png" alt="The gray-level histogram of the example photo with the threshold line at 132 and the table of openness by 15-degree rings"></div>
+    <figcaption><b>Figure 7.3.</b> The histogram of the example photo has two well-separated peaks—the foliage between 20 and 45 and the sky between 225 and 245—and Otsu’s threshold falls between them. The visible sky goes from 87.4% near the zenith (0°–15°) to 33.1% between 45° and 60°.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · gaps and openness</div>
+    <p>Otsu’s (1979) threshold is the one that maximizes the variance between the two classes of the histogram. In an equiangular lens, a pixel at distance ρ from the center of a circle of radius R looks at the zenith angle θ = 90°·ρ/R. The <b>gap fraction</b> counts all pixels equally; the <b>canopy openness</b> weights each one by the solid angle it stands for (sin θ/ρ), which in an equiangular lens decreases from the zenith to the horizon: a pixel next to the horizon is worth 0.64 of one next to the zenith (Jonckheere et al. 2004; Frazer et al. 1999). That is why the two differ: in the example, the 75°–90° ring, with 65.2% sky and 42,312 pixels, weighs less in the openness than in the gap fraction, and the openness (48.4%) falls below the gap fraction (49.4%).</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>How to take the photo</div>
+    <p>Under an evenly overcast sky, at dawn or at dusk, without direct sun in the frame, at the same height above the ground (above the crop) and with the camera leveled. Always check the segmented image: if the sun or the bright sky between leaves is misclassified, type the threshold by hand. One photo describes one point; for the plot, average several.</p>
+  </div>
+
+  <!-- 7.3 -->
+  <h2 id="s7-3"><span class="num">7.3</span>Shade and crop yield</h2>
+  <p class="lead">At what shade does the crop yield most? The card fits the regression of yield on shade, linear and quadratic, picks the better one and, if the curve has a maximum, gives the shade of maximum yield with its interval.</p>
+  <p>The data card asks for <span class="ui">Shade (%)</span> * and <span class="ui">Yield</span> * of each plot, and optionally <span class="ui">Plot</span> and <span class="ui">Group (management)</span>, which colors the points. At least 5 plots are needed. The example, <span class="ui">Coffee farm: 25 plots</span>, has the measured shade and the yield of parchment coffee (kg/ha) of each plot. The shade can come from Section 7.1, from the photos of Section 7.2 or from any other measurement.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b7-rendimiento.png" alt="The Shade and crop yield tiles, the chart of yield against shade with the quadratic and linear curves, and the table of coefficients of the quadratic model"></div>
+    <figcaption><b>Figure 7.4.</b> The coffee farm example: the quadratic model wins (F of the quadratic term = 46.33, <i>p</i> &lt; 0.001; R² of 0.872 against 0.602 for the linear one). Yield peaks at 38.8% shade (95% interval: 34.3 to 43.4%), where the curve estimates 1,109 kg/ha.</figcaption>
+  </figure>
+  <p>The tiles give the <span class="ui">Model chosen</span>, with the F test of the quadratic term; the <span class="ui">Shade of maximum yield</span> with its interval; the <span class="ui">Estimated maximum yield</span>; and the <span class="ui">R² (quadratic)</span> next to the linear one. The chart <span class="ui">Yield against shade</span> draws both curves—the quadratic with its 95% confidence band for the mean—and a vertical line at the shade of the maximum. The table <span class="ui">Coefficients of the quadratic model</span> gives b0, b1 and b2 with their standard error, <i>t</i> and <i>p</i>: in the example, b1 = 28.648 and b2 = −0.36872.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · the optimum and its interval</div>
+    <p>Both regressions are fitted by ordinary least squares; the F test of the quadratic term and the AIC decide the model. If b₂ &lt; 0, the parabola has a maximum at S* = −b₁/(2b₂): in the example, −28.648/(2 × −0.36872) = 38.8%. Its standard error comes from the delta method, with the gradient (−1/(2b₂), b₁/(2b₂²)) applied to the covariance of b₁ and b₂ (Weisberg 2014). The bell shape is the one observed on coffee farms: with little shade the coffee plant is stressed and with much shade it lacks light (Soto-Pinto et al. 2000).</p>
+  </div>
+  <p>The interpretation says the curvature is significant if the quadratic term has <i>p</i> &lt; 0.05; otherwise it warns that “the data do not tell an optimum from a linear trend.” If the curve has no maximum (b₂ ≥ 0), it says so and gives no optimal shade.</p>
+
+  <!-- 7.4 -->
+  <h2 id="s7-4"><span class="num">7.4</span>Planting layout</h2>
+  <p class="lead">For a new planting: how many trees fit in a rectangular field with a given layout and spacing, how many per hectare, how much they cost and how they share the field with the crop.</p>
+  <p>The card reads no data; it draws the plan as soon as the block opens, with the default values, and redraws it with each change. <span class="ui">Layout</span> offers <span class="ui">Square</span>, <span class="ui">Triangular</span>, <span class="ui">Rectangular</span>, <span class="ui">Alley cropping</span>, <span class="ui">Live fence (perimeter)</span> and <span class="ui">Boundary rows (two sides)</span>. The other fields are <span class="ui">Field width (m)</span> and <span class="ui">Field length (m)</span> (100 and 100), <span class="ui">Spacing between trees (m)</span> (6), <span class="ui">Spacing between rows (m)</span> (8, for the rectangle), <span class="ui">Alley width (m)</span> (12, for alleys), <span class="ui">Crop: spacing (m)</span> and <span class="ui">Crop: between rows (m)</span> (2 and 1.5) and <span class="ui">Cost per tree planted</span> (25, in whatever currency you use).</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b7-diseno.png" alt="The Planting layout card with the default values: the fields, the tiles and the plan of a 100 by 100 meter field with the trees on a square grid and the intercropped crop"></div>
+    <figcaption><b>Figure 7.5.</b> The default values: a 6 m square layout on one hectare. 256 trees fit (the theoretical density of an infinite layout would be 278), each with 39.1 m², with 3,300 crop plants at 2 × 1.5 m and a cost of 6,400.</figcaption>
+  </figure>
+  <p>The tiles give the <span class="ui">Trees in the field</span> (with the area in hectares), the <span class="ui">Density</span> per hectare with the theoretical one, the <span class="ui">Area per tree</span>, the <span class="ui">Crop plants</span> and, if there is a cost, the <span class="ui">Cost of the trees</span>. The plan is to scale: the trees in dark green and the crop in light green, on its own grid. The crop plants are counted over the whole field, as if the trees took no room from them.</p>
+  <table class="compacta">
+    <caption><b>Table 7.2.</b> The six layouts on 1 ha, with 6 m between trees and the other default values</caption>
+    <thead><tr><th>Layout</th><th class="num">Trees</th><th class="num">Theoretical (trees/ha)</th><th class="num">m² per tree</th><th class="num">Cost</th></tr></thead>
+    <tbody>
+      <tr><td>Square</td><td class="num">256</td><td class="num">278</td><td class="num">39.1</td><td class="num">6,400</td></tr>
+      <tr><td>Triangular</td><td class="num">304</td><td class="num">321</td><td class="num">32.9</td><td class="num">7,600</td></tr>
+      <tr><td>Rectangular (6 × 8 m)</td><td class="num">192</td><td class="num">208</td><td class="num">52.1</td><td class="num">4,800</td></tr>
+      <tr><td>Alley cropping (12 m)</td><td class="num">128</td><td class="num">139</td><td class="num">78.1</td><td class="num">3,200</td></tr>
+      <tr><td>Live fence (perimeter)</td><td class="num">66</td><td class="num">—</td><td class="num">151.5</td><td class="num">1,650</td></tr>
+      <tr><td>Boundary rows (two sides)</td><td class="num">32</td><td class="num">—</td><td class="num">312.5</td><td class="num">800</td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · actual and theoretical density</div>
+    <p>The positions are generated inside the field leaving half a spacing at the edges, so fewer trees fit in a finite field than in the infinite layout. The theoretical density is 10,000/<i>a</i>² for the square, 10,000/(<i>a</i>·<i>b</i>) for the rectangle, 10,000/(<i>a</i>²·√3/2) for the triangular layout—15.5% more trees than the square at the same spacing—and 10,000/(<i>a</i>·width) for alleys. The live fence puts a tree every <i>a</i> meters along the perimeter and the boundary rows, along the two long sides (Nair 1993; Evans and Turnbull 2004).</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The plan counts as a result once you change it</div>
+    <p>The initial plan, with the default values, does not mark the block as done and does not enter the Block 10 report as a result of its own; as soon as you change a field, it does.</p>
+  </div>
+
+  <!-- 7.5 -->
+  <h2 id="s7-5"><span class="num">7.5</span>Carbon budget of the system</h2>
+  <p class="lead">How much carbon does the shaded coffee farm hold against a full-sun monoculture? The card adds up that of the shade trees, the coffee bushes, the litter and the soil of the coffee farm example and compares it with an assumed monoculture.</p>
+  <p>The card works with the tables of the coffee farm example, not with your own data: <span class="ui">Compute with the example coffee farm</span> runs the computation, and afterwards each change in the fields repeats it. The fields are <span class="ui">Coffee bushes per hectare (system)</span> (left empty, the app enters the mean density of the example plots, 3447), <span class="ui">Coffee bushes per hectare (monoculture)</span> (5000), <span class="ui">Soil carbon of the monoculture (Mg C/ha)</span> (60), <span class="ui">Litter of the monoculture (Mg/ha)</span> (3), <span class="ui">Carbon fraction</span> (0.47) and <span class="ui">Root:shoot of the crop</span> (0.27).</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b7-presupuesto.png" alt="The Carbon budget of the system card: the fields, the tiles and the stacked bars of carbon by pool for the shaded system and the monoculture"></div>
+    <figcaption><b>Figure 7.6.</b> The coffee farm example holds 139.8 Mg C/ha and the assumed monoculture 65.6 Mg C/ha: a difference of +74.2 Mg C/ha, or 272.0 Mg CO₂e/ha. A coffee bush weighs 1.41 kg on average.</figcaption>
+  </figure>
+  <table class="compacta">
+    <caption><b>Table 7.3.</b> The carbon budget of the example (Mg C/ha), as the app’s table gives it</caption>
+    <thead><tr><th>Pool</th><th class="num">Shaded</th><th class="num">Monoculture</th><th class="num">Difference</th></tr></thead>
+    <tbody>
+      <tr><td>Shade trees (aboveground)</td><td class="num">36.2</td><td class="num">0.0</td><td class="num">36.2</td></tr>
+      <tr><td>Shade trees (roots)</td><td class="num">9.8</td><td class="num">0.0</td><td class="num">9.8</td></tr>
+      <tr><td>Coffee bushes</td><td class="num">2.9</td><td class="num">4.2</td><td class="num">−1.3</td></tr>
+      <tr><td>Litter</td><td class="num">3.5</td><td class="num">1.4</td><td class="num">2.1</td></tr>
+      <tr><td>Soil (0–30 cm)</td><td class="num">87.5</td><td class="num">60.0</td><td class="num">27.5</td></tr>
+      <tr><td><b>Total</b></td><td class="num"><b>139.8</b></td><td class="num"><b>65.6</b></td><td class="num"><b>74.2</b></td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · where each pool comes from</div>
+    <p>The aboveground biomass of the shade trees comes from the equations of Segura et al. (2006) for <i>Inga</i> and <i>Cordia</i>, from van Noordwijk et al. (2002) for banana and from Chave et al. (2014) with wood density for the other species; the roots, from the IPCC (2006) ratio for tropical mountains (0.27). The coffee bushes use the equation of Segura et al. (2006) with the diameter at 15 cm and the height, multiplied by the planting density and by 1 + root:shoot. Litter and soil (0–30 cm) come from the tables of the example. Carbon is biomass times the carbon fraction, and CO₂e, carbon times 44/12. Comparisons like this are the ones made on the coffee farms of Chiapas (Soto-Pinto et al. 2010).</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The monoculture is an assumption, not a measurement</div>
+    <p>The monoculture uses the mean biomass of the example coffee bushes at its own density and the soil and litter values you type. The difference of 74.2 Mg C/ha depends on them: with another soil carbon for the monoculture, it changes by the same amount. Replace them with measurements of a full-sun coffee farm in the same area before reporting the difference as additional carbon.</p>
+  </div>
+  <p>The interpretation says how much more the shaded coffee farm holds and in which pools most of the difference lies: in the shade trees and, if the soil of the coffee farm exceeds the assumed one, also in the soil.</p>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>If</b> the inventory has the crown diameter</td><td><b>then</b> use the cover corrected for overlap, not the sum of the crowns, as the shade of the plot.</td></tr>
+      <tr><td><b>If</b> there are no measured crowns</td><td><b>then</b> measure the shade with photos of the canopy: several per plot, at the same height and under an overcast sky.</td></tr>
+      <tr><td><b>If</b> the segmentation misclassifies bright sky or the sun</td><td><b>then</b> type the threshold by hand instead of using Otsu’s.</td></tr>
+      <tr><td><b>If</b> the quadratic term is significant and b₂ &lt; 0</td><td><b>then</b> there is an optimal shade: report S* with its interval, not only the point value.</td></tr>
+      <tr><td><b>If</b> the quadratic term is not significant</td><td><b>then</b> the data do not tell an optimum from a linear trend; do not recommend a shade level with them.</td></tr>
+      <tr><td><b>If</b> you are going to report the additional carbon of the system</td><td><b>then</b> replace the monoculture assumptions with local measurements.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">These are guides for interpretation, not laws: the crop, the elevation and the management change the optimal shade and the carbon of each pool.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>“Load an inventory in Block 3 or the example coffee farm.”</b>: there is no inventory loaded; use <span class="ui">Load the example coffee farm</span> or load yours in Block 3.</p>
+    <p><b>Cover cannot be computed.</b> The inventory has no crown diameter: match it in the tree card of Block 3, or use the photograph.</p>
+    <p><b>The cover from the photo makes no sense.</b> Check the kind of photo (an ordinary photo treated as hemispherical loses its corners) and the circle radius, which must match the circle of the lens.</p>
+    <p><b>“At least 5 plots are needed.”</b> in shade and yield, or the shade of the maximum does not appear: there are fewer than five plots with both values, or the curve has no maximum within the data.</p>
+    <p><b>The budget does not appear.</b> It is computed only after you press <span class="ui">Compute with the example coffee farm</span>.</p>
+  </div>
+</section>
+
+</body>
+</html>

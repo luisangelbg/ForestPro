@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-8" data-pestana="8" data-orden="8" style="--acento: var(--b8)">
+  <div class="cap-apertura">
+    <div class="cap-num">8</div>
+    <div class="cap-etiqueta">Chapter eight · Block 8</div>
+    <h1 data-corto="Maps">Maps and light geoprocessing</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Every inventory has a place. This block puts the plots and trees on the map, measures the area of the polygons of the property, lays out the grid of points for a new inventory, takes it to the GPS receiver and makes a continuous map of a variable measured in the plots. Everything is computed on your computer; the online map background is optional and comes switched off.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k8"></span><span class="k8"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>8.1</b>The map</li>
+      <li><b>8.2</b>Polygons and areas</li>
+      <li><b>8.3</b>Sampling grid</li>
+      <li><b>8.4</b>Export</li>
+      <li><b>8.5</b>Interpolation among plots</li>
+    </ul>
+  </div>
+
+  <p>Open the block with <span class="ruta">Block 8<span class="sep">›</span>Maps</span>; its title on screen is <span class="ui">Maps and light geoprocessing</span>, with the line “Plots and trees on the map, polygon areas, sampling grid, GPX/KML/GeoJSON export and interpolation.” The five cards share the same layers: what you load, import or draw in one appears on the map and in the others. The main example is the cloud forest (<span class="ui">Open in Maps</span> on the home page, Section I.7): its 24 plots with coordinates and the polygon of the property, with 9 vertices. The interpolation also uses the 25 plots of the coffee farm.</p>
+
+  <!-- 8.1 -->
+  <h2 id="s8-1"><span class="num">8.1</span>The map</h2>
+  <p class="lead">A map of the app’s own, which pans and zooms like web maps, with the plots drawn at their true radius and the trees in their place. Below it there is a static copy in UTM coordinates, the one that goes into the report.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b8-mapa.png" alt="The map card with the cloud forest example: the buttons to load data, the layer check boxes with the online background switched off, the map with the property and the plots over the latitude and longitude graticule, and the button to draw a polygon">
+      <span class="marca" style="left:1.8%;top:14.5%">1</span>
+      <span class="marca" style="left:43.1%;top:14.5%">2</span>
+      <span class="marca" style="left:63.8%;top:14.5%">3</span>
+      <span class="marca" style="left:1.8%;top:20.2%">4</span>
+      <span class="marca" style="left:47.6%;top:20.2%">5</span>
+      <span class="marca" style="left:10.4%;top:30.8%">6</span>
+      <span class="marca" style="left:12.9%;top:88%">7</span>
+      <span class="marca" style="left:1.8%;top:94%">8</span>
+    </div>
+    <figcaption><b>Figure 8.1.</b> The map with the cloud forest example: the property (in green) and the 24 plots, without an online background, over the latitude and longitude graticule. The plots, 17.84 m in radius, are barely circles at the zoom level of the whole property.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>The example.</b> The list chooses between <span class="ui">Cloud forest: plots and property</span> and <span class="ui">Coffee farm: plots of 5 farms</span>; <span class="ui">Load example</span> loads it in Block 3 and brings its plots here (and the property, for the cloud forest).</li>
+    <li><span class="n">2</span><b><span class="ui">Use the Block 3 inventory</span>.</b> Takes the plots of the loaded inventory, if they have latitude and longitude, with their radius and stratum, and the trees that have x and y.</li>
+    <li><span class="n">3</span><b><span class="ui">Import GPX, KML or GeoJSON…</span></b> Adds the polygons and points of a file; a message says how many were imported.</li>
+    <li><span class="n">4</span><b>The layers.</b> <span class="ui">Plots</span>, <span class="ui">Trees</span>, <span class="ui">Polygons</span>, <span class="ui">Grid</span> and <span class="ui">Interpolation</span> are switched on and off separately.</li>
+    <li><span class="n">5</span><b><span class="ui">OpenStreetMap background (requests tiles from the internet)</span>.</b> Off by default. When on, the browser requests the tiles of the visible area; your data are not sent.</li>
+    <li><span class="n">6</span><b>The map buttons.</b> + and − zoom in and out; ⤢ fits the map to the data.</li>
+    <li><span class="n">7</span><b>The scale</b> and, on the right, the background note: with no background, “No background: latitude and longitude graticule.”</li>
+    <li><span class="n">8</span><b><span class="ui">Draw a polygon</span>.</b> One click per vertex; a double click or <span class="ui">Finish the polygon</span> closes it and <code>Esc</code> cancels it.</li>
+  </ul>
+  <p>The map pans by dragging and zooms with the wheel, the buttons or the <code>+</code> and <code>−</code> keys; the arrows move it. Plots are circles at their true radius; those without a radius (imported points) are drawn as points. Trees appear as you zoom in, from zoom level 15, with a size according to their DBH: the app places them by adding their local coordinates (x to the east, y to the north, in meters) to the center of their plot in UTM.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>With no background, nothing leaves your computer</div>
+    <p>With the background off, the map is a latitude and longitude graticule drawn by the app, and no data leave your computer. With the background on, the browser requests the images of the visible area from the OpenStreetMap servers, whose data are licensed under the ODbL and carry the attribution in the corner of the map; the coordinates of your plots are not sent, but the server does know which area you are looking at. If you opened the app with a double click, some servers may refuse the tiles; online it works.</p>
+  </div>
+  <p>Below the map, the <span class="ui">Static map in UTM (for the report)</span> repeats the polygons, the plots (colored by stratum if there is more than one), the grid and the interpolated surface in the UTM zone of the center of the data, with a north arrow and a scale. It is the figure that goes into the Block 10 report and the figure studio.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b8-estatico.png" alt="The static UTM map of the cloud forest with the property, the plots colored by stratum and the points of a 500-meter grid"></div>
+    <figcaption><b>Figure 8.2.</b> The static map of the cloud forest in UTM zone 14, with the plots by stratum and the 500 m systematic grid of Section 8.3 (the squares).</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · two projections</div>
+    <p>The interactive map uses the spherical Mercator projection at integer zoom levels, that of web maps; it distorts distances and areas with latitude, and it is for viewing. Measurements are made in UTM (transverse Mercator), which within its zone keeps distances with an error of less than 0.04% (Snyder 1987; Karney 2011). That is why the static map, the areas, the grid and the interpolation work in UTM meters.</p>
+  </div>
+
+  <!-- 8.2 -->
+  <h2 id="s8-2"><span class="num">8.2</span>Polygons and areas</h2>
+  <p class="lead">The area and perimeter of each polygon—the property, the stands, the harvest areas—computed in two ways: in the UTM zone of its center and on the sphere.</p>
+  <p>The data card asks for the vertices of each polygon in order: <span class="ui">Polygon</span> * (the name, which groups the vertices), <span class="ui">Latitude</span> * and <span class="ui">Longitude</span> *, in decimal degrees. A polygon needs at least three vertices; there is no need to repeat the first one at the end. The example is the <span class="ui">Cloud forest property (9 vertices)</span>. The polygons imported and those drawn on the map also reach the <span class="ui">Polygons</span> table; <span class="ui">Remove the last polygon</span> undoes the last one.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b8-poligonos.png" alt="The Polygons and areas card with the cloud forest property: its number of vertices, the area in UTM and on the sphere, the perimeter, the zone and the centroid, and the interpretation"></div>
+    <figcaption><b>Figure 8.3.</b> The property of the cloud forest example: 9 vertices, 6,685.494 ha in UTM and 6,703.819 ha on the sphere, a perimeter of 30,460.2 m, zone 14N and the centroid at 19.50369, −97.03551.</figcaption>
+  </figure>
+  <p>The interpretation compares the two areas—in the example they differ by 0.27%—and recommends using the UTM area for the inventory: it is the one used in cadastre and the one that matches the distances measured in the field.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · two areas</div>
+    <p>The UTM area comes from the surveyor’s formula (Gauss) on the plane coordinates of the zone of the polygon’s center, with straight sides on the plane; it includes the scale factor of the projection (≤ 0.04% within the zone). The area on the sphere adds spherical triangles from the first vertex with L’Huilier’s theorem (Todhunter 1886), with great-circle sides and a mean radius of 6,371,008.8 m; it differs from that of the ellipsoid by a few tenths of a percent depending on latitude.</p>
+  </div>
+
+  <!-- 8.3 -->
+  <h2 id="s8-3"><span class="num">8.3</span>Sampling grid</h2>
+  <p class="lead">The plot centers of a new inventory: a systematic grid or random points inside a polygon, with their geographic and UTM coordinates, ready for the GPS.</p>
+  <p>The controls are <span class="ui">Polygon</span> (any of those loaded), <span class="ui">Design</span> (<span class="ui">Systematic (grid)</span> or <span class="ui">Random</span>), <span class="ui">Spacing between points (m)</span> (500) and <span class="ui">Rotation (°)</span> (0) for the grid, <span class="ui">Random points</span> (30) for the random design, <span class="ui">Plot radius (m)</span> (17.84, that of 1,000 m²) to compute the sampling intensity, and the <span class="ui">Random start of the grid</span> check box. <span class="ui">Generate the points</span> computes them and puts them on the map.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b8-cuadricula.png" alt="The Sampling grid card with the cloud forest property: the controls with the default values, the tiles of points, area and sampling intensity, and the beginning of the table of points"></div>
+    <figcaption><b>Figure 8.4.</b> A 500 m systematic grid on the cloud forest property: 266 points (267.4 were expected) on 6,685.5 ha. With 1,000 m² plots, the sampling intensity is 0.40%.</figcaption>
+  </figure>
+  <p>The tiles give the <span class="ui">Points</span> (with those expected, for the grid), the <span class="ui">Area</span> of the polygon and the <span class="ui">Sampling intensity</span>: the area of the plots over that of the polygon. The <span class="ui">Sampling points</span> table shows the first 25—number, latitude, longitude, UTM easting and northing—and its downloads carry all of them; the <span class="ui">⤓ GPX</span>, <span class="ui">⤓ KML</span> and <span class="ui">⤓ GeoJSON</span> buttons of this card export only the grid (<code>forestpro_cuadricula.gpx</code>…), with the points named G1, G2…</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · the grid and its start</div>
+    <p>The grid is built in UTM with the chosen spacing and rotation and keeps the points inside the polygon (ray test); the expected number is the area over the spacing squared: in the example, about 66,855,000 m² over 250,000 m², 267.4 points. Without a random start, the grid begins half a cell from the origin and always comes out the same. With <span class="ui">Random start of the grid</span>, the origin is drawn within one cell, so that every point of the property has the same chance of falling in the sample, the condition for treating the grid as a probability sample (Gregoire and Valentine 2008). The random design draws uniform points inside the polygon: with the 30 by default, the intensity drops to 0.04%.</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The draw changes every time</div>
+    <p>With a random start or with the random design, each click on <span class="ui">Generate the points</span> gives a different draw. Download the points you are going to use and keep them with the Block 10 project: you will not be able to generate them again identically.</p>
+  </div>
+
+  <!-- 8.4 -->
+  <h2 id="s8-4"><span class="num">8.4</span>Export</h2>
+  <p class="lead">The map layers in the formats read by GPS receivers, virtual globes and mapping programs.</p>
+  <p>The four buttons—<span class="ui">⤓ GPX</span>, <span class="ui">⤓ KML</span>, <span class="ui">⤓ GeoJSON</span> and <span class="ui">⤓ CSV</span>—download in a single file (<code>forestpro_mapa.gpx</code>, <code>.kml</code>, <code>.geojson</code> or <code>.csv</code>) the loaded plots, the grid points and the polygons. Each plot carries its name, its stratum and, if it has them, its basal area and density; each grid point, its UTM coordinates. The CSV has the columns <code>nombre</code>, <code>lat</code>, <code>lon</code> and <code>descripcion</code>, and does not carry the polygons. If nothing is loaded, a message says so.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.1in">Format</th><th>What for</th></tr></thead>
+    <tbody>
+      <tr><td>GPX</td><td>Handheld GPS receivers: the plots and the grid as waypoints to navigate to them; the polygons, as closed tracks.</td></tr>
+      <tr><td>KML</td><td>Virtual globes and many mapping programs.</td></tr>
+      <tr><td>GeoJSON</td><td>Any geographic information system; it keeps the attributes of each point.</td></tr>
+      <tr><td>CSV</td><td>A spreadsheet with the points, or the data card of another section.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.5 -->
+  <h2 id="s8-5"><span class="num">8.5</span>Interpolation among plots</h2>
+  <p class="lead">A continuous map of a variable measured in the plots—basal area, carbon, yield, shade—by inverse distance or by kriging, with the variogram that tells whether the variable has spatial structure and the cross-validation that tells which method predicts better.</p>
+  <p>The data come from two sources. If the plots on the map come from the inventory, <span class="ui">Variable</span> offers theirs: <span class="ui">Basal area (m²/ha)</span>, <span class="ui">Density (trees/ha)</span>, <span class="ui">Volume (m³/ha)</span> and, if they were computed in Block 4 before bringing in the inventory, <span class="ui">Aboveground biomass (Mg/ha)</span> and <span class="ui">Carbon (Mg C/ha)</span>. Or else the data card of this section reads a table of your own with <span class="ui">Latitude</span> *, <span class="ui">Longitude</span> *, <span class="ui">Value</span> * and <span class="ui">Name</span>; its two examples are the yield of parchment coffee (kg/ha) and the shade (%) of the 25 plots of the coffee farm, and when they are loaded the points replace the map layers.</p>
+  <p>The controls are <span class="ui">Method</span> (<span class="ui">Ordinary kriging</span>, <span class="ui">Simple kriging</span> or <span class="ui">Inverse distance (IDW)</span>), <span class="ui">Variogram model</span> (<span class="ui">Spherical</span>, <span class="ui">Exponential</span> or <span class="ui">Gaussian</span>), <span class="ui">IDW power</span> (2), <span class="ui">Variogram cutoff (m, empty = automatic)</span>, <span class="ui">Cells on the long side</span> (60; from 10 to 200) and <span class="ui">Clip to the first polygon</span>. <span class="ui">Interpolate</span> runs the computation; at least 5 points with a value are needed.</p>
+
+  <p>The tiles give the <span class="ui">Points</span> and the method, the <span class="ui">Range of the map</span> and two cross-validations, each with its root mean square error (RMSE) and its mean error: <span class="ui">Cross-validation: ordinary kriging</span> (or <span class="ui">Cross-validation: simple kriging</span>, if that kriging was chosen; with IDW chosen, the ordinary one) and <span class="ui">Cross-validation: IDW</span>. Both are always computed, so they can be compared. Then come the chart <span class="ui">Experimental variogram and fitted model</span> (the size of each point according to the pairs of plots that form it) and the <span class="ui">Variogram model</span> table, with the nugget, the partial sill, the range, the nugget proportion and the cutoff with the width of the lag classes. The surface is painted on the interactive map (<span class="ui">Interpolation</span> layer) and on the static map, with its color scale.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · variogram, kriging and inverse distance</div>
+    <p>Everything is computed in UTM meters. The experimental variogram (Matheron 1963), γ(<i>h</i>) = Σ(<i>z<sub>i</sub></i> − <i>z<sub>j</sub></i>)²/(2N(<i>h</i>)), averages the squared differences between plots separated by distance <i>h</i>, by default up to a third of the diagonal of the data in 15 classes. A spherical, exponential or Gaussian model is fitted to it by weighted least squares with weights N<sub><i>j</i></sub>/<i>h<sub>j</sub></i>² (Cressie 1985): the <b>nugget</b> c₀ is the variation at zero distance (error and very short-range variation), the <b>sill</b> c₀ + c₁, the total variation, and the <b>range</b>, the distance at which plots stop resembling each other (in the exponential the practical range is 3<i>a</i>, and in the Gaussian √3·<i>a</i>). Ordinary kriging predicts each cell with the weights that minimize the error variance with an unknown mean; simple kriging, with the mean of the data (Isaaks and Srivastava 1989). IDW (Shepard 1968) averages the values with weights 1/<i>d<sup>p</sup></i>, without a model. Cross-validation leaves out each plot, predicts it from the others and summarizes the errors.</p>
+  </div>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b8-superficie.png" alt="The static UTM map with the coffee farm yield surface interpolated by kriging, from light colors to dark greens, and the 25 plots"></div>
+    <figcaption><b>Figure 8.5.</b> The yield surface of the coffee farm example on the static map. The lowest yield (light colors) surrounds the northwestern plots, and the highest (dark green) lie to the north and southeast.</figcaption>
+  </figure>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b8-interpolacion.png" alt="The tiles of the interpolation of the coffee farm yield, the experimental variogram with the fitted spherical model and the table of its parameters"></div>
+    <figcaption><b>Figure 8.6.</b> The yield of the coffee farm example by ordinary kriging with a spherical model: 25 points, a map from 502.0 to 1,208.9 kg/ha, a nugget of 384.6 with a partial sill of 50,323 (nugget / total sill = 1%) and a range of 2,497 m. In cross-validation, kriging gives an RMSE of 124.61 and IDW 114.45.</figcaption>
+  </figure>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Worked example · three variables, three variograms</div>
+    <p><b>The coffee farm yield</b> (Figure 8.6) has clear spatial dependence—a nugget of 1% of the sill—up to about 2,497 m: the farms differ from one another. Even so, IDW predicts somewhat better than kriging in cross-validation (RMSE 114.45 against 124.61), and the app says so. <b>The coffee farm shade</b> gives a nugget of 29% of the sill, a range of 3,425 m and a kriging barely better than IDW (RMSE 10.29 against 10.44). <b>The basal area of the cloud forest</b>, in contrast, gives a range of 3 m—smaller than the first lag class—and a nugget of 80%: the app warns that “the variogram shows no spatial dependence at the distances analyzed (pure nugget effect),” and kriging predicts the mean, 37.2 m²/ha, over the whole map.</p>
+  </div>
+  <p>The interpretation compares the RMSE of the two methods; reads the nugget proportion—if it exceeds 60%, “most of the variation is short-range or error,” otherwise “there is clear spatial dependence” up to the practical range—; and closes by reminding you that with few plots the map serves to locate zones, not to read point values. The pure nugget effect is declared when the range is smaller than the first lag class of the variogram or the partial sill is less than 5% of the total sill.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Clip to the polygon</div>
+    <p>With <span class="ui">Clip to the first polygon</span> checked (the default) and a polygon loaded, the surface is computed only inside it, and the grid of cells covers the polygon instead of the rectangle of the points. Loading one of the examples of the card removes the previous polygons, so the coffee farm is interpolated over the rectangle of its plots.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>If</b> you need the area of the property for the inventory</td><td><b>then</b> use the UTM area, not the one on the sphere nor the one a Mercator map gives.</td></tr>
+      <tr><td><b>If</b> the grid is to be a probability sample</td><td><b>then</b> check <span class="ui">Random start of the grid</span> and keep the points generated.</td></tr>
+      <tr><td><b>If</b> the nugget proportion is low and the range exceeds the distance between neighboring plots</td><td><b>then</b> there is spatial structure: kriging makes sense.</td></tr>
+      <tr><td><b>If</b> the nugget exceeds 60% or the app warns of a pure nugget effect</td><td><b>then</b> the variable has no structure at that scale: the interpolated map adds no information to the mean.</td></tr>
+      <tr><td><b>If</b> IDW gives a lower RMSE than kriging</td><td><b>then</b> prefer IDW, or try another model or variogram cutoff.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">These are guides for interpretation, not laws: with 25 plots a variogram is a rough approximation, and the location of the plots weighs as much as the method.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>“The plots of the inventory have no latitude and longitude.”</b>: the Block 3 inventory has no plot coordinates. Match them in its plot card, in decimal degrees (longitude in Mexico is negative).</p>
+    <p><b>The trees do not appear.</b> They are only visible from zoom level 15, and only those that have x and y in the inventory.</p>
+    <p><b>The polygon comes out crossed or with an absurd area.</b> The vertices are not in order around the polygon, or latitude and longitude are swapped.</p>
+    <p><b>“First load, import or draw a polygon.”</b> in the grid, or <b>“The variogram could not be fitted; use IDW or change the cutoff.”</b> in the interpolation: the polygon is missing, or there are too few pairs of plots in the lag classes of the variogram.</p>
+    <p><b>The online background does not load.</b> Some servers refuse tiles to a page opened with a double click; open the app online or work without a background.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 6</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-6" data-pestana="6" data-orden="6" style="--acento: var(--b6)">
+  <div class="cap-apertura">
+    <div class="cap-num">6</div>
+    <div class="cap-etiqueta">Chapter six · Block 6</div>
+    <h1 data-corto="Diversity and ecology">Forest diversity and ecology</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">An inventory does more than count wood: it tells you which species are present and in what proportions. This block turns the list of trees into a community and answers how many species there are and how many remain to be recorded, how dominated the community is, how alike the sites are, how species are spread among the stories of the forest, and whether the trees are clustered, random or regularly spaced.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k6"></span><span class="k6"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>6.1</b>The community</li>
+      <li><b>6.2</b>Diversity indices</li>
+      <li><b>6.3</b>Hill numbers, rarefaction and accumulation</li>
+      <li><b>6.4</b>Similarity among sites and ordination</li>
+      <li><b>6.5</b>Vertical structure</li>
+      <li><b>6.6</b>Spatial pattern of the trees</li>
+    </ul>
+  </div>
+
+  <p>Open the block with <span class="ruta">Block 6<span class="sep">›</span>Diversity and ecology</span> in the bar on the left. Its title on screen is <span class="ui">Forest diversity and ecology</span>, with the line “Richness, indices and Hill numbers, rarefaction, similarity among sites, vertical structure and spatial pattern.” It has six cards. Two of them read data: <span class="ui">The community</span>, on which the next four depend, and <span class="ui">Spatial pattern of the trees</span>, which needs the coordinates of every stem and works on its own. The example of this chapter is the cloud forest (Section I.7): the <span class="ui">Open in Diversity</span> button on the home page, or the example of each card, loads both the community of its 24 plots and the mapped 50 × 50 m plot.</p>
+
+  <!-- 6.1 -->
+  <h2 id="s6-1"><span class="num">6.1</span>The community</h2>
+  <p class="lead">The whole block starts from a <b>long table</b>: one row per site and species with its abundance, or one row per individual. The app turns it into the sites-by-species matrix used by Sections 6.2 to 6.5.</p>
+  <p>The data card is the usual one (Section I.6): example, file, pasted table, table typed by hand, <span class="ui">Use the loaded inventory</span> (the one in Block 3) or <span class="ui">⤓ Template</span>. It asks for these columns:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.5in">Field on the card</th><th>What it holds</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Site or plot</span> *</td><td>The name of the site; each distinct value is a row of the matrix.</td></tr>
+      <tr><td><span class="ui">Species</span> *</td><td>The name of the species; each distinct value is a column.</td></tr>
+      <tr><td><span class="ui">Abundance (empty = 1 individual)</span></td><td>How many individuals the row stands for. If it is missing, each row counts as one individual; repeated rows are added up.</td></tr>
+      <tr><td><span class="ui">Group (stratum, farm…)</span></td><td>A group of sites (the stratum, the farm, the treatment). It colors the sites in the ordination and splits the Hill and rarefaction curves.</td></tr>
+      <tr><td><span class="ui">Height (m), for vertical structure</span></td><td>The height of each individual; only Section 6.5 uses it.</td></tr>
+    </tbody>
+  </table>
+  <p>With <span class="ui">Use the loaded inventory</span>, the app takes the live trees of Block 3, each one as an individual, with its plot as the site, its stratum (or its cluster) as the group, and its height. The diversity thus comes from the same inventory that gave the growing stock, without preparing another table.</p>
+  <p>Below come three tiles—<span class="ui">Sites</span> (with the number of groups), <span class="ui">Species</span> and <span class="ui">Individuals</span>—and the <span class="ui">Sites by species matrix</span>, which shows up to 30 rows on screen and downloads in full with <span class="ui">⤓ CSV</span> or <span class="ui">⤓ XLSX</span>.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The second example</div>
+    <p>The example list of the card also offers <span class="ui">Coffee farm: shade trees of 25 plots</span>, with the farm as the group. It gives 25 sites in 5 groups, 10 species and 694 individuals: a much poorer community, dominated by the two <i>Inga</i> species, worth comparing with that of the forest.</p>
+  </div>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b6-comunidad.png" alt="The community card with the cloud forest example: the data card, the tiles 24 sites, 30 species and 1,735 individuals, and the beginning of the sites by species matrix"></div>
+    <figcaption><b>Figure 6.1.</b> The cloud forest example: the live individuals (DBH ≥ 2.5 cm) of 24 plots in 3 strata. The matrix has 24 sites, 30 species and 1,735 individuals; each cell is the number of individuals of one species in one plot.</figcaption>
+  </figure>
+
+  <!-- 6.2 -->
+  <h2 id="s6-2"><span class="num">6.2</span>Diversity indices</h2>
+  <p class="lead">The card asks for nothing: as soon as there is a community, it computes the classic indices for each site and for all sites together.</p>
+  <p>The six tiles refer to the whole set: <span class="ui">Observed richness</span> (with Chao1 and ACE below), <span class="ui">Shannon H′</span> (with its exponential, in “effective species”), <span class="ui">Simpson 1 − λ</span> (with 1/λ), <span class="ui">Pielou J</span>, <span class="ui">Fisher's α</span> and <span class="ui">Sample coverage</span>, which is marked in green when it exceeds 95%. The <span class="ui">Indices by site</span> table repeats everything by plot—N, S, H′, 1 − λ, 1/λ, J, α, Margalef, Chao1, ACE and the coverage—and closes with the <span class="ui">All sites</span> row. The chart <span class="ui">Observed and estimated richness by site</span> shows, for each plot sorted from most to fewest species, the observed richness and the two estimates.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b6-indices.png" alt="The Diversity indices tiles for the cloud forest, the chart of observed richness, Chao1 and ACE by site, and the interpretation"></div>
+    <figcaption><b>Figure 6.2.</b> The whole cloud forest: 30 species observed and 30.0 estimated by Chao1 and ACE, H′ = 3.152 (23.4 effective species), 1 − λ = 0.946, J = 0.927 and Fisher’s α = 5.15, with a coverage of 100.0%. Plot by plot, however, species are missing: M18 records 20 and Chao1 estimates 38.3. The by-site table was left out of the image.</figcaption>
+  </figure>
+  <p>The app’s interpretation applies three rules: if Chao1 exceeds the observed richness by less than half a species, “sampling captured practically all of them”; the coverage says what share of the individuals belongs to species not yet seen; and if J exceeds 0.8, “individuals are evenly spread,” otherwise “a few species dominate.” For the cloud forest example it says that practically all species were captured and that the spread is even (J = 0.93); the coffee farm example gives 10 species, Chao1 = 10.0, H′ = 2.057 and J = 0.893.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · richness, evenness and what remains unseen</div>
+    <p>With <i>p<sub>i</sub></i> the share of individuals of species <i>i</i>, Shannon H′ = −Σ<i>p<sub>i</sub></i> ln <i>p<sub>i</sub></i> measures the uncertainty of guessing the species of an individual drawn at random, and Simpson λ = Σ<i>p<sub>i</sub></i>², the probability that two individuals belong to the same species; 1 − λ and 1/λ grow with diversity. Pielou J = H′/ln S compares H′ with its maximum: 1 if all species are equally abundant. Fisher’s α comes from S = α ln(1 + N/α) and depends little on sample size (Fisher et al. 1943); Margalef (S − 1)/ln N and Menhinick S/√N are richness indices corrected more crudely (Magurran 2004). Chao1 (bias-corrected, S + <i>f</i>₁(<i>f</i>₁ − 1)/(2(<i>f</i>₂ + 1)); Chao 1987) and ACE (with species of 10 individuals or fewer as rare; Chao and Lee 1992) estimate how many species the community holds from those seen once or twice (<i>f</i>₁ and <i>f</i>₂). The coverage of Chao and Jost (2012) is the share of the individuals of the community that belong to species already recorded.</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Compare sites at the same effort</div>
+    <p>Observed richness grows with the number of individuals counted: a plot with 91 individuals (M08, 26 species) and another with 59 (M20, 17 species) cannot be compared directly. To compare richness use the rarefaction of Section 6.3, or the indices that depend less on size (Fisher’s α, 1/λ). And look at the coverage of each plot: at 0.820 (M21), almost one in five individuals of that community belongs to species the plot did not record.</p>
+  </div>
+
+  <!-- 6.3 -->
+  <h2 id="s6-3"><span class="num">6.3</span>Hill numbers, rarefaction and accumulation</h2>
+  <p class="lead">Hill numbers put all the indices on a single scale, that of <b>effective species</b>: how many equally abundant species would give the same diversity. Rarefaction and accumulation tell how richness grows with sampling effort.</p>
+  <p>This card asks for nothing either. If the community has between 2 and 8 groups, each chart carries one curve per group besides that of <span class="ui">All</span> (in black). There are three charts and one table:</p>
+  <ul>
+    <li><span class="ui">Hill diversity profile</span>: the effective number of species <sup>q</sup>D for order q from 0 to 3. At q = 0 it is richness; at q = 1, exp(H′); at q = 2, the inverse Simpson.</li>
+    <li><span class="ui">Rarefaction (solid) and extrapolation (dashed)</span>: the expected species in a subsample of <i>m</i> individuals, up to the observed size (the dot) and extrapolated up to twice that size.</li>
+    <li><span class="ui">Species accumulation by plot (± 1 SD)</span>: the expected species as 1, 2, … plots are pooled, with its band.</li>
+    <li><span class="ui">Observed and asymptotic diversity</span>: for each set, the individuals, the observed and asymptotic diversity at q = 0, 1 and 2, and the coverage.</li>
+  </ul>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b6-hill.png" alt="The Hill diversity profile and the rarefaction and extrapolation curves of the cloud forest, with one curve for all sites and one per stratum"></div>
+    <figcaption><b>Figure 6.3.</b> The three strata of the cloud forest share the same 30 species (q = 0), but the profile of the conserved stratum falls much more slowly than those of the disturbed and riparian strata: at q = 2 it has 18.88 effective species against 11.60 and 11.66. The rarefaction curves reach their asymptote before 500 individuals.</figcaption>
+  </figure>
+  <p>The Hill profile is the most honest way to compare communities: if two profiles cross, one community is richer but the other more even, and no single index would tell you so. In the example, the disturbed and riparian strata almost coincide along the whole profile, although the disturbed stratum has 593 individuals and the riparian one 391.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b6-acumulacion.png" alt="The species accumulation curve by plot of the cloud forest with its band, and the table of observed and asymptotic diversity"></div>
+    <figcaption><b>Figure 6.4.</b> The accumulation of the cloud forest goes from about 22 species with one plot to all 30 before ten plots are pooled, and the last plot adds 0.00 species. In the table, the asymptotic diversity barely exceeds the observed one (23.57 against 23.38 at q = 1 for all sites).</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · the estimators</div>
+    <p><sup>q</sup>D = (Σ<i>p<sub>i</sub></i><sup>q</sup>)<sup>1/(1−q)</sup> decreases with q, and the faster the more dominated the community is (Hill 1973). The asymptotic values (Chao et al. 2013, 2014) estimate the diversity of the whole community: richness by S + ((<i>n</i> − 1)/<i>n</i>)·<i>f</i>₁²/(2<i>f</i>₂), Shannon entropy by the formula of Chao, Wang and Jost, and Simpson by <i>n</i>(<i>n</i> − 1)/Σ<i>x</i>(<i>x</i> − 1). Rarefaction is that of Hurlbert (1971), E[S<sub><i>m</i></sub>] = Σ[1 − C(<i>n</i> − <i>x<sub>i</sub></i>, <i>m</i>)/C(<i>n</i>, <i>m</i>)], and the extrapolation up to 2<i>n</i>, that of Chao et al. (2014). Accumulation uses the exact expectation of species in <i>t</i> plots and its standard deviation conditional on the sample (Colwell et al. 2004).</p>
+  </div>
+  <p>The interpretation looks at the last stretch of the accumulation curve: if the last plot added less than half a species, “the accumulation curve is already levelling off; more plots would hardly add species”; otherwise, “the curve is still rising.”</p>
+
+  <!-- 6.4 -->
+  <h2 id="s6-4"><span class="num">6.4</span>Similarity among sites and ordination</h2>
+  <p class="lead">How much do the sites share species? The card computes the dissimilarity between every pair of sites and summarizes it in a heat map, a dendrogram and a two-dimensional ordination. At least 3 sites are needed.</p>
+  <p>The only control is <span class="ui">Index</span>: <span class="ui">Bray–Curtis</span> (the default, with abundances), <span class="ui">Jaccard</span> or <span class="ui">Sørensen</span> (both with presence and absence). The card draws the <span class="ui">Dissimilarity among sites</span> as a heat map (0 = identical, 1 = nothing in common), the <span class="ui">UPGMA</span> dendrogram with its cophenetic correlation in the title, and the <span class="ui">NMDS</span> ordination with its stress; the sites are colored by group.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/b6-similitud.png" alt="The UPGMA dendrogram and the NMDS ordination of the cloud forest with Bray–Curtis, colored by stratum, and the interpretation"></div>
+    <figcaption><b>Figure 6.5.</b> With Bray–Curtis, the dendrogram (cophenetic correlation 0.888) separates the three strata without mixing them, and the NMDS (stress = 0.090) places them in three clouds. The mean dissimilarity is 0.322 within a stratum and 0.515 between strata.</figcaption>
+  </figure>
+  <p>The buttons <span class="ui">Send the matrix to ClusteringPro</span> and <span class="ui">Send the matrix to PCAPro</span> download the sites-by-species matrix as CSV (with the site and group columns first) and open that app of the suite in a new tab, where you load it with its <span class="ui">Open file</span>. Opening the apps requires a connection; the file is downloaded anyway.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · dissimilarity, tree and ordination</div>
+    <p>With <i>a</i> the shared species and <i>b</i> and <i>c</i> those exclusive to each site, Jaccard is (<i>b</i> + <i>c</i>)/(<i>a</i> + <i>b</i> + <i>c</i>) and Sørensen (<i>b</i> + <i>c</i>)/(2<i>a</i> + <i>b</i> + <i>c</i>); Bray–Curtis, Σ|<i>x</i> − <i>y</i>|/Σ(<i>x</i> + <i>y</i>), also weighs abundances (Legendre and Legendre 2012). UPGMA joins groups by their mean dissimilarity; the cophenetic correlation (Sokal and Rohlf 1962) measures how well the tree keeps the original dissimilarities. NMDS looks for two axes whose distances respect the <i>order</i> of the dissimilarities, minimizing Kruskal’s (1964) stress-1 by majorization (de Leeuw and Mair 2009) from classical scaling and 20 random configurations, and is rotated to its principal axes.</p>
+  </div>
+  <p>Changing the index changes the reading. With <span class="ui">Jaccard</span> the mean dissimilarity of the cloud forest is 0.327 within strata and 0.398 between them, and with <span class="ui">Sørensen</span>, 0.198 and 0.251; with both the stress rises to 0.242. Since almost every plot has almost every species, presence and absence tell little apart: what separates the strata is <i>how much</i> of each species there is, and only Bray–Curtis sees that. (Jaccard and Sørensen give the same NMDS because one is an increasing function of the other, and NMDS only uses the order.)</p>
+  <p>The interpretation compares the mean dissimilarity between groups with that within groups: if the former is more than 1.15 times the latter, “the groups have different compositions, and the ordination separates them.” The stress reads as a good representation below 0.10, fair up to 0.20 and poor above that.</p>
+
+  <!-- 6.5 -->
+  <h2 id="s6-5"><span class="num">6.5</span>Vertical structure</h2>
+  <p class="lead">Do all species occupy all stories, or does each story have its own? The card summarizes this with Pretzsch’s species profile index and needs the height of at least 10 individuals; without it, it says so.</p>
+  <p>The app divides the stand into three zones by maximum height: zone I, above 80% of the maximum height; zone II, 50 to 80%; zone III, up to 50%. The tiles give <span class="ui">Pretzsch's A</span> (with its maximum possible value), <span class="ui">Relative A</span> and <span class="ui">Maximum height</span>. The <span class="ui">Pretzsch's index by group</span> table repeats them for all individuals and for each group, with the individuals in each zone; the chart <span class="ui">Individuals by height zone (10 most abundant species)</span> stacks the three zones of each species; and the table <span class="ui">Strata from the mean and SD of height</span> gives another, simpler division into lower, middle and upper strata.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b6-vertical.png" alt="The Vertical structure tiles of the cloud forest, the table of Pretzsch’s index by stratum, and the stacked bars of individuals by height zone of the 10 most abundant species"></div>
+    <figcaption><b>Figure 6.6.</b> The cloud forest: A = 3.457 out of a maximum of 4.500, relative A of 76.8% and maximum height of 35.4 m. Only 11 individuals reach zone I; most species live in zone III, and only <i>Liquidambar styraciflua</i> has visible individuals in all three zones.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · Pretzsch’s index</div>
+    <p>A = −ΣΣ <i>p<sub>ij</sub></i> ln <i>p<sub>ij</sub></i>, with <i>p<sub>ij</sub></i> the share of individuals of species <i>i</i> in zone <i>j</i>, is a Shannon index of species by stories (Pretzsch 1996, 2009). Its maximum, A<sub>max</sub> = ln(3S), corresponds to all species spread equally among the three stories, and A<sub>rel</sub> = 100·A/A<sub>max</sub>. The strata from the mean and standard deviation (Souza et al. 2003) place the lower stratum below the mean − 1 SD and the upper one above the mean + 1 SD; in the example, below 5.5 m (195 individuals) and from 16.2 m (265).</p>
+  </div>
+  <p>Each group uses its own maximum height, so the zones of a group are not those of the whole set: that is why the conserved stratum has 21 individuals in its zone I although the whole set has only 11. The interpretation calls the vertical structure complex if relative A exceeds 70%, and simple otherwise; in the example, 77%.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>One very tall tree squashes the zones</div>
+    <p>The zones are measured against the maximum height, and a single emergent (or a data-entry error) shifts them all downward. In the cloud forest example, the maximum height of 35.4 m leaves only 1% of the individuals in zone I. Check the maximum height before interpreting the index, and always compare with the strata from the mean, which depend less on a single tree.</p>
+  </div>
+
+  <!-- 6.6 -->
+  <h2 id="s6-6"><span class="num">6.6</span>Spatial pattern of the trees</h2>
+  <p class="lead">With the coordinates of every stem in a rectangular plot, the card tells you whether the trees are clustered, randomly distributed or regularly spaced, and at what distances. At least 10 trees are needed.</p>
+  <p>The data card asks for <span class="ui">x (m)</span> * and <span class="ui">y (m)</span> * of each stem, measured from one corner of the plot, and, if you have them, <span class="ui">Species</span>, <span class="ui">DBH (cm)</span> (for the size of the points on the map) and <span class="ui">Group (storey, cohort…)</span>. The controls are above: <span class="ui">Plot width (m)</span> and <span class="ui">Plot length (m)</span> (50 and 50), <span class="ui">Maximum distance for K (m)</span> (12), <span class="ui">Simulations for the envelope</span> (99; the app accepts 19 to 999) and <span class="ui">Trees</span>, which selects <span class="ui">All</span> or one group. Trees that fall outside the rectangle are not used, and a warning says how many there are.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b6-patron.png" alt="The Clark–Evans tiles, the stem map of the mapped 50 × 50 m plot and the L(r) − r curve with its envelope"></div>
+    <figcaption><b>Figure 6.7.</b> The 196 stems of the mapped plot (784 trees/ha). Clark–Evans gives R = 1.020 (0.989 with Donnelly’s correction, <i>p</i> = 0.770): by the nearest neighbor it cannot be told from random. But L(r) − r exceeds the envelope between 0.9 and 12.0 m: there is clustering at those scales.</figcaption>
+  </figure>
+  <p>The tiles give <span class="ui">Clark–Evans R</span> with its <i>z</i> and <i>p</i>, <span class="ui">R with Donnelly correction</span> with its <i>p</i>, and the <span class="ui">Density</span>. On the left is the <span class="ui">Stem map (size by DBH)</span>, colored by species; on the right, <span class="ui">L(r) − r with an envelope of 99 simulations</span>: the line is what was observed and the gray band, what randomness would give with the same number of trees.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The envelope is not a formal test</div>
+    <p>With 99 simulations, the band is the minimum and maximum of L(r) − r under randomness at each distance. The curve leaving it at some distance is not equivalent to a test at 1%, because many distances are examined at once; take it as a guide to the scales at which there is structure, and confirm with the Clark–Evans index and with what you know about the stand.</p>
+  </div>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Worked example · two patterns that cancel out</div>
+    <p>How can one index say “random” and another “clustered”? Choose each story separately in <span class="ui">Trees</span>. The <b>canopy</b> (70 trees) gives R = 1.504 (1.427 corrected, <i>p</i> &lt; 0.001): trees more regularly spaced than at random, with L(r) − r below the envelope between 1.5 and 6.0 m, the signature of competition among crowns. The <b>understory</b> (126 trees) gives R = 0.616 (0.593 corrected, <i>p</i> &lt; 0.001): clustered, with L(r) − r above the envelope from 0.9 to 12.0 m. Together, the regularity of one and the clustering of the other leave Clark–Evans near 1, while Ripley’s K, which looks at all distances at once, still sees the clumps of the understory.</p>
+  </div>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · nearest neighbor and Ripley’s K</div>
+    <p>Clark and Evans (1954) compare the mean nearest-neighbor distance with the one expected under complete spatial randomness, 1/(2√λ): R &lt; 1 is clustering and R &gt; 1, regularity. Near the edge neighbors are lost, and Donnelly’s (1978) correction adds (0.0514 + 0.0412/√<i>n</i>)·P/<i>n</i> to the expected distance (P = perimeter). Ripley’s (1977) K counts the neighbors within <i>r</i> of each tree, with the translation correction (Ohser 1983); L(r) = √(K/π) equals <i>r</i> under randomness, so L(r) − r above the envelope is clustering at that scale and below it, regularity (Baddeley et al. 2015).</p>
+  </div>
+  <p>The interpretation uses the corrected R: with <i>p</i> &lt; 0.05 it says whether the trees are more clustered or more regularly spaced than at random, and then gives the distance ranges at which L(r) − r leaves the envelope from above (clustering) or from below (regularity or competition).</p>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p><b>The matrix has too many species.</b> The same name written in two ways (“Quercus sp.” and “Quercus sp”) makes two columns. Check the list of species in the matrix before reading the indices.</p>
+    <p><b>Abundances come out doubled.</b> If the table has one row per individual <i>and</i> an abundance column, each row is worth what that column says. Match the abundance only if each row summarizes several individuals.</p>
+    <p><b>“At least 3 sites are needed.”</b> in the similarity, or <b>“The vertical structure needs the height of the individuals.”</b>: the community has fewer than three sites, or the height was not matched (or there are fewer than 10 heights).</p>
+    <p><b>There are no curves by group.</b> The Hill and rarefaction curves and the rows by group only appear with 2 to 8 groups.</p>
+    <p><b>Many trees “fall outside the rectangle.”</b> The width and length do not match the plot, or the coordinates have their origin at the center: they must run from 0 to the width and from 0 to the length.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>If</b> the sample coverage exceeds 95% and Chao1 barely exceeds the observed richness</td><td><b>then</b> the inventory recorded almost all species; the observed richness is reliable.</td></tr>
+      <tr><td><b>If</b> the coverage is low or the accumulation is still rising</td><td><b>then</b> species are missing: report Chao1 or the asymptotic richness alongside the observed one, and compare sites by rarefaction.</td></tr>
+      <tr><td><b>If</b> J exceeds 0.8</td><td><b>then</b> the community is even; otherwise a few species dominate (see it in the Hill profile).</td></tr>
+      <tr><td><b>If</b> the dissimilarity between groups exceeds that within groups by more than 15%</td><td><b>then</b> the groups have different compositions.</td></tr>
+      <tr><td><b>If</b> the NMDS stress exceeds 0.20</td><td><b>then</b> the ordination is a poor representation: read the dendrogram or try another index.</td></tr>
+      <tr><td><b>If</b> Pretzsch’s relative A exceeds 70%</td><td><b>then</b> the vertical structure is complex: species occupy several stories.</td></tr>
+      <tr><td><b>If</b> the corrected R is below 1 with <i>p</i> &lt; 0.05 (or above 1)</td><td><b>then</b> the trees are clustered (or regularly spaced); the L(r) − r curve tells at what distances.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">These are guides for interpretation, not laws: plot size, the minimum diameter inventoried and the history of the stand change what the indices can tell.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Appendices</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  table.ficheros code, table.columnas code { white-space: nowrap; }
+  table.columnas td { font-size: 8pt; padding: 0.018in 0.06in; line-height: 1.25; }
+  table.apx td { padding: 0.024in 0.07in; line-height: 1.3; }
+  ul.refs { font-size: 8.8pt; line-height: 1.3; }
+  ul.refs li { margin-bottom: 0.035in; }
+  pre.archivo { font-family: var(--mono); font-size: 8.2pt; line-height: 1.4; background: #f4f6f1; border: 1px solid var(--linea); border-left: 3px solid var(--acento); border-radius: 0 4px 4px 0; padding: 0.07in 0.12in; margin: 0.05in 0 0.16in; white-space: pre-wrap; break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="apendices" data-pestana="Ap" data-orden="11" style="--acento: var(--bx)">
+  <div class="cap-apertura">
+    <div class="cap-num">A</div>
+    <div class="cap-etiqueta">Appendices</div>
+    <h1 data-corto="Appendices">Appendices</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">What is worth having at hand and did not fit in any chapter: which files the app reads and writes and how it reads them, with the columns of every data card; the rules the blocks apply, gathered in one place; the forestry vocabulary of the manual; what to do when something goes wrong, with the messages as they appear; the license of the program and how to cite it; and the 103 works the app cites.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k3"></span><span class="k4"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>A</b>The files the app reads and writes</li>
+      <li><b>B</b>The rules, gathered</li>
+      <li><b>C</b>Glossary</li>
+      <li><b>D</b>When something goes wrong</li>
+      <li><b>E</b>The tool: license and how to cite it</li>
+      <li><b>F</b>References</li>
+    </ul>
+  </div>
+
+  <!-- ================================================================= A -->
+  <h2 id="ap-a"><span class="num">A</span>The files the app reads and writes</h2>
+  <p class="lead">ForestPro runs in the browser and sends nothing to any server: every file comes in from your computer and goes out to the downloads folder. The app does not save your work by itself: if you close the tab without saving the project (Section 10.3), the work of that session is lost.</p>
+
+  <h3>A.1 · What the app reads</h3>
+  <table class="apx compacta ficheros">
+    <thead><tr><th style="width:1.35in">What</th><th style="width:1.5in">Where and extension</th><th>How it reads it</th></tr></thead>
+    <tbody>
+      <tr><td><b>Data tables</b></td><td>The 18 data cards of Blocks 2 to 8 · <code>.csv</code>, <code>.txt</code>, <code>.tsv</code>, <code>.xlsx</code>, <code>.xlsm</code>, <code>.ods</code>, or pasted</td><td>One row per record, with a header row. The columns are matched by name (below), and those not recognized are chosen by hand. From a workbook the first sheet is read, and a <span class="ui">Sheet:</span> menu lets you choose another. Rows missing a required field are left out with a warning.</td></tr>
+      <tr><td><b>Global wood density database</b></td><td>Block 4, <span class="ui">Load the global database (GWDD file)…</span> · <code>.csv</code>, <code>.txt</code>, <code>.xlsx</code>, <code>.xlsm</code>, <code>.ods</code></td><td>The file of the Global Wood Density Database. It looks for the <code>Data</code> sheet and the family, species (<i>Binomial</i>), density (<i>Wood density</i>) and region columns; without species or density, it does not read it. An old-format workbook (<code>.xls</code>) is rejected with a message asking to save it as <code>.xlsx</code> or <code>.csv</code>. Its regions fill the <span class="ui">Region</span> menu.</td></tr>
+      <tr><td><b>Canopy photograph</b></td><td>Block 7, <span class="ui">Open a photo…</span> · any image the browser opens (JPG, PNG…)</td><td>Hemispherical or upward-looking; it is analyzed on the page and not stored in the project.</td></tr>
+      <tr><td><b>Polygons and points</b></td><td>Block 8, <span class="ui">Import GPX, KML or GeoJSON…</span> · <code>.gpx</code>, <code>.kml</code>, <code>.geojson</code>, <code>.json</code></td><td>GPX: the waypoints (<code>wpt</code>) and the tracks (<code>trk</code>) of three points or more, as polygons. KML: the placemarks with <code>Point</code> or <code>Polygon</code> (its outer boundary). GeoJSON: <code>FeatureCollection</code>, <code>Feature</code> or a bare geometry of type <code>Point</code>, <code>MultiPoint</code>, <code>Polygon</code> or <code>MultiPolygon</code> (the outer ring); the name comes from the <code>name</code> or <code>nombre</code> property. All in longitude and latitude.</td></tr>
+      <tr><td><b>Project</b></td><td>Block 10, <span class="ui">Open a project…</span> · <code>.json</code></td><td>A file written by the app, with <code>"app": "ForestPro"</code> and its list of steps (A.4); any other JSON is rejected.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>How text files are read</h4>
+  <ul>
+    <li><b>Encoding.</b> UTF-8, with or without a byte-order mark; UTF-16 with a mark; and, if the file is not valid UTF-8, Latin-1 (Windows-1252).</li>
+    <li><b>Separator.</b> Guessed from the first rows, among tab, semicolon, comma and vertical bar: the one that gives the same number of columns in more rows wins. Quoted fields are respected, line breaks included; a quote that is never closed stops the reading.</li>
+    <li><b>Decimals.</b> If the separator is not the comma and numbers with a decimal comma outnumber those with a point, the comma is read as the decimal mark (<code>2,35</code> = 2.35); then <code>1.234,5</code> reads as 1234.5. With a comma separator, the decimal is always the point, and <code>1,234,567</code> reads as a number with thousands commas. <code>Inf</code> and <code>-Inf</code> read as infinities.</li>
+    <li><b>Numbers or text.</b> A column is taken as numeric if more than half of its non-empty cells are numbers; in it, whatever is not a number is left empty.</li>
+    <li><b>Empty rows.</b> They are skipped. Empty or repeated column names become V1, V2… or <i>name.1</i>.</li>
+    <li><b>Workbooks.</b> Each cell is read with its stored value, not the displayed one; dates as <code>YYYY-MM-DD</code>, and error cells (<code>#N/A</code>, <code>#DIV/0!</code>) as empty. Old-format workbooks (<code>.xls</code>) do not open: save them as <code>.xlsx</code> or <code>.csv</code>.</li>
+  </ul>
+  <h4>How columns are matched</h4>
+  <p>Each field has its key (the one the <span class="ui">⤓ Template</span> writes in the header row), its label in Spanish and in English, and several synonyms. The name of each column of your table is compared ignoring case, accents, spaces and signs, and whatever is in parentheses or brackets (so <code>DAP (cm)</code>, <code>dap</code> and <code>D.A.P.</code> are the same). First an exact match with the key, the label or a synonym is sought; if there is none, a column whose name starts with one of them, of three letters or more. What is matched appears already chosen in each field’s list, and the required ones carry an asterisk.</p>
+
+  <h3>A.2 · The columns of each data card</h3>
+  <p>The first column is the key, the name the app recognizes without asking; the asterisk marks the required fields. The synonyms are compared as explained above, and the label and the key count too. The keys and many synonyms are Spanish words, because the app was written in Spanish; the English labels are those the app shows in English.</p>
+  <table class="apx compacta columnas">
+    <thead><tr><th style="width:1.15in">Key</th><th style="width:2.1in">Field in the app</th><th>Synonyms it recognizes</th></tr></thead>
+    <tbody>
+      <tr><td colspan="3"><span class="chip k2">2</span> <b>Standing trees</b> (<code>b2t</code>)</td></tr>
+      <tr><td><code>especie</code></td><td>Species</td><td>species, sp, nombre cientifico, taxon</td></tr>
+      <tr><td><code>dap</code></td><td>DBH (cm)</td><td>dbh, d130, diametro, diameter, d</td></tr>
+      <tr><td><code>cap</code></td><td>Girth at 1.3 m (cm)</td><td>cap, cbh, gbh, circunferencia, perimetro</td></tr>
+      <tr><td><code>altura</code></td><td>Total height (m)</td><td>ht, h, height, alt</td></tr>
+      <tr><td><code>altura_com</code></td><td>Merchantable height (m)</td><td>hc, altura comercial, merchantable height</td></tr>
+      <tr><td><code>copa</code></td><td>Crown diameter (m)</td><td>crown, dc, diametro de copa</td></tr>
+      <tr><td><code>estado</code></td><td>Status</td><td>status, condicion, vivo</td></tr>
+      <tr><td colspan="3"><span class="chip k2">2</span> <b>Trees by sections</b> (<code>b2s</code>; at least 4 rows)</td></tr>
+      <tr><td><code>arbol</code> *</td><td>Tree</td><td>tree, id, arb</td></tr>
+      <tr><td><code>dap</code></td><td>DBH (cm)</td><td>dbh, d130</td></tr>
+      <tr><td><code>altura_total</code> *</td><td>Total height (m)</td><td>ht, H, height</td></tr>
+      <tr><td><code>h</code> *</td><td>Height of the section (m)</td><td>hi, altura seccion, section height</td></tr>
+      <tr><td><code>d</code> *</td><td>Diameter of the section (cm)</td><td>di, diametro seccion, section diameter</td></tr>
+      <tr><td colspan="3"><span class="chip k2">2</span> <b>Volume equations</b> (<code>b2v</code>; at least 6 rows)</td></tr>
+      <tr><td><code>dap</code> *</td><td>DBH (cm)</td><td>dbh, d</td></tr>
+      <tr><td><code>altura</code> *</td><td>Total height (m)</td><td>ht, h</td></tr>
+      <tr><td><code>volumen</code> *</td><td>Volume (m³)</td><td>v, vol, volume, vt</td></tr>
+      <tr><td colspan="3"><span class="chip k2">2</span> <b>Height–diameter relationship</b> (<code>b2h</code>; at least 6 rows)</td></tr>
+      <tr><td><code>arbol</code></td><td>Tree</td><td>tree, id</td></tr>
+      <tr><td><code>especie</code></td><td>Species</td><td>species, sp</td></tr>
+      <tr><td><code>dap</code> *</td><td>DBH (cm)</td><td>dbh, d</td></tr>
+      <tr><td><code>altura</code></td><td>Total height (m) — empty if missing</td><td>ht, h, height</td></tr>
+      <tr><td colspan="3"><span class="chip k3">3</span> <b>Inventory trees</b> (<code>b3t</code>)</td></tr>
+      <tr><td><code>parcela</code> *</td><td>Plot</td><td>plot, sitio, unidad, conglomerado parcela</td></tr>
+      <tr><td><code>estrato</code></td><td>Stratum</td><td>stratum, strata, tipo</td></tr>
+      <tr><td><code>especie</code></td><td>Species</td><td>species, sp, nombre cientifico</td></tr>
+      <tr><td><code>familia</code></td><td>Family</td><td>family</td></tr>
+      <tr><td><code>dap</code> *</td><td>DBH (cm)</td><td>dbh, d130, diametro, d</td></tr>
+      <tr><td><code>altura</code></td><td>Total height (m)</td><td>ht, h, height</td></tr>
+      <tr><td><code>copa</code></td><td>Crown diameter (m)</td><td>crown, diametro de copa, dc</td></tr>
+      <tr><td><code>estado</code></td><td>Status (alive / dead)</td><td>status, condicion</td></tr>
+      <tr><td><code>x</code> · <code>y</code></td><td>x (m) · y (m)</td><td>coordx, xm · coordy, ym</td></tr>
+      <tr><td colspan="3"><span class="chip k3">3</span> <b>Inventory plots</b> (<code>b3p</code>, optional)</td></tr>
+      <tr><td><code>parcela</code> *</td><td>Plot</td><td>plot, sitio</td></tr>
+      <tr><td><code>estrato</code></td><td>Stratum</td><td>stratum</td></tr>
+      <tr><td><code>area_estrato_ha</code></td><td>Area of the stratum (ha)</td><td>area estrato, stratum area</td></tr>
+      <tr><td><code>conglomerado</code></td><td>Cluster</td><td>cluster, finca, grupo</td></tr>
+      <tr><td><code>radio_m</code></td><td>Radius (m)</td><td>radio, radius, radio grande m, r</td></tr>
+      <tr><td><code>radio_chico_m</code></td><td>Radius of the subplot (m)</td><td>radio chico, radio subparcela</td></tr>
+      <tr><td><code>dap_corte_cm</code></td><td>DBH cut between plots (cm)</td><td>dap corte, corte</td></tr>
+      <tr><td><code>lado_m</code></td><td>Side of the square (m)</td><td>lado, side</td></tr>
+      <tr><td><code>largo_m</code> · <code>ancho_m</code></td><td>Length (m) · Width (m)</td><td>largo, length · ancho, width</td></tr>
+      <tr><td><code>area_m2</code></td><td>Plot area (m²)</td><td>area, superficie, plot area</td></tr>
+      <tr><td><code>lat</code> · <code>lon</code></td><td>Latitude · Longitude</td><td>latitude, y · longitude, long, x</td></tr>
+      <tr><td colspan="3"><span class="chip k3">3</span> <b>Angle-count sampling</b> (<code>b3r</code>)</td></tr>
+      <tr><td><code>punto</code> *</td><td>Point</td><td>point, pto</td></tr>
+      <tr><td><code>especie</code></td><td>Species</td><td>species</td></tr>
+      <tr><td><code>dap</code> *</td><td>DBH (cm)</td><td>dbh, d</td></tr>
+      <tr><td><code>altura</code></td><td>Height (m)</td><td>h, ht</td></tr>
+      <tr><td colspan="3"><span class="chip k4">4</span> <b>Downed wood</b> (<code>b4w</code>)</td></tr>
+      <tr><td><code>transecto</code> *</td><td>Transect</td><td>transect, linea</td></tr>
+      <tr><td><code>longitud_m</code> *</td><td>Length (m)</td><td>longitud, length, l</td></tr>
+      <tr><td><code>diametro_cm</code> *</td><td>Diameter at the crossing (cm)</td><td>diametro, diameter, d</td></tr>
+      <tr><td><code>clase</code></td><td>Decay class (1–3)</td><td>class, decay</td></tr>
+      <tr><td colspan="3"><span class="chip k4">4</span> <b>Litter</b> (<code>b4l</code>)</td></tr>
+      <tr><td><code>parcela</code> *</td><td>Plot</td><td>plot</td></tr>
+      <tr><td><code>peso_seco_g</code> *</td><td>Dry weight (g)</td><td>hojarasca g, peso, dry weight</td></tr>
+      <tr><td><code>marco_m2</code> *</td><td>Frame area (m²)</td><td>marco, frame</td></tr>
+      <tr><td colspan="3"><span class="chip k4">4</span> <b>Soil organic carbon</b> (<code>b4s</code>)</td></tr>
+      <tr><td><code>parcela</code> *</td><td>Plot or profile</td><td>plot, perfil, muestra, rep, repeticion, sitio</td></tr>
+      <tr><td><code>prof_sup</code> · <code>prof_inf</code></td><td>Upper depth (cm) · Lower depth (cm)</td><td>desde, top, prof sup · hasta, bottom, prof inf</td></tr>
+      <tr><td><code>capa</code></td><td>Layer (e.g. “0-10”), if there are no depths</td><td>layer, horizonte, profundidad</td></tr>
+      <tr><td><code>espesor_cm</code></td><td>Thickness (cm), if there are no depths or layer</td><td>espesor, thickness, thick</td></tr>
+      <tr><td><code>co_pct</code> *</td><td>Organic carbon (%)</td><td>co, cos, soc, carbono organico, c org, oc</td></tr>
+      <tr><td><code>dap_g_cm3</code> *</td><td>Bulk density (g/cm³)</td><td>densidad aparente, da, bd, bulk density</td></tr>
+      <tr><td><code>pedregosidad_pct</code></td><td>Coarse fragments (%)</td><td>pedregosidad, gravas, coarse, fragmentos, frag</td></tr>
+      <tr><td><code>grupo</code> · <code>anio</code></td><td>System or group (optional) · Year (optional)</td><td>sistema, manejo, tratamiento, group, uso · año, year, fecha</td></tr>
+      <tr><td colspan="3"><span class="chip k4">4</span> <b>Change between inventories</b> (<code>b4c</code>)</td></tr>
+      <tr><td><code>parcela</code> *</td><td>Plot</td><td>plot</td></tr>
+      <tr><td><code>c1</code> * · <code>c2</code> *</td><td>Carbon at the 1st and at the 2nd measurement (Mg/ha)</td><td>c inicial, stock1 · c final, stock2</td></tr>
+      <tr><td><code>edad1</code> · <code>edad2</code></td><td>Year or age 1 · Year or age 2</td><td>ano1, year1 · ano2, year2</td></tr>
+      <tr><td colspan="3"><span class="chip k5">5</span> <b>Increments</b> (<code>b5a</code>)</td></tr>
+      <tr><td><code>arbol</code> *</td><td>Tree or series</td><td>tree, serie, id</td></tr>
+      <tr><td><code>edad</code> *</td><td>Age (years)</td><td>age, t, anos</td></tr>
+      <tr><td><code>diametro</code></td><td>Diameter (cm)</td><td>dap, dbh, d</td></tr>
+      <tr><td><code>altura</code></td><td>Height (m)</td><td>h, ht, height</td></tr>
+      <tr><td><code>volumen</code></td><td>Volume (m³)</td><td>v, vol</td></tr>
+      <tr><td colspan="3"><span class="chip k5">5</span> <b>Plot remeasurements</b> (<code>b5c</code>)</td></tr>
+      <tr><td><code>parcela</code> *</td><td>Plot</td><td>plot</td></tr>
+      <tr><td><code>edad</code> *</td><td>Age (years)</td><td>age, t</td></tr>
+      <tr><td><code>hdom</code> *</td><td>Dominant height (m)</td><td>altura dominante, h0, hd, dominant height</td></tr>
+      <tr><td><code>g_ha</code></td><td>Basal area (m²/ha)</td><td>g, ab, basal area</td></tr>
+      <tr><td><code>v_ha</code></td><td>Volume (m³/ha)</td><td>v, vol</td></tr>
+      <tr><td><code>n_ha</code></td><td>Trees per hectare</td><td>n, densidad, nha</td></tr>
+      <tr><td colspan="3"><span class="chip k6">6</span> <b>The community</b> (<code>b6a</code>)</td></tr>
+      <tr><td><code>sitio</code> *</td><td>Site or plot</td><td>site, parcela, plot</td></tr>
+      <tr><td><code>especie</code> *</td><td>Species</td><td>species, sp</td></tr>
+      <tr><td><code>abundancia</code></td><td>Abundance (empty = 1 individual)</td><td>abundance, n, individuos, count</td></tr>
+      <tr><td><code>grupo</code></td><td>Group (stratum, farm…)</td><td>group, estrato, finca, tratamiento</td></tr>
+      <tr><td><code>altura</code></td><td>Height (m), for vertical structure</td><td>h, ht</td></tr>
+      <tr><td colspan="3"><span class="chip k6">6</span> <b>Spatial pattern</b> (<code>b6f</code>)</td></tr>
+      <tr><td><code>x</code> * · <code>y</code> *</td><td>x (m) · y (m)</td><td>coordx, este · coordy, norte</td></tr>
+      <tr><td><code>especie</code></td><td>Species</td><td>species</td></tr>
+      <tr><td><code>dap</code></td><td>DBH (cm)</td><td>dbh, d</td></tr>
+      <tr><td><code>grupo</code></td><td>Group (storey, cohort…)</td><td>group, dosel, piso</td></tr>
+      <tr><td colspan="3"><span class="chip k7">7</span> <b>Shade and yield</b> (<code>b7c</code>)</td></tr>
+      <tr><td><code>parcela</code></td><td>Plot</td><td>plot</td></tr>
+      <tr><td><code>sombra</code> *</td><td>Shade (%)</td><td>sombra pct, shade, cobertura</td></tr>
+      <tr><td><code>rendimiento</code> *</td><td>Yield</td><td>rend cafe, yield, produccion</td></tr>
+      <tr><td><code>grupo</code></td><td>Group (management)</td><td>manejo, group</td></tr>
+      <tr><td colspan="3"><span class="chip k8">8</span> <b>Polygons</b> (<code>b8p</code>)</td></tr>
+      <tr><td><code>poligono</code> *</td><td>Polygon</td><td>polygon, nombre, predio</td></tr>
+      <tr><td><code>lat</code> * · <code>lon</code> *</td><td>Latitude · Longitude</td><td>latitude, y · longitude, long, x</td></tr>
+      <tr><td colspan="3"><span class="chip k8">8</span> <b>Points to interpolate</b> (<code>b8i</code>)</td></tr>
+      <tr><td><code>lat</code> * · <code>lon</code> *</td><td>Latitude · Longitude</td><td>latitude, y · longitude, x</td></tr>
+      <tr><td><code>valor</code> *</td><td>Value</td><td>value, z, biomasa, area basal</td></tr>
+      <tr><td><code>nombre</code></td><td>Name</td><td>name, parcela, id</td></tr>
+    </tbody>
+  </table>
+  <p>The <span class="ui">Smallest DBH measured (cm)</span> of <span class="ruta">Block 3<span class="sep">›</span>Stand structure</span> is not a column but a field: the diameter from which trees were measured (2.5 cm in the example cloud forest, 5 cm in the coffee farm), which truncates the Weibull and sets the start of the classes (B.2). Do not confuse it with <code>dap_corte_cm</code>, the diameter that separates the large plot from the small one in nested plots.</p>
+  <p>The example CSV files of the <code>data/</code> folder use these names, with a decimal point and in UTF-8, so they load without matching anything. The soil card also reads the layer format of soil analyses, with its system, year, layer written as “0-10” and thickness; with several systems or years, it computes them one at a time. A template for any card, with the keys and three rows of the first example, comes from its <span class="ui">⤓ Template</span> button as <code>forestpro_&lt;card&gt;_plantilla.csv</code> (for example, <code>forestpro_b3t_plantilla.csv</code>):</p>
+  <pre class="archivo">parcela,estrato,especie,familia,dap,altura,copa,estado,x,y
+P01,,Inga vera,Fabaceae,29.7,14.6,6.1,vivo,-7.1,2.6
+P01,,Inga vera,Fabaceae,38.2,12.8,7.6,vivo,-0.2,7.9
+P01,,Inga vera,Fabaceae,36.6,14,7.3,vivo,-6.6,12.7</pre>
+  <p class="small">The template of the Block 3 trees, with the first three rows of the example coffee farm. Its stratum column is empty because the coffee farm takes its strata from the plot table.</p>
+
+  <h3>A.3 · What the app writes</h3>
+  <table class="apx compacta ficheros">
+    <thead><tr><th style="width:0.55in">Block</th><th style="width:2.5in">File</th><th>What it contains</th></tr></thead>
+    <tbody>
+      <tr><td>2 to 9</td><td><code>forestpro_&lt;table&gt;.csv</code> · <code>.xlsx</code></td><td>Each result table from its <span class="ui">⤓ CSV</span> and <span class="ui">⤓ XLSX</span> buttons. The names are, by block: <b>2</b> <code>arboles</code>, <code>especies</code>, <code>cubicacion</code>, <code>trozas</code>, <code>modelos_volumen</code>, <code>coef_…</code>, <code>ahusamiento</code>, <code>altura_diametro</code>, <code>coef_hd_…</code>, <code>alturas_estimadas</code>; <b>3</b> <code>parcelas_ha</code>, <code>densidad</code>, <code>disenos</code>, <code>estratos</code>, <code>asignacion</code>, <code>relascopia</code>, <code>tabla_rodal</code>, <code>weibull</code>, <code>ivi</code>; <b>4</b> <code>ecuaciones</code>, <code>densidades</code>, <code>biomasa_arboles</code>, <code>biomasa_parcelas</code>, <code>monte_carlo</code>, <code>madera_caida</code>, <code>carbono_suelo</code>, <code>reservorios</code>; <b>5</b> <code>incrementos_…</code>, <code>turno</code>, <code>modelos_crecimiento</code>, <code>coef_crecimiento</code>, <code>indice_sitio</code>, <code>sitio_parcelas</code>, <code>clases_sitio</code>, <code>clutter</code>, <code>tabla_produccion</code>; <b>6</b> <code>indices_diversidad</code>, <code>hill</code>, <code>matriz_comunidad</code>, <code>estratos_altura</code>, <code>pretzsch</code>; <b>7</b> <code>sombra_parcelas</code>, <code>sombra_manejo</code>, <code>anillos</code>, <code>sombra_rendimiento</code>, <code>presupuesto_carbono</code>; <b>8</b> <code>poligonos</code>, <code>cuadricula</code>, <code>variograma</code>; <b>9</b> <code>trozas</code>, <code>aserrada</code>, <code>conversion</code>, <code>flujo</code>. The file names are the same in both languages.</td></tr>
+      <tr><td>2</td><td><code>forestpro_alturas_completas.csv</code></td><td>The trees with their height measured or estimated by the height–diameter curve: tree, species, DBH, height and an <code>altura_estimada</code> column (1 if it was estimated).</td></tr>
+      <tr><td>6</td><td><code>forestpro_matriz_para_clusteringpro.csv</code> · <code>…_para_pcapro.csv</code></td><td>The community matrix (site, group and one column per species), ready for the suite’s clustering and factor analysis apps.</td></tr>
+      <tr><td>8</td><td><code>forestpro_mapa.gpx</code> · <code>.kml</code> · <code>.geojson</code> · <code>.csv</code></td><td>The plots (with their stratum, basal area and number of trees in GeoJSON), the grid points and the polygons. In GPX, polygons go as closed tracks; in CSV only the points go (name, lat, lon, description). With the grid only: <code>forestpro_cuadricula.…</code>.</td></tr>
+      <tr><td>10</td><td><code>forestpro_informe_&lt;property&gt;.html</code></td><td>The report (Section 10.1).</td></tr>
+      <tr><td>10</td><td><code>forestpro_tablas.xlsx</code> · <code>forestpro_tablas_csv.zip</code></td><td>All the result tables, one sheet or one CSV per table (Section 10.2).</td></tr>
+      <tr><td>10</td><td><code>forestpro_proyecto_&lt;property&gt;.json</code></td><td>The project (Section 10.3 and A.4).</td></tr>
+      <tr><td>10</td><td><code>forestpro.bib</code></td><td>The citation in BibTeX.</td></tr>
+      <tr><td>any</td><td>Figures, from the studio</td><td>PNG, SVG, vector PDF or TIFF, at the size and resolution you ask for, in the colors of the light theme.</td></tr>
+    </tbody>
+  </table>
+  <p>All the CSV files use the comma as separator, the decimal point and rows ending in carriage return and line feed, and go in UTF-8 with a byte-order mark, so a spreadsheet reads accented characters without asking. Numbers go with 12 significant digits, not rounded as on screen, and the same in the XLSX workbooks.</p>
+
+  <h3>A.4 · The project file</h3>
+  <p>It is JSON text, with these fields:</p>
+  <table class="apx compacta">
+    <thead><tr><th style="width:1.1in">Field</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td><code>app</code></td><td>Always <code>"ForestPro"</code>; without it, the file does not open.</td></tr>
+      <tr><td><code>format</code></td><td>The format version (today, 1). A higher one comes from a newer version of the app, which warns.</td></tr>
+      <tr><td><code>version</code> · <code>saved</code> · <code>lang</code></td><td>The program version, the date and time it was saved and the interface language.</td></tr>
+      <tr><td><code>step</code> · <code>title</code></td><td>The block open when saving and the title of the report.</td></tr>
+      <tr><td><code>report</code></td><td>The fields and checkboxes of the Report card.</td></tr>
+      <tr><td><code>events</code></td><td>The steps, in order. Each one has a type <code>k</code>: <code>hook</code> (an example opened from Home), <code>ex</code> (an example loaded in a data card), <code>data</code> (your own data loaded in a card, with its rows), <code>field</code> (a field changed, with its value), <code>grid</code> (an editable table, with its rows), <code>click</code> (a button pressed) and <code>op</code> (a map operation: polygons and plots).</td></tr>
+      <tr><td><code>results</code></td><td>A summary of the results of each block, for reading; when the project is opened it is not used, because everything is computed again.</td></tr>
+    </tbody>
+  </table>
+  <p>Values that are not finite numbers are written as <code>"__NaN__"</code>, <code>"__Inf__"</code> and <code>"__-Inf__"</code>, and become so again when the file is opened.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>What the browser remembers</div>
+    <p>The browser keeps only preferences, not data: the interface language, the light or dark theme, the animations, the state of the block bar, the settings and presets of the figure studio and the edits made with the ✎ editor. To keep a piece of work, save the project. Before closing or reloading the page with data loaded, the app asks for confirmation.</p>
+  </div>
+
+  <!-- ================================================================= B -->
+  <h2 id="ap-b"><span class="num">B</span>The rules, gathered</h2>
+  <p class="lead">The default values, limits and rules the app applies to compute, classify or warn, with the block where they act. They are the same ones each chapter explains; here they are together, to look up at a glance.</p>
+
+  <h3>B.1 · Conversions and constants of all the blocks</h3>
+  <table class="apx compacta">
+    <tbody>
+      <tr><td style="width:2.2in"><b>Basal area</b></td><td>g = π·DBH²/40,000 (m², DBH in cm), with the DBH at 1.30 m.</td></tr>
+      <tr><td><b>Carbon</b></td><td>Carbon fraction of 0.47 of dry biomass by default (IPCC 2006, table 4.3); it can be changed in Block 4.</td></tr>
+      <tr><td><b>CO₂ equivalent</b></td><td>CO₂e = C × 44/12.</td></tr>
+      <tr><td><b>Board foot</b></td><td>144 cubic inches = 2.359737216 dm³; 1 m³ = 423.776 board feet.</td></tr>
+      <tr><td><b>Imperial units</b></td><td>1 inch = 2.54 cm; 1 foot = 0.3048 m; 1 acre = 4,046.8564224 m²; 1 pound = 0.45359237 kg; 1 cord = 128 stacked ft³.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B.2 · Inventory and sampling (Block 3)</h3>
+  <table class="apx compacta">
+    <tbody>
+      <tr><td style="width:2.2in"><b>Sampling error</b></td><td>The tile is green up to 10%, amber from 10 to 20% and red above 20%. Above 10%, the interpretation says how many plots it would take to get down to 10% with the same coefficient of variation; otherwise, that it meets the 10% many management plans ask for.</td></tr>
+      <tr><td><b>Designs</b></td><td>The stratified design needs at least 2 strata with an area and 2 plots in each; the cluster design, the cluster column in the plots. A design effect above 1 says that the plots of a cluster resemble each other and bring less information than if they were independent.</td></tr>
+      <tr><td><b>Missing heights</b></td><td>Without height, the volume is computed only if height estimation is turned on (a Näslund curve fitted to the trees with height).</td></tr>
+      <tr><td><b>Angle-count sampling</b></td><td>Between 7 and 15 trees per point is recommended; with fewer, a smaller basal area factor would give more trees and less error; with more, a larger one would save time.</td></tr>
+      <tr><td><b>Truncated, weighted Weibull</b></td><td>The Weibull is fitted by maximum likelihood with the expansion factor of each tree as weight. With a <span class="ui">Smallest DBH measured (cm)</span>, the density is truncated at that diameter (thinner trees were not measured; they are not missing), the classes start at it and the curve is called “Weibull 2p truncated.” The Kolmogorov–Smirnov test and the χ² use the weighted distribution and Kish’s effective size, <i>n</i><sub>eff</sub> = (Σ<i>w</i>)²/Σ<i>w</i>², instead of the number of trees (rows “Trees / effective size (Kish)” and “Kolmogorov–Smirnov D (weighted)”).</td></tr>
+      <tr><td><b>3-parameter Weibull</b></td><td>If the location ends within 1% of the smallest diameter, the app warns that the model cannot be told from a 2-parameter one that starts at the minimum (with a shape below 1, that the likelihood has no interior maximum); if it ends at 0, that it reduces to the 2-parameter one.</td></tr>
+      <tr><td><b>Diameter distribution</b></td><td>Weibull shape <i>c</i> &lt; 1.2: reverse J (uneven-aged or regenerating forest); 1.2 ≤ <i>c</i> &lt; 3: skewed to the right; <i>c</i> ≥ 3: nearly symmetric bell (even-aged stand). If the Kolmogorov–Smirnov test gives <i>p</i> &lt; 0.05, the diameters do not follow a single Weibull well. At least 10 live trees are needed.</td></tr>
+      <tr><td><b>Stand density</b></td><td>Reineke’s index with a reference diameter of 25 cm and a slope of 1.605. Hart–Becking index: below 17%, dense stand, a thinning candidate; above 25%, open stand.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B.3 · Biomass and carbon (Block 4)</h3>
+  <table class="apx compacta">
+    <tbody>
+      <tr><td style="width:2.2in"><b>Wood density</b></td><td>Looked up by species; if absent, the genus mean; failing that, the family mean (only with the global database loaded); and if nothing, the plot mean, with a warning that names the species.</td></tr>
+      <tr><td><b>Roots</b></td><td>Constant root:shoot ratio (0.24 at start), that of IPCC (2006) table 4.4 by zone and aboveground biomass per hectare (for example, in temperate conifers: 0.40 below 50 Mg/ha, 0.29 from 50 to 150 and 0.20 above 150), or the per-hectare equation of Cairns et al. (1997).</td></tr>
+      <tr><td><b>Standing dead</b></td><td>They keep the fraction of their biomass you set in <span class="ui">Fraction left in standing dead</span> (1 at start).</td></tr>
+      <tr><td><b>Trees lacking what their equation needs</b></td><td>They add no biomass, and the app says how many there are and what they lack.</td></tr>
+      <tr><td><b>Error of the pool total</b></td><td>The pools measured on the same inventory plots (live trees, roots, standing dead and, if they cover all the plots, litter and soil) are summed plot by plot, and the error of the total comes from those plot totals with the inventory estimator; only downed wood, litter or soil from other plots and shrubs are added in quadrature, as independent (IPCC 2006, vol. 1, eq. 3.1). The “In the error of the total” column says “summed by plot” or “independent.” The interval is ±1.96·SE. A card loaded with data from another site is left out of the balance, with a warning.</td></tr>
+      <tr><td><b>Uncertainty</b></td><td>The combined uncertainty tile is green below 10% of the mean, amber up to 20% and red above. Diameter error of Chave et al. (2004); height error, 5% if measured and 15% if estimated (CV, at start); 1,000 iterations by default.</td></tr>
+      <tr><td><b>Downed wood</b></td><td>Van Wagner (1968), with densities of 0.45, 0.34 and 0.23 g/cm³ for decay classes 1, 2 and 3 at start; measure them at your site.</td></tr>
+      <tr><td><b>Soil</b></td><td>Mg C/ha of a layer = C% × bulk density × thickness (cm) × (1 − coarse fragments/100); the layers of each profile are added. Each layer needs its depths, its layer written as “0-10” or its thickness.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B.4 · Mensuration, growth and diversity (Blocks 2, 5 and 6)</h3>
+  <table class="apx compacta">
+    <tbody>
+      <tr><td style="width:2.2in"><b>Volume equations</b> (2)</td><td>The model with the lowest Furnival index wins; it compares models with and without logarithms. If the spread of the residuals of the large trees exceeds 1.8 times that of the small ones, the app flags heteroscedasticity. At least 6 trees.</td></tr>
+      <tr><td><b>Height–diameter relationship</b> (2)</td><td>At least 6 trees with a measured height.</td></tr>
+      <tr><td><b>Site index</b> (5)</td><td>The index of a plot is the mean of those of its measurements. The classes (3, 4 or 5) split the range of indices into equal parts; class I is the best. If the spread of a plot’s index among its measurements is 0.6 m or more, it is worth trying another family of curves.</td></tr>
+      <tr><td><b>Minimums</b> (5)</td><td>5 ages for the growth models; 6 remeasurement pairs for the stand projection.</td></tr>
+      <tr><td><b>Diversity</b> (6)</td><td>Pielou evenness above 0.8: individuals are spread evenly. If Chao1 exceeds the observed richness by less than 0.5, sampling captured practically every species; if the last plot adds fewer than 0.5 species on average, the accumulation curve is leveling off. At least 3 sites for similarity.</td></tr>
+      <tr><td><b>Ordination</b> (6)</td><td>NMDS stress below 0.1: good representation in two dimensions; 0.1 to 0.2, acceptable; more, poor.</td></tr>
+      <tr><td><b>Vertical structure</b> (6)</td><td>Pretzsch’s height zones: upper above 80% of the maximum height, middle from 50 to 80%, lower below. A relative A index above 70% indicates a complex vertical structure.</td></tr>
+      <tr><td><b>Spatial pattern</b> (6)</td><td>Clark–Evans: with <i>p</i> &lt; 0.05, <i>R</i> &lt; 1 is clustered and <i>R</i> &gt; 1 regular. At least 10 trees; those falling outside the plot rectangle are not used.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B.5 · Agroforestry, maps and tools (Blocks 7, 8 and 9)</h3>
+  <table class="apx compacta">
+    <tbody>
+      <tr><td style="width:2.2in"><b>Canopy cover</b> (7)</td><td>With random overlap, C = 1 − exp(−Σ<i>a</i>/A); it needs the crown diameter. The photograph threshold, if left empty, is Otsu’s.</td></tr>
+      <tr><td><b>Shade and yield</b> (7)</td><td>At least 5 plots. The optimum shade is reported only if the curve has a maximum; the curvature counts as significant with <i>p</i> &lt; 0.05.</td></tr>
+      <tr><td><b>Interpolation</b> (8)</td><td>At least 5 points with a value. If the variogram shows no spatial dependence (pure nugget effect), kriging predicts almost the mean and the app warns about it.</td></tr>
+      <tr><td><b>Map background</b> (8)</td><td>Off at start; when on, the browser requests the images of the visible area and nothing else.</td></tr>
+      <tr><td><b>Log rules</b> (9)</td><td>They use the small-end diameter inside bark, in inches, and the length in feet, with or without the <span class="ui">Volume under bark</span> checkbox.</td></tr>
+      <tr><td><b>Sawmill yield</b> (9)</td><td>Recovery below 45%: low; above 65%: high; above 100%: an error in the units or the data.</td></tr>
+      <tr><td><b>Form factor</b> (9)</td><td>Above 1: an error in the volume or the sizes; below 0.3: rare in a commercial stem.</td></tr>
+      <tr><td><b>Plantation economics</b> (9)</td><td>Rate of 8% and annual cost of 900 at start; the annual cost is charged from year 1 to the rotation; items after the rotation are not counted. The IRR is sought between −90% and 200%; the payback is the first year with a non-negative cumulative discounted flow.</td></tr>
+    </tbody>
+  </table>
+  <p class="small">All are guides for reading the results, not laws: what you know of your forest, of how it was measured and of what your management plan or carbon standard asks for always has the last word.</p>
+
+  <!-- ================================================================= C -->
+  <h2 id="ap-c"><span class="num">C</span>Glossary</h2>
+  <p>The forestry terms the manual uses, in the sense in which the app uses them, in alphabetical order, with the Spanish term the app shows when its interface is in Spanish.</p>
+  <table class="apx compacta">
+    <thead><tr><th style="width:1.65in">Term · <i>Spanish</i></th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><b>Aboveground biomass (AGB) · belowground biomass (BGB)</b> · <i>biomasa aérea · de raíces</i></td><td>The dry mass of the part of the tree above the ground and that of its roots, in kg per tree or in Mg/ha.</td></tr>
+      <tr><td><b>Angle-count sampling</b> · <i>relascopía</i></td><td>Sampling from a point in which the trees that look wider than a fixed angle are counted; it estimates basal area without plots.</td></tr>
+      <tr><td><b>Basal area (g, G)</b> · <i>área basal</i></td><td>The cross-sectional area of the stem at 1.30 m (g, m²); summed per hectare, that of the stand (G, m²/ha).</td></tr>
+      <tr><td><b>Basal area factor (BAF)</b> · <i>factor de área basal (FAB)</i></td><td>In angle-count sampling, the m²/ha each tree counted from the point represents.</td></tr>
+      <tr><td><b>Board foot</b> · <i>pie tabla</i></td><td>A piece of 1 inch × 12 inches × 1 foot; the unit of sawn lumber.</td></tr>
+      <tr><td><b>CAI · MAI</b> · <i>ICA · IMA</i></td><td>Current annual increment (what grows in one year) and mean annual increment (the accumulated growth divided by the age); the biological rotation is the age of maximum MAI.</td></tr>
+      <tr><td><b>Canopy cover</b> · <i>cobertura de copas</i></td><td>The fraction of the ground covered by the crowns, seen from above, discounting overlap.</td></tr>
+      <tr><td><b>Carbon pool</b> · <i>reservorio</i></td><td>Each place where carbon is stored: aboveground biomass, roots, dead wood, litter, soil.</td></tr>
+      <tr><td><b>Cluster</b> · <i>conglomerado</i></td><td>A group of nearby plots measured together and counted as one sampling unit.</td></tr>
+      <tr><td><b>CO₂e</b> · <i>CO₂e</i></td><td>Carbon dioxide equivalent: carbon multiplied by 44/12, the ratio of the masses of CO₂ and C.</td></tr>
+      <tr><td><b>Cord</b> · <i>cuerda</i></td><td>A measure of stacked firewood of 128 ft³ (4 × 4 × 8 feet), gaps included.</td></tr>
+      <tr><td><b>Curves, anamorphic · polymorphic</b> · <i>curvas anamórficas · polimórficas</i></td><td>Families of site index curves of the same shape and different scale, or of a different shape for each site quality.</td></tr>
+      <tr><td><b>DBH</b> · <i>DAP</i></td><td>Diameter at breast height, 1.30 m above the ground, in cm.</td></tr>
+      <tr><td><b>Discount rate</b> · <i>tasa de descuento</i></td><td>The rate with which future money is brought to the present; in real terms, without inflation.</td></tr>
+      <tr><td><b>Dominant height</b> · <i>altura dominante</i></td><td>The mean height of the tallest or thickest trees of the stand; it barely depends on density and so measures site quality.</td></tr>
+      <tr><td><b>Equivalent annual annuity</b> · <i>anualidad equivalente</i></td><td>The net present value turned into an equal annual payment over the rotation.</td></tr>
+      <tr><td><b>Expansion factor</b> · <i>factor de expansión</i></td><td>How many trees per hectare a tree measured in the plot represents: 10,000 divided by the plot area in m².</td></tr>
+      <tr><td><b>Form factor</b> · <i>coeficiente mórfico · factor de forma</i></td><td>The volume of the stem divided by that of a cylinder with its basal area and height.</td></tr>
+      <tr><td><b>Furnival index</b> · <i>índice de Furnival</i></td><td>A measure of fit error that allows comparing models with the dependent variable transformed and untransformed.</td></tr>
+      <tr><td><b>Hart–Becking index</b> · <i>Hart–Becking</i></td><td>The mean spacing between trees as a percentage of the dominant height; it measures stand density.</td></tr>
+      <tr><td><b>Hegyi index</b> · <i>Hegyi</i></td><td>A competition index of each tree: the sum of the relative size of its neighbors divided by their distance.</td></tr>
+      <tr><td><b>Hemispherical photograph</b> · <i>fotografía hemisférica</i></td><td>A photo of the canopy taken upward with a fisheye lens, with which canopy openness is measured.</td></tr>
+      <tr><td><b>Hill numbers</b> · <i>números de Hill</i></td><td>The effective number of species with different weights for the rare ones: q = 0 is richness; q = 1, the exponential of Shannon; q = 2, the inverse of Simpson.</td></tr>
+      <tr><td><b>IDW</b> · <i>IDW</i></td><td>Inverse distance weighting: each point weighs more the closer it is.</td></tr>
+      <tr><td><b>Importance value index (IVI)</b> · <i>IVI</i></td><td>Relative density, frequency and dominance added, from 0 to 300.</td></tr>
+      <tr><td><b>IRR</b> · <i>TIR</i></td><td>Internal rate of return: the discount rate at which the net present value is zero.</td></tr>
+      <tr><td><b>Kriging</b> · <i>kriging</i></td><td>Interpolation that weighs the points according to the variogram, with the error of each prediction.</td></tr>
+      <tr><td><b>Land expectation value</b> · <i>valor esperado del suelo</i></td><td>The value of land devoted forever to the same rotation (Faustmann); the measure for comparing rotations.</td></tr>
+      <tr><td><b>Log</b> · <i>troza</i></td><td>A section of the stem cut to a commercial length.</td></tr>
+      <tr><td><b>Log rule</b> · <i>regla de troza</i></td><td>A formula that predicts the sawn board feet of a log from its small-end diameter and length (Doyle, Scribner, International ¼″).</td></tr>
+      <tr><td><b>Lumber recovery</b> · <i>coeficiente de aserrío</i></td><td>The sawn lumber that comes out of one cubic meter of roundwood, as a percentage.</td></tr>
+      <tr><td><b>Necromass</b> · <i>necromasa</i></td><td>Dead biomass: downed wood, standing dead trees and stumps.</td></tr>
+      <tr><td><b>Nested plot</b> · <i>parcela anidada</i></td><td>Concentric plots of different size: the large one for thick trees and the small one for thin ones.</td></tr>
+      <tr><td><b>NPV</b> · <i>VPN</i></td><td>Net present value: revenues minus costs, all discounted to the present.</td></tr>
+      <tr><td><b>Overrun</b> · <i>sobrerrendimiento</i></td><td>What the sawmill gets above what a log rule predicts, as a percentage.</td></tr>
+      <tr><td><b>Quadratic mean diameter (Dq)</b> · <i>diámetro cuadrático</i></td><td>The diameter of the tree of mean basal area in the stand.</td></tr>
+      <tr><td><b>Rarefaction</b> · <i>rarefacción</i></td><td>The richness expected with a smaller number of individuals or plots, to compare samples of different size.</td></tr>
+      <tr><td><b>Reineke’s stand density index (SDI)</b> · <i>Reineke (IDR)</i></td><td>The trees per hectare the stand would have with a quadratic mean diameter of 25 cm at the same relative density.</td></tr>
+      <tr><td><b>Ripley’s K and L</b> · <i>K y L de Ripley</i></td><td>Functions that compare, at each distance, how many neighbors a tree has with what is expected at random.</td></tr>
+      <tr><td><b>Rotation</b> · <i>turno</i></td><td>The age at which the stand is harvested.</td></tr>
+      <tr><td><b>Sampling error</b> · <i>error de muestreo</i></td><td>Half the confidence interval of the mean, as a percentage of the mean.</td></tr>
+      <tr><td><b>Site index</b> · <i>índice de sitio</i></td><td>The dominant height a stand reaches at a base age; it measures the productivity of the site.</td></tr>
+      <tr><td><b>Soil organic carbon</b> · <i>carbono orgánico del suelo</i></td><td>The carbon of soil organic matter, in Mg C/ha down to a given depth.</td></tr>
+      <tr><td><b>Stacked cubic meter</b> · <i>estéreo</i></td><td>One cubic meter of stacked wood, gaps included.</td></tr>
+      <tr><td><b>Stand table</b> · <i>tabla de rodal</i></td><td>The number of trees, basal area and volume per hectare in each diameter class.</td></tr>
+      <tr><td><b>Stem analysis</b> · <i>análisis troncal</i></td><td>Reconstructing the growth of a felled tree by counting and measuring its rings at several heights.</td></tr>
+      <tr><td><b>Stratum</b> · <i>estrato</i></td><td>A part of the property more homogeneous than the whole (a forest type, a management), with its area, sampled separately.</td></tr>
+      <tr><td><b>Taper</b> · <i>ahusamiento</i></td><td>The way the stem diameter decreases with height; a taper model gives the diameter at any height.</td></tr>
+      <tr><td><b>Thinning</b> · <i>aclareo</i></td><td>Cutting part of the trees of a stand so that those remaining grow better; precommercial if the wood is not sold.</td></tr>
+      <tr><td><b>UTM</b> · <i>UTM</i></td><td>A map projection in meters with which the app measures distances and areas on the map.</td></tr>
+      <tr><td><b>Variogram</b> · <i>variograma</i></td><td>How the difference between two points grows with the distance separating them; its nugget effect is the variation at zero distance.</td></tr>
+      <tr><td><b>Weibull</b> · <i>Weibull</i></td><td>A distribution used to describe the diameters of a stand; its shape <i>c</i> says whether it is a reverse J or a bell.</td></tr>
+      <tr><td><b>Wood density (basic)</b> · <i>densidad básica de la madera</i></td><td>Dry mass divided by green volume, in g/cm³; it converts volume into biomass.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ================================================================= D -->
+  <h2 id="ap-d"><span class="num">D</span>When something goes wrong</h2>
+  <p>The messages of the app, as they appear in English, with what they usually mean and what to do. Ellipses stand for the part of the message that changes (a name, a number).</p>
+  <table class="apx compacta">
+    <thead><tr><th style="width:2.6in">Message</th><th>What is happening and what to do</th></tr></thead>
+    <tbody>
+      <tr><td colspan="2"><b>Files and data cards</b></td></tr>
+      <tr><td>“The file is not an .xlsx or .ods workbook (it is not a ZIP).”</td><td>Usually an old-format workbook (.xls) or a file with another extension. Save it as .xlsx or .csv.</td></tr>
+      <tr><td>“The compressed file is damaged or incomplete.” · “The file uses ZIP64, which this reader does not open.” · “The file uses a compression method this reader does not open.”</td><td>The workbook is damaged or was saved in an unusual way. Save it again from the spreadsheet, or as .csv.</td></tr>
+      <tr><td>“The file does not have the structure of an .xlsx workbook.” (or “.ods”) · “The workbook has no readable sheets.”</td><td>It is not a workbook or has no data. Open it and save it again.</td></tr>
+      <tr><td>“There is a quote that is never closed in the file.”</td><td>A quoted text lacks its closing quote. Find it in the file and close it.</td></tr>
+      <tr><td>“The file is empty.”</td><td>It has no rows with data.</td></tr>
+      <tr><td>“Still to choose: …”</td><td>Some required fields have no column. Choose the matching column in their list.</td></tr>
+      <tr><td>“… rows lack a required field and are left out.”</td><td>Those rows lack a required value or have text where a number goes; check the decimal separator (A.1).</td></tr>
+      <tr><td>“At least … complete rows are needed; there are ….”</td><td>The section needs more complete records than the table has.</td></tr>
+      <tr><td>“No inventory is loaded yet. Load one in Block 3 (or an example here).”</td><td>You pressed <span class="ui">Use the loaded inventory</span> with no inventory. Load one in Block 3.</td></tr>
+      <tr><td colspan="2"><b>Mensuration and inventory (Blocks 2 and 3)</b></td></tr>
+      <tr><td>“First scale trees in the previous section (or load the pine example).”</td><td><span class="ui">Use the trees scaled above</span> needs the scaling by sections.</td></tr>
+      <tr><td>“No tree has at least two sections.”</td><td>Each tree needs two or more measured heights to be scaled.</td></tr>
+      <tr><td>“At least 6 trees with DBH, height and volume are needed.” · “… with a measured height are needed.”</td><td>The volume equations and the height–diameter curves need six complete trees.</td></tr>
+      <tr><td>“No model converged.” · “No curve converged.” · “The profile could not be fitted.”</td><td>The data do not define the curve well: few trees, a narrow size range or wrong values. Check the data or try another model.</td></tr>
+      <tr><td>“Some trees have no height: turn on the height estimation or choose another variable.”</td><td>The volume needs the height of every tree; turn on <span class="ui">Estimate the missing heights (Näslund)</span>.</td></tr>
+      <tr><td>“The stratified design needs at least 2 strata with an area and 2 plots each.”</td><td>The strata areas are missing or some stratum has a single plot.</td></tr>
+      <tr><td>“The cluster design needs the cluster column in the plots.”</td><td>Load the plot table with its cluster column.</td></tr>
+      <tr><td>“At least 10 live trees are needed.”</td><td>The stand structure needs ten live trees.</td></tr>
+      <tr><td>“The location of the 3-parameter Weibull stuck to the smallest diameter (a = … cm): with a shape below 1 the likelihood has no interior maximum. Use the 2-parameter one.”</td><td>Use the 2-parameter one; if there was a minimum measurement diameter, type it in <span class="ui">Smallest DBH measured (cm)</span>.</td></tr>
+      <tr><td>“The location of the 3-parameter Weibull is at the edge: a = … cm, … cm below the smallest diameter. …”</td><td>The 3-parameter model cannot be told from a 2-parameter one starting at the minimum; use the 2-parameter one truncated at the smallest DBH measured.</td></tr>
+      <tr><td>“The location of the 3-parameter Weibull ended at 0: the model reduces to the 2-parameter one.”</td><td>Information only; the result is that of the 2-parameter Weibull.</td></tr>
+      <tr><td colspan="2"><b>Biomass, growth and diversity (Blocks 4 to 6)</b></td></tr>
+      <tr><td>“There is no inventory yet: load one in Block 3 or an example here.”</td><td>Load the inventory in Block 3 or an example of the block.</td></tr>
+      <tr><td>“The database could not be read: …”</td><td>The global database file lacks the species and density columns (“The species and density columns were not found.”), is an old workbook (“it is an old-format workbook (.xls); save it as .xlsx or .csv.”) or could not be opened.</td></tr>
+      <tr><td>“… species are not in the table even at genus level (…): they get the mean of their plot. …”</td><td>Add those species to the density table if you know their density.</td></tr>
+      <tr><td>“… trees lack what their equation needs (…) and add no biomass.”</td><td>Those trees lack the height, density or another variable of their equation. Estimate the heights or change the equation.</td></tr>
+      <tr><td>“First compute the biomass of the inventory.”</td><td>The Monte Carlo needs the biomass computed.</td></tr>
+      <tr><td>“Left out of the balance because they come from a site other than the inventory (…): …. Load the data of the same site in that card.”</td><td>A pool card holds the example or file of another site; the balance only adds data from one site.</td></tr>
+      <tr><td>“No layer has depths: …”</td><td>Each soil layer needs its depths, its layer written as “0-10” or its thickness.</td></tr>
+      <tr><td>“At least 5 ages are needed.” · “At least 6 remeasurement pairs are needed.”</td><td>The growth models and the projection need more measurements.</td></tr>
+      <tr><td>“The site index you typed (… m) was for a base age of … years and the base age is now …: …”</td><td>You changed the base age after typing the site index of the projection; check it or clear it so that the app proposes the median of the plots.</td></tr>
+      <tr><td>“The family of curves could not be fitted (the polymorphic ones need remeasurements of the same plots).”</td><td>Polymorphic curves need plots measured twice or more; use anamorphic ones.</td></tr>
+      <tr><td>“The projection needs the basal area and volume per hectare of the remeasurements and the site index of each plot.”</td><td>Load the remeasurements with <code>g_ha</code> and <code>v_ha</code> and compute the site index first.</td></tr>
+      <tr><td>“At least 3 sites are needed.” · “At least 10 trees are needed.”</td><td>Similarity needs three sites; spatial pattern, ten trees.</td></tr>
+      <tr><td>“The vertical structure needs the height of the individuals.”</td><td>Load the community with its height column.</td></tr>
+      <tr><td>“… trees fall outside the … × … m rectangle and are not used.”</td><td>The width and length of the plot do not cover all the coordinates; correct them.</td></tr>
+      <tr><td colspan="2"><b>Agroforestry and maps (Blocks 7 and 8)</b></td></tr>
+      <tr><td>“Load an inventory in Block 3 or the example coffee farm.”</td><td>Shade from the inventory needs an inventory.</td></tr>
+      <tr><td>“The inventory has no crown diameter: cover cannot be computed (use the photograph).”</td><td>Without the crown column, measure the shade with a canopy photograph.</td></tr>
+      <tr><td>“The image could not be opened.”</td><td>The file is not an image the browser reads.</td></tr>
+      <tr><td>“At least 5 plots are needed.”</td><td>The shade–yield curve needs five plots.</td></tr>
+      <tr><td>“The plots of the inventory have no latitude and longitude.”</td><td>The map needs the <code>lat</code> and <code>lon</code> columns in the plot table.</td></tr>
+      <tr><td>“The file could not be read as GPX, KML or GeoJSON.”</td><td>The file is in another format or is damaged.</td></tr>
+      <tr><td>“First load, import or draw a polygon.”</td><td>The sampling grid is generated inside a polygon.</td></tr>
+      <tr><td>“Nothing to export yet.”</td><td>There are no plots, points or polygons on the map.</td></tr>
+      <tr><td>“At least 5 points with a value are needed (…).”</td><td>The interpolation needs five points.</td></tr>
+      <tr><td>“The variogram could not be fitted; use IDW or change the cutoff.”</td><td>Few pairs of points at the distances analyzed; try IDW.</td></tr>
+      <tr><td>“The variogram shows no spatial dependence at the distances analyzed (pure nugget effect)…”</td><td>The variable has no spatial structure at that scale; kriging gives almost the mean.</td></tr>
+      <tr><td colspan="2"><b>Tools, report and project (Blocks 9 and 10)</b></td></tr>
+      <tr><td>The messages of Block 9</td><td>They are in the “When something goes wrong” box of Chapter 9.</td></tr>
+      <tr><td>“There are no results for the report yet. …” · “There are no result tables yet.”</td><td>No block has results yet.</td></tr>
+      <tr><td>“The browser blocked the new window: download the report and open it to print it.”</td><td>Allow pop-up windows for the app, or download the report.</td></tr>
+      <tr><td>“The file is not a ForestPro project.”</td><td>The JSON was not written by the app.</td></tr>
+      <tr><td>“The project comes from a newer version of ForestPro; some steps may not be repeated.”</td><td>Update the app.</td></tr>
+      <tr><td>“Project opened; … steps could not be repeated.”</td><td>Check the blocks involved and repeat by hand what is missing.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The map background does not appear</div>
+    <p>Opened with a double click, without a web address, the app may get no tiles: some servers refuse them to pages that do not identify themselves with their address. The app warns about this when you turn the background on. Without it, the map works the same, with its latitude and longitude graticule.</p>
+  </div>
+
+  <!-- ================================================================= E -->
+  <h2 id="ap-e"><span class="num">E</span>The tool: license and how to cite it</h2>
+  <h3>E.1 · What it is and what it is not</h3>
+  <p>ForestPro is written for this program: the numerical routines, the nonlinear model fitting, the sampling estimators, biomass and its uncertainty, the diversity indices, the variogram and kriging, the CSV, XLSX and ODS reader, the XLSX and ZIP writers, the figures, the map, the report and the illustrations are in its own code, which can be read. It uses no third-party libraries, has no minified code or build steps, brings no fonts (it uses the computer’s) and loads nothing from the network: that is why it opens with a double click and without a connection. The example data sets of the coffee farm, the cloud forest and the pine plantation are simulated with a script of its own; they are not measurements from any site.</p>
+  <p>It implements published methods—allometric equations, root:shoot ratios, volume, taper, height–diameter and growth models, sampling estimators, diversity and structure indices, log rules, financial formulas—each one cited to its source in the “Method and sources” box of its card and in Appendix F. What comes from third parties is little, and the file <code>LICENSES-TERCEROS.md</code> declares it with the text of its licenses:</p>
+  <table class="apx compacta">
+    <thead><tr><th style="width:1.6in">Element</th><th style="width:1.9in">Origin</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><b>Line icons</b> of the suite’s navigator, figure studio and effects</td><td>The Lucide project, version 1.49.0; some derive from the Feather project</td><td>ISC license, and MIT for those from Feather: permissive and compatible with the GPL. They are drawn with a thinner stroke, a change the license allows.</td></tr>
+      <tr><td><b>Basic wood density</b> of 42 species or genera (Block 4)</td><td>Global Wood Density Database (Zanne et al. 2009)</td><td>Dedicated to the public domain (CC0 1.0). It requires no attribution; it is cited anyway in the table, in the app and in the manual.</td></tr>
+      <tr><td><b>Map background tiles</b> (Block 8)</td><td>OpenStreetMap; not distributed with the program</td><td>Requested only if you turn on the background, which comes off. The data are under the ODbL license and the tiles under CC BY-SA 2.0; the map shows “© OpenStreetMap contributors” while the background is on. The use of the servers follows the policy of their foundation, which forbids bulk downloads: the app only requests what is in view.</td></tr>
+    </tbody>
+  </table>
+  <p><code>PROCEDENCIA.md</code> says where each part of the program comes from, so that anyone can check it. The common modules of the suite (the bar, the navigator, the figure studio, the ✎ editor and the effects) are by the same author.</p>
+
+  <h3>E.2 · License</h3>
+  <p>ForestPro is distributed under the GNU General Public License, version 3 or later (GPL-3.0-or-later). The full text is in the <code>LICENSE</code> file, in the program folder.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Licensing is not giving up authorship</div>
+    <p>The license says what whoever receives the program may do: use it for any purpose, study it, modify it and redistribute it. In return it asks that, if you distribute a modified version, you do so with the same freedoms and with its code. Authorship is neither transferred nor renounced. The program comes without warranty, as the license says; this manual has its own rights, reserved by its author.</p>
+  </div>
+
+  <h3>E.3 · How to cite it</h3>
+  <p>The <span class="ui">How to cite</span> section of the app’s home page and that of Block 10 give the citation ready to copy, as text and as a BibTeX entry (Section 10.4).</p>
+  <div class="caja dato">
+    <div class="dato-cifra">“</div>
+    <div class="dato-txt"><div class="caja-t">Suggested citation of the program</div>Barrera-Guzmán, L. Á. (2026). <i>ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry</i> (Version 1.0.0) [Computer software]. https://github.com/luisangelbg/ForestPro</div>
+  </div>
+  <pre class="archivo">@software{BarreraGuzman2026ForestPro,
+  author  = {Barrera-Guzmán, Luis Ángel},
+  title   = {{ForestPro}: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry},
+  year    = {2026},
+  version = {1.0.0},
+  license = {GPL-3.0-or-later},
+  url     = {https://github.com/luisangelbg/ForestPro}
+}</pre>
+  <div class="caja dato">
+    <div class="dato-cifra">“</div>
+    <div class="dato-txt"><div class="caja-t">Suggested citation of this manual</div>Barrera-Guzmán, L. Á. (2026). <i>ForestPro: User’s Manual</i> (1st English ed.). Distributed with ForestPro, version 1.0.0.</div>
+  </div>
+  <p>Cite also, in your methods, the works behind the methods you used: the allometric equations and the density database, the sampling design and its estimators, the site index curves, the diversity indices. The “Method and sources” box of each card names them, and the report gathers them if you leave <span class="ui">With the methods and their sources</span> checked; if you used the density table, cite Zanne et al. (2009).</p>
+
+  <!-- ================================================================= F -->
+  <h2 id="ap-f"><span class="num">F</span>References</h2>
+  <p>The 103 works the app cites in the “Method and sources” boxes of Blocks 2 to 9 and in the sources of its catalog of allometric equations, grouped by block in the order of the app and, within each block, in alphabetical order. A work cited in several blocks appears only in the first one that cites it.</p>
+  <!-- REFERENCIAS -->
+  <h3>F.1 · Block 2 · Tree mensuration</h3>
+  <ul class="refs">
+    <li>Avery, T. E. and Burkhart, H. E. (2002). <i>Forest Measurements</i>, 5th ed. McGraw-Hill.</li>
+    <li>Furnival, G. M. (1961). An index for comparing equations used in constructing volume tables. <i>Forest Science</i> 7:337–341.</li>
+    <li>Husch, B., Beers, T. W. and Kershaw, J. A. (2003). <i>Forest Mensuration</i>, ch. 12–13. Wiley.</li>
+    <li>Kozak, A., Munro, D. D. and Smith, J. H. G. (1969). Taper functions and their application in forest inventory. <i>For. Chron.</i> 45:278–283.</li>
+    <li>Marquardt, D. W. (1963). An algorithm for least-squares estimation of nonlinear parameters. <i>J. SIAM</i> 11:431–441.</li>
+    <li>Max, T. A. and Burkhart, H. E. (1976). Segmented polynomial regression applied to taper equations. <i>Forest Science</i> 22:283–289.</li>
+    <li>Mehtätalo, L., de-Miguel, S. and Gregoire, T. G. (2015). Modeling height-diameter curves for prediction. <i>Can. J. For. Res.</i> 45:826–837.</li>
+    <li>Meyer, H. A. (1941). A correction for a systematic error occurring in the application of the logarithmic volume equation. <i>Pennsylvania State Forest School Res. Paper</i> 7.</li>
+    <li>Näslund, M. (1937). Skogsförsöksanstaltens gallringsförsök i tallskog. <i>Medd. Statens Skogsförsöksanstalt</i> 29.</li>
+    <li>Richards, F. J. (1959). A flexible growth function for empirical use. <i>J. Exp. Bot.</i> 10:290–300.</li>
+    <li>Schumacher, F. X. and Hall, F. S. (1933). Logarithmic expression of timber-tree volume. <i>J. Agric. Res.</i> 47:719–734.</li>
+    <li>Smalian, H. L. (1837). <i>Beitrag zur Holzmeßkunst</i>. Stralsund.</li>
+    <li>Spurr, S. H. (1952). <i>Forest Inventory</i>. Ronald Press.</li>
+    <li>Yang, R. C., Kozak, A. and Smith, J. H. G. (1978). The potential of Weibull-type functions as flexible growth curves. <i>Can. J. For. Res.</i> 8:424–431.</li>
+  </ul>
+  <h3>F.2 · Block 3 · Inventory and sampling</h3>
+  <ul class="refs">
+    <li>Assmann, E. (1970). <i>The Principles of Forest Yield Study</i>. Pergamon.</li>
+    <li>Bailey, R. L. and Dell, T. R. (1973). Quantifying diameter distributions with the Weibull function. <i>Forest Science</i> 19:97–104.</li>
+    <li>Bitterlich, W. (1948). Die Winkelzählprobe. <i>Allgemeine Forst- und Holzwirtschaftliche Zeitung</i> 59:4–5.</li>
+    <li>Cochran, W. G. (1977). <i>Sampling Techniques</i>, §4.6 y §5.5. Wiley.</li>
+    <li>Curtis, J. T. y McIntosh, R. P. (1951). An upland forest continuum in the prairie-forest border region of Wisconsin. <i>Ecology</i> 32:476–496.</li>
+    <li>Grosenbaugh, L. R. (1952). Plotless timber estimates — new, fast, easy. <i>Journal of Forestry</i> 50:32–37.</li>
+    <li>Hegyi, F. (1974). A simulation model for managing jack-pine stands. En <i>Growth Models for Tree and Stand Simulation</i>, pp. 74–90. Royal College of Forestry.</li>
+    <li>Reineke, L. H. (1933). Perfecting a stand-density index for even-aged forests. <i>J. Agric. Res.</i> 46:627–638.</li>
+    <li>Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. <i>Biometrics Bulletin</i> 2:110–114.</li>
+    <li>Shiver, B. D. and Borders, B. E. (1996). <i>Sampling Techniques for Forest Resource Inventory</i>. Wiley.</li>
+    <li>Wilson, F. G. (1946). Numerical expression of stocking in terms of height. <i>Journal of Forestry</i> 44:758–761.</li>
+  </ul>
+  <h3>F.3 · Block 4 · Biomass and carbon</h3>
+  <ul class="refs">
+    <li>Cairns, M. A., Brown, S., Helmer, E. H. and Baumgardner, G. A. (1997). Root biomass allocation in the world's upland forests. <i>Oecologia</i> 111:1–11.</li>
+    <li>Chave, J. et al. (2004). Error propagation and scaling for tropical forest biomass estimates. <i>Phil. Trans. R. Soc. B</i> 359:409–420.</li>
+    <li>Chave, J. et al. (2005). Tree allometry and improved estimation of carbon stocks and balance in tropical forests. <i>Oecologia</i> 145:87–99. doi:10.1007/s00442-005-0100-x</li>
+    <li>Chave, J. et al. (2009). Towards a worldwide wood economics spectrum. <i>Ecology Letters</i> 12:351–366.</li>
+    <li>Chave, J. et al. (2014). Improved allometric models to estimate the aboveground biomass of tropical trees. <i>Global Change Biology</i> 20:3177–3190. doi:10.1111/gcb.12629</li>
+    <li>IPCC (2006). <i>2006 IPCC Guidelines for National Greenhouse Gas Inventories</i>, vol. 4, ch. 4 (tables 4.3 y 4.4).</li>
+    <li>Pearson, T. R. H., Brown, S. L. and Birdsey, R. A. (2007). <i>Measurement Guidelines for the Sequestration of Forest Carbon</i>. USDA Forest Service, GTR NRS-18.</li>
+    <li>Réjou-Méchain, M. et al. (2017). BIOMASS: an R package for estimating above-ground biomass and its uncertainty in tropical forests. <i>Methods in Ecology and Evolution</i> 8:1163–1167.</li>
+    <li>Van Wagner, C. E. (1968). The line intersect method in forest fuel sampling. <i>Forest Science</i> 14:20–26.</li>
+    <li>Welch, B. L. (1947). The generalization of “Student’s” problem when several different population variances are involved. <i>Biometrika</i> 34:28–35.</li>
+    <li>Zanne, A. E. et al. (2009). Data from: Towards a worldwide wood economics spectrum. Dryad, doi:10.5061/dryad.234.</li>
+  </ul>
+  <h3>F.4 · Block 5 · Growth and yield</h3>
+  <ul class="refs">
+    <li>Bailey, R. L. and Clutter, J. L. (1974). Base-age invariant polymorphic site curves. <i>Forest Science</i> 20:155–159.</li>
+    <li>Campos, J. C. C. and Leite, H. G. (2017). <i>Mensuração Florestal</i>, 5th ed. UFV.</li>
+    <li>Cieszewski, C. J. and Bailey, R. L. (2000). Generalized algebraic difference approach. <i>Forest Science</i> 46:116–126.</li>
+    <li>Clutter, J. L. (1963). Compatible growth and yield models for loblolly pine. <i>Forest Science</i> 9:354–371.</li>
+    <li>Clutter, J. L., Fortson, J. C., Pienaar, L. V., Brister, G. H. and Bailey, R. L. (1983). <i>Timber Management: a Quantitative Approach</i>. Wiley.</li>
+    <li>Davis, L. S., Johnson, K. N., Bettinger, P. S. and Howard, T. E. (2001). <i>Forest Management</i>, 4th ed. McGraw-Hill.</li>
+    <li>Gompertz, B. (1825). On the nature of the function expressive of the law of human mortality. <i>Phil. Trans. R. Soc.</i> 115:513–583.</li>
+    <li>Schumacher, F. X. (1939). A new growth curve and its application to timber yield studies. <i>Journal of Forestry</i> 37:819–820.</li>
+    <li>Theil, H. (1953). Repeated least squares applied to complete equation systems. Central Planning Bureau, La Haya.</li>
+    <li>Zeide, B. (1993). Analysis of growth equations. <i>Forest Science</i> 39:594–616.</li>
+  </ul>
+  <h3>F.5 · Block 6 · Diversity and ecology</h3>
+  <ul class="refs">
+    <li>Baddeley, A., Rubak, E. and Turner, R. (2015). <i>Spatial Point Patterns: Methodology and Applications with R</i>. CRC Press.</li>
+    <li>Chao, A. (1987). Estimating the population size for capture-recapture data with unequal catchability. <i>Biometrics</i> 43:783–791.</li>
+    <li>Chao, A. and Jost, L. (2012). Coverage-based rarefaction and extrapolation. <i>Ecology</i> 93:2533–2547.</li>
+    <li>Chao, A. and Lee, S.-M. (1992). Estimating the number of classes via sample coverage. <i>JASA</i> 87:210–217.</li>
+    <li>Chao, A. et al. (2014). Rarefaction and extrapolation with Hill numbers. <i>Ecological Monographs</i> 84:45–67.</li>
+    <li>Chao, A., Wang, Y. T. and Jost, L. (2013). Entropy and the species accumulation curve. <i>Methods Ecol. Evol.</i> 4:1091–1100.</li>
+    <li>Clark, P. J. and Evans, F. C. (1954). Distance to nearest neighbor as a measure of spatial relationships in populations. <i>Ecology</i> 35:445–453.</li>
+    <li>Colwell, R. K., Mao, C. X. and Chang, J. (2004). Interpolating, extrapolating, and comparing incidence-based species accumulation curves. <i>Ecology</i> 85:2717–2727.</li>
+    <li>de Leeuw, J. and Mair, P. (2009). Multidimensional scaling using majorization: SMACOF in R. <i>J. Stat. Softw.</i> 31(3).</li>
+    <li>Donnelly, K. P. (1978). Simulations to determine the variance and edge effect of total nearest neighbor distance. En <i>Simulation Methods in Archaeology</i>, pp. 91–95. Cambridge University Press.</li>
+    <li>Fisher, R. A., Corbet, A. S. and Williams, C. B. (1943). The relation between the number of species and the number of individuals. <i>J. Anim. Ecol.</i> 12:42–58.</li>
+    <li>Hill, M. O. (1973). Diversity and evenness: a unifying notation and its consequences. <i>Ecology</i> 54:427–432.</li>
+    <li>Hurlbert, S. H. (1971). The nonconcept of species diversity. <i>Ecology</i> 52:577–586.</li>
+    <li>Kruskal, J. B. (1964). Nonmetric multidimensional scaling: a numerical method. <i>Psychometrika</i> 29:115–129.</li>
+    <li>Legendre, P. and Legendre, L. (2012). <i>Numerical Ecology</i>, 3rd ed. Elsevier.</li>
+    <li>Magurran, A. E. (2004). <i>Measuring Biological Diversity</i>. Blackwell.</li>
+    <li>Ohser, J. (1983). On estimators for the reduced second moment measure of point processes. <i>Math. Operationsforsch. Statist.</i> 14:63–71.</li>
+    <li>Pretzsch, H. (1996). Strukturvielfalt als Ergebnis waldbaulichen Handelns. <i>DVFFA, Sektion Ertragskunde</i>, pp. 134–154.</li>
+    <li>Pretzsch, H. (2009). <i>Forest Dynamics, Growth and Yield</i>. Springer.</li>
+    <li>Ripley, B. D. (1977). Modeling spatial patterns. <i>J. R. Stat. Soc. B</i> 39:172–212.</li>
+    <li>Sokal, R. R. and Rohlf, F. J. (1962). The comparison of dendrograms by objective methods. <i>Taxon</i> 11:33–40.</li>
+    <li>Souza, D. R. et al. (2003). Análise estrutural em floresta ombrófila densa de terra firme. <i>Revista Árvore</i> 27:75–83.</li>
+  </ul>
+  <h3>F.6 · Block 7 · Agroforestry systems</h3>
+  <ul class="refs">
+    <li>Crookston, N. L. and Stage, A. R. (1999). <i>Percent Canopy Cover and Stand Structure Statistics from the Forest Vegetation Simulator</i>. USDA Forest Service, GTR RMRS-24.</li>
+    <li>Evans, J. and Turnbull, J. W. (2004). <i>Plantation Forestry in the Tropics</i>, 3rd ed. Oxford University Press.</li>
+    <li>Frazer, G. W., Canham, C. D. and Lertzman, K. P. (1999). <i>Gap Light Analyzer (GLA) 2.0: users manual</i>. Simon Fraser University.</li>
+    <li>Holdridge, L. R., Grenke, W. C., Hatheway, W. H., Liang, T. and Tosi, J. A. (1971). <i>Forest Environments in Tropical Life Zones: a Pilot Study</i>. Pergamon.</li>
+    <li>Jonckheere, I. et al. (2004). Review of methods for in situ leaf area index determination. Part I. <i>Agric. For. Meteorol.</i> 121:19–35.</li>
+    <li>Moguel, P. and Toledo, V. M. (1999). Biodiversity conservation in traditional coffee systems of Mexico. <i>Conservation Biology</i> 13:11–21.</li>
+    <li>Nair, P. K. R. (1993). <i>An Introduction to Agroforestry</i>. Kluwer.</li>
+    <li>Otsu, N. (1979). A threshold selection method from gray-level histograms. <i>IEEE Trans. Syst. Man Cybern.</i> 9:62–66.</li>
+    <li>Segura, M., Kanninen, M. and Suárez, D. (2006). Allometric models for estimating aboveground biomass of shade trees and coffee bushes grown together. <i>Agroforestry Systems</i> 68:143–150. doi:10.1007/s10457-006-9005-x</li>
+    <li>Soto-Pinto, L., Anzueto, M., Mendoza, J., Jiménez-Ferrer, G. y de Jong, B. (2010). Carbon sequestration through agroforestry in indigenous communities of Chiapas, Mexico. <i>Agroforestry Systems</i> 78:39–51.</li>
+    <li>Soto-Pinto, L., Perfecto, I., Castillo-Hernández, J. y Caballero-Nieto, J. (2000). Shade effect on coffee production at the northern Tzeltal zone of the state of Chiapas, Mexico. <i>Agric. Ecosyst. Environ.</i> 80:61–69.</li>
+    <li>Weisberg, S. (2014). <i>Applied Linear Regression</i>, 4th ed., sec. 7.6 (método delta). Wiley.</li>
+  </ul>
+  <h3>F.7 · Block 8 · Maps</h3>
+  <ul class="refs">
+    <li>Cressie, N. (1985). Fitting variogram models by weighted least squares. <i>Mathematical Geology</i> 17:563–586.</li>
+    <li>Gregoire, T. G. and Valentine, H. T. (2008). <i>Sampling Strategies for Natural Resources and the Environment</i>. Chapman & Hall/CRC.</li>
+    <li>Isaaks, E. H. and Srivastava, R. M. (1989). <i>An Introduction to Applied Geostatistics</i>. Oxford University Press.</li>
+    <li>Karney, C. F. F. (2011). Transverse Mercator with an accuracy of a few nanometers. <i>Journal of Geodesy</i> 85:475–485.</li>
+    <li>Matheron, G. (1963). Principles of geostatistics. <i>Economic Geology</i> 58:1246–1266.</li>
+    <li>OpenStreetMap Foundation. Política de uso de teselas y atribución: openstreetmap.org/copyright.</li>
+    <li>Shepard, D. (1968). A two-dimensional interpolation function for irregularly-spaced data. <i>Proc. ACM National Conference</i>, pp. 517–524.</li>
+    <li>Snyder, J. P. (1987). <i>Map Projections — A Working Manual</i>. USGS Professional Paper 1395.</li>
+    <li>Todhunter, I. (1886). <i>Spherical Trigonometry</i>, 5th ed. Macmillan (teorema de L'Huilier).</li>
+  </ul>
+  <h3>F.8 · Block 9 · Forestry tools</h3>
+  <ul class="refs">
+    <li>Bettinger, P., Boston, K., Siry, J. P. and Grebner, D. L. (2017). <i>Forest Management and Planning</i>, 2nd ed. Academic Press.</li>
+    <li>Bruce, D. (1925). A formula for the Scribner rule. <i>Journal of Forestry</i> 23:432–433.</li>
+    <li>Clark, J. F. (1906). The measurement of saw logs. <i>Forestry Quarterly</i> 4:79–93.</li>
+    <li>Faustmann, M. (1849). Berechnung des Werthes, welchen Waldboden sowie noch nicht haubare Holzbestände für die Waldwirthschaft besitzen. <i>Allgemeine Forst- und Jagd-Zeitung</i> 25:441–455.</li>
+    <li>Klemperer, W. D. (1996). <i>Forest Resource Economics and Finance</i>. McGraw-Hill.</li>
+    <li>NIST (2008). <i>Guide for the Use of the International System of Units (SI)</i>. Special Publication 811, apéndice B.</li>
+    <li>Prodan, M., Peters, R., Cox, F. and Real, P. (1997). <i>Mensura Forestal</i>. IICA y GTZ, San José.</li>
+    <li>Steele, P. H. (1984). <i>Factors Determining Lumber Recovery in Sawmilling</i>. USDA Forest Service, Gen. Tech. Rep. FPL-39.</li>
+  </ul>
+  <h3>F.9 · The allometric equations of the catalogue (Block 4)</h3>
+  <ul class="refs">
+    <li>Brown, S. (1997). <i>Estimating Biomass and Biomass Change of Tropical Forests: a Primer</i>. FAO Forestry Paper 134, ec. 3.2.1.</li>
+    <li>Díaz-Franco, R. et al. (2007). Determinación de ecuaciones alométricas para estimar biomasa y carbono en <i>Pinus patula</i>. <i>Madera y Bosques</i> 13(1):25–34. doi:10.21829/myb.2007.1311233</li>
+    <li>Figueroa-Navarro, C. M. et al. (2010). Estimación de la biomasa en un bosque bajo manejo de <i>Pinus patula</i>. <i>Rev. Mex. Cienc. For.</i> 1(1):105–112.</li>
+    <li>Jenkins, J. C. et al. (2003). National-scale biomass estimators for United States tree species. <i>Forest Science</i> 49:12–35. doi:10.1093/forestscience/49.1.12</li>
+    <li>Segura, M. et al. (2006). <i>Agroforestry Systems</i> 68:143–150 (d₁₅: diámetro del tallo a 15 cm del suelo).</li>
+    <li>van Noordwijk, M. et al. (2002). Carbon stock assessment for a forest-to-coffee conversion landscape in Sumber-Jaya. <i>Science in China C</i> 45 (supl.):75–86. La fuente no indica a qué altura se mide D.</li>
+  </ul>
+  <!-- /REFERENCIAS -->
+</section>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-10" data-pestana="10" data-orden="10" style="--acento: var(--b10)">
+  <div class="cap-apertura">
+    <div class="cap-num">10</div>
+    <div class="cap-etiqueta">Chapter ten · Block 10</div>
+    <h1 data-corto="Report and project">Report and project</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">What the blocks showed, ready to leave the app: a single-file report that opens in any browser and prints to PDF; all the result tables in one workbook; the figures, one by one, from the figure studio; and the project, a small file with which the work opens again just as it was left, here or on another computer. The block computes nothing new: it gathers what is already on screen.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k4"></span><span class="k7"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>10.1</b>Report</li>
+      <li><b>10.2</b>All the tables</li>
+      <li><b>10.3</b>Project</li>
+      <li><b>10.4</b>How to cite</li>
+    </ul>
+  </div>
+
+  <p>The figures of this chapter were made with the example coffee farm open in Blocks 3, 4 and 7 (the <span class="ui">Open in Inventory</span>, <span class="ui">Open in Biomass</span> and <span class="ui">Open in Agroforestry</span> buttons of its card in <span class="ruta">Home<span class="sep">›</span>Example data</span>) and the pine plantation in Block 9 (<span class="ui">Open in Utilities</span>). With that, four blocks have results, and their numbers in the left-hand bar have turned into check marks.</p>
+
+  <!-- 10.1 -->
+  <h2 id="s10-1"><span class="num">10.1</span>Report</h2>
+  <p class="lead">The report is an HTML file that carries everything inside: the cover, a summary, the figures, the tables, the interpretations and, if you wish, the methods with their sources. It depends on neither the app nor the internet: it opens with a double click in any browser, travels by email and prints to PDF.</p>
+  <p>At the top go the data of the cover: <span class="ui">Title</span> (it opens with “Forest report”), <span class="ui">Property or project</span>, <span class="ui">Prepared by</span>, <span class="ui">Date</span> (today’s) and <span class="ui">Introduction or notes (optional)</span>, a free text the report puts in its own section. Below, the <span class="ui">Blocks to include</span> box has one checkbox per results block, all checked, and two more: <span class="ui">With the methods and their sources</span> (the “Method and sources” box of each card) and <span class="ui">With the warnings</span> (the warning messages of the blocks).</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b10-informe.png" alt="The Report card with the title, property, author, date and introduction filled in, the block checkboxes, the three buttons and the preview message"></div>
+    <figcaption><b>Figure 10.1.</b> The <span class="ui">Report</span> card with its fields filled in and <span class="ui">Preview</span> pressed: “Report with 4 blocks, 16 figures and 20 tables.” The four blocks with results go in (inventory, biomass, agroforestry and tools); the other four stay checked but do not appear, because they have nothing to show.</figcaption>
+  </figure>
+  <p>The checkboxes carry the number and name of their block, from “2. Tree mensuration” to “9. Forestry tools,” and the report uses the same numbers in its contents and in the titles of its sections (“3. Inventory and sampling”).</p>
+  <p>The note of the card says what goes in: “What each block shows right now goes in; a block with no results does not appear. Figures go in the colors of the light theme and with whatever you changed in the editor ✎.” In other words, the report is a snapshot of the screen: if you change a control in a block and come back, the report changes. Three buttons:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.3in">Button</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Preview</span></td><td>Builds the report and shows it below, in a box with its own scroll bar. The message says how many blocks, figures and tables went in. The preview rebuilds itself when you return to the block or change the language.</td></tr>
+      <tr><td><span class="ui">⤓ Download the report (HTML)</span></td><td>Builds the report and downloads it as <code>forestpro_informe_&lt;property&gt;.html</code>; with the coffee farm, <code>forestpro_informe_shade_coffee_farm_example.html</code>, about 1.6 MB.</td></tr>
+      <tr><td><span class="ui">Open to print or save as PDF</span></td><td>Opens it in a new tab, with the <span class="ui">Print or save as PDF</span> button in a bar pinned at the top, which does not print. If the browser blocks the window, the app says so: “The browser blocked the new window: download the report and open it to print it.”</td></tr>
+    </tbody>
+  </table>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b10-vista.png" alt="The report preview: the logo, title, property, author and date, the contents with four blocks, the introduction and the start of the summary"></div>
+    <figcaption><b>Figure 10.2.</b> The start of the report: at the top, the bar with <span class="ui">Print or save as PDF</span>, which stays in view as you scroll; the cover with the logo, “Forest inventory and carbon,” the property, “Inventory crew · 1 November 2026” and “Generated with ForestPro 1.0.0 · LABG”; the contents, with the number of each block; the introduction; and the summary, with the tiles of each block: 25 plots, 719 trees and 10 species in the inventory; 77.0 Mg/ha of aboveground biomass, 46.0 Mg C/ha of carbon and 168.5 Mg CO₂e/ha in the trees, and the carbon of the property, 4,596 Mg C (3,534 to 5,659).</figcaption>
+  </figure>
+  <h3>What the report contains</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Part</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td><b>Cover</b></td><td>The app logo, the title, the property, the author and the date, and the program version.</td></tr>
+      <tr><td><b>Contents</b></td><td>The blocks that went in, with links; only if there are two or more.</td></tr>
+      <tr><td><b>Introduction</b></td><td>The text of <span class="ui">Introduction or notes (optional)</span>, if you wrote anything.</td></tr>
+      <tr><td><b>Summary</b></td><td>The first tiles of each block: the few numbers that matter, together.</td></tr>
+      <tr><td><b>One section per block</b></td><td>The data used (the name of each loaded set and its number of rows) and, card by card, its tiles, figures, tables, interpretations, warnings and methods. A card with no results does not appear. With the coffee farm and the pine, 19 cards go in; in the Block 4 one, the total carbon of the system, with the pools the block has loaded, is 47.6 ± 10.8 Mg C/ha (174.4 Mg CO₂e/ha).</td></tr>
+      <tr><td><b>How to cite ForestPro</b></td><td>The citation in APA and BibTeX (Section 10.4).</td></tr>
+      <tr><td><b>Footer</b></td><td>A note saying that the computations were made in the browser and that the data never left the computer.</td></tr>
+    </tbody>
+  </table>
+  <p>The figures go inside the file as vector drawings, with their styles written in and the colors of the light theme, even if you work in the dark one; the canopy photograph of Block 7 goes as an image. The tables carry the rows shown on screen: a very long table, which says “Showing … of … rows; the downloads carry them all.” on its card, arrives just as short, and the workbook of Section 10.2 brings it in full. When printed, the page is A4 with 16 and 14 mm margins, each block starts on a new page, and no figure, tile or interpretation is split between two pages.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>To print to PDF</div>
+    <p>In the browser’s print dialog, choose <b>Save as PDF</b> and turn on background graphics so the tiles and interpretations keep their color. If you prefer letter size to A4, change it in the same dialog.</p>
+  </div>
+
+  <!-- 10.2 -->
+  <h2 id="s10-2"><span class="num">10.2</span>All the tables</h2>
+  <p class="lead">Every result table of Blocks 2 to 9 has its <span class="ui">⤓ CSV</span> and <span class="ui">⤓ XLSX</span> buttons; this card downloads them all at once, with their full numbers, not rounded as on screen.</p>
+  <ul>
+    <li><span class="ui">⤓ Excel workbook (XLSX), one sheet per table</span> downloads <code>forestpro_tablas.xlsx</code>. Each sheet is named with the block number and the table title (“B9 Volume by log”), cut to 31 characters, the limit of the format.</li>
+    <li><span class="ui">⤓ CSV, one file per table (ZIP)</span> downloads <code>forestpro_tablas_csv.zip</code>, with one CSV per table, under the file name the table uses on its own button (<code>forestpro_trozas.csv</code>, <code>forestpro_flujo.csv</code>…). They are comma-separated, with a decimal point and in UTF-8 with a byte-order mark, so a spreadsheet reads accented characters correctly.</li>
+  </ul>
+  <p>The message counts the tables; with no results it says “There are no result tables yet.”. The tables of the data cards (what you loaded) do not go in: only the result tables.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b10-tablas.png" alt="The All the tables and Project cards, with the messages 20 tables exported and Project saved with 4 steps"></div>
+    <figcaption><b>Figure 10.3.</b> The <span class="ui">All the tables</span> and <span class="ui">Project</span> cards. With the coffee farm and the pine, the workbook carries 20 tables (“20 tables exported.”) and the project, four steps: the four examples opened (“Project saved with 4 steps.”).</figcaption>
+  </figure>
+
+  <h3>The figures: the studio and the editor ✎</h3>
+  <p>The figures do not go into the workbook: “Figures are exported one by one from their card, as SVG, PNG at 300 dpi or PDF, with the figure studio.” Every figure of the app has two buttons in its corner: the pencil and ruler opens the <b>figure studio</b>, and <span class="ui">✎</span> opens the <b>editor</b> of that figure. Both are the same in every app of the suite.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b10-estudio.png" alt="The figure studio full screen with the curve of net present value by discount rate in the center and the inspector on the right"></div>
+    <figcaption><b>Figure 10.4.</b> The NPV-by-rate figure of the pine plantation (Section 9.6) in the studio. Below, its final size: 85 × 46.8 mm (3.35 × 1.84 inches) at 600 dpi, 2008 × 1104 pixels; the dashed line at the top marks a journal’s one-and-a-half-column width (114 mm). On the right, the inspector, with the fine editing of the figure open.</figcaption>
+  </figure>
+  <p>The studio puts the figure on the left, to scale and with the outline of its output size, and the inspector on the right. The top bar undoes and redoes, compares before and now with a curtain, zooms in and out (<span class="ui">Fit</span> makes it the size of the screen), shows a ruler, applies one-click <span class="ui">Presets</span> and, with <span class="ui">Export</span>, downloads the figure as PNG, SVG, vector PDF or TIFF, in millimeters or inches, at 300, 600 or 1,200 dpi, with a transparent background if you ask. Other buttons move the inspector to the left or let it float, and <span class="ui">Close studio</span> returns to the app. In the inspector, <span class="ui">Search a control…</span> finds any setting by its name, and the sections are <span class="ui">Figure settings</span> (the controls the figure has in its block; ForestPro’s have none, and the studio says “This figure has no options of its own: use the studio’s (palette, text, size) or the app’s editor if it has one.”), <span class="ui">Fine editing of this figure (the app’s ✎)</span>, <span class="ui">Palette and colour</span>, <span class="ui">Text and lines</span>, <span class="ui">Legend</span>, <span class="ui">Size and export</span>, <span class="ui">Presets</span> and <span class="ui">History</span>. The footer line recalls the shortcuts: “Click the figure: its section · Double-click a text: change it · Ctrl + wheel: zoom · B: before and now · ?: shortcuts”.</p>
+  <p>The <span class="ui">✎</span> button opens the same fine editor without leaving the page, in a panel floating over that figure, with six tabs.</p>
+  <figure class="w50">
+    <div class="marco"><img src="../img/en/b10-editor.png" alt="The Edit this figure panel over the NPV curve, on its General tab"></div>
+    <figcaption><b>Figure 10.5.</b> The ✎ editor of the NPV figure, on the <span class="ui">General</span> tab: the title, subtitle and footnote inside the figure; the font family, sizes, color and weights; the background and frame.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.35in">Tab</th><th>What it edits</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">General</span></td><td>A <span class="ui">Title (empty = none)</span>, a <span class="ui">Subtitle</span> and a footnote inside the figure, with the <span class="ui">Title size and alignment</span>; the <span class="ui">Font family</span>, the <span class="ui">Size of every text</span>, the <span class="ui">Colour of every text</span>, the <span class="ui">Line weight</span> and the <span class="ui">Point size</span>; the <span class="ui">Background</span> and a <span class="ui">Border around the whole figure</span>.</td></tr>
+      <tr><td><span class="ui">Axes &amp; grid</span></td><td>The axis titles, their numbers, the color and weight of the axes, the grid and the box of the plot area.</td></tr>
+      <tr><td><span class="ui">Series</span></td><td>Each color of the figure with the name of its legend entry: color, weight, dash, opacity, or hiding it.</td></tr>
+      <tr><td><span class="ui">Legend</span></td><td>Show or hide it, eight positions, as a row or a column, size and box; it can also be dragged on the figure.</td></tr>
+      <tr><td><span class="ui">Texts</span></td><td>Each text one by one: other wording, size, bold, italics, color, or hiding it.</td></tr>
+      <tr><td><span class="ui">Annotations</span></td><td>Notes, arrows, reference lines at a value of either axis, shaded bands and the panel letter; notes and arrows are dragged.</td></tr>
+    </tbody>
+  </table>
+  <p>At the foot of the panel, <span class="ui">Undo everything on this figure</span> returns it to how the block draws it, and <span class="ui">Copy the style to every figure</span> carries the same settings to the others. The edits are kept in this browser, figure by figure, and put back every time the figure is redrawn—when the data, the language or the theme change; as they are written on the figure itself, what you see is what is exported and what goes into the report.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>What the editor does not keep</div>
+    <p>The editor recognizes each text by its original wording: if you rewrite “Discount rate (%)” and then switch the interface to Spanish, your text stays in English. Edit in the language you are going to export in. And the edits live in the browser, not in the project (Section 10.3): on another computer, the figure comes out as the app draws it.</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The fonts are those of the computer</div>
+    <p>The app brings no fonts and requests none from the internet: the figures use the system’s. An SVG opened on another computer may show a similar font; for it to look the same everywhere, export as vector PDF or PNG.</p>
+  </div>
+
+  <!-- 10.3 -->
+  <h2 id="s10-3"><span class="num">10.3</span>Project</h2>
+  <p class="lead">Save the work to a file and open it later, here or on another computer. The project does not store the results but the way to reach them, so it weighs little and always gives the same as the app computes.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Button</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">⤓ Save the project (JSON)</span></td><td>Downloads <code>forestpro_proyecto_&lt;property&gt;.json</code> (the name comes from the report’s <span class="ui">Property or project</span> field, or from its title) and says with how many steps: “Project saved with … steps.”</td></tr>
+      <tr><td><span class="ui">Open a project…</span></td><td>Reads a saved project. If the app already has data, it asks first: “Opening the project replaces what is in the app now. Continue?”. The page reloads clean and repeats the steps, with a strip that counts the progress (“Opening the project · 3/4”). At the end, it goes to the block where you were and reports “Project opened: every block was computed again.” or “Project opened; … steps could not be repeated.”.</td></tr>
+      <tr><td><span class="ui">Start again</span></td><td>Clears everything in the app, after asking: “Everything in the app is cleared (saved files are not touched). Continue?”.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · a record, not a copy</div>
+    <p>While you work, the app writes down in order what you do: the data you load in each data card (if they come from an example, just which one), the fields you change, the editable tables, the buttons you press and the examples you open from Home. When the project is opened, the app repeats those steps on a clean page, so each block computes again what it showed. What cannot be repeated this way is not stored: the hemispherical photograph you opened in Block 7, what you did in the figure editor, and the random grid of Block 8, which comes out with another draw. The file is text (JSON): it can be read, and at the end it carries a summary of the results. Appendix A describes its format.</p>
+  </div>
+  <p>With the coffee farm and the pine opened from Home, the project has four steps, one per example. A project with your own data carries those data inside, row by row, because the app needs them to repeat the computation.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The app does not save by itself</div>
+    <p>Nothing you load is kept in the browser: if you close or reload the tab, the work is lost. So that this does not happen by accident, the app asks for confirmation before closing or reloading the page when it already has data. Save the project at the end of every session.</p>
+  </div>
+
+  <!-- 10.4 -->
+  <h2 id="s10-4"><span class="num">10.4</span>How to cite</h2>
+  <p class="lead">If ForestPro helped in a piece of work, cite it. The card gives the citation in APA, to copy into the reference list, and the BibTeX entry, for a reference manager.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b10-citar.png" alt="The How to cite card with the APA citation, the BibTeX entry and the Copy APA, Copy BibTeX and forestpro.bib buttons"></div>
+    <figcaption><b>Figure 10.6.</b> The citation of the program in APA and BibTeX, with version 1.0.0 and the GPL-3.0-or-later license.</figcaption>
+  </figure>
+  <p><span class="ui">Copy APA</span> and <span class="ui">Copy BibTeX</span> copy it to the clipboard (“Copied.”; if the browser does not allow it, “Could not copy; select it by hand.”), and <span class="ui">⤓ forestpro.bib</span> downloads the entry as a file. The same citation is on the app’s home page (Chapter 1) and at the end of every report. The address it carries is that of the program’s repository; Appendix E gives the citation of the manual.</p>
+  <p>Cite also the methods you used: the allometric equations, the sampling design, the site index curves. Each card names them in its “Method and sources” box, and the report carries them if you leave <span class="ui">With the methods and their sources</span> checked; Appendix F gathers them all.</p>
+
+  <!-- cierre -->
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule · what to take out of the app</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>If</b> you are going to deliver or archive the result</td><td><b>then</b> download the HTML report: it carries everything inside and opens without the app.</td></tr>
+      <tr><td><b>If</b> you need a PDF</td><td><b>then</b> <span class="ui">Open to print or save as PDF</span> and save it from the print dialog.</td></tr>
+      <tr><td><b>If</b> you will keep analyzing in another program</td><td><b>then</b> the XLSX workbook or the ZIP of CSV files, with the full numbers.</td></tr>
+      <tr><td><b>If</b> a figure goes into a thesis or a journal</td><td><b>then</b> export it from the studio: vector PDF or SVG if it will be edited, PNG or TIFF at 600 dpi if the journal asks for an image.</td></tr>
+      <tr><td><b>If</b> you will come back to the work or move it to another computer</td><td><b>then</b> save the project; the report cannot be opened in the app again.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">The report and the tables are what you deliver; the project is what lets it be repeated.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <ul>
+      <li><b>“There are no results for the report yet. Run some analysis in Blocks 2 to 9 (or open an example from Home).”</b> No checked block has results.</li>
+      <li><b>A block is missing from the report.</b> Its checkbox is unchecked or the block has no results right now; open it and check that it shows what you expect.</li>
+      <li><b>“The file is not a ForestPro project.”</b> The JSON comes from another app or is not a project. Open a <code>forestpro_proyecto_….json</code> saved by the app.</li>
+      <li><b>“The project comes from a newer version of ForestPro; some steps may not be repeated.”</b> Update the app.</li>
+      <li><b>“Project opened; … steps could not be repeated.”</b> Some button or field of the record no longer exists; check the blocks involved.</li>
+      <li><b>“The project opens over what is already there (the browser did not allow a clean reload).”</b> The browser did not allow the reload; if the result looks mixed, use <span class="ui">Start again</span> and open the project again.</li>
+      <li><b>A figure in the report comes out different from the one you edited on another computer.</b> The ✎ edits live in the browser where they were made.</li>
+    </ul>
+  </div>
+</section>
+
+</body>
+</html>

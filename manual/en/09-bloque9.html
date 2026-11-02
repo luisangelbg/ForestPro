@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Chapter 9</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-9" data-pestana="9" data-orden="9" style="--acento: var(--b9)">
+  <div class="cap-apertura">
+    <div class="cap-num">9</div>
+    <div class="cap-etiqueta">Chapter nine · Block 9</div>
+    <h1 data-corto="Forestry tools">Forestry tools</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">The everyday sums in the forest and the sawmill: how much wood a load of logs holds in cubic meters and in board feet, how much came out as boards and studs, what part of the log went into sawdust, what form factor a stem has, how to take a figure from imperial to metric units, and whether a plantation pays for what it costs. Each section works on its own, with your numbers or with its example; the yield section takes its numbers from the first two.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k9"></span><span class="k9"></span><span class="k5"></span></div>
+    <ul class="cap-contenido">
+      <li><b>9.1</b>Log scaling</li>
+      <li><b>9.2</b>Sawn lumber</li>
+      <li><b>9.3</b>Sawmill yield</li>
+      <li><b>9.4</b>Form factor</li>
+      <li><b>9.5</b>Unit conversion</li>
+      <li><b>9.6</b>Cost and profitability of a plantation</li>
+    </ul>
+  </div>
+
+  <p>This block does not use the data card of the other blocks (Section I.6): its data are few and go into <b>editable tables</b>, with one row per log, per kind of piece or per money item. Each row has its <span class="ui">×</span> button to remove it and, below the table, <span class="ui">+ Add row</span>. Cells are filled one by one: these tables read neither files nor pasted blocks. Results appear when you press the button of each section (<span class="ui">Scale</span>, <span class="ui">Tally</span>, <span class="ui">Compute the yield</span>, <span class="ui">Compute</span>, <span class="ui">Evaluate</span>); the unit conversion answers by itself as you type.</p>
+  <p>The pine plantation example opens the four sections that have it already computed: from <span class="ruta">Home<span class="sep">›</span>Example data</span>, the <span class="ui">Open in Utilities</span> button of the pine card loads the 12 logs, the lumber sawn from them and the 25-year plantation cash flow, and computes the yield. Every figure in this chapter comes from that example, which is simulated.</p>
+
+  <!-- 9.1 -->
+  <h2 id="s9-1"><span class="num">9.1</span>Log scaling</h2>
+  <p class="lead">A log is measured in the yard with a tape and a caliper: its length and the diameters of its ends. With that, the section gives its volume in cubic meters by four formulas and the sawn lumber expected from it, in board feet, by the three log rules most used in the timber trade.</p>
+  <p>At the top are <span class="ui">Load example: 12 pine logs</span>, <span class="ui">Empty table</span> (leaves a single blank row) and the <span class="ui">Volume under bark</span> checkbox. The table asks, per log:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Column</th><th>What goes in it</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Log</span></td><td>A name or a code (T01, T02…).</td></tr>
+      <tr><td><span class="ui">Length (m)</span></td><td>The length of the log, in meters. Required.</td></tr>
+      <tr><td><span class="ui">Small-end D (cm)</span> · <span class="ui">Large-end D (cm)</span></td><td>The diameters of the two ends, over bark, in centimeters. Required.</td></tr>
+      <tr><td><span class="ui">Middle D (cm)</span></td><td>The diameter at mid-length, if you measured it; without it there is no Huber or Newton.</td></tr>
+      <tr><td><span class="ui">Bark (mm)</span></td><td>The bark thickness, on one side, in millimeters.</td></tr>
+    </tbody>
+  </table>
+  <p>The note under the table sums it up: “Length in meters; diameters over bark in centimeters (small end, large end and, if you have it, the middle); bark thickness in millimeters, on one side.” A row without a length or without one of the two end diameters is not scaled.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b9-trozas.png" alt="The Log scaling card with the twelve example pine logs in the editable table, the Scale button and four tiles"></div>
+    <figcaption><b>Figure 9.1.</b> The 12 example pine logs, 2.54 to 5.08 m long and 18 to 45 cm in diameter. The tiles: 12 logs over bark; 3.275 m³ by Smalian (1,388 board feet of volume); 3.238 m³ by Newton and 3.219 by Huber; 599 board feet by the International ¼″ rule, 380 by Doyle and 539 by Scribner.</figcaption>
+  </figure>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · volume and board feet are not the same</div>
+    <p>The four volume formulas treat the log as a solid. With the area of each section g = π<i>d</i>²/40,000 (m², <i>d</i> in cm) and the length <i>L</i> in m: <b>Smalian</b> averages the end areas, <i>V</i> = <i>L</i>(<i>g</i>₁ + <i>g</i>₂)/2; <b>Huber</b> uses the middle one, <i>V</i> = <i>L</i>·<i>g</i><sub>m</sub>; <b>Newton</b> combines all three, <i>V</i> = <i>L</i>(<i>g</i>₁ + 4<i>g</i><sub>m</sub> + <i>g</i>₂)/6, and is exact for the paraboloid, the cone and the neiloid; the <b>frustum of a cone</b> uses only the ends, <i>V</i> = π<i>L</i>(<i>d</i>₁² + <i>d</i>₁<i>d</i>₂ + <i>d</i>₂²)/120,000. Under bark, twice the bark thickness is subtracted from every diameter.</p>
+    <p>The <b>log rules</b> do not measure volume: they predict how much sawn lumber the log will yield, discounting sawdust and slabs beforehand. They use the small-end diameter <b>inside bark</b>, in inches (<i>D</i>), and the length in feet (<i>L</i>). <b>Doyle</b>: (<i>D</i> − 4)²<i>L</i>/16. <b>Scribner</b>, by Bruce’s formula: (0.79<i>D</i>² − 2<i>D</i> − 4)<i>L</i>/16. <b>International ¼″</b>: 4-foot sections, each half an inch wider than the one before, 0.22<i>D</i>² − 0.71<i>D</i> board feet per section and the 0.905 factor of the quarter-inch saw kerf; the last fraction counts in proportion to its length (Husch et al. 2003; Avery and Burkhart 2002; Bruce 1925; Clark 1906).</p>
+  </div>
+
+  <p>The <span class="ui">Volume by log</span> table gives, for each log and in total, the diameter inside bark in inches (<span class="ui">D (in)</span>) and the length in feet (<span class="ui">L (ft)</span>) the rules work with, the four volumes and the board feet of the three rules.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/b9-trozas-tabla.png" alt="The Volume by log table with the twelve logs and their total: diameter in inches, length in feet, four volumes in cubic meters and three rules in board feet"></div>
+    <figcaption><b>Figure 9.2.</b> The volume of each log. In total: 3.2747 m³ by Smalian, 3.2193 by Huber, 3.2378 by Newton and 3.2601 by frustum; 380 board feet by Doyle, 539 by Scribner and 599 by International ¼″. Log T10, 6.5 inches inside bark, gives 3 board feet by Doyle and 10 by International.</figcaption>
+  </figure>
+  <p>With <span class="ui">Volume under bark</span>, the cubic-meter volumes are recomputed with the diameters minus the bark: the 12 logs drop to 2.828 m³ by Smalian, 2.793 by Newton and 2.775 by Huber. The board feet do not change (599, 380 and 539), because the rules always work with the diameter inside bark. If in some log the small end is thicker than the large end, the app warns: “In … logs the small end is thicker than the large end; check the order of the columns.”</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>A cubic meter is not 424 board feet</div>
+    <p>A board foot is a volume (144 cubic inches), and 1 m³ equals 423.776 board feet: that is what the Smalian tile means by “1,388 board feet of volume.” But the board feet of a rule are sawn lumber, without sawdust or slabs: the same logs give 599 by International ¼″. Do not mix the two figures when you buy or sell timber; always state which rule you used.</p>
+  </div>
+
+  <p>The <span class="ui">Board feet by log by rule</span> figure puts the three rules side by side, log by log, and the interpretation sums up what the differences mean.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b9-reglas.png" alt="Bar chart of the board feet of each log by the Doyle, Scribner and International rules, with the interpretation below"></div>
+    <figcaption><b>Figure 9.3.</b> Doyle (bark brown) always stays below Scribner (amber) and International ¼″ (green), and more so in the small logs. The interpretation: Huber gives −1.7% relative to Smalian, Newton lies between them, and Doyle is hard on the 9 logs under 12 inches.</figcaption>
+  </figure>
+  <!-- 9.2 -->
+  <h2 id="s9-2"><span class="num">9.2</span>Sawn lumber</h2>
+  <p class="lead">The other end of the sawmill: what came out of the logs, counted by kind of piece. The section adds up the board feet and cubic meters of a list of pieces and says what share of the volume each kind is.</p>
+  <p>The <span class="ui">Units</span> menu chooses <span class="ui">Inches and feet</span> (thickness and width in inches, length in feet, with the nominal sizes used in the timber trade) or <span class="ui">Centimeters and meters</span> (thickness and width in centimeters, length in meters). The table asks for <span class="ui">Piece</span> (the name), <span class="ui">Thickness</span>, <span class="ui">Width</span>, <span class="ui">Length</span> and <span class="ui">Pieces</span>, the number of identical pieces (1 if left empty). <span class="ui">Load example: the lumber from the 12 logs</span> enters seven kinds of 8¼-foot pieces, and <span class="ui">Tally</span> does the sum.</p>
+  <div class="formula">board feet = thickness (in) × width (in) × length (ft) / 12 · m³ = thickness (cm) × width (cm) × length (m) / 10,000</div>
+  <p>A board foot is a piece of 1 inch × 12 inches × 1 foot, 2.359737216 dm³ (NIST 2008). So an 8¼-foot 1″ × 6″ board is 4.125 board feet, and the 50 of the example, 206.25. When you switch units, the table changes its column labels but does not convert the numbers you already typed.</p>
+  <figure class="w50">
+    <div class="marco"><img src="../img/en/b9-aserrada.png" alt="The Sawn lumber card with seven kinds of pieces in inches and feet, three tiles and the table by kind of piece"></div>
+    <figcaption><b>Figure 9.4.</b> The lumber from the 12 logs: 179 pieces, 722.9 board feet and 1.7059 m³. The 1″ × 6″ boards are 28.5% of the volume; the 4″ × 4″ post, 6.1%.</figcaption>
+  </figure>
+
+  <!-- 9.3 -->
+  <h2 id="s9-3"><span class="num">9.3</span>Sawmill yield</h2>
+  <p class="lead">How much sawn lumber comes out of the roundwood. It is the figure a sawmill measures, and the one that tells whether a log rule falls short for it.</p>
+  <p>Three fields: <span class="ui">Roundwood (m³)</span>, <span class="ui">Sawn lumber (m³)</span> and <span class="ui">Reference rule (board feet)</span>. “They fill themselves with the totals of the two sections above (Smalian and International ¼″); you may type others.” The rule is optional; without it there is no overrun.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/b9-rendimiento.png" alt="The Sawmill yield card with its three fields filled in, three tiles and the interpretation"></div>
+    <figcaption><b>Figure 9.5.</b> From the 12 logs (3.2747 m³ by Smalian) came 1.7059 m³ of lumber: a lumber recovery of 52.1% (waste 47.9%), 221 board feet per cubic meter of roundwood and an overrun of 20.7% against the 599 board feet of the International ¼″ rule.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Lumber recovery</b> = m³ sawn / m³ of roundwood. The rest is sawdust, slabs, trimmings and bark.</li>
+    <li><b>Board feet per m³ of roundwood</b>: the same ratio in board feet (0.521 × 423.776 ≈ 221).</li>
+    <li><b>Overrun</b> = board feet sawn / board feet of the rule − 1. Positive if the mill gets more than the rule predicts (Steele 1984).</li>
+  </ul>
+  <p>The interpretation grades the recovery: below 45% it calls it low (“small or crooked logs, thick-kerf saws or a cutting pattern that wastes the log”), above 65% high (“typical of large straight logs or thin saws”), and in between, common for band or circular saw mills with medium logs. If more sawn lumber than roundwood comes out, the app flags it in red: “More sawn lumber than roundwood comes out: check the units or the data.”</p>
+
+  <!-- 9.4 -->
+  <h2 id="s9-4"><span class="num">9.4</span>Form factor</h2>
+  <p class="lead">The fraction of the cylinder (basal area × height) the stem fills. With it, the volume of a standing tree is estimated from its diameter and height when there is no volume equation for the species.</p>
+  <p>Four fields, with sample values: <span class="ui">Diameter at breast height (cm)</span> (32), <span class="ui">Height (m)</span> (24), <span class="ui">Volume (m³)</span> (0.85) and <span class="ui">Form factor</span> (empty). “Leave empty what you want to compute: the factor (from volume) or the volume (from factor).” <span class="ui">Compute</span> gives the factor, the volume and the reference cylinder, and the <span class="ui">Reference solids</span> table says what volume the tree would have with the shape of each solid.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b9-forma.png" alt="The Form factor card with 32 cm, 24 m and 0.85 cubic meters, three tiles, the table of reference solids and the interpretation"></div>
+    <figcaption><b>Figure 9.6.</b> A 32 cm, 24 m stem with 0.85 m³: its cylinder (g = 0.0804 m²) holds 1.9302 m³, so the form factor is 0.440, closer to the paraboloid (0.500) than to the cone (0.333).</figcaption>
+  </figure>
+  <div class="formula"><i>f</i> = <i>V</i> / (<i>g</i> · <i>h</i>), with <i>g</i> the basal area at 1.30 m</div>
+  <p>This is the <b>artificial</b> form factor, referred to breast height (Prodan et al. 1997). The reference solids, measured at their base, have <i>f</i> = 1 (cylinder), 1/2 (paraboloid), 1/3 (cone) and 1/4 (neiloid). In conifers it usually lies between 0.40 and 0.55. With a factor of 0.45 instead of the volume, the same tree would hold 0.8686 m³. The interpretation warns if the factor is above 1 (“points to an error in the volume or the sizes”) or below 0.3 (“rare in a commercial stem: check the volume”). If you have scaled trees, the volume equations of Block 2 (Chapter 2) are a better substitute for a fixed form factor.</p>
+
+  <!-- 9.5 -->
+  <h2 id="s9-5"><span class="num">9.5</span>Unit conversion</h2>
+  <p class="lead">From imperial to metric and back, with the exact definitions: what you need to read an inventory, a yield table or a log rule from another country.</p>
+  <p><span class="ui">Quantity</span> chooses what is converted; <span class="ui">Value</span> and <span class="ui">From</span>, the number and its unit. The <span class="ui">… equal</span> table (“1 meter equals,” with the value 1) gives the value in each of the other units of that quantity, and is recomputed as you type:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Quantity</th><th>Units</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Length</span></td><td>meters, centimeters, millimeters, kilometers, inches, feet, yards, chains (66 ft), miles</td></tr>
+      <tr><td><span class="ui">Area</span></td><td>m², hectares, km², acres, square feet</td></tr>
+      <tr><td><span class="ui">Volume</span></td><td>m³, dm³ (liters), cubic feet, board feet, cords (128 ft³ stacked)</td></tr>
+      <tr><td><span class="ui">Mass</span></td><td>kilograms, grams, tonnes (Mg), pounds, short tons, long tons</td></tr>
+      <tr><td><span class="ui">Basal area per area</span></td><td>m²/ha, ft²/acre</td></tr>
+      <tr><td><span class="ui">Volume per area</span></td><td>m³/ha, ft³/acre, board feet/acre, cords/acre</td></tr>
+      <tr><td><span class="ui">Biomass per area</span></td><td>Mg/ha (t/ha), kg/m², short tons/acre, pounds/acre</td></tr>
+      <tr><td><span class="ui">Carbon and CO₂</span></td><td>Mg C/ha, Mg CO₂e/ha</td></tr>
+      <tr><td><span class="ui">Density</span></td><td>kg/m³, g/cm³, lb/ft³</td></tr>
+      <tr><td><span class="ui">Trees per area</span></td><td>trees/ha, trees/acre, trees/m²</td></tr>
+    </tbody>
+  </table>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/b9-unidades.png" alt="The Unit conversion card with 250 cubic meters per hectare converted to cubic feet, board feet and cords per acre, and the stacked wood calculator"></div>
+    <figcaption><b>Figure 9.7.</b> 250 m³/ha equal 3,572.83 ft³/acre, 42,874.02 board feet/acre and 27.9128 cords/acre. Below, 10 stacked m³ of firewood with a stacking factor of 0.65 are 6.50 m³ of solid wood.</figcaption>
+  </figure>
+  <p>The definitions are the exact ones: 1 inch = 2.54 cm, 1 foot = 0.3048 m, 1 acre = 4,046.8564224 m², 1 pound = 0.45359237 kg, 1 board foot = 144 cubic inches and 1 cord = 128 ft³ of stacked wood (NIST 2008). Per-area quantities combine the factor of the unit and that of the area: 120 ft²/acre of basal area are 27.5482 m²/ha. Carbon becomes CO₂ equivalent when multiplied by 44/12: 46 Mg C/ha are 168.67 Mg CO₂e/ha.</p>
+  <h3>Stacked wood</h3>
+  <p>Below the table, <span class="ui">Stacked wood (stacked m³)</span> and <span class="ui">Stacking factor (solid/stacked)</span> give the <span class="ui">Solid wood</span>. A stacked cubic meter is the space taken by piled firewood, gaps included; the stacking factor, the part that is wood. It depends on the diameter and straightness of the pieces: 0.6 to 0.7 is usual for firewood, and the app opens with 0.65.</p>
+
+  <!-- 9.6 -->
+  <h2 id="s9-6"><span class="num">9.6</span>Cost and profitability of a plantation</h2>
+  <p class="lead">A forest plantation spends almost everything at the start and earns almost everything at the end, twenty or thirty years later. To know whether it pays, every dollar has to be brought to the present with a discount rate. The section does that sum per hectare with the measures of forest economics.</p>
+  <p>Three fields: <span class="ui">Discount rate (% per year)</span> (8), <span class="ui">Fixed annual cost (protection, management)</span> (900), charged every year from 1 to the rotation, and <span class="ui">Rotation (years; empty = last year of the flow)</span>. The table has one row per item: <span class="ui">Year</span>, <span class="ui">Item</span>, <span class="ui">Cost</span> and <span class="ui">Revenue</span>, per hectare and in the currency you use; “several rows may share a year.” <span class="ui">Load example: pine at 25 years</span> brings eleven items, from site preparation to the final harvest, and <span class="ui">Evaluate</span> does the sum.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b9-economia.png" alt="The Cost and profitability of a plantation card with the rate, the annual cost, the table of the eleven pine items and seven tiles"></div>
+    <figcaption><b>Figure 9.8.</b> The pine at 25 years at 8%: net present value of $3,956 per hectare, internal rate of return of 8.50%, benefit/cost ratio of 1.07, land expectation value of $4,632, equivalent annual annuity of $371 a year, establishment cost of $23,500 (years 0 and 1; $140,900 undiscounted over the whole rotation) and payback in year 25.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Theory in brief · the seven figures</div>
+    <p>With the rate <i>r</i> and the net flow <i>N</i><sub>t</sub> = revenues − costs of year <i>t</i>: the <b>net present value</b> is NPV = Σ <i>N</i><sub>t</sub>/(1 + <i>r</i>)<sup><i>t</i></sup>; the <b>benefit/cost ratio</b>, the present value of revenues over that of costs; the <b>internal rate of return</b> (IRR), the rate that makes the NPV zero, searched between −90% and 200%; Faustmann’s (1849) <b>land expectation value</b>, LEV = NPV·(1 + <i>r</i>)<sup><i>T</i></sup>/((1 + <i>r</i>)<sup><i>T</i></sup> − 1), what the land is worth if the same rotation <i>T</i> is repeated forever; the <b>equivalent annual annuity</b>, NPV·<i>r</i>/(1 − (1 + <i>r</i>)<sup>−<i>T</i></sup>), the NPV spread into equal yearly payments; and the <b>payback</b>, the first year in which the cumulative discounted flow stops being negative (Klemperer 1996; Bettinger et al. 2017). Everything is in real terms: use a rate without inflation and constant prices.</p>
+  </div>
+  <p>Below the tiles come two figures. <span class="ui">Cash flow by year</span> puts revenues upward and costs downward; <span class="ui">Net present value by discount rate</span> draws the NPV between 0 and 15%, with the chosen rate and the IRR, which is where the curve crosses zero.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/b9-vpn.png" alt="Two charts: bars of revenues and costs by year of the pine, and the curve of net present value by discount rate with the IRR and the chosen rate"></div>
+    <figcaption><b>Figure 9.9.</b> Top, almost all the revenue arrives in year 25 ($300,000 from the final harvest), with two thinnings in years 12 and 18. Bottom, the NPV goes from about $216,000 undiscounted to negative values above the IRR of 8.50%; the chosen rate (8%) lies just before the crossing.</figcaption>
+  </figure>
+  <p>The <span class="ui">Discounted cash flow</span> table gives, by year, the costs (annual cost included), the revenues, the net, the discounted net and the cumulative discounted flow, which in the pine goes from −$30,227 in year 24 to $3,956 in year 25. It only shows the years with an item of their own (in the pine, 0, 1, 2, 3, 5, 8, 12, 18 and 25); its note says so: “Years with nothing but the annual cost are not shown; they are counted.”</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Worked example · the same plantation with another rate and another rotation</div>
+    <p>With the rate at 10%, the pine stops paying: the NPV falls to −$9,333 per hectare, the benefit/cost ratio to 0.81, the land expectation value to −$10,282, and the payback says “not recovered”; the IRR stays at 8.50%, because it does not depend on the chosen rate. With the rate at 8% and the rotation at 18 years, the final harvest is left out (“1 item falls after the rotation and is not counted.”) and the NPV sinks to −$29,186: without the final harvest, the thinnings do not pay for the establishment.</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Compare rotations with the land value, not with the NPV</div>
+    <p>The NPV of a single rotation favors long rotations only because they occupy the land longer. To choose between a 20-year and a 25-year rotation, compare Faustmann’s land expectation value, which assumes the rotation is repeated forever. And since almost all the revenue comes at the end, the result is very sensitive to the rate and to the price of the final harvest: try several rates before deciding.</p>
+  </div>
+
+  <!-- cierre -->
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule · forestry tools</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>If</b> you measured the mid-length diameter of the log</td><td><b>then</b> use Newton (or Huber); without it, frustum or Smalian, knowing that Smalian overestimates in logs with a flared butt.</td></tr>
+      <tr><td><b>If</b> you are going to buy or sell logs in board feet</td><td><b>then</b> agree on the rule: Doyle gives much less than International ¼″ in logs under 12 inches.</td></tr>
+      <tr><td><b>If</b> the lumber recovery drops below 45%</td><td><b>then</b> check the diameter and straightness of the logs, the saw kerf and the cutting pattern.</td></tr>
+      <tr><td><b>If</b> the overrun is large and positive</td><td><b>then</b> the rule underestimates what your mill gets; for your timber, the measured yield is worth more than the rule.</td></tr>
+      <tr><td><b>If</b> the form factor is above 1 or below 0.3</td><td><b>then</b> there is an error in the volume or in the sizes.</td></tr>
+      <tr><td><b>If</b> the NPV is positive and the IRR above the required rate</td><td><b>then</b> the plantation pays at that rate; to compare rotations, use the land expectation value.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guides for reading, not laws: the price of your timber, your sawmill and your discount rate have the last word.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <ul>
+      <li><b>“Type at least one log with its length and both end diameters, or load the example.”</b> Every row lacks the length or an end diameter.</li>
+      <li><b>Diameters in inches or length in feet.</b> The log table asks for meters and centimeters; if your data come in inches and feet, convert them first with Section 9.5.</li>
+      <li><b>Bark on both sides.</b> The <span class="ui">Bark (mm)</span> column is the thickness on one side only; the app subtracts it twice.</li>
+      <li><b>“Type the roundwood and sawn volumes (or scale and tally above).”</b> The two yield volumes are missing; they fill themselves after <span class="ui">Scale</span> and <span class="ui">Tally</span>.</li>
+      <li><b>“Type the volume or the form factor.”</b> Both were left empty in the form factor; leave empty only the one you want to compute.</li>
+      <li><b>“Check the discount rate.”</b> The rate is not a number or is −100% or less.</li>
+      <li><b>“… items fall after the rotation and are not counted.”</b> (with only one, “1 item falls after the rotation and is not counted.”) The rotation you typed is shorter than the last year of the table; empty the field to use the last year.</li>
+    </ul>
+  </div>
+
+</section>
+
+</body>
+</html>

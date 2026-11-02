@@ -33,10 +33,31 @@ const js = `/* ForestPro — Copyright (C) 2026 Luis Ángel Barrera-Guzmán. GPL
 (function (g) {
 'use strict';
 const RAW = ${JSON.stringify(out)};
+/* the labels of the examples (strata, managements, stories, density levels, status) in English. Only the
+   rows of the examples are translated, when they are loaded with the interface in English; a user's data
+   are never touched. The CSV files and the validation keep the Spanish labels. */
+const EN = {
+  estrato: { Conservado: 'Conserved', Perturbado: 'Disturbed', 'Ribereño': 'Riparian' },
+  manejo: { 'policultivo tradicional': 'traditional polyculture', 'policultivo comercial': 'commercial polyculture', 'rústico': 'rustic', 'monocultivo bajo sombra': 'shaded monoculture' },
+  dosel: { dosel: 'canopy', sotobosque: 'understory' },
+  nivel: { especie: 'species', 'género': 'genus' },
+  estado: { vivo: 'alive', 'muerto en pie': 'standing dead' },
+};
 const FPData = {
   names: Object.keys(RAW),
-  /* rows as objects, a copy every time (the blocks may edit them) */
-  rows(name) { const t = RAW[name]; if (!t) return []; return t.rows.map(r => { const o = {}; t.cols.forEach((c, j) => { o[c] = r[j] == null ? (typeof r[j] === 'number' ? NaN : NaN) : r[j]; }); return o; }); },
+  EN,
+  /* rows as objects, a copy every time (the blocks may edit them). lang: 'es' or 'en'; by default the
+     language of the interface (Spanish outside the browser) */
+  rows(name, lang) {
+    const t = RAW[name]; if (!t) return [];
+    const L = lang || (g.I18N && g.I18N.lang) || 'es';
+    const tr = t.cols.map(c => (L === 'en' && EN[c]) || null);
+    return t.rows.map(r => { const o = {}; t.cols.forEach((c, j) => { const v = r[j]; o[c] = v == null ? NaN : (tr[j] && tr[j][v] != null ? tr[j][v] : v); }); return o; });
+  },
+  /* the label of an example in a language: label('estrato', 'Conservado', 'en') → 'Conserved' */
+  label(col, v, lang) { return (lang || (g.I18N && g.I18N.lang) || 'es') === 'en' && EN[col] && EN[col][v] != null ? EN[col][v] : v; },
+  /* a tree of the examples is alive (vivo / alive) */
+  alive: v => v === 'vivo' || v === 'alive',
   cols(name) { return RAW[name] ? RAW[name].cols.slice() : []; },
 };
 g.FPData = FPData;

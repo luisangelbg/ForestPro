@@ -171,7 +171,7 @@ Art.vignette = function (n) {
     case 9: return V(`<ellipse cx="60" cy="56" rx="22" ry="34" fill="#D9B576" stroke="var(--corteza)" stroke-width="4"/>` +
       [8, 15, 22].map(r => `<ellipse cx="60" cy="56" rx="${r * 0.66}" ry="${r}" fill="none" stroke="#7A5530" stroke-width=".9"/>`).join('') +
       `<rect x="60" y="22" width="120" height="68" fill="#E2C48C" stroke="var(--corteza)" stroke-width="1.4"/>` +
-      `<path d="M44 42h32M44 56h32M44 70h32" stroke="var(--primary)" stroke-width="1.4" stroke-dasharray="3 2"/><text x="120" y="60" class="art-mut" font-size="11" text-anchor="middle">m³ ↔ pt</text>`);
+      `<path d="M44 42h32M44 56h32M44 70h32" stroke="var(--primary)" stroke-width="1.4" stroke-dasharray="3 2"/><text x="120" y="60" class="art-mut" font-size="11" text-anchor="middle">${T('m³ ↔ pt', 'm³ ↔ bf')}</text>`);
     case 10: return V(`<rect x="62" y="8" width="96" height="94" rx="6" fill="var(--card-bg)" stroke="var(--border-strong)"/>` +
       `<rect x="72" y="18" width="50" height="6" rx="3" fill="var(--primary)"/>` + [32, 40, 48].map(y => `<rect x="72" y="${y}" width="76" height="3" rx="1.5" fill="var(--border-strong)"/>`).join('') +
       [22, 34, 18, 28].map((h, i) => `<rect x="${76 + i * 16}" y="${92 - h}" width="11" height="${h}" fill="${i === 1 ? 'var(--oro)' : 'var(--musgo)'}"/>`).join(''));

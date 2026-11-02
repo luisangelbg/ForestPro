@@ -41,7 +41,7 @@ function build() {
     refs: ['Crookston, N. L. y Stage, A. R. (1999). <i>Percent Canopy Cover and Stand Structure Statistics from the Forest Vegetation Simulator</i>. USDA Forest Service, GTR RMRS-24.', 'Holdridge, L. R., Grenke, W. C., Hatheway, W. H., Liang, T. y Tosi, J. A. (1971). <i>Forest Environments in Tropical Life Zones: a Pilot Study</i>. Pergamon.', 'Moguel, P. y Toledo, V. M. (1999). Biodiversity conservation in traditional coffee systems of Mexico. <i>Conservation Biology</i> 13:11–21.'] });
 
   /* B */
-  const b = UI.section(root, ['Sombra a partir de una fotografía del dosel', 'Shade from a photograph of the canopy'], ['Una foto hemisférica (con lente de ojo de pez, desde abajo y hacia el cenit) o una foto normal hacia arriba. La app separa cielo y follaje y mide la apertura del dosel.', 'A hemispherical photo (with a fisheye lens, from below towards the zenith) or an ordinary upward photo. The app separates sky and foliage and measures canopy openness.']);
+  const b = UI.section(root, ['Sombra a partir de una fotografía del dosel', 'Shade from a photograph of the canopy'], ['Una foto hemisférica (con lente de ojo de pez, desde abajo y hacia el cenit) o una foto normal hacia arriba. La app separa cielo y follaje y mide la apertura del dosel.', 'A hemispherical photo (with a fisheye lens, from below toward the zenith) or an ordinary upward photo. The app separates sky and foliage and measures canopy openness.']);
   const bf = mk('div', { class: 'src-row' });
   bf.innerHTML = `<input type="file" id="b7img" class="sr-only" accept="image/*"><label class="btn btn-secondary btn-sm" for="b7img" tabindex="0" role="button">${L2('Abrir una foto…', 'Open a photo…')}</label>`;
   const exB = mk('button', { type: 'button', class: 'btn btn-primary btn-sm' }, L2('Foto de ejemplo (sintética)', 'Example photo (synthetic)'));
@@ -190,12 +190,12 @@ function runPhoto() {
   R.photo.innerHTML = '';
   const { img } = S.photo, w = img.width, h = img.height;
   const hemi = el('b7proj').value === 'hemi';
-  const grey = AG().grey(img, el('b7ch').value);
+  const gray = AG().grey(img, el('b7ch').value);
   const geo = { cx: w / 2, cy: h / 2, R: Math.min(w, h) / 2 * (+el('b7r').value || 100) / 100, hemi };
-  const hist = AG().histogram(grey, w, h, geo);
+  const hist = AG().histogram(gray, w, h, geo);
   const manual = el('b7thr').value !== '';
   const thr = manual ? +el('b7thr').value : AG().otsu(hist);
-  const op = AG().openness(grey, w, h, Object.assign({ threshold: thr }, geo));
+  const op = AG().openness(gray, w, h, Object.assign({ threshold: thr }, geo));
   UI.tiles(R.photo.appendChild(mk('div')), [
     [['Cobertura del dosel', 'Canopy cover'], fmtPct(100 * (1 - op.weighted), 1), [hemi ? '1 − apertura ponderada' : '1 − fracción de cielo', hemi ? '1 − weighted openness' : '1 − sky fraction'], 'ok'],
     hemi ? [['Apertura del dosel', 'Canopy openness'], fmtPct(100 * op.weighted, 1), ['ponderada por ángulo sólido', 'weighted by solid angle']] : null,
@@ -211,7 +211,7 @@ function runPhoto() {
   const ctx = cvB.getContext('2d'), out = ctx.createImageData(w, h);
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
     const i = y * w + x, dx = x + 0.5 - geo.cx, dy = y + 0.5 - geo.cy, inside = !hemi || dx * dx + dy * dy <= geo.R * geo.R;
-    const sky = grey[i] > thr;
+    const sky = gray[i] > thr;
     const col = !inside ? [70, 70, 70] : sky ? [250, 250, 245] : [27, 94, 32];
     out.data[4 * i] = col[0]; out.data[4 * i + 1] = col[1]; out.data[4 * i + 2] = col[2]; out.data[4 * i + 3] = 255;
   }
@@ -222,7 +222,7 @@ function runPhoto() {
   pair.append(c1, c2);
   R.photo.appendChild(pair);
   const xs = Array.from({ length: 256 }, (_, i) => i);
-  UI.figure(R.photo, { title: ['Histograma de grises y umbral', 'Gray histogram and threshold'], svg: Plot.bars({ edges: xs.concat([256]), series: [{ label: T('Píxeles', 'Pixels'), values: hist, color: 'var(--musgo)' }], curves: [{ x: [thr, thr], y: [0, Math.max(...hist)], color: 'var(--accent)', label: T('Umbral', 'Threshold'), dash: '5 4' }], xlab: T('Nivel de gris', 'Gray level'), ylab: T('Píxeles', 'Pixels'), name: 'b7-histograma', w: 620, h: 300 }), key: 'b7-hist' });
+  UI.figure(R.photo, { title: ['Histograma de grises y umbral', 'Gray histogram and threshold'], svg: Plot.bars({ edges: xs.concat([256]), series: [{ label: T('Píxeles', 'Pixels'), values: hist, color: 'var(--musgo)' }], curves: [{ x: [thr, thr], y: [0, Math.max(...hist)], color: 'var(--accent)', label: T('Umbral', 'Threshold'), dash: '5 4' }], xlab: T('Nivel de gris', 'Gray level'), ylab: T('Píxeles', 'Pixels'), name: 'b7-histograma', w: 620, h: 300, solid: true }), key: 'b7-hist' });
   if (hemi) UI.table(R.photo, { title: ['Apertura por anillos de ángulo cenital', 'Openness by zenith-angle rings'], file: 'forestpro_anillos', columns: [
     { key: 'ring', label: ['Anillo', 'Ring'], get: r => r.from + '°–' + r.to + '°' }, { key: 'open', label: ['Cielo (%)', 'Sky (%)'], num: true, fmt: v => fmtNum(100 * v, 1) }, { key: 'n', label: ['Píxeles', 'Pixels'], num: true }], rows: op.rings });
   UI.interp(R.photo, [`El dosel cubre ${fmtPct(100 * (1 - op.weighted), 0)} del cielo visible. Revisa la imagen segmentada: si el sol o el cielo brillante entre hojas quedan mal clasificados, ajusta el umbral a mano. Una sola foto describe un punto; para la parcela promedia varias fotos tomadas a la misma altura.`,
@@ -293,7 +293,7 @@ function drawBudget() {
   if (!S.budgetEx) return;
   const cf = +el('b7cfB').value || 0.47, rsC = +el('b7rsC').value || 0.27, B = window.Biomass;
   /* shade trees of the example, per hectare */
-  const trees = FPData.rows('cafetal_arboles').filter(r => r.estado === 'vivo');
+  const trees = FPData.rows('cafetal_arboles', 'es').filter(r => r.estado === 'vivo');
   const dens = new Map(FPData.rows('densidades_madera').map(r => [r.especie, r.densidad]));
   const eqFor = sp => { const g = sp.split(' ')[0]; const rule = SHADE_RULES.find(([p]) => p === sp) || SHADE_RULES.find(([p]) => p === g); return B.eq(rule ? rule[1] : 'chave14_h'); };
   const plots = FPData.rows('cafetal_parcelas');

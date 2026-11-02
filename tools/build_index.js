@@ -39,7 +39,7 @@ const shells = BLOCKS.map(([n, es, en, des, den]) => {
 
 const scripts = [
   'labg-core.js', ['labg-figure-studio.js', 'defer'], ['labg-navigator.js', 'defer'], ['labg-fx.js', 'data-app="forestpro" defer'],
-  'num.js', 'nls.js', 'dataio.js', 'plot.js', 'core.js', 'ui.js', ['labg-figedit.js', 'data-key="forestpro:figedit"'],
+  'num.js', 'nls.js', 'dataio.js', 'plot.js', 'core.js', 'lang-en.js', 'ui.js', ['labg-figedit.js', 'data-key="forestpro:figedit"'],
   'datasets.js', 'eng-dendro.js', 'eng-invent.js', 'eng-biomass.js', 'eng-growth.js', 'eng-divers.js', 'eng-agro.js', 'eng-geo.js', 'eng-tools.js',
   'art.js', 'home.js', 'block2.js', 'block3.js', 'block4.js', 'block5.js', 'block6.js', 'block7.js', 'mapview.js', 'block8.js', 'block9.js', 'block10.js',
 ].filter(s => fs.existsSync(path.join(root, 'js', Array.isArray(s) ? s[0] : s)))

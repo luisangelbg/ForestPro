@@ -195,5 +195,84 @@ t(0, 'Figuras: la leyenda de abajo no se encima con el título del eje x', E => 
   ok(lg - xl >= 18, `leyenda a ${lg - xl} px del título`);
 });
 
+/* ---------- the English interface (labels of the examples, references, file names) ---------- */
+t(0, 'Inglés: referencias con «and», «4th ed.», «ch.», «tables», «eqs.», «The Hague» e «In»', E => {
+  if (!E.LangEN) return;
+  const R = E.LangEN.ref;
+  ok(R('Husch, B., Beers, T. W. y Kershaw, J. A. (2003). <i>Forest Mensuration</i>, 4.ª ed. Wiley.') === 'Husch, B., Beers, T. W. and Kershaw, J. A. (2003). <i>Forest Mensuration</i>, 4th ed. Wiley.');
+  ok(R('Cochran, W. G. (1977). <i>Sampling Techniques</i>, 3.ª ed. Wiley.').includes('3rd ed.'));
+  ok(R('X, A. (2010). <i>Libro</i>, 2.ª ed. Y.').includes('2nd ed.') && R('X, A. (2010). <i>Libro</i>, 1.ª ed. Y.').includes('1st ed.'));
+  ok(R('IPCC (2006). <i>2006 IPCC Guidelines</i>, vol. 4, cap. 4 (cuadros 4.3 y 4.4).') === 'IPCC (2006). <i>2006 IPCC Guidelines</i>, vol. 4, ch. 4 (tables 4.3 and 4.4).');
+  ok(R('IPCC (2006). <i>2006 IPCC Guidelines</i>, vol. 1, cap. 3 (ec. 3.1 y 3.2) y vol. 4, cap. 2.') === 'IPCC (2006). <i>2006 IPCC Guidelines</i>, vol. 1, ch. 3 (eqs. 3.1 and 3.2) and vol. 4, ch. 2.');
+  ok(R('Theil, H. (1953). Repeated least squares. Central Planning Bureau, La Haya.').endsWith('Central Planning Bureau, The Hague.'));
+  ok(R('Hegyi, F. (1974). A model. En <i>Growth Models</i>, pp. 74–90.').includes('. In <i>Growth Models</i>'));
+  ok(R('Cochran, W. G. (1977). <i>Sampling Techniques</i>, §4.6 y §5.5. Wiley.').includes('§4.6 and §5.5'));
+  ok(R('Colwell, R. K., Mao, C. X. y Chang, J. (2004). Interpolating.') === 'Colwell, R. K., Mao, C. X. and Chang, J. (2004). Interpolating.');
+});
+t(0, 'Inglés: los títulos de las obras no se traducen y una referencia sin formas españolas queda igual', E => {
+  if (!E.LangEN) return;
+  const r = 'Díaz-Franco, R. et al. (2007). Determinación de ecuaciones alométricas para estimar biomasa y carbono en <i>Pinus patula</i>. <i>Madera y Bosques</i> 13(1):25–34.';
+  ok(E.LangEN.ref(r) === r, 'cambió un título');
+  const o = 'Otsu, N. (1979). A threshold selection method from gray-level histograms. <i>IEEE Trans. Syst. Man Cybern.</i> 9:62–66.';
+  ok(E.LangEN.ref(o) === o && E.LangEN.refL2(o) === o);
+  ok(E.LangEN.refL2('A, B. y C, D. (2000). T.') === '<span data-l="es">A, B. y C, D. (2000). T.</span><span data-l="en">A, B. and C, D. (2000). T.</span>');
+});
+t(4, 'Inglés: las notas del catálogo de ecuaciones salen sin español', E => {
+  if (!E.LangEN) return;
+  E.Biomass.EQS.forEach(e => {
+    /* what is left after the authors and the year, without the titles in italics: Spanish wording would show here */
+    const en = E.LangEN.ref(e.src).replace(/<i>.*?<\/i>/g, '').replace(/^.*?\(\d{4}\)\. /, '');
+    ok(/^(Determinación|Estimación)/.test(en) || !/\bec\.|\bcap\.|ª ed|supl\.|La fuente|es el índice|diámetro|modelo de|\bdel\b/.test(en), e.id + ': ' + en);
+  });
+  ok(E.LangEN.ref(E.Biomass.eq('chave14_e').src).endsWith('E is the environmental stress index of the site (eq. 6b).'));
+  ok(E.LangEN.ref(E.Biomass.eq('brown97_dry').src).endsWith('FAO Forestry Paper 134, eq. 3.2.1.'));
+  ok(E.LangEN.ref(E.Biomass.eq('vnoord02_coffee').src).endsWith('45 (suppl.):75–86. The source does not say at what height D is measured.'));
+});
+t(0, 'Inglés: nombres de los archivos exportados', E => {
+  if (!E.LangEN) return;
+  const F = n => E.LangEN.file(n, 'en');
+  ok(F('forestpro_informe_bosque_mesofilo.html') === 'forestpro_report_bosque_mesofilo.html');
+  ok(F('forestpro_proyecto_project.json') === 'forestpro_project_project.json');
+  ok(F('forestpro_tablas.xlsx') === 'forestpro_tables.xlsx' && F('forestpro_tablas_csv.zip') === 'forestpro_tables_csv.zip');
+  ok(F('forestpro_b2t_plantilla.csv') === 'forestpro_b2t_template.csv');
+  ok(F('forestpro_incrementos_t1.csv') === 'forestpro_increments_t1.csv' && F('forestpro_tabla_rodal.csv') === 'forestpro_stand_table.csv');
+  ok(F('forestpro_estratos_altura.xlsx') === 'forestpro_height_strata.xlsx' && F('forestpro_estratos.csv') === 'forestpro_strata.csv');
+  ok(F('forestpro_mapa.geojson') === 'forestpro_map.geojson' && F('forestpro_cuadricula.gpx') === 'forestpro_grid.gpx');
+  ok(F('forestpro_coef_hd_naslund.csv') === 'forestpro_coef_hd_naslund.csv');
+  ok(F(F('forestpro_informe_x.html')) === 'forestpro_report_x.html', 'no es idempotente');
+  ok(E.LangEN.file('forestpro_informe_x.html', 'es') === 'forestpro_informe_x.html', 'cambió en español');
+  ok(E.LangEN.file('forestpro_trozas.csv') === 'forestpro_trozas.csv', 'sin idioma debe quedar en español');
+});
+t(0, 'Inglés: etiquetas de los ejemplos (estratos, manejos, pisos, niveles, estado)', E => {
+  const P = E.FPData;
+  const es = P.rows('mesofilo_parcelas', 'es'), en = P.rows('mesofilo_parcelas', 'en');
+  const set = (name, col) => JSON.stringify([...new Set(P.rows(name, 'en').map(r => r[col]))].sort());
+  ok(es[0].estrato === 'Conservado' && en[0].estrato === 'Conserved');
+  ok(set('mesofilo_arboles', 'estrato') === '["Conserved","Disturbed","Riparian"]');
+  ok(set('cafetal_parcelas', 'manejo') === '["commercial polyculture","rustic","shaded monoculture","traditional polyculture"]');
+  ok(set('mesofilo_mapeada', 'dosel') === '["canopy","understory"]');
+  ok(set('densidades_madera', 'nivel') === '["genus","species"]');
+  ok(set('cafetal_arboles', 'estado') === '["alive","standing dead"]');
+  /* the numbers, species and plots do not change; outside the browser the labels are Spanish */
+  ok(en[0].parcela === es[0].parcela && en[0].area_estrato_ha === es[0].area_estrato_ha);
+  ok(P.rows('mesofilo_arboles', 'en')[0].especie === P.rows('mesofilo_arboles', 'es')[0].especie);
+  ok(P.rows('mesofilo_parcelas')[0].estrato === 'Conservado');
+  ok(P.label('estrato', 'Conservado', 'en') === 'Conserved' && P.label('estrato', 'Bosque alto', 'en') === 'Bosque alto' && P.label('estrato', 'Conservado', 'es') === 'Conservado');
+  ok(P.alive('vivo') && P.alive('alive') && !P.alive('muerto en pie') && !P.alive('standing dead'));
+  ok(P.rows('mesofilo_arboles', 'en').filter(r => P.alive(r.estado)).length === P.rows('mesofilo_arboles', 'es').filter(r => r.estado === 'vivo').length);
+});
+t(7, 'Histograma de muchas clases: barras sin hueco ni borde (opción solid)', E => {
+  if (!E.Plot) return;
+  const edges = Array.from({ length: 257 }, (_, i) => i), values = edges.slice(0, 256).map(i => 100 + i);
+  const s = E.Plot.bars({ edges, series: [{ label: 'p', values, color: '#558B2F' }], w: 620, h: 300, solid: true });
+  const rects = s.match(/<rect [^>]*style="fill:#558B2F[^"]*"/g) || [];
+  ok(rects.length === 256, rects.length + ' barras');
+  ok(rects.every(r => /stroke:none/.test(r)), 'con borde');
+  const w = +/width="([\d.]+)"/.exec(rects[100])[1];
+  ok(w > 1.5, 'barra de ' + w + ' px');
+  const s0 = E.Plot.bars({ edges, series: [{ label: 'p', values, color: '#558B2F' }], w: 620, h: 300 });
+  ok(!/stroke:none/.test(s0), 'sin solid, el dibujo de siempre');
+});
+
 g.FP_UNIT = U;
 })(typeof window !== 'undefined' ? window : globalThis);

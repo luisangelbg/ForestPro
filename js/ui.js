@@ -88,7 +88,7 @@ UI.table = function (host, o) {
   if (o.note) wrap.appendChild(mk('p', { class: 'hint' }, tt(o.note)));
   if (o.file !== false) {
     const bar = mk('div', { class: 'btn-row tbl-tools no-print' });
-    const name = o.file || slug(tx(o.title) || 'tabla');
+    const name = LangEN.file(o.file || slug(tx(o.title) || T('tabla', 'table')));
     const csv = mk('button', { type: 'button', class: 'btn btn-ghost btn-sm' }, L2('⤓ CSV', '⤓ CSV'));
     csv.addEventListener('click', () => { const d = UI.tableData(o.columns, o.rows); download(DataIO.toCSV(d.header, d.rows), name + '.csv', 'text/csv;charset=utf-8'); });
     const xl = mk('button', { type: 'button', class: 'btn btn-ghost btn-sm' }, L2('⤓ XLSX', '⤓ XLSX'));
@@ -122,7 +122,7 @@ UI.method = function (host, o) {
   if (!host) return null;
   const d = mk('details', { class: 'method-box' });
   d.innerHTML = `<summary>${L2('Método y fuentes', 'Method and sources')}</summary><div class="method-body">${tt(o.text)}` +
-    (o.refs && o.refs.length ? `<ul class="ref-mini">${o.refs.map(r => `<li>${r}</li>`).join('')}</ul>` : '') + `</div>`;
+    (o.refs && o.refs.length ? `<ul class="ref-mini">${o.refs.map(r => `<li>${LangEN.refL2(r)}</li>`).join('')}</ul>` : '') + `</div>`;
   if (o.open) d.open = true;
   host.appendChild(d);
   return d;
@@ -203,6 +203,11 @@ UI.grid = function (host, fields, rows, o) {
   return { redraw: draw, rows };
 };
 UI.grids = {};
+/* the data cards whose example must be loaded again when the language changes, so that its labels (strata,
+   managements…) follow it. This listener is added before those of the blocks (ui.js loads first), so the
+   blocks redraw with the relabelled data */
+UI.relabelers = [];
+document.addEventListener('langchange', () => UI.relabelers.forEach(f => f()));
 
 /* ---------------- the data card ----------------
    o: { id, fields: [{ key, es, en, aliases, num, req }], examples: [{ id, es, en, d: [es, en], rows: () => [...] }],
@@ -239,7 +244,11 @@ UI.dataCard = function (host, o) {
   const status = mk('p', { class: 'data-status' });
   box.appendChild(status);
 
+  /* the example loaded last, with its rows as text: the labels of the examples (strata, managements…)
+     follow the language, so when it changes the example is loaded again with the new labels */
+  let exLoaded = null;
   const finish = (rows, meta) => {
+    if (!meta.example) exLoaded = null;
     clearMessages(msg);
     const req = o.fields.filter(fd => fd.req);
     const bad = rows.filter(r => req.some(fd => fd.num ? !isFinite(r[fd.key]) : (r[fd.key] == null || r[fd.key] === '')));
@@ -308,7 +317,10 @@ UI.dataCard = function (host, o) {
 
   exBtn.addEventListener('click', () => {
     const e = (o.examples || []).find(x => x.id === exSel.value);
-    if (e) finish(e.rows().map(r => Object.assign({}, r)), { name: T(e.es, e.en), example: e.id, note: e.note });
+    if (!e) return;
+    const rows = e.rows();
+    exLoaded = { id: e.id, key: JSON.stringify(rows) };
+    finish(rows.map(r => Object.assign({}, r)), { name: T(e.es, e.en), example: e.id, note: e.note });
   });
   fileIn.addEventListener('change', async () => {
     const file = fileIn.files[0];
@@ -368,6 +380,15 @@ UI.dataCard = function (host, o) {
     download(DataIO.toCSV(header, ex), 'forestpro_' + id + '_plantilla.csv', 'text/csv;charset=utf-8');
   });
   document.addEventListener('langchange', () => { const v = exSel.value; fillEx(); exSel.value = v; showExNote(); });
+  /* runs before the blocks redraw themselves (UI.relabel, below) */
+  UI.relabelers.push(() => {
+    const e = exLoaded && box.isConnected && (o.examples || []).find(x => x.id === exLoaded.id);
+    if (!e) return;
+    const rows = e.rows(), key = JSON.stringify(rows);
+    if (key === exLoaded.key) { const b = status.querySelector('b'); if (b) b.textContent = T(e.es, e.en); return; }
+    exLoaded.key = key;
+    finish(rows.map(r => Object.assign({}, r)), { name: T(e.es, e.en), example: e.id, note: e.note, relabel: true });
+  });
   const api = { load: exId => { if (exId) { exSel.value = exId; showExNote(); } exBtn.click(); }, set: (rows, meta) => finish(rows, meta || {}), box, fields: o.fields, examples: (o.examples || []).map(e => e.id) };
   UI.cards[id] = api;
   return api;

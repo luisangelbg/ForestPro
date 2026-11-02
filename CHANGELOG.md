@@ -48,11 +48,43 @@ Correcciones halladas al escribir el manual. La versión sigue siendo la 1.0.0.
 - **Documentación:** el README apunta al manual de `manual/`; la guía y el registro ya no mencionan una PCoA que la app
   no muestra; interfaz inglesa con ortografía estadounidense y comillas “ ” donde se tocó.
 
+### Interfaz inglesa (lo que salió al traducir el manual)
+
+- **Referencias de «Método y fuentes» (Bloques 2 a 9) y fuentes del catálogo de ecuaciones** en su forma inglesa:
+  «and» entre autores, «3rd/4th/5th ed.», «ch.», «tables», «eq.»/«eqs.», «The Hague», «In», «appendix», «suppl.», y
+  las notas del catálogo traducidas (índice E de Chave 2014, d₁₅ de Segura, altura de D de van Noordwijk…). Nuevo
+  `js/lang-en.js` (`LangEN.ref`), con la conversión del generador del apéndice F ampliada. Los títulos de las obras
+  no se tocan; en español todo queda igual.
+- **Textos en español con la interfaz en inglés:** «Mg C/ha/yr» en la tasa anual del cambio de carbono; «m³ ↔ bf»
+  en la viñeta del Bloque 9; «BF» en la cubicación de trozas; el pie de la portada enlaza al manual inglés
+  (`manual/en/manual-completo.html`, «User’s manual»; el español sigue en `manual/es/`).
+- **Etiquetas de los ejemplos en el idioma de la interfaz:** estratos (Conserved, Disturbed, Riparian), manejos
+  (rustic, traditional/commercial polyculture, shaded monoculture), pisos (canopy, understory), niveles de la tabla
+  de densidades (species, genus) y estado (alive, standing dead). Sólo se traducen las filas de los ejemplos
+  (`FPData.rows`); los datos de un usuario no se tocan. Si se cambia de idioma con un ejemplo cargado, el ejemplo se
+  vuelve a cargar con las etiquetas nuevas (sin entrar dos veces en el proyecto).
+- **Nombres de archivo en el idioma de la interfaz** (`LangEN.file`, aplicado en toda descarga):
+  `forestpro_report_…`, `forestpro_project_…`, `forestpro_tables.xlsx`, `forestpro_stand_table.csv`,
+  `forestpro_strata.csv`, `…_template.csv`, etc.; también los CSV del ZIP de tablas y el encabezado del CSV del mapa.
+  En español no cambia nada.
+- **Ortografía estadounidense:** characterize, linearized, leveling off, story/stories, understory, toward, metric
+  ton(s); en las copias de los módulos comunes, color, gray/Grays/Grayscale, center/centered (como CytogeneticsPro).
+- **Informe en inglés** con la fecha en formato estadounidense (`en-US`).
+
+### Corregido (en los dos idiomas)
+
+- **Informe:** el pie dice «la validación contra implementaciones independientes» / «the validation against
+  independent implementations» (antes nombraba R).
+- **Bloque 7:** las barras del histograma de grises se ven (sin hueco ni borde entre las 256 clases; opción `solid`
+  de `Plot.bars`).
+
 ### Validación
 
 - 8 327 comparaciones con R sin desacuerdos (antes 8 261): nuevas la Weibull ponderada y truncada con sus pruebas, el
   reparto del tamaño de muestra estratificado y el balance de reservorios; regeneradas las referencias de los Bloques
   3, 4 y 5 (`tests/LEEME_VALIDACION.md`). 72 pruebas unitarias (antes 62).
+- Interfaz inglesa: 83 pruebas (11 nuevas: 6 en `tests/unit.js` y 5 que leen el código en `tests/t_english.js`,
+  sólo en node); la validación sigue en 8 327 comparaciones sin desacuerdos.
 
 ## [1.0.0] — 2026-10-04
 

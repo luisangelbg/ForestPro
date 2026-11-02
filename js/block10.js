@@ -43,7 +43,7 @@ function push(ev) {
 }
 document.addEventListener('fp:data', e => {
   const d = e.detail;
-  if (quiet() || d.nested) return;
+  if (quiet() || d.nested || (d.meta && d.meta.relabel)) return;   /* an example loaded again with the labels of the other language */
   push(d.meta && d.meta.example ? { k: 'ex', id: d.id, ex: d.meta.example } : { k: 'data', id: d.id, rows: copy(d.rows), name: (d.meta && d.meta.name) || '' });
 });
 document.addEventListener('fp:grid', e => { if (!quiet()) push({ k: 'grid', key: e.detail.key, rows: copy(e.detail.rows) }); });
@@ -146,7 +146,7 @@ function saveProject() {
   delete st.report;
   const pr = { app: 'ForestPro', format: 1, version: window.FP_VERSION, saved: new Date().toISOString(), lang: document.documentElement.lang, step: cur && cur.step ? +cur.step : 10,
     title: el('b10title').value, report: reportFields(), events: P.log, results: st };
-  const name = 'forestpro_proyecto_' + (slug(el('b10site').value || el('b10title').value || 'proyecto') || 'proyecto') + '.json';
+  const name = LangEN.file('forestpro_proyecto_' + (slug(el('b10site').value || el('b10title').value || T('proyecto', 'project')) || T('proyecto', 'project')) + '.json');
   download(JSON.stringify(pr, enc, 1), name, 'application/json');
   clearMessages(R.proj);
   showMessage(R.proj, 'success', L2(`Proyecto guardado con ${P.log.length} pasos.`, `Project saved with ${P.log.length} steps.`));
@@ -327,7 +327,7 @@ function buildReport() {
   const lang = document.documentElement.lang === 'en' ? 'en' : 'es';
   const title = el('b10title').value.trim() || T('Informe forestal', 'Forest report');
   const site = el('b10site').value.trim(), author = el('b10author').value.trim(), date = el('b10date').value, notes = el('b10notes').value.trim();
-  const dateTxt = date ? new Date(date + 'T12:00:00').toLocaleDateString(lang === 'en' ? 'en-GB' : 'es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+  const dateTxt = date ? new Date(date + 'T12:00:00').toLocaleDateString(lang === 'en' ? 'en-US' : 'es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
   let h = `<!DOCTYPE html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}${site ? ' · ' + esc(site) : ''}</title><meta name="generator" content="ForestPro ${esc(window.FP_VERSION || '')}"><style>${REPORT_CSS}</style></head><body>`;
   h += `<div class="printbar"><button type="button" onclick="window.print()">${esc(T('Imprimir o guardar como PDF', 'Print or save as PDF'))}</button></div><main>`;
   h += `<header class="cover">${Art.logo(84)}<div><h1>${esc(title)}</h1>${site ? `<p class="site">${esc(site)}</p>` : ''}<p>${[author, dateTxt].filter(Boolean).map(esc).join(' · ')}</p><p>${esc(T('Generado con ForestPro ', 'Generated with ForestPro ') + (window.FP_VERSION || '') + ' · LABG')}</p></div></header>`;
@@ -345,9 +345,9 @@ function buildReport() {
   });
   const C = window.FP_CITE || {};
   h += `<h2>${esc(T('Cómo citar ForestPro', 'How to cite ForestPro'))}</h2><p>${esc(C.apa || '')}</p><pre>${esc(C.bib || '')}</pre>`;
-  h += `<footer>${esc(T('Todos los cálculos se hicieron en el navegador con ForestPro; los datos no salieron del equipo. Los métodos, sus fuentes y la validación contra R se describen en el manual.', 'Every computation was made in the browser with ForestPro; the data never left the computer. The methods, their sources and the validation against R are described in the manual.'))}</footer>`;
+  h += `<footer>${esc(T('Todos los cálculos se hicieron en el navegador con ForestPro; los datos no salieron del equipo. Los métodos, sus fuentes y la validación contra implementaciones independientes se describen en el manual.', 'Every computation was made in the browser with ForestPro; the data never left the computer. The methods, their sources and the validation against independent implementations are described in the manual.'))}</footer>`;
   h += `</main></body></html>`;
-  return { html: h, n: blocks.length, figs: (h.match(/<figure>/g) || []).length, tables: (h.match(/<div class="tbl">/g) || []).length, file: 'forestpro_informe_' + (slug(site || title) || 'informe') + '.html' };
+  return { html: h, n: blocks.length, figs: (h.match(/<figure>/g) || []).length, tables: (h.match(/<div class="tbl">/g) || []).length, file: LangEN.file('forestpro_informe_' + (slug(site || title) || T('informe', 'report')) + '.html') };
 }
 function preview() {
   clearMessages(R.rep);
@@ -376,7 +376,7 @@ function exportTables(kind) {
   if (kind === 'xlsx') download(new Blob([DataIO.xlsx(sh)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), 'forestpro_tablas.xlsx');
   else {
     const used = new Set();
-    const files = sh.map((s, i) => { let nm = (s.file || slug(s.name)).replace(/[^\w.-]+/g, '_'); while (used.has(nm)) nm += '_' + (i + 1); used.add(nm); return { name: nm + '.csv', data: DataIO.toCSV(s.header, s.rows) }; });
+    const files = sh.map((s, i) => { let nm = (s.file || slug(s.name)).replace(/[^\w.-]+/g, '_'); while (used.has(nm)) nm += '_' + (i + 1); used.add(nm); return { name: LangEN.file(nm) + '.csv', data: DataIO.toCSV(s.header, s.rows) }; });
     download(new Blob([DataIO.zip(files)], { type: 'application/zip' }), 'forestpro_tablas_csv.zip');
   }
   showMessage(R.tabs, 'success', L2(`${sh.length} tablas exportadas.`, `${sh.length} tables exported.`));

@@ -67,8 +67,16 @@ function build() {
     { key: 'lat', es: 'Latitud', en: 'Latitude', num: true, req: true, aliases: ['latitude', 'y'] },
     { key: 'lon', es: 'Longitud', en: 'Longitude', num: true, req: true, aliases: ['longitude', 'long', 'x'] }],
     examples: [{ id: 'mesofilo', es: 'Predio del bosque mesófilo (9 vértices)', en: 'Cloud forest property (9 vertices)', d: ['Los vértices del polígono en orden, en grados decimales.', 'The vertices of the polygon in order, in decimal degrees.'], rows: () => FPData.rows('mesofilo_predio').map(r => ({ poligono: T('Predio', 'Property'), lat: r.lat, lon: r.lon })) }],
-    /* a polygon loaded again with the same name replaces the one already on the map instead of doubling it */
-    onData: rows => { const by = new Map(); rows.forEach(r => { const k = String(r.poligono); if (!by.has(k)) by.set(k, []); by.get(k).push([r.lon, r.lat]); }); S.polygons = S.polygons.filter(p => !by.has(p.name)); by.forEach((ring, name) => { if (ring.length >= 3) S.polygons.push({ name, ring }); }); drawPolys(); refresh(true); } });
+    /* a polygon loaded again with the same name replaces the one already on the map instead of doubling it
+       (the property of the example is the same in both languages: Predio / Property). Loaded again only
+       because the language changed, the polygon already on the map just takes the new name */
+    onData: (rows, meta) => {
+      const key = n => (n === 'Predio' || n === 'Property' ? 'Predio' : n);
+      const by = new Map(); rows.forEach(r => { const k = String(r.poligono); if (!by.has(k)) by.set(k, []); by.get(k).push([r.lon, r.lat]); });
+      if (meta && meta.relabel) { S.polygons.forEach(p => { const nm = [...by.keys()].find(k => key(k) === key(p.name)); if (nm) p.name = nm; }); drawPolys(); refresh(); return; }
+      const keys = new Set([...by.keys()].map(key)); S.polygons = S.polygons.filter(p => !keys.has(key(p.name)));
+      by.forEach((ring, name) => { if (ring.length >= 3) S.polygons.push({ name, ring }); }); drawPolys(); refresh(true);
+    } });
   R.polys = mk('div', { class: 'res-host' }); b.appendChild(R.polys);
   UI.method(b, { text: [
     '<p>Área en UTM: fórmula del agrimensor (Gauss) sobre las coordenadas planas de la zona del centro del polígono, la que se usa en catastro e inventario; incluye el factor de escala de la proyección (≤ 0.04 % dentro de la zona). Área sobre la esfera: suma de triángulos esféricos desde el primer vértice por el teorema de L\'Huilier, con radio medio de 6 371 008.8 m; difiere de la del elipsoide unas décimas de punto por ciento según la latitud. Los lados de los polígonos se consideran rectos en UTM y arcos de círculo máximo en la esfera.</p>',
@@ -278,7 +286,7 @@ function exportAll(fmt, gridOnly) {
   if (fmt === 'gpx') download(GE().toGPX(points, polys, 'ForestPro'), base + '.gpx', 'application/gpx+xml');
   else if (fmt === 'kml') download(GE().toKML(points, polys, 'ForestPro'), base + '.kml', 'application/vnd.google-earth.kml+xml');
   else if (fmt === 'geojson') download(GE().toGeoJSON(points, polys), base + '.geojson', 'application/geo+json');
-  else download(DataIO.toCSV(['nombre', 'lat', 'lon', 'descripcion'], points.map(p => [p.name, p.lat, p.lon, p.desc])), base + '.csv', 'text/csv;charset=utf-8');
+  else download(DataIO.toCSV(T(['nombre', 'lat', 'lon', 'descripcion'], ['name', 'lat', 'lon', 'description']), points.map(p => [p.name, p.lat, p.lon, p.desc])), base + '.csv', 'text/csv;charset=utf-8');
 }
 
 /* ---------------- E ---------------- */

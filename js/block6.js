@@ -29,9 +29,9 @@ function community(rows, name) {
 }
 const EXC = [
   { id: 'mesofilo', es: 'Bosque mesófilo: 24 parcelas en 3 estratos', en: 'Cloud forest: 24 plots in 3 strata', d: ['Individuos vivos de cada especie en cada parcela (DAP ≥ 2.5 cm); el estrato agrupa las parcelas.', 'Live individuals of each species in each plot (DBH ≥ 2.5 cm); the stratum groups the plots.'],
-    rows: () => FPData.rows('mesofilo_arboles').filter(r => r.estado === 'vivo').map(r => ({ sitio: r.parcela, especie: r.especie, abundancia: 1, grupo: r.estrato, altura: r.altura })) },
+    rows: () => FPData.rows('mesofilo_arboles').filter(r => FPData.alive(r.estado)).map(r => ({ sitio: r.parcela, especie: r.especie, abundancia: 1, grupo: r.estrato, altura: r.altura })) },
   { id: 'cafetal', es: 'Cafetal: árboles de sombra de 25 parcelas', en: 'Coffee farm: shade trees of 25 plots', d: ['Individuos de cada especie de sombra por parcela; la finca agrupa las parcelas.', 'Individuals of each shade species per plot; the farm groups the plots.'],
-    rows: () => FPData.rows('cafetal_arboles').filter(r => r.estado === 'vivo').map(r => ({ sitio: r.parcela, especie: r.especie, abundancia: 1, grupo: r.finca, altura: r.altura })) },
+    rows: () => FPData.rows('cafetal_arboles').filter(r => FPData.alive(r.estado)).map(r => ({ sitio: r.parcela, especie: r.especie, abundancia: 1, grupo: r.finca, altura: r.altura })) },
 ];
 
 function build() {
@@ -86,11 +86,11 @@ function build() {
     '<p>Dissimilarities: Jaccard (b + c)/(a + b + c) and Sørensen (b + c)/(2a + b + c) with presence and absence (a = shared species, b and c = exclusive), and Bray–Curtis Σ|x − y|/Σ(x + y) with abundances. Dendrogram by UPGMA (unweighted pair-group arithmetic average); the cophenetic correlation measures how well the tree keeps the dissimilarities. Ordination: non-metric multidimensional scaling in 2 dimensions minimizing Kruskal\'s stress-1 with monotone regression, from classical scaling and 20 random configurations; rotated to its principal axes. Stress &lt; 0.10 is a good representation and &gt; 0.20 a poor one.</p>'],
     refs: ['Legendre, P. y Legendre, L. (2012). <i>Numerical Ecology</i>, 3.ª ed. Elsevier.', 'Kruskal, J. B. (1964). Nonmetric multidimensional scaling: a numerical method. <i>Psychometrika</i> 29:115–129.', 'de Leeuw, J. y Mair, P. (2009). Multidimensional scaling using majorization: SMACOF in R. <i>J. Stat. Softw.</i> 31(3).', 'Sokal, R. R. y Rohlf, F. J. (1962). The comparison of dendrograms by objective methods. <i>Taxon</i> 11:33–40.'] });
   /* E */
-  const e = UI.section(root, ['Estructura vertical', 'Vertical structure'], ['Cómo se reparten las especies en los pisos del bosque.', 'How species are spread among the storeys of the forest.']);
+  const e = UI.section(root, ['Estructura vertical', 'Vertical structure'], ['Cómo se reparten las especies en los pisos del bosque.', 'How species are spread among the stories of the forest.']);
   R.vert = mk('div', { class: 'res-host' }); e.appendChild(R.vert);
   UI.method(e, { text: [
     '<p><b>Índice de perfil de especies de Pretzsch:</b> A = −ΣΣ p<sub>ij</sub> ln p<sub>ij</sub>, con p<sub>ij</sub> la proporción de individuos de la especie i en la zona de altura j: zona I, más de 80 % de la altura máxima; II, de 50 a 80 %; III, hasta 50 %. A<sub>máx</sub> = ln(S·3) y A<sub>rel</sub> = 100·A/A<sub>máx</sub>: cerca de 100 %, todas las especies en todos los pisos en igual proporción. <b>Estratos por la media y la desviación estándar de la altura:</b> inferior por debajo de la media − 1 DE, superior por encima de la media + 1 DE.</p>',
-    '<p><b>Pretzsch\'s species profile index:</b> A = −ΣΣ p<sub>ij</sub> ln p<sub>ij</sub>, with p<sub>ij</sub> the share of individuals of species i in height zone j: zone I, above 80 % of the maximum height; II, 50 to 80 %; III, up to 50 %. A<sub>max</sub> = ln(S·3) and A<sub>rel</sub> = 100·A/A<sub>max</sub>: near 100 %, every species in every storey in equal shares. <b>Strata from the mean and standard deviation of height:</b> lower below the mean − 1 SD, upper above the mean + 1 SD.</p>'],
+    '<p><b>Pretzsch\'s species profile index:</b> A = −ΣΣ p<sub>ij</sub> ln p<sub>ij</sub>, with p<sub>ij</sub> the share of individuals of species i in height zone j: zone I, above 80 % of the maximum height; II, 50 to 80 %; III, up to 50 %. A<sub>max</sub> = ln(S·3) and A<sub>rel</sub> = 100·A/A<sub>max</sub>: near 100 %, every species in every story in equal shares. <b>Strata from the mean and standard deviation of height:</b> lower below the mean − 1 SD, upper above the mean + 1 SD.</p>'],
     refs: ['Pretzsch, H. (1996). Strukturvielfalt als Ergebnis waldbaulichen Handelns. <i>DVFFA, Sektion Ertragskunde</i>, pp. 134–154.', 'Pretzsch, H. (2009). <i>Forest Dynamics, Growth and Yield</i>. Springer.', 'Souza, D. R. et al. (2003). Análise estrutural em floresta ombrófila densa de terra firme. <i>Revista Árvore</i> 27:75–83.'] });
   /* F */
   const f = UI.section(root, ['Patrón espacial de los árboles', 'Spatial pattern of the trees'], ['Con las coordenadas de cada tallo en una parcela rectangular: ¿agregados, al azar o regulares?', 'With the coordinates of every stem in a rectangular plot: clustered, random or regular?']);
@@ -105,8 +105,8 @@ function build() {
     { key: 'y', es: 'y (m)', en: 'y (m)', num: true, req: true, aliases: ['coordy', 'norte'] },
     { key: 'especie', es: 'Especie', en: 'Species', aliases: ['species'] },
     { key: 'dap', es: 'DAP (cm)', en: 'DBH (cm)', num: true, aliases: ['dbh', 'd'] },
-    { key: 'grupo', es: 'Grupo (piso, cohorte…)', en: 'Group (storey, cohort…)', aliases: ['group', 'dosel', 'piso'] }],
-    examples: [{ id: 'mesofilo', es: 'Bosque mesófilo: parcela mapeada de 50 × 50 m', en: 'Cloud forest: mapped 50 × 50 m plot', d: ['196 tallos con coordenadas: el dosel (casi regular) y el sotobosque (agregado).', '196 stems with coordinates: the canopy (almost regular) and the understorey (clustered).'], rows: () => FPData.rows('mesofilo_mapeada').map(r => ({ x: r.x, y: r.y, especie: r.especie, dap: r.dap, grupo: r.dosel })) }],
+    { key: 'grupo', es: 'Grupo (piso, cohorte…)', en: 'Group (story, cohort…)', aliases: ['group', 'dosel', 'piso'] }],
+    examples: [{ id: 'mesofilo', es: 'Bosque mesófilo: parcela mapeada de 50 × 50 m', en: 'Cloud forest: mapped 50 × 50 m plot', d: ['196 tallos con coordenadas: el dosel (casi regular) y el sotobosque (agregado).', '196 stems with coordinates: the canopy (almost regular) and the understory (clustered).'], rows: () => FPData.rows('mesofilo_mapeada').map(r => ({ x: r.x, y: r.y, especie: r.especie, dap: r.dap, grupo: r.dosel })) }],
     onData: rows => { S.pts = rows; const g = el('b6grp'); g.innerHTML = `<option value=""${optL('Todos', 'All')}</option>` + [...new Set(rows.map(r => r.grupo).filter(Boolean))].map(v => `<option>${esc(v)}</option>`).join(''); runSpatial(); } });
   R.spat = mk('div', { class: 'res-host' }); f.appendChild(R.spat);
   UI.method(f, { text: [
@@ -194,7 +194,7 @@ function drawHill() {
     rows: gv.map(g => { const a = DV().asymptotic(g.x); return { name: g.name, n: g.x.reduce((s, v) => s + v, 0), q0o: g.x.filter(v => v > 0).length, q0: a.q0, q1o: DV().hill(g.x, 1), q1: a.q1, q2o: DV().hill(g.x, 2), q2: a.q2, cov: DV().coverage(g.x) }; }) });
   const last = ac[ac.length - 1], prev = ac[ac.length - 2] || last;
   UI.interp(R.hill, [`La última parcela agregó en promedio ${n2(last.S - prev.S)} especies: ${last.S - prev.S < 0.5 ? 'la curva de acumulación ya se aplana; más parcelas apenas agregarían especies.' : 'la curva aún sube; más parcelas seguirían agregando especies.'} En el perfil de Hill, la caída de q = 0 a q = 2 mide la dominancia: el número efectivo de especies abundantes es mucho menor que la riqueza cuando dominan unas pocas.`,
-    `The last plot added on average ${n2(last.S - prev.S)} species: ${last.S - prev.S < 0.5 ? 'the accumulation curve is already levelling off; more plots would hardly add species.' : 'the curve is still rising; more plots would keep adding species.'} In the Hill profile, the drop from q = 0 to q = 2 measures dominance: the effective number of abundant species is much smaller than richness when a few dominate.`]);
+    `The last plot added on average ${n2(last.S - prev.S)} species: ${last.S - prev.S < 0.5 ? 'the accumulation curve is already leveling off; more plots would hardly add species.' : 'the curve is still rising; more plots would keep adding species.'} In the Hill profile, the drop from q = 0 to q = 2 measures dominance: the effective number of abundant species is much smaller than richness when a few dominate.`]);
 }
 
 /* ---------------- D: similarity ---------------- */
@@ -253,7 +253,7 @@ function drawVert() {
     { key: 'k', label: ['Estrato', 'Stratum'] }, { key: 'lim', label: ['Alturas (m)', 'Heights (m)'] }, { key: 'n', label: ['Individuos', 'Individuals'], num: true }],
     rows: [{ k: T('Inferior', 'Lower'), lim: '< ' + n1(hs.lo), n: st[0] }, { k: T('Medio', 'Middle'), lim: n1(hs.lo) + ' – ' + n1(hs.hi), n: st[1] }, { k: T('Superior', 'Upper'), lim: '≥ ' + n1(hs.hi), n: st[2] }] });
   UI.interp(R.vert, [`El índice A relativo de ${fmtPct(pz.Arel, 0)} dice que ${pz.Arel > 70 ? 'las especies se reparten en varios pisos: el bosque tiene una estructura vertical compleja' : 'pocas especies ocupan cada piso: la estructura vertical es simple'}. ${pz.byZone[0]} individuos (${fmtPct(100 * pz.byZone[0] / pz.N, 0)}) forman el dosel superior.`,
-    `The relative A of ${fmtPct(pz.Arel, 0)} says that ${pz.Arel > 70 ? 'species spread over several storeys: the forest has a complex vertical structure' : 'few species fill each storey: the vertical structure is simple'}. ${pz.byZone[0]} individuals (${fmtPct(100 * pz.byZone[0] / pz.N, 0)}) form the upper canopy.`]);
+    `The relative A of ${fmtPct(pz.Arel, 0)} says that ${pz.Arel > 70 ? 'species spread over several stories: the forest has a complex vertical structure' : 'few species fill each story: the vertical structure is simple'}. ${pz.byZone[0]} individuals (${fmtPct(100 * pz.byZone[0] / pz.N, 0)}) form the upper canopy.`]);
 }
 
 /* ---------------- F: spatial pattern ---------------- */

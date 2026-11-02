@@ -274,7 +274,9 @@ Plot.xy = function (o) {
    o: { cats: [labels] (categorical) or edges: [e0…eK] (histogram classes),
         series: [{ label, values: [...], color, err?: [...] }], stacked, horizontal?,
         curves: [{ x, y, color, label, dash }] (numeric x, histogram only), xlab, ylab, title, w, h,
-        valueLabels: true (print the value on each bar) } */
+        valueLabels: true (print the value on each bar),
+        solid: true (histogram of many narrow classes: bars side by side with no gap or outline, so that
+        bars one or two pixels wide do not vanish behind their own border) } */
 Plot.bars = function (o) {
   const W = o.w || 560, H = o.h || 360;
   const S = o.series;
@@ -318,7 +320,7 @@ Plot.bars = function (o) {
   const nS = S.length;
   for (let i = 0; i < K; i++) {
     const xa = hist ? sx(o.edges[i]) : sx(i), xb = hist ? sx(o.edges[i + 1]) : sx(i + 1);
-    const gap = hist ? 0.6 : (xb - xa) * 0.16;
+    const gap = hist ? (o.solid ? 0 : 0.6) : (xb - xa) * 0.16;
     let pos = 0, neg = 0;
     S.forEach((ser, k) => {
       const v = ser.values[i];
@@ -333,7 +335,7 @@ Plot.bars = function (o) {
         bx = xa + gap + k * inner; bw = inner * 0.92;
         ya = sy(Math.max(v, 0)); yb = sy(Math.min(v, 0));
       }
-      s += `<rect x="${f(bx)}" y="${f(ya)}" width="${f(Math.max(bw, 0.5))}" height="${f(Math.max(yb - ya, 0))}" style="fill:${col}"><title>${escx((hist ? o.edges[i] + '–' + o.edges[i + 1] : o.cats[i]) + (ser.label ? ' · ' + ser.label : '') + ': ' + (+v.toPrecision(5)))}</title></rect>`;
+      s += `<rect x="${f(bx)}" y="${f(ya)}" width="${f(Math.max(bw, 0.5))}" height="${f(Math.max(yb - ya, 0))}" style="fill:${col}${o.solid ? ';stroke:none' : ''}"><title>${escx((hist ? o.edges[i] + '–' + o.edges[i + 1] : o.cats[i]) + (ser.label ? ' · ' + ser.label : '') + ': ' + (+v.toPrecision(5)))}</title></rect>`;
       if (ser.err && isFinite(ser.err[i]) && !o.stacked) {
         const cx = bx + bw / 2, e = ser.err[i];
         s += `<path class="pl-err" d="M${f(cx)} ${f(sy(v - e))}V${f(sy(v + e))}M${f(cx - 4)} ${f(sy(v - e))}H${f(cx + 4)}M${f(cx - 4)} ${f(sy(v + e))}H${f(cx + 4)}"/>`;

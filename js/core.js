@@ -127,7 +127,7 @@ function fmtPct(v, d) { return v == null || !isFinite(v) ? '—' : fmtNum(v, d =
 function download(content, filename, mime) {
   const blob = content instanceof Blob ? content : new Blob([content], { type: mime || 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
-  const a = mk('a', { href: url, download: filename });
+  const a = mk('a', { href: url, download: window.LangEN ? LangEN.file(filename) : filename });
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }

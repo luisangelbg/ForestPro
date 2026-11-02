@@ -34,7 +34,7 @@ const UNITS = {
   length: [['Longitud', 'Length'], [['m', 'metros', 'meters'], ['cm', 'centímetros', 'centimeters'], ['mm', 'milímetros', 'millimeters'], ['km', 'kilómetros', 'kilometers'], ['in', 'pulgadas', 'inches'], ['ft', 'pies', 'feet'], ['yd', 'yardas', 'yards'], ['ch', 'cadenas (66 pies)', 'chains (66 ft)'], ['mi', 'millas', 'miles']]],
   area: [['Superficie', 'Area'], [['m2', 'm²', 'm²'], ['ha', 'hectáreas', 'hectares'], ['km2', 'km²', 'km²'], ['ac', 'acres', 'acres'], ['ft2', 'pies²', 'square feet']]],
   volume: [['Volumen', 'Volume'], [['m3', 'm³', 'm³'], ['dm3', 'dm³ (litros)', 'dm³ (liters)'], ['ft3', 'pies³', 'cubic feet'], ['bf', 'pies tabla', 'board feet'], ['cord', 'cuerdas (128 pies³ apilados)', 'cords (128 ft³ stacked)']]],
-  mass: [['Masa', 'Mass'], [['kg', 'kilogramos', 'kilograms'], ['g', 'gramos', 'grams'], ['t', 'toneladas (Mg)', 'tonnes (Mg)'], ['lb', 'libras', 'pounds'], ['sht', 'toneladas cortas', 'short tons'], ['lgt', 'toneladas largas', 'long tons']]],
+  mass: [['Masa', 'Mass'], [['kg', 'kilogramos', 'kilograms'], ['g', 'gramos', 'grams'], ['t', 'toneladas (Mg)', 'metric tons (Mg)'], ['lb', 'libras', 'pounds'], ['sht', 'toneladas cortas', 'short tons'], ['lgt', 'toneladas largas', 'long tons']]],
   basal: [['Área basal por superficie', 'Basal area per area'], [['m2ha', 'm²/ha', 'm²/ha'], ['ft2ac', 'pies²/acre', 'ft²/acre']]],
   volha: [['Volumen por superficie', 'Volume per area'], [['m3ha', 'm³/ha', 'm³/ha'], ['ft3ac', 'pies³/acre', 'ft³/acre'], ['bfac', 'pies tabla/acre', 'board feet/acre'], ['cordac', 'cuerdas/acre', 'cords/acre']]],
   stock: [['Biomasa por superficie', 'Biomass per area'], [['Mgha', 'Mg/ha (t/ha)', 'Mg/ha (t/ha)'], ['kgm2', 'kg/m²', 'kg/m²'], ['tac', 'toneladas cortas/acre', 'short tons/acre'], ['lbac', 'libras/acre', 'pounds/acre']]],
@@ -44,7 +44,7 @@ const UNITS = {
 };
 /* the name of a unit for a quantity of exactly 1: the words before «/» or «(» go to the singular */
 const SING = { metros: 'metro', centímetros: 'centímetro', milímetros: 'milímetro', kilómetros: 'kilómetro', pulgadas: 'pulgada', pies: 'pie', 'pies²': 'pie²', 'pies³': 'pie³', yardas: 'yarda', cadenas: 'cadena', millas: 'milla', hectáreas: 'hectárea', acres: 'acre', cuerdas: 'cuerda', kilogramos: 'kilogramo', gramos: 'gramo', toneladas: 'tonelada', cortas: 'corta', largas: 'larga', libras: 'libra', árboles: 'árbol',
-  meters: 'meter', centimeters: 'centimeter', millimeters: 'millimeter', kilometers: 'kilometer', inches: 'inch', feet: 'foot', yards: 'yard', chains: 'chain', miles: 'mile', hectares: 'hectare', cords: 'cord', kilograms: 'kilogram', grams: 'gram', tonnes: 'tonne', pounds: 'pound', tons: 'ton', trees: 'tree' };
+  meters: 'meter', centimeters: 'centimeter', millimeters: 'millimeter', kilometers: 'kilometer', inches: 'inch', feet: 'foot', yards: 'yard', chains: 'chain', miles: 'mile', hectares: 'hectare', cords: 'cord', kilograms: 'kilogram', grams: 'gram', pounds: 'pound', tons: 'ton', trees: 'tree' };
 const singular = name => { const m = /^([^/(]*)(.*)$/.exec(name); return m[1].split(' ').map(w => SING[w] || w).join(' ') + m[2]; };
 
 function build() {
@@ -196,7 +196,7 @@ function scaleLogs() {
     [['Trozas', 'Logs'], String(rows.length), [ub ? 'sin corteza' : 'con corteza', ub ? 'under bark' : 'over bark']],
     [['Smalian', 'Smalian'], n3(tot.smalian) + ' m³', [n0(tot.smalian * K().M3_BF) + ' pies tabla de volumen', n0(tot.smalian * K().M3_BF) + ' board feet of volume']],
     allMid ? [['Newton', 'Newton'], n3(tot.newton) + ' m³', ['Huber: ' + n3(tot.huber) + ' m³', 'Huber: ' + n3(tot.huber) + ' m³']] : null,
-    [['Internacional ¼″', 'International ¼″'], n0(tot.intl) + ' PT', ['Doyle ' + n0(tot.doyle) + ' · Scribner ' + n0(tot.scribner), 'Doyle ' + n0(tot.doyle) + ' · Scribner ' + n0(tot.scribner)]],
+    [['Internacional ¼″', 'International ¼″'], n0(tot.intl) + T(' PT', ' BF'), ['Doyle ' + n0(tot.doyle) + ' · Scribner ' + n0(tot.scribner), 'Doyle ' + n0(tot.doyle) + ' · Scribner ' + n0(tot.scribner)]],
   ]);
   UI.table(R.logs, { title: ['Volumen por troza', 'Volume by log'], file: 'forestpro_trozas', columns: [
     { key: 'id', label: ['Troza', 'Log'] }, { key: 'Din', label: ['D (pulg)', 'D (in)'], num: true, fmt: n1 }, { key: 'Lft', label: ['L (pies)', 'L (ft)'], num: true, fmt: n1 },

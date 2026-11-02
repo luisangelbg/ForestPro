@@ -32,7 +32,9 @@ function build() {
   root.dataset.built = '1';
   root.appendChild(mk('p', { class: 'panel-intro' }, L2('La biomasa se calcula árbol por árbol con la ecuación que le toca, se expande a la hectárea con los factores del inventario del Bloque 3 y se convierte en carbono y CO₂ equivalente. Cada número sale con su incertidumbre: la del muestreo y la de las mediciones y la ecuación.',
     'Biomass is computed tree by tree with the equation that applies, expanded to the hectare with the factors of the Block 3 inventory, and converted to carbon and CO₂ equivalent. Every number comes with its uncertainty: that of sampling and that of the measurements and the equation.')));
+  /* the reference table of the examples; its level (especie / género) is a label of the examples and follows the language */
   S.dens = FPData.rows('densidades_madera').map(r => ({ especie: r.especie, densidad: r.densidad, nivel: r.nivel, n: r.n, fuente: r.fuente }));
+  S.dens.forEach(r => Object.defineProperty(r, 'exLevel', { value: true, enumerable: false }));
 
   /* A. data and equations */
   const a = UI.section(root, ['Datos y ecuaciones', 'Data and equations'],
@@ -215,7 +217,7 @@ function drawCatalog() {
     { key: 'name', label: ['Ecuación', 'Equation'], html: true }, { key: 'eq', label: ['Forma (AGB en kg)', 'Form (AGB in kg)'] },
     { key: 'needs', label: ['Variables', 'Variables'] }, { key: 'sigma', label: ['σ (ln)'], num: true, fmt: n3 },
     { key: 'range', label: ['DAP válido (cm)', 'Valid DBH (cm)'] }, { key: 'src', label: ['Fuente', 'Source'], html: true }],
-    rows: allEqs().map(e => ({ name: T(e.es, e.en), eq: e.eq, needs: e.needs.join(', ').replace('rho', 'ρ').replace('D15', 'd₁₅'), sigma: e.sigma, range: e.dmin + '–' + (isFinite(e.dmax) ? e.dmax : '∞'), src: e.src })) });
+    rows: allEqs().map(e => ({ name: T(e.es, e.en), eq: e.eq, needs: e.needs.join(', ').replace('rho', 'ρ').replace('D15', 'd₁₅'), sigma: e.sigma, range: e.dmin + '–' + (isFinite(e.dmax) ? e.dmax : '∞'), src: e.user ? e.src : T(e.src, LangEN.ref(e.src)) })) });
 }
 function eqFor(sp) {
   const s = String(sp || '').trim().toLowerCase(), genus = s.split(' ')[0];
@@ -254,7 +256,7 @@ async function loadGWDD() {
 function buildGWDD() { S.gwdd = BM().densityIndex(S.gwddRows, { region: el('b4region').value }); }
 function densities(trees) {
   const tab = new Map(S.dens.filter(r => r.especie && r.densidad > 0).map(r => [String(r.especie).trim().toLowerCase(), r]));
-  const lvlName = { especie: 'species', 'género': 'genus', genero: 'genus' };
+  const lvlName = { especie: 'species', 'género': 'genus', genero: 'genus', species: 'species', genus: 'genus' };
   const out = new Array(trees.length).fill(null);
   const rest = [];
   trees.forEach((t, i) => {
@@ -583,7 +585,7 @@ function drawChange() {
   const r = paired ? BM().change({ paired: true, pairs: rows.map(x => ({ plot: x.parcela, c1: x.c1, c2: x.c2 })), years: yrs }) : BM().change({ a: rows.map(x => x.c1), b: rows.map(x => x.c2), years: yrs });
   UI.tiles(R.chg.appendChild(mk('div')), [
     [['Cambio medio', 'Mean change'], (r.mean >= 0 ? '+' : '') + n2(r.mean) + ' Mg C/ha', [n2(r.lo) + ' a ' + n2(r.hi) + ' (95 %)', n2(r.lo) + ' to ' + n2(r.hi) + ' (95 %)'], r.lo > 0 ? 'ok' : r.hi < 0 ? 'bad' : 'warn'],
-    [['Tasa anual', 'Annual rate'], (r.rate >= 0 ? '+' : '') + n2(r.rate) + ' Mg C/ha/año', [n2(r.rateLo) + ' a ' + n2(r.rateHi) + ' · ' + n2(r.rate * BM().CO2) + ' Mg CO₂e/ha/año', n2(r.rateLo) + ' to ' + n2(r.rateHi) + ' · ' + n2(r.rate * BM().CO2) + ' Mg CO₂e/ha/yr']],
+    [['Tasa anual', 'Annual rate'], (r.rate >= 0 ? '+' : '') + n2(r.rate) + T(' Mg C/ha/año', ' Mg C/ha/yr'), [n2(r.rateLo) + ' a ' + n2(r.rateHi) + ' · ' + n2(r.rate * BM().CO2) + ' Mg CO₂e/ha/año', n2(r.rateLo) + ' to ' + n2(r.rateHi) + ' · ' + n2(r.rate * BM().CO2) + ' Mg CO₂e/ha/yr']],
     [['Prueba', 'Test'], 'p ' + (r.p < 0.001 ? '< 0.001' : '= ' + fmtNum(r.p, 3)), [paired ? `t pareada, ${r.df} gl` : `Welch, ${fmtNum(r.df, 1)} gl`, paired ? `paired t, ${r.df} df` : `Welch, ${fmtNum(r.df, 1)} df`]],
   ]);
   const ser = [{ type: 'segments', segs: rows.map(x => [1, x.c1, 2, x.c2]), color: 'var(--fig-muted)', width: 1 }, { type: 'points', x: rows.map(() => 1), y: rows.map(x => x.c1), color: 'var(--accent)' }, { type: 'points', x: rows.map(() => 2), y: rows.map(x => x.c2), color: 'var(--primary)' }];
@@ -601,6 +603,8 @@ document.addEventListener('DOMContentLoaded', build);
 document.addEventListener('inventorychange', () => { if (S.pendingCompute) { S.pendingCompute = false; compute(); } else if (S.res) compute(); });
 document.addEventListener('langchange', () => {
   if (!el('b4root')) return;
+  /* before the grid redraws itself: the levels of the rows that came with the app, in the new language */
+  if (S.dens) { const L = I18N.lang, M = FPData.EN.nivel; S.dens.forEach(r => { if (!r.exLevel) return; const es = Object.keys(M).find(k => k === r.nivel || M[k] === r.nivel); if (es) r.nivel = L === 'en' ? M[es] : es; }); }
   fillEqSelect(el('b4def'), el('b4def').value);
   drawRules(); drawCatalog();
   if (S.res) { drawDensityTable(S.res.trees); drawResults(); }

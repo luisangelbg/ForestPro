@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · User’s Manual · Introduction</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.reducida { width: 80%; margin-left: auto; margin-right: auto; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================== CRÉDITOS -->
+<section class="preliminares creditos" id="creditos">
+  <div class="cred-titulo">ForestPro</div>
+  <div class="cred-sub">User’s Manual · From the measured tree to the tonne of carbon</div>
+
+  <dl>
+    <dt>Author</dt><dd><b>Luis Ángel Barrera-Guzmán</b><br><span class="small">ORCID 0000-0001-8057-2583</span></dd>
+    <dt>Program</dt><dd>ForestPro, version 1.0.0 (October 2026)</dd>
+    <dt>Manual</dt><dd>First English edition, 2026, translated from the first Spanish edition. Describes version 1.0 of the program.</dd>
+    <dt>Program license</dt><dd>GNU General Public License, version 3 or later (GPL-3.0-or-later).</dd>
+    <dt>Manual rights</dt><dd>© 2026 Luis Ángel Barrera-Guzmán. All rights reserved.</dd>
+    <dt>Interface language</dt><dd>Spanish or English, with the <span class="ui">ES</span> · <span class="ui">EN</span> switch in the top bar. In this manual the names of buttons, fields and menus are written as they appear on screen in English, for example <span class="ui">Start with an example →</span>.</dd>
+  </dl>
+
+  <h4>How to cite the program</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>ForestPro: a browser-based platform for forest inventory, mensuration, biomass, carbon and agroforestry</i> (Version 1.0.0) [Computer software]. https://github.com/luisangelbg/ForestPro</div>
+  <h4>How to cite this manual</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>ForestPro: User’s Manual</i> (1st English ed.). Distributed with ForestPro, version 1.0.0.</div>
+  <p class="small">The program’s citation is the one the app itself gives, ready to copy in APA or BibTeX, in the <span class="ui">How to cite</span> section of the home page and of Block 10; every report ends with it. Besides the app, cite the equations and methods you used: every result names them in its <span class="ui">Method and sources</span> box.</p>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Privacy</div>
+    <p>ForestPro runs entirely inside your browser. The inventories, plots, canopy photographs and projects you open are read on your computer and <b>are never sent to any server</b>: you can work with the inventory of a property, of a carbon project or of a thesis in progress without anything leaving your machine. The program uses no accounts and needs no connection to compute. The only request to the internet is voluntary: the online map background of Block 8, which comes switched off; if you switch it on, the browser requests only the map images of the visible area, never your data.</p>
+  </div>
+
+  <p class="small" style="margin-top:0.35in;color:var(--gris)">The illustrations, diagrams and screenshots in this manual are original: they were generated with the program itself or with code written for the manual. The example data sets used in the screenshots are <b>simulated</b>, except the wood density table: the species names are real, but the trees, plots and properties do not exist and are not measurements from any site or any publication.</p>
+</section>
+
+<!-- ====================================================================== ÍNDICE -->
+<!-- General contents: one line per chapter (its h1) and, below it, its sections (the h2s).
+     The titles and ids (cap-N, sN-M, ap-x) must match the h1/h2 of each part; whoever writes a chapter
+     adjusts its lines here if a title changes. paginar.js fills in the page numbers when the manual is joined. -->
+<section class="preliminares indice" id="indice" data-nueva-hoja>
+  <h1>Contents</h1>
+  <div class="indice-sub">General contents of the manual</div>
+
+  <ol class="toc">
+    <li><div class="toc-cap"><span class="chip k0">P</span><a href="#como-leer">How to read this manual</a><a class="pag" href="#como-leer"></a></div></li>
+    <li>
+      <div class="toc-cap"><span class="chip k0">In</span><a href="#cap-intro">Introduction to ForestPro</a><a class="pag" href="#cap-intro"></a></div>
+      <ul>
+        <li><span class="n">I.1</span><a href="#si-1"><span class="t">What is ForestPro?</span></a></li>
+        <li><span class="n">I.2</span><a href="#si-2"><span class="t">Questions it answers</span></a></li>
+        <li><span class="n">I.3</span><a href="#si-3"><span class="t">Six ideas behind the manual</span></a></li>
+        <li><span class="n">I.4</span><a href="#si-4"><span class="t">Data it accepts and what it delivers</span></a></li>
+        <li><span class="n">I.5</span><a href="#si-5"><span class="t">What you need and how to open it</span></a></li>
+        <li><span class="n">I.6</span><a href="#si-6"><span class="t">A tour of the interface</span></a></li>
+        <li><span class="n">I.7</span><a href="#si-7"><span class="t">The four example data sets</span></a></li>
+        <li><span class="n">I.8</span><a href="#si-8"><span class="t">How a forestry job is worked through</span></a></li>
+        <li><span class="n">I.9</span><a href="#si-9"><span class="t">How it was checked</span></a></li>
+        <li><span class="n">I.10</span><a href="#si-10"><span class="t">What the program does not do</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k1">1</span><a href="#cap-1">Home: the workflow, the modules and the examples</a><a class="pag" href="#cap-1"></a></div>
+      <ul>
+        <li><span class="n">1.1</span><a href="#s1-1"><span class="t">The home page and its buttons</span></a></li>
+        <li><span class="n">1.2</span><a href="#s1-2"><span class="t">How it works: the six steps</span></a></li>
+        <li><span class="n">1.3</span><a href="#s1-3"><span class="t">The nine modules</span></a></li>
+        <li><span class="n">1.4</span><a href="#s1-4"><span class="t">Example data</span></a></li>
+        <li><span class="n">1.5</span><a href="#s1-5"><span class="t">What it does and what it does not</span></a></li>
+        <li><span class="n">1.6</span><a href="#s1-6"><span class="t">How to cite, the tests and the validation</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k2">2</span><a href="#cap-2">Tree mensuration</a><a class="pag" href="#cap-2"></a></div>
+      <ul>
+        <li><span class="n">2.1</span><a href="#s2-1"><span class="t">Standing trees: diameter, basal area and volume</span></a></li>
+        <li><span class="n">2.2</span><a href="#s2-2"><span class="t">Scaling: logs and trees by sections</span></a></li>
+        <li><span class="n">2.3</span><a href="#s2-3"><span class="t">Volume equations</span></a></li>
+        <li><span class="n">2.4</span><a href="#s2-4"><span class="t">Taper</span></a></li>
+        <li><span class="n">2.5</span><a href="#s2-5"><span class="t">Height–diameter relationship</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k3">3</span><a href="#cap-3">Forest inventory and sampling</a><a class="pag" href="#cap-3"></a></div>
+      <ul>
+        <li><span class="n">3.1</span><a href="#s3-1"><span class="t">The inventory: trees and plots</span></a></li>
+        <li><span class="n">3.2</span><a href="#s3-2"><span class="t">Expansion to the hectare</span></a></li>
+        <li><span class="n">3.3</span><a href="#s3-3"><span class="t">Estimation and sampling error</span></a></li>
+        <li><span class="n">3.4</span><a href="#s3-4"><span class="t">Sample size</span></a></li>
+        <li><span class="n">3.5</span><a href="#s3-5"><span class="t">Point sampling (relascope)</span></a></li>
+        <li><span class="n">3.6</span><a href="#s3-6"><span class="t">Stand structure</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k4">4</span><a href="#cap-4">Biomass and carbon</a><a class="pag" href="#cap-4"></a></div>
+      <ul>
+        <li><span class="n">4.1</span><a href="#s4-1"><span class="t">Data and equations</span></a></li>
+        <li><span class="n">4.2</span><a href="#s4-2"><span class="t">Wood density</span></a></li>
+        <li><span class="n">4.3</span><a href="#s4-3"><span class="t">Biomass and carbon of the inventory</span></a></li>
+        <li><span class="n">4.4</span><a href="#s4-4"><span class="t">Uncertainty by Monte Carlo</span></a></li>
+        <li><span class="n">4.5</span><a href="#s4-5"><span class="t">Necromass, litter and soil</span></a></li>
+        <li><span class="n">4.6</span><a href="#s4-6"><span class="t">Pools and change between inventories</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k5">5</span><a href="#cap-5">Growth and yield</a><a class="pag" href="#cap-5"></a></div>
+      <ul>
+        <li><span class="n">5.1</span><a href="#s5-1"><span class="t">Increments and biological rotation</span></a></li>
+        <li><span class="n">5.2</span><a href="#s5-2"><span class="t">Growth models</span></a></li>
+        <li><span class="n">5.3</span><a href="#s5-3"><span class="t">Site index</span></a></li>
+        <li><span class="n">5.4</span><a href="#s5-4"><span class="t">Stand projection and yield table</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k6">6</span><a href="#cap-6">Forest diversity and ecology</a><a class="pag" href="#cap-6"></a></div>
+      <ul>
+        <li><span class="n">6.1</span><a href="#s6-1"><span class="t">The community</span></a></li>
+        <li><span class="n">6.2</span><a href="#s6-2"><span class="t">Diversity indices</span></a></li>
+        <li><span class="n">6.3</span><a href="#s6-3"><span class="t">Hill numbers, rarefaction and accumulation</span></a></li>
+        <li><span class="n">6.4</span><a href="#s6-4"><span class="t">Similarity among sites and ordination</span></a></li>
+        <li><span class="n">6.5</span><a href="#s6-5"><span class="t">Vertical structure</span></a></li>
+        <li><span class="n">6.6</span><a href="#s6-6"><span class="t">Spatial pattern of the trees</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k7">7</span><a href="#cap-7">Agroforestry systems</a><a class="pag" href="#cap-7"></a></div>
+      <ul>
+        <li><span class="n">7.1</span><a href="#s7-1"><span class="t">Shade from the inventory</span></a></li>
+        <li><span class="n">7.2</span><a href="#s7-2"><span class="t">Shade from a photograph of the canopy</span></a></li>
+        <li><span class="n">7.3</span><a href="#s7-3"><span class="t">Shade and crop yield</span></a></li>
+        <li><span class="n">7.4</span><a href="#s7-4"><span class="t">Planting layout</span></a></li>
+        <li><span class="n">7.5</span><a href="#s7-5"><span class="t">Carbon budget of the system</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k8">8</span><a href="#cap-8">Maps and light geoprocessing</a><a class="pag" href="#cap-8"></a></div>
+      <ul>
+        <li><span class="n">8.1</span><a href="#s8-1"><span class="t">The map</span></a></li>
+        <li><span class="n">8.2</span><a href="#s8-2"><span class="t">Polygons and areas</span></a></li>
+        <li><span class="n">8.3</span><a href="#s8-3"><span class="t">Sampling grid</span></a></li>
+        <li><span class="n">8.4</span><a href="#s8-4"><span class="t">Export</span></a></li>
+        <li><span class="n">8.5</span><a href="#s8-5"><span class="t">Interpolation among plots</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k9">9</span><a href="#cap-9">Forestry tools</a><a class="pag" href="#cap-9"></a></div>
+      <ul>
+        <li><span class="n">9.1</span><a href="#s9-1"><span class="t">Log scaling</span></a></li>
+        <li><span class="n">9.2</span><a href="#s9-2"><span class="t">Sawn lumber</span></a></li>
+        <li><span class="n">9.3</span><a href="#s9-3"><span class="t">Sawmill yield</span></a></li>
+        <li><span class="n">9.4</span><a href="#s9-4"><span class="t">Form factor</span></a></li>
+        <li><span class="n">9.5</span><a href="#s9-5"><span class="t">Unit conversion</span></a></li>
+        <li><span class="n">9.6</span><a href="#s9-6"><span class="t">Cost and profitability of a plantation</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k10">10</span><a href="#cap-10">Report and project</a><a class="pag" href="#cap-10"></a></div>
+      <ul>
+        <li><span class="n">10.1</span><a href="#s10-1"><span class="t">Report</span></a></li>
+        <li><span class="n">10.2</span><a href="#s10-2"><span class="t">All the tables</span></a></li>
+        <li><span class="n">10.3</span><a href="#s10-3"><span class="t">Project</span></a></li>
+        <li><span class="n">10.4</span><a href="#s10-4"><span class="t">How to cite</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip kx">A</span><a href="#apendices">Appendices</a><a class="pag" href="#apendices"></a></div>
+      <ul>
+        <li><span class="n">A</span><a href="#ap-a"><span class="t">The files the app reads and writes</span></a></li>
+        <li><span class="n">B</span><a href="#ap-b"><span class="t">The rules, gathered</span></a></li>
+        <li><span class="n">C</span><a href="#ap-c"><span class="t">Glossary</span></a></li>
+        <li><span class="n">D</span><a href="#ap-d"><span class="t">When something does not work</span></a></li>
+        <li><span class="n">E</span><a href="#ap-e"><span class="t">The tool: license and how to cite it</span></a></li>
+        <li><span class="n">F</span><a href="#ap-f"><span class="t">References</span></a></li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- ====================================================================== CÓMO LEER ESTE MANUAL -->
+<section class="preliminares" id="como-leer" data-nueva-hoja style="--acento: var(--b0)">
+  <h2 style="margin-top:0.2in">How to read this manual</h2>
+  <p class="lead">The manual follows the same order as the app: ten numbered blocks that are worked through from top to bottom in the bar on the left. Each chapter explains one block and carries its number —Chapter 4 is Block 4, and its sections and figures are numbered 4.1, 4.2…—. The introduction has no number: its sections are I.1, I.2…</p>
+  <p>Each chapter opens with what the block solves in a forestry job, goes on with what is on screen in the order it appears, and closes with the rules for reading the result and the most common mistakes. You need not read it straight through: if all you need is the growing stock of a property with its sampling error, Chapter 3 is enough; if you also want the carbon, Chapter 4. Appendix B gathers the rules of all the blocks.</p>
+
+  <h3>A color for each block</h3>
+  <p>The block’s color appears in the opening of its chapter, in the number of each section, in the tab on the edge of the page and in the contents, and it is the same as in the strip on the cover.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.55in">Block</th><th style="width:1.65in">Name in the app</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k1">1</span></td><td><span class="ui">Home</span></td><td>What the app does and does not do, the workflow of a forestry job, the nine modules, the four example data sets and how to cite</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">Tree mensuration</span></td><td>Diameter, basal area, volume by formulas and fitted equations, taper and the height–diameter relationship</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td><span class="ui">Inventory and sampling</span></td><td>Sample size, sampling designs, expansion to the hectare, stand structure and density indices</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td><span class="ui">Biomass and carbon</span></td><td>Allometric equations, wood density, above- and belowground biomass, necromass, carbon and CO₂e with their uncertainty</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td><span class="ui">Growth and yield</span></td><td>Current and mean annual increments, growth models, site index and stand projection</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td><span class="ui">Diversity and ecology</span></td><td>Richness, indices and Hill numbers, rarefaction, similarity among sites, vertical structure and spatial pattern</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><span class="ui">Agroforestry systems</span></td><td>Shade of coffee farms (by inventory or by hemispherical photograph), shade and yield, planting layouts and carbon budget</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td><span class="ui">Maps</span></td><td>Plots and trees on the map, polygon areas, sampling grid, GPX/KML/GeoJSON export and interpolation</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td><span class="ui">Forestry tools</span></td><td>Log and lumber scaling, board feet, form factors, conversions, sawmill yield and plantation cost</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td><span class="ui">Report and project</span></td><td>The self-contained HTML report, the tables, the re-importable project and the citation</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Kinds of boxes</h3>
+  <div class="dos">
+    <div class="caja nota" style="margin:0"><div class="caja-t"><span class="ico">i</span>Note</div><p>Clarifications and practical tips that save time.</p></div>
+    <div class="caja importante" style="margin:0"><div class="caja-t"><span class="ico">!</span>Important</div><p>What can change your conclusions if it is overlooked.</p></div>
+    <div class="caja teoria" style="margin:0"><div class="caja-t"><span class="ico">θ</span>Theory in brief</div><p>The idea behind a computation, without unnecessary formulas.</p></div>
+    <div class="caja ejemplo" style="margin:0"><div class="caja-t"><span class="ico">▸</span>Worked example</div><p>A case with the program’s example data sets, with the numbers the app gives.</p></div>
+  </div>
+  <div class="caja regla" style="margin-top:0.18in">
+    <div class="caja-t"><span class="ico">✓</span>Decision rule</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:40%"><b>If</b> the result falls in this case…</td><td><b>then</b> this is the recommended reading.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">These are guides for interpretation, not laws: what you know about the stand, about how it was measured and about what your management plan or carbon standard requires always comes first.</p>
+  </div>
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>When something goes wrong</div>
+    <p>What usually fails when using the block —a column matched to the wrong field, a plot with the wrong area, an equation used outside its diameter range— and how to fix it.</p>
+  </div>
+  <div class="caja dato">
+    <div class="dato-cifra">31</div>
+    <div class="dato-txt"><div class="caja-t">Key fact</div>A figure or a fact worth remembering; for example, the number of allometric equations in the Block 4 catalog.</div>
+  </div>
+
+  <h3>Writing conventions</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:38%">Written like this</th><th>Means</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Load example</span></td><td>A button, field or menu of the app, with its text exactly as it appears on screen in English.</td></tr>
+      <tr><td><span class="ruta">Block 3<span class="sep">›</span>Sample size</span></td><td>A path: open the first item and look for the second inside it.</td></tr>
+      <tr><td><code>Ctrl + K</code>, <code>.csv</code></td><td>A key, a file name or a value typed as is.</td></tr>
+      <tr><td>DBH, H, g, G</td><td>Diameter at breast height, 1.30 m (cm), total height (m), the basal area of a tree (m²) and that of the stand (m²/ha).</td></tr>
+      <tr><td>AGB, BGB, C, CO₂e</td><td>Aboveground and belowground biomass (in kg per tree or Mg/ha), carbon and carbon dioxide equivalent (C × 44/12).</td></tr>
+      <tr><td>Mg/ha · 18.3%</td><td>Numbers are written with a decimal point and a comma for thousands, as the app writes them, and with the unit after a space; 1 Mg is a tonne. On screen the app also puts a space before %.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ====================================================================== INTRODUCCIÓN -->
+<section class="capitulo" id="cap-intro" data-pestana="In" data-orden="0" style="--acento: var(--b0)">
+  <div class="cap-apertura">
+    <div class="cap-num">I</div>
+    <div class="cap-etiqueta">Introduction</div>
+    <h1 data-corto="Introduction">Introduction to ForestPro</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">A forest inventory begins with the diameter tape and the hypsometer and ends in figures that someone else must be able to check: how much timber there is and how precisely it is known, how much biomass and carbon the stand holds, how fast it grows, how diverse it is, where each plot lies. ForestPro brings that work together on a single page, in the order in which it is done, and says at each step where every number comes from.</p>
+    <div class="cap-franja"><span class="k1"></span><span class="k2"></span><span class="k3"></span><span class="k4"></span><span class="k5"></span><span class="k6"></span><span class="k7"></span><span class="k8"></span><span class="k9"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>I.1</b>What is ForestPro?</li>
+      <li><b>I.2</b>Questions it answers</li>
+      <li><b>I.3</b>Six ideas behind the manual</li>
+      <li><b>I.4</b>Data it accepts and what it delivers</li>
+      <li><b>I.5</b>What you need and how to open it</li>
+      <li><b>I.6</b>A tour of the interface</li>
+      <li><b>I.7</b>The four example data sets</li>
+      <li><b>I.8</b>How a forestry job is worked through</li>
+      <li><b>I.9</b>How it was checked</li>
+      <li><b>I.10</b>What the program does not do</li>
+    </ul>
+  </div>
+
+  <!-- I.1 -->
+  <h2 id="si-1"><span class="num">I.1</span>What is ForestPro?</h2>
+  <p class="lead">It is a program for forest inventory, mensuration, biomass, carbon and agroforestry that runs in the browser, with nothing to install. It takes a forestry job from the field sheet to the report: measure the trees, sample the stand, expand to the hectare, convert into biomass and carbon, project growth and report.</p>
+  <p>It is meant for those who collect and analyze inventories —forest technicians, thesis students, people in charge of management plans or carbon projects— and for coffee farms and other agroforestry systems, which seldom fit tools made for the forest. It scales trees and logs and fits volume, taper and height equations; expands the inventory with its sampling error under four designs; estimates biomass and carbon with a catalog of 31 allometric equations, wood density and its uncertainty by Monte Carlo; fits growth and site index curves and projects the stand; measures diversity, similarity among sites and the spatial pattern of the trees; characterizes the shade of a coffee farm by counting trees or from a canopy photograph; puts the plots on a map, with sampling grids and interpolation; and does the sums of the sawmill and the plantation.</p>
+  <p>Everything is computed with an engine written from scratch for this program, with no libraries by others, and every result comes with its method, its sources and an interpretation in words.</p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/i-inicio.png" alt="The app’s home page: the motto From the measured tree to the tonne of carbon, the buttons to get started and the end of a log whose rings turn into contour lines"></div>
+    <figcaption><b>Figure I.1.</b> The ForestPro home page when it opens. On the left, the bar of the ten blocks; in the middle, the motto, the buttons <span class="ui">Start with an example →</span>, <span class="ui">See the modules</span> and <span class="ui">How to cite</span>, and the end of a log whose outer rings leave it as the contour lines of a map with inventory plots; on the right, the list of sections of the open block.</figcaption>
+  </figure>
+
+  <!-- I.2 -->
+  <h2 id="si-2"><span class="num">I.2</span>Questions it answers</h2>
+  <p>A good way to find out whether the program suits you is to see which questions it answers, and in which block.</p>
+  <table class="compacta">
+    <thead><tr><th>Question</th><th style="width:0.75in" class="c">Block</th></tr></thead>
+    <tbody>
+      <tr><td>What volume does this tree, or this log, have? Which volume equation best describes my trees?</td><td class="c"><span class="chip k2">2</span> <span class="chip k9">9</span></td></tr>
+      <tr><td>What is the stem diameter at any height, and how many merchantable logs does it yield?</td><td class="c"><span class="chip k2">2</span></td></tr>
+      <tr><td>How tall is a tree whose height was not measured?</td><td class="c"><span class="chip k2">2</span></td></tr>
+      <tr><td>How many trees, how much basal area and how much volume are there per hectare, and with what sampling error?</td><td class="c"><span class="chip k3">3</span></td></tr>
+      <tr><td>How many plots are needed for a given sampling error?</td><td class="c"><span class="chip k3">3</span></td></tr>
+      <tr><td>How are the diameters distributed, which species dominate, how dense is the stand?</td><td class="c"><span class="chip k3">3</span></td></tr>
+      <tr><td>How much biomass and carbon does the property hold, in each pool, and with what uncertainty? How much did it change between two inventories?</td><td class="c"><span class="chip k4">4</span></td></tr>
+      <tr><td>At what age should the stand be cut? What site quality does each plot have? How much volume will there be in ten years?</td><td class="c"><span class="chip k5">5</span></td></tr>
+      <tr><td>How many species are there and how many remain to be recorded? How alike are the sites? Are the trees clustered, random or regular?</td><td class="c"><span class="chip k6">6</span></td></tr>
+      <tr><td>How much shade does the coffee farm have, and at what shade does it yield most? How much carbon does it hold compared with a monoculture?</td><td class="c"><span class="chip k7">7</span></td></tr>
+      <tr><td>Where are the plots, how large is the property, where do I put the plots of a new inventory?</td><td class="c"><span class="chip k8">8</span></td></tr>
+      <tr><td>How many board feet come out of a log? What is the sawmill yield? Is the plantation profitable?</td><td class="c"><span class="chip k9">9</span></td></tr>
+      <tr><td>How do I hand everything in as a report, with its tables and methods, and how do I resume the work later?</td><td class="c"><span class="chip k10">10</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- I.3 -->
+  <h2 id="si-3"><span class="num">I.3</span>Six ideas behind the manual</h2>
+  <p>Everything that follows rests on six ideas. If you keep them in mind, many of the mistakes made when processing an inventory are no longer possible.</p>
+  <ol class="pasos">
+    <li><b>One measured tree stands for many.</b> Each tree in a plot of <i>a</i> square meters is worth 10,000/<i>a</i> trees per hectare; in a nested plot, those of the subplot its diameter assigns it to, and in angle-count sampling, BAF/<i>g</i>. Getting a plot’s area wrong makes everything that follows wrong. That is why Block 3 asks for the design of each plot and shows it on screen.</li>
+    <li><b>A mean without its error is not an estimate.</b> The inventory is a sample of the property: the mean per hectare is worth what its sampling error is worth, and that error depends on the design with which the plots were taken —random, stratified, in a systematic grid or in clusters—. The app gives the error under each design and says which one applies.</li>
+    <li><b>An equation is only valid where it was fitted.</b> Volume, biomass and height equations were fitted with trees of a certain size, species and region; outside that range they extrapolate. The app warns when a tree falls outside the diameter range of its equation, and lets you add the local equation that exists for your species.</li>
+    <li><b>Biomass has three sources of uncertainty, and sampling is only one of them.</b> The other two are measurement error (diameter, height, wood density) and the error of the equation itself. Block 4 propagates them by Monte Carlo and adds them to the sampling error.</li>
+    <li><b>Carbon sits in several pools.</b> Living trees are the most visible one, but not the only one: roots, deadwood, litter and soil count, and on a coffee farm the soil usually holds more than the shade trees. The app brings them together with their combined error.</li>
+    <li><b>What is not reported cannot be checked.</b> The design and area of the plots, the equation and density used, the growth model, the confidence level of the interval and the program version belong in the methods. Every result comes with its <span class="ui">Method and sources</span> box, and the Block 10 report can carry them all.</li>
+  </ol>
+
+  <!-- I.4 -->
+  <h2 id="si-4"><span class="num">I.4</span>Data it accepts and what it delivers</h2>
+  <p>The starting point is almost always a table: one row per tree, plot, section, point or log. Every section that needs data has a <b>data card</b> that reads it from an example, a file, a pasted or hand-typed table, or the inventory already loaded in Block 3, and then matches its columns to the fields the method asks for (Section I.6).</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">In</th><th>Format and where</th></tr></thead>
+    <tbody>
+      <tr><td>Tables</td><td><code>.csv</code>, <code>.txt</code> or <code>.tsv</code> files separated by commas, semicolons or tabs, with a decimal point or comma; <code>.xlsx</code>, <code>.xlsm</code> and <code>.ods</code> workbooks, choosing the sheet; or a table pasted from a spreadsheet, with its row of names. In every block</td></tr>
+      <tr><td>The inventory</td><td>Trees and, if available, plots with their shape, size, stratum and coordinates (Block 3); Blocks 2, 4, 6, 7 and 8 use it afterwards</td></tr>
+      <tr><td>Wood density</td><td>The app’s table, editable, or the full file of the global wood density database (Block 4)</td></tr>
+      <tr><td>Canopy photograph</td><td>A hemispherical photo or an ordinary upward photo (Block 7)</td></tr>
+      <tr><td>Geometries</td><td>GPX, KML or GeoJSON files, and tables of vertices with their latitude and longitude (Block 8)</td></tr>
+      <tr><td>Projects</td><td>A <code>.json</code> saved earlier by the app itself, which replays the steps taken (Block 10)</td></tr>
+    </tbody>
+  </table>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Out</th><th>Format</th></tr></thead>
+    <tbody>
+      <tr><td>Figures</td><td>Curves, distributions, maps, dendrograms, ordinations and layouts, as SVG, PNG at 300 dpi or more, JPG or vector PDF, from the suite’s figure studio</td></tr>
+      <tr><td>Tables</td><td>Every result table as CSV or XLSX, next to it; all of them together in an XLSX workbook, one sheet per table, or in a ZIP of CSV files (Block 10)</td></tr>
+      <tr><td>Geometries</td><td>The plots, the sampling grid and the polygons as GPX, KML, GeoJSON or CSV, for the GPS or for a mapping program (Block 8)</td></tr>
+      <tr><td>Report</td><td>A self-contained HTML file —cover, summary, figures, tables, interpretations and, if asked, methods with their sources— that prints to PDF (Block 10)</td></tr>
+      <tr><td>Project and citation</td><td>The project as <code>.json</code>, to resume the work, and the citation in APA or as a <code>forestpro.bib</code> file (Block 10)</td></tr>
+    </tbody>
+  </table>
+  <p class="small">The blocks also pass data to other apps of the suite: the similarity matrix of Block 6 is sent to ClusteringPro and PCAPro, and the soil carbon of Block 4 reads SoilPro’s layer tables.</p>
+
+  <!-- I.5 -->
+  <h2 id="si-5"><span class="num">I.5</span>What you need and how to open it</h2>
+  <p>Just a modern browser, in a version from the last few years, on a computer, tablet or phone. Nothing needs to be installed and no internet is required; the whole program fits in one folder.</p>
+  <ol class="pasos">
+    <li><b>Double-click <code>index.html</code>.</b> It opens in the default browser, on the home page. It is the simplest way and works just like everything else: the computations and the example data sets are inside the program.</li>
+    <li><b>Or double-click <code>Open ForestPro.bat</code>.</b> If your computer does not allow pages to be opened as local files, it starts a minimal server on your own computer (you can also run <code>server.ps1</code> with PowerShell) and opens the app at <code>http://localhost:9480</code>.</li>
+  </ol>
+  <p>Preferences —the language, the light or dark theme, the animations— are stored in the browser itself and remembered the next time. Data are not: every time you open the app it starts empty, and to resume a job there is the <code>.json</code> project of Block 10. If you try to close the tab with data loaded or unsaved results, the app warns you.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The tests also open with a double-click</div>
+    <p>The file <code>tests/run.html</code> runs the app’s 72 automated tests in the browser; all of them should come out green. The home page links to them at the bottom, together with this manual and the validation (Section I.9).</p>
+  </div>
+
+  <!-- I.6 -->
+  <h2 id="si-6"><span class="num">I.6</span>A tour of the interface</h2>
+  <p>All the apps of the suite share the same bar, the same navigation and the same figure tools, so what you learn here serves you in the others.</p>
+
+  <h3>Finding your way around</h3>
+  <p>On the left is the bar of the ten blocks; on the right, the <span class="ui">In this block</span> list, with the sections of the open block. All the blocks are open from the start and each one can be used on its own. At the foot of each block two buttons lead to the previous and the next one. When you change a control and the results are recomputed further down, a floating button appears that takes you back to the control you touched, and another one to go back to the top. Almost everything can also be done from the keyboard:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.55in">Key</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>Alt + ←</code> · <code>Alt + →</code></td><td>The previous or next block; in focused mode, the previous or next section (at the ends, the block)</td></tr>
+      <tr><td><code>Ctrl + K</code></td><td>Search blocks, sections, controls and actions</td></tr>
+      <tr><td><code>[</code> · <code>?</code> · <code>Esc</code></td><td>Collapse or show the block bar · show the list of shortcuts · close windows and panels</td></tr>
+      <tr><td><code>←</code> · <code>→</code></td><td>Move along the block bar, with the focus on it</td></tr>
+      <tr><td><code>+</code> · <code>−</code></td><td>On the Block 8 map: zoom in and out</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="marco"><img src="../img/en/i-interfaz.png" alt="The Block 3 screen with the example coffee farm and its numbered parts">
+      <span class="marca" style="left:27%;top:3.1%">1</span>
+      <span class="marca" style="left:71.7%;top:3.1%">2</span>
+      <span class="marca" style="left:80.8%;top:5.3%">3</span>
+      <span class="marca" style="left:91.4%;top:5.3%">4</span>
+      <span class="marca" style="left:16.6%;top:45.3%">5</span>
+      <span class="marca" style="left:18.6%;top:8.4%">6</span>
+      <span class="marca" style="left:57.5%;top:8.4%">7</span>
+      <span class="marca" style="left:74.2%;top:8.4%">8</span>
+      <span class="marca" style="left:82.3%;top:16.3%">9</span>
+      <span class="marca" style="left:18.3%;top:16.4%">10</span>
+      <span class="marca" style="left:19.9%;top:31.2%">11</span>
+      <span class="marca" style="left:17%;top:92.9%">12</span>
+    </div>
+    <figcaption><b>Figure I.2.</b> The Block 3 screen with the example coffee farm loaded. The numbers correspond to the list below.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Name of the app and its tagline.</b> The name leads to the home page (Block 1).</li>
+    <li><span class="n">2</span><b>LABG Suite.</b> Back to the portal with the other apps.</li>
+    <li><span class="n">3</span><b>ES · EN.</b> Switches the language of the whole interface, including the figures and the report.</li>
+    <li><span class="n">4</span><b>Theme, animations, report and shortcuts.</b> Light or dark; animated waits on or off; reporting a problem on the project’s public page; the list of keyboard shortcuts (key <code>?</code>).</li>
+    <li><span class="n">5</span><b>The bar of the ten blocks.</b> The number turns into a check mark when the block has a result, and the count at the top says how many do (1/10 in the figure); <code>[</code> collapses it.</li>
+    <li><span class="n">6</span><b>The path.</b> The app, the block and the section you are in.</li>
+    <li><span class="n">7</span><b>Document · Focused.</b> All the sections of the block one after another, or a single one at a time; the button beside it collapses or expands all the sections.</li>
+    <li><span class="n">8</span><b>Search</b> (<code>Ctrl + K</code>). A block, a section, a control or an action, by its name.</li>
+    <li><span class="n">9</span><b>In this block.</b> The sections of the open block; the current one is highlighted.</li>
+    <li><span class="n">10</span><b>The block title,</b> with its number and what it does in one line, and a short presentation below.</li>
+    <li><span class="n">11</span><b>A card.</b> Each section is a card with its data and controls at the top and its results below.</li>
+    <li><span class="n">12</span><b>Search, Focused mode and Help,</b> also at the foot of the block bar.</li>
+  </ul>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/i-buscar.png" alt="The search window with carbon typed and its results grouped into blocks, sections and controls"></div>
+    <figcaption><b>Figure I.3.</b> The search (<code>Ctrl + K</code>) with “carbon” typed: it finds Block 4, the sections that name it in Blocks 1, 4 and 7, and the controls that carry it in their label, each with the block where it is. <code>Enter</code> goes to the chosen result.</figcaption>
+  </figure>
+
+  <h3>The data card</h3>
+  <p>Almost every section that needs data receives it through the same piece, the <b>data card</b>, so you learn it once. From left to right: the list of examples for that section with <span class="ui">Load example</span> (a note below says what the chosen example contains); <span class="ui">Open file…</span>; <span class="ui">Paste table</span>; <span class="ui">Type by hand</span>, which opens an empty table with the columns the section asks for; <span class="ui">Use the loaded inventory</span>, in the sections that can work with the Block 3 inventory; and <span class="ui">⤓ Template</span>, a CSV with the column names and three example rows.</p>
+  <p>After reading a file or a pasted table, the app <b>matches the columns</b>: those it recognizes by their name, in Spanish or English and with several synonyms, come already chosen; the others are chosen from a list, and the required ones carry an asterisk. <span class="ui">Use these data</span> loads them. Rows missing a required value are left out with a warning, and <span class="ui">See the data</span> shows what was loaded.</p>
+  <figure class="w80">
+    <div class="marco"><img src="../img/en/i-datos.png" alt="The trees data card of Block 3 with the example coffee farm loaded and its first rows in view"></div>
+    <figcaption><b>Figure I.4.</b> The trees data card in <span class="ruta">Block 3<span class="sep">›</span>The inventory: trees and plots</span>, with the <span class="ui">Shaded coffee farm: trees</span> example loaded: 719 shade trees in 25 circular plots of 1,000 m², with <span class="ui">See the data</span> open.</figcaption>
+  </figure>
+
+  <h3>What every result brings</h3>
+  <p>The results of every section have the same shape: a few <b>tiles</b> with the numbers that matter; the <b>figures</b> and <b>tables</b>, with their <span class="ui">⤓ CSV</span> and <span class="ui">⤓ XLSX</span> buttons; an <b>interpretation</b> in words, written with the numbers of your data; the <b>warnings</b>, when something deserves attention; and, at the end, the collapsible <span class="ui">Method and sources</span> box, with the formulas and the publications they come from.</p>
+  <figure class="w60">
+    <div class="marco"><img src="../img/en/i-metodo.png" alt="The Estimation and sampling error card with the coffee farm: tiles, table by design, interpretation and the Method and sources box open"></div>
+    <figcaption><b>Figure I.5.</b> <span class="ruta">Block 3<span class="sep">›</span>Estimation and sampling error</span> with the example coffee farm: the mean density is 278 trees per hectare, with a sampling error of 18.3% at 95% confidence under simple random sampling. The table gives the same variable under each design, the interpretation says how many plots it would take to bring it down to 10%, and the <span class="ui">Method and sources</span> box, open, explains the estimators and cites Cochran (1977), Shiver and Borders (1996) and Satterthwaite (1946).</figcaption>
+  </figure>
+
+  <h3>The figures</h3>
+  <p>Every figure in the app can be opened in the <b>figure studio</b>, a window shared by the suite where the texts, the font size, the legend and the colors are changed without touching the data, and which exports to the widths and resolutions of journals. Next to each figure, the <span class="ui">✎</span> button opens that figure’s editor, to change its titles, axes, series, legend and annotations. Figures are always exported with the colors of the light theme, even when you are working in the dark one. Chapter 10 explains it in depth.</p>
+
+  <!-- I.7 -->
+  <h2 id="si-7"><span class="num">I.7</span>The four example data sets</h2>
+  <p>To learn without data of your own, the app brings four data sets. Three are <b>simulated</b> with a fixed seed and realistic orders of magnitude: the species are real, but the trees, plots and properties do not exist, and they serve to explore the app and for the tests, not to describe any site. The fourth gathers reference tables. They open with the <span class="ui">Open in …</span> buttons of <span class="ruta">Block 1<span class="sep">›</span>Example data</span>, which open the block and load the example, or from the list of examples of each data card.</p>
+  <figure class="w70">
+    <div class="marco"><img src="../img/en/i-ejemplos.png" alt="The four cards of the example data sets on the app’s home page, each with its Open in buttons"></div>
+    <figcaption><b>Figure I.6.</b> <span class="ui">Example data</span>, on the app’s home page. Each card has one <span class="ui">Open in …</span> button for each block in which it is used.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.5in">Example</th><th style="width:1.15in" class="c">Opens in</th><th>What it contains and what it is for</th></tr></thead>
+    <tbody>
+      <tr><td><b>Shaded coffee farm</b></td><td class="c"><span class="chip k3">3</span> <span class="chip k4">4</span> <span class="chip k7">7</span></td><td>Twenty-five circular plots of 1,000 m² on five farms under four managements —rustic, traditional polyculture, commercial polyculture and shaded monoculture—: 719 shade trees with their DBH, height and crown, 250 coffee bushes, soil by layers, litter, shade and coffee yield, with coordinates. Inventory, biomass and carbon, shade and yield, maps.</td></tr>
+      <tr><td><b>Stratified cloud forest</b></td><td class="c"><span class="chip k3">3</span> <span class="chip k6">6</span> <span class="chip k8">8</span></td><td>Twenty-four nested circular plots in three strata —conserved, disturbed and riparian— with 1,830 trees; a 50 × 50 m plot with the coordinates of its 196 stems; 15 relascope points, deadwood transects and the property polygon. Stratified inventory, angle-count sampling, diversity and spatial pattern, necromass, maps.</td></tr>
+      <tr><td><b>Pine plantation</b></td><td class="c"><span class="chip k2">2</span> <span class="chip k5">5</span> <span class="chip k9">9</span></td><td>Thirty permanent plots measured six times, the stem analysis of six trees, 40 felled trees scaled by sections and a plot with missing heights. Scaling, volume and taper equations, height curves, growth, site index and carbon change.</td></tr>
+      <tr><td><b>Densities and equations</b></td><td class="c"><span class="chip k4">4</span></td><td>The basic wood density of 42 species or genera, taken from the global wood density database (public domain), and the catalog of 31 reference allometric equations, editable and with their source.</td></tr>
+    </tbody>
+  </table>
+  <p class="small">How each data set was simulated —the models, the parameters, the seed— is written in <code>data/LEEME.md</code>, next to the script that generates them; the tables are also in <code>data/</code> as CSV, with column names the app recognizes without matching. The text says “the example coffee farm”, not “the coffee farm”.</p>
+
+  <!-- I.8 -->
+  <h2 id="si-8"><span class="num">I.8</span>How a forestry job is worked through</h2>
+  <p>The blocks follow the order of a real forestry job. You need not go through all of them: those that do not apply are skipped, and each module can also be used on its own, with its own table. The <span class="ui">How it works</span> section of the home page sums it up in six steps.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/i-flujo.png" alt="The six steps of How it works: measure, sample, expand, convert, project and report"></div>
+    <figcaption><b>Figure I.7.</b> <span class="ui">How it works</span>: the six steps of a forestry job, from the measured tree to the report.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li><b>Measure</b> (Blocks 2 and 9). The diameters and heights of standing trees; the volume of felled trees and logs; the volume, taper and height equations that will serve the rest.</li>
+    <li><b>Sample and expand</b> (Block 3). Load the trees and the plots with their design; the app expands them to the hectare and estimates the mean, its sampling error and the total of the property, with the stand structure and the sample size for next time.</li>
+    <li><b>Convert</b> (Block 4). Biomass tree by tree, roots, deadwood, litter and soil; the carbon and CO₂e of each pool with its uncertainty, and the change between two inventories.</li>
+    <li><b>Project and describe</b> (Blocks 5, 6 and 7). Growth, rotation and site quality; diversity and spatial pattern; the shade, yield and carbon of an agroforestry system.</li>
+    <li><b>Locate</b> (Block 8). The plots on the map, the area of the property, the grid for a new inventory and the interpolation of a variable among plots.</li>
+    <li><b>Report</b> (Block 10). The report with the figures, the tables and the methods; all the tables in one workbook; the project to resume the work.</li>
+  </ol>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The inventory is shared among blocks</div>
+    <p>What you load in Block 3 is available to biomass, diversity, agroforestry and the map, with the <span class="ui">Use the Block 3 inventory</span> or <span class="ui">Use the loaded inventory</span> buttons; Block 4 also uses its expansion factors. If you load another inventory, each block recomputes its part when you ask for it again, and the check mark in the bar marks the blocks that already have a result.</p>
+  </div>
+
+  <!-- I.9 -->
+  <h2 id="si-9"><span class="num">I.9</span>How it was checked</h2>
+  <p>A computing program is worth what its numbers are worth. Every ForestPro computing engine runs the same in the browser as outside it, so each block was compared, with the example data sets, against independent reference implementations written by others in an open-source statistical computing language, and against formulas written separately where no implementation exists. Each comparison has its tolerance.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.55in">Block</th><th>Topic</th><th class="num" style="width:1.1in">Comparisons</th><th class="num" style="width:1in">Disagreements</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k2">2</span></td><td>Tree mensuration</td><td class="num">287</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td>Forest inventory and sampling</td><td class="num">458</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td>Biomass and carbon</td><td class="num">5,015</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td>Growth and yield</td><td class="num">613</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td>Forest diversity and ecology</td><td class="num">1,222</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td>Agroforestry systems</td><td class="num">211</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td>Maps and light geoprocessing</td><td class="num">269</td><td class="num">0</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td>Forestry tools</td><td class="num">252</td><td class="num">0</td></tr>
+      <tr class="total"><td></td><td><b>Total</b></td><td class="num"><b>8,327</b></td><td class="num"><b>0</b></td></tr>
+    </tbody>
+  </table>
+  <div class="caja dato">
+    <div class="dato-cifra">8,327</div>
+    <div class="dato-txt"><div class="caja-t">Comparisons without disagreements</div>Volume, taper and heights; the sampling estimators and their intervals; biomass with the 31 equations, wood density and the Monte Carlo; the growth and site index models; the diversity indices, rarefaction, ordinations and Ripley’s functions; shade; areas, the variogram and kriging; the log rules and the financial sums. In addition, 72 automated tests with known answers —textbook values, closed forms and edge cases— run in the browser.</div>
+  </div>
+  <p>The comparisons also served to find errors and differences of convention, which were documented and, the errors, corrected before publishing. For example, the first version of the Block 4 Monte Carlo corrected the log-scale bias twice and gave a mean biomass 6.6% higher than the direct computation: the coefficient 0.0673 of Chave et al. (2014) already includes that correction. Or that in the IPCC (2006) root-to-shoot table the “50–150” class includes 150. The chapters say, where it matters, which convention the app follows and why. The details, block by block, are in the program’s <code>tests/</code> folder.</p>
+
+  <!-- I.10 -->
+  <h2 id="si-10"><span class="num">I.10</span>What the program does not do</h2>
+  <p>Knowing where a tool ends is as useful as knowing what it does. The app’s home page says it in <span class="ui">What it does and what it does not</span>:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">It does not</th><th>Why, and what to do</th></tr></thead>
+    <tbody>
+      <tr><td><b>Replace the local equation</b></td><td>The biomass equations of the catalog are references. If there is an equation for your species and region, add it to the Block 4 catalog and assign it to that species.</td></tr>
+      <tr><td><b>Act as a geographic information system</b></td><td>The map computes areas, grids and interpolations and exports GPX, KML and GeoJSON; for full spatial analysis, take those files to a mapping program.</td></tr>
+      <tr><td><b>Certify carbon</b></td><td>The carbon figures and their uncertainty serve studies and management plans; a carbon-market project also follows the rules of its standard.</td></tr>
+      <tr><td><b>Plan the sampling for you</b></td><td>It computes the sample size and draws the grid, but the design, shape and size of the plots, and the judgment for measuring, belong to the forester.</td></tr>
+      <tr><td><b>Individual-tree models or remote sensing</b></td><td>Growth is projected at stand level; the app does not work with satellite images or point clouds.</td></tr>
+      <tr><td><b>Save to a server</b></td><td>It connects to no database and saves nothing outside your computer: the work is kept in the <code>.json</code> project.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

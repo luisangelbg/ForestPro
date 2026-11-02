@@ -21,7 +21,7 @@
     m(9, q('.lnav-toc'), -6, -60),
     m(10, q('#panel-3 .panel-title'), -12),
     m(11, tarjeta(3, 0).querySelector('h2'), -14),
-    m(12, [...document.querySelectorAll('button, a')].find(n => /Modo enfocado|Focus mode/.test(n.innerText || '') && n.getBoundingClientRect().left < 300 && n.getBoundingClientRect().top > Hv - 200), 230),
+    m(12, [...document.querySelectorAll('button, a')].find(n => /Modo enfocado|Focused mode/.test(n.innerText || '') && n.getBoundingClientRect().left < 300 && n.getBoundingClientRect().top > Hv - 200), 230),
   ].filter(Boolean);
   return null;
 })()

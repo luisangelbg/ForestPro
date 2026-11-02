@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-5" data-pestana="5" data-orden="5" style="--acento: var(--b5)">
+  <div class="cap-apertura">
+    <div class="cap-num">5</div>
+    <div class="cap-etiqueta">Capítulo cinco · Bloque 5</div>
+    <h1 data-corto="Crecimiento y rendimiento">Crecimiento y rendimiento</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Del anillo al turno: cuánto crece un árbol cada año y en promedio, qué curva describe su crecimiento, qué tan bueno es el sitio de cada parcela y cuánto volumen dará el rodal a cada edad. Con el análisis troncal de unos cuantos árboles y las remediciones de parcelas permanentes, el bloque llega a la tabla de producción y al turno de máxima producción.</p>
+    <div class="cap-franja"><span class="k2"></span><span class="k5"></span><span class="k5"></span><span class="k9"></span></div>
+    <ul class="cap-contenido">
+      <li><b>5.1</b>Incrementos y turno biológico</li>
+      <li><b>5.2</b>Modelos de crecimiento</li>
+      <li><b>5.3</b>Índice de sitio</li>
+      <li><b>5.4</b>Proyección del rodal y tabla de producción</li>
+    </ul>
+  </div>
+
+  <p>El Bloque 5 lleva por subtítulo «Incrementos corriente y medio, modelos de crecimiento, índice de sitio y proyección del rodal.» Tiene dos tarjetas de datos: la del árbol (sección 5.1), que alimenta también los modelos de la sección 5.2, y la de las parcelas remedidas (sección 5.3), que alimenta también la proyección de la sección 5.4. No depende del inventario del Bloque 3.</p>
+  <p>El ejemplo de todo el capítulo es la <b>plantación de pino de ejemplo</b>, que se abre con <span class="ui">Abrir en Crecimiento</span> en su tarjeta de <span class="ruta">Bloque 1<span class="sep">›</span>Datos de ejemplo</span>: el análisis troncal de seis árboles y treinta parcelas permanentes medidas seis veces (sección I.7). Son datos simulados.</p>
+
+  <!-- 5.1 -->
+  <h2 id="s5-1"><span class="num">5.1</span>Incrementos y turno biológico</h2>
+  <p class="lead">«Con el análisis troncal o las remediciones de un árbol: el incremento corriente anual (ICA), el medio anual (IMA) y la edad en que el IMA es máximo.» Es la cuenta más antigua de la dasometría, y sigue siendo la que decide cuándo conviene cortar.</p>
+  <p>La tarjeta de datos pide <span class="ui">Árbol o serie</span>* y <span class="ui">Edad (años)</span>*, y al menos una de las variables <span class="ui">Diámetro (cm)</span>, <span class="ui">Altura (m)</span> y <span class="ui">Volumen (m³)</span>. Una «serie» puede ser un árbol reconstruido por análisis troncal —sus anillos dan el diámetro y la altura a cada edad— o un árbol medido varias veces. El ejemplo <span class="ui">Pino: análisis troncal de 6 árboles</span> trae 203 filas: los árboles T1 a T6, con series de 30 a 36 años. Debajo de la tarjeta hay tres controles:</p>
+  <ul>
+    <li><span class="ui">Variable</span>: <span class="ui">Diámetro (cm)</span>, <span class="ui">Altura (m)</span>, <span class="ui">Volumen (m³)</span> (por omisión) o <span class="ui">Área basal (m²)</span>, que se calcula del diámetro.</li>
+    <li><span class="ui">Coeficiente mórfico (si falta el volumen)</span>: 0.45 por omisión. Si la serie no trae volumen pero sí diámetro y altura, la app lo calcula como área basal × altura × coeficiente. Así lo hace con el pino de ejemplo, que no trae volumen.</li>
+    <li><span class="ui">Árbol para los modelos</span>: la serie que se ajusta en la sección 5.2 y que se muestra completa en la tabla de su serie.</li>
+  </ul>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · ICA, IMA y turno biológico</div>
+    <p>El incremento corriente anual entre dos mediciones es lo que creció la variable entre ellas, dividido entre los años: ICA = (Y₂ − Y₁)/(t₂ − t₁). El incremento medio anual es lo acumulado dividido entre la edad: IMA = Y/t. Al principio el árbol crece cada vez más rápido y el ICA supera al IMA, que sube; cuando el ICA cae por debajo del IMA, el IMA empieza a bajar. El máximo del IMA está, pues, donde las dos curvas se cruzan. En volumen, esa edad es el <b>turno biológico</b> o de máxima producción: cortar entonces da el mayor volumen medio por año. El turno económico, que descuenta el dinero en el tiempo (Bloque 9), suele ser más corto (Assmann 1970; Davis et al. 2001).</p>
+  </div>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b5-incrementos.png" alt="Gráfica del ICA punteado y el IMA continuo del volumen de los seis árboles del pino de ejemplo y la tabla del turno biológico de cada árbol"></div>
+    <figcaption><b>Figura 5.1.</b> El volumen de los seis árboles del pino de ejemplo: el ICA en líneas punteadas, que saltan de un año a otro, y el IMA en líneas continuas, que suben suaves. La tabla da para cada árbol la edad y el valor del IMA máximo.</figcaption>
+  </figure>
+
+  <p>La figura <span class="ui">ICA (punteado) e IMA (continuo): volumen (m³)</span> dibuja las dos curvas de todos los árboles, un color por árbol. Debajo, la tabla <span class="ui">Turno biológico de cada árbol</span> da la <span class="ui">Edad del IMA máximo</span>, el <span class="ui">IMA máximo</span> y el <span class="ui">Cruce ICA = IMA (interpolado)</span>, y la tabla <span class="ui">Serie del árbol T1</span> (o del árbol elegido) da año por año la variable, el ICA y el IMA. En el pino de ejemplo, el árbol T1 llega a 2.2965 m³ a los 35 años, con un IMA de 0.06561 m³/año.</p>
+  <p>La interpretación da la edad media del IMA máximo, 33.3 años en el ejemplo, y advierte: «En 4 árboles el IMA aún crece en la última edad medida: su turno es posterior a la serie.» Son T1, T2, T3 y T6, cuyo máximo cae justo en su última edad; para ellos, la edad de la tabla es sólo un límite inferior del turno.</p>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>El cruce de un ICA ruidoso</div>
+    <p>El ICA año por año de un análisis troncal sube y baja mucho, porque un anillo ancho o angosto lo mueve. La columna del cruce da el primer punto en que el ICA baja del IMA, aunque después vuelva a subir: en T1 marca 18.9 años, mientras que su IMA sigue creciendo hasta los 35. Para el turno, fíate de la <span class="ui">Edad del IMA máximo</span> y, mejor aún, de la curva ajustada de la sección 5.2, que no tiene ese ruido.</p>
+  </div>
+
+  <!-- 5.2 -->
+  <h2 id="s5-2"><span class="num">5.2</span>Modelos de crecimiento</h2>
+  <p class="lead">«Cuatro curvas sigmoides ajustadas a la serie elegida, con la edad del máximo incremento corriente y del máximo incremento medio de cada una.» Una curva ajustada suaviza el ruido de los anillos y deja calcular el turno aunque la serie no haya llegado a él.</p>
+  <p>La tarjeta no tiene controles propios: ajusta la serie del <span class="ui">Árbol para los modelos</span> en la <span class="ui">Variable</span> elegidas en la sección 5.1, y se rehace al cambiarlas. Necesita al menos cinco edades («Hacen falta al menos 5 edades.»). Los cuatro modelos, con A como asíntota —el tamaño máximo que el modelo atribuye al árbol—, son:</p>
+  <table class="compacta">
+    <caption><b>Tabla 5.1.</b> Los cuatro modelos de crecimiento</caption>
+    <thead><tr><th style="width:1.4in">Modelo</th><th style="width:2.1in">Ecuación</th><th>Rasgo</th></tr></thead>
+    <tbody>
+      <tr><td>Chapman–Richards</td><td>Y = A (1 − e<sup>−kt</sup>)<sup>p</sup></td><td>El más flexible: p mueve el punto de inflexión (Richards 1959)</td></tr>
+      <tr><td>Gompertz</td><td>Y = A exp(−b e<sup>−kt</sup>)</td><td>Inflexión fija en A/e; no pasa por el origen (Gompertz 1825)</td></tr>
+      <tr><td>Schumacher</td><td>Y = A exp(−b/t)</td><td>Dos parámetros; clásico en rendimiento forestal (Schumacher 1939)</td></tr>
+      <tr><td>Logística</td><td>Y = A/(1 + b e<sup>−kt</sup>)</td><td>Simétrica, inflexión en A/2; no pasa por el origen</td></tr>
+    </tbody>
+  </table>
+  <p>Cada modelo se ajusta por mínimos cuadrados no lineales desde varios puntos de arranque. La tabla <span class="ui">Comparación de modelos (árbol T1)</span> da para cada uno su <span class="ui">Ecuación</span>, el <span class="ui">RMSE</span>, el <span class="ui">R²</span>, el <span class="ui">AIC</span>, la <span class="ui">Asíntota A</span>, la <span class="ui">Edad del ICA máximo</span> —el punto de inflexión, donde la curva crece más rápido— y la <span class="ui">Edad del IMA máximo</span>; el renglón sombreado es el de menor AIC, el criterio que la app usa para elegir. Gompertz y la logística no pasan por el origen, así que su IMA máximo se busca sólo desde la menor edad observada; si el máximo cae en un extremo del intervalo de búsqueda, la columna dice «— (en el borde)».</p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/b5-modelos.png" alt="La tarjeta Modelos de crecimiento del árbol T1 con la comparación de los cuatro modelos, los coeficientes de Chapman-Richards y las dos gráficas"></div>
+    <figcaption><b>Figura 5.2.</b> El volumen del árbol T1. Chapman–Richards tiene el menor AIC (−145.4) y pone el ICA máximo a los 27.3 años y el IMA máximo a los 46.0; la logística, la peor (−98.6), se aplana pronto en 2.525 m³. A la derecha, el ICA y el IMA del mejor modelo, con líneas verticales en sus dos edades críticas.</figcaption>
+  </figure>
+  <p>Debajo, <span class="ui">Coeficientes: Chapman–Richards</span> (o del modelo ganador) da cada parámetro con su error estándar, su <i>t</i> y su <i>p</i>: para T1, A = 4.6891, k = 0.050364 y p = 3.9500. La figura <span class="ui">Curvas ajustadas</span> muestra los datos observados y las cuatro curvas, prolongadas más allá de la última edad; la de la derecha, el ICA y el IMA del modelo ganador, que se cruzan justo en la edad del IMA máximo.</p>
+  <p>La interpretación lo resume: «Chapman–Richards es el de menor AIC. Según él, el incremento corriente es máximo a los 27.3 años y el medio a los 46.0 años.» Ese turno de 46 años está más allá de los 35 años medidos: lo pone la curva, no los datos. Por eso la app añade que la asíntota (4.689 m³) «es una extrapolación: vale como orden de magnitud, no como dato». Los cuatro modelos ajustan casi igual dentro de los datos (R² de 0.9948 a 0.9986) y se separan después: la edad del IMA máximo va de 34.1 años con la logística a 47.6 con Schumacher.</p>
+
+
+  <!-- 5.3 -->
+  <h2 id="s5-3"><span class="num">5.3</span>Índice de sitio</h2>
+  <p class="lead">«La altura dominante que alcanza cada parcela a la edad base: curvas anamórficas o polimórficas ajustadas a las remediciones, y la clase de sitio de cada parcela.» La altura dominante casi no depende de la densidad del rodal ni de los aclareos, y por eso es la medida usual de la calidad de sitio.</p>
+  <p>La tarjeta de datos pide <span class="ui">Parcela</span>*, <span class="ui">Edad (años)</span>* y <span class="ui">Altura dominante (m)</span>*, una fila por parcela y medición. Las columnas <span class="ui">Área basal (m²/ha)</span>, <span class="ui">Volumen (m³/ha)</span> y <span class="ui">Árboles por hectárea</span> son opcionales aquí, pero la proyección de la sección 5.4 necesita las dos primeras. El ejemplo <span class="ui">Pino: 30 parcelas permanentes, 6 remediciones</span> trae 180 filas, con edades de 5 a 30 años. Los controles:</p>
+  <ul>
+    <li><span class="ui">Edad base (años)</span>: la edad a la que se expresa el índice; 20 por omisión.</li>
+    <li><span class="ui">Familia de curvas</span>: <span class="ui">Anamórficas de Schumacher (curva guía ln H = b₀ + b₁/t)</span>, <span class="ui">Anamórficas de Chapman–Richards (curva guía)</span> o <span class="ui">Polimórficas de Chapman–Richards (diferencias algebraicas en la tasa)</span>, la de omisión.</li>
+    <li><span class="ui">Clases de sitio</span>: 3, 4 (por omisión) o 5.</li>
+  </ul>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · curvas anamórficas y polimórficas</div>
+    <p>En una familia <b>anamórfica</b> todas las curvas tienen la forma de una curva guía y sólo cambian de escala: el índice de una medición es su altura reescalada a la edad base. En una <b>polimórfica</b>, la forma también cambia con el sitio. La app usa diferencias algebraicas (Bailey y Clutter 1974; Cieszewski y Bailey 2000): una Chapman–Richards con A y p comunes y una tasa k propia de cada sitio, ajustada a los pares de mediciones sucesivas con H₂ = A[1 − (1 − (H₁/A)<sup>1/p</sup>)<sup>t₂/t₁</sup>]<sup>p</sup>. Necesita remediciones de las mismas parcelas.</p>
+  </div>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b5-sitio.png" alt="La tarjeta Índice de sitio con las remediciones del pino de ejemplo, los parámetros de la familia polimórfica y las curvas de cuatro clases sobre las trayectorias de las parcelas"></div>
+    <figcaption><b>Figura 5.3.</b> El índice de sitio del pino de ejemplo con la familia polimórfica: A = 37.188 m y p = 1.3501, ajustados a 150 pares de remediciones con σ residual de 0.781 m. Las cuatro clases (IS 26.9, 23.1, 19.3 y 15.5 m en el centro de cada una) sobre las trayectorias grises de las 30 parcelas; la línea punteada es la edad base.</figcaption>
+  </figure>
+
+  <p>El índice de una parcela es la media de los índices de sus mediciones. La tabla <span class="ui">Clases de sitio</span> divide el intervalo de índices en partes iguales —la clase I es la mejor— con sus límites <span class="ui">IS desde (m)</span> e <span class="ui">IS hasta (m)</span> y las <span class="ui">Parcelas</span> de cada una: en el ejemplo, la clase I va de 25.0 a 28.8 m con 7 parcelas; la II, de 21.2 a 25.0 m con 8; la III, de 17.4 a 21.2 m con 11, y la IV, de 13.7 a 17.4 m con 4. <span class="ui">Índice de sitio de cada parcela</span> da para cada parcela su <span class="ui">IS a 20 años (m)</span>, la <span class="ui">DE entre mediciones</span>, las <span class="ui">Mediciones</span> y su <span class="ui">Clase</span>; la parcela R01, por ejemplo, tiene IS = 19.68 m (clase III).</p>
+  <p>La <span class="ui">DE entre mediciones</span> es la prueba de que la familia de curvas sirve: si una parcela crece como dice su curva, todas sus mediciones dan el mismo índice. La interpretación da la media de esa desviación y la juzga: por debajo de 0.6 m, «las curvas siguen bien la forma en que crecen las parcelas»; por encima, la app sugiere probar otra familia.</p>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · tres familias con las mismas parcelas</div>
+    <p>Con el pino de ejemplo y la edad base de 20 años, la desviación media del índice entre las mediciones de una parcela es de 0.55 m con la familia polimórfica, 1.00 m con la anamórfica de Chapman–Richards y 1.62 m con la de Schumacher. Sólo la polimórfica pasa el umbral; en las otras dos la app dice que la desviación es «grande» y propone las polimórficas, que «suelen seguir mejor sitios que crecen a ritmos distintos». Los índices van de 13.7 a 28.8 m con la polimórfica, de 13.0 a 29.3 m con la anamórfica de Chapman–Richards y de 13.1 a 29.1 m con la de Schumacher.</p>
+  </div>
+
+  <!-- 5.4 -->
+  <h2 id="s5-4"><span class="num">5.4</span>Proyección del rodal y tabla de producción</h2>
+  <p class="lead">«El sistema compatible de Clutter ajustado a las mismas remediciones proyecta el área basal y el volumen; con la supervivencia y la curva de sitio forma la tabla de producción, que puedes editar.» Es el paso del árbol al rodal: cuánto volumen habrá por hectárea a cada edad, y cuándo se alcanza el máximo incremento medio.</p>
+  <p>La tarjeta usa las remediciones de la sección 5.3, con su área basal y su volumen por hectárea, y el índice de sitio de cada parcela. Si faltan, lo dice: «La proyección necesita el área basal y el volumen por hectárea de las remediciones y el índice de sitio de cada parcela.» Hacen falta al menos 6 pares de remediciones.</p>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · el sistema de Clutter</div>
+    <p>Clutter (1963) propuso dos ecuaciones compatibles: el crecimiento, integrado, da el rendimiento. El área basal futura sale de la actual: ln G₂ = ln G₁·(t₁/t₂) + α₀(1 − t₁/t₂) + α₁(1 − t₁/t₂)·S. El volumen, del área basal, la edad y el sitio: ln V₂ = β₀ + β₁/t₂ + β₂·S + β₃·ln G₂. La app los ajusta a los pares de remediciones sucesivas como suele aplicarse: la primera sin intercepto y con el coeficiente de ln G₁·t₁/t₂ fijo en 1, por mínimos cuadrados; la segunda por mínimos cuadrados en dos etapas (Theil 1953), con ln G₂ sustituido por su proyección sobre las variables exógenas. S es el índice de sitio de cada parcela de la sección 5.3.</p>
+  </div>
+
+  <p>Los siete campos de la proyección son <span class="ui">Índice de sitio</span>, <span class="ui">Edad inicial (años)</span>, <span class="ui">Área basal inicial (m²/ha)</span>, <span class="ui">Árboles por hectárea iniciales</span>, <span class="ui">Mortalidad anual (%)</span>, <span class="ui">Edad final (años)</span> e <span class="ui">Intervalo (años)</span>. La app propone los primeros con los datos: como índice, la mediana de los índices de las parcelas (21.4 m en el ejemplo); como edad inicial, la menor edad medida (5 años), y como área basal inicial, la media de las parcelas más jóvenes (18.0 m²/ha). Los demás traen 1200 árboles por hectárea, 1.5 % de mortalidad anual, 40 años de edad final y un intervalo de 2 años. Cámbialos para proyectar el rodal que te interesa: cada cambio rehace la tabla.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b5-proyeccion.png" alt="La tarjeta Proyección del rodal con sus siete campos, los coeficientes del sistema de Clutter, tres mosaicos y las gráficas del volumen proyectado y del ICA y el IMA"></div>
+    <figcaption><b>Figura 5.4.</b> La proyección del pino de ejemplo con los valores que propone la app: el sistema de Clutter, ajustado a 150 pares de remediciones, da un turno de máximo IMA de 19.0 años, con 23.7 m³/ha/año y 451 m³/ha a esa edad. A la derecha, el ICA y el IMA del volumen se cruzan en el turno (línea vertical).</figcaption>
+  </figure>
+  <p>La tabla <span class="ui">Sistema de Clutter (150 pares de remediciones)</span> da los seis coeficientes con su error estándar —en el ejemplo, α₀ = 4.3462 y β₃ = 1.9477— y, debajo, el error residual de cada ecuación (σ de ln G₂ = 0.0472; σ de ln V₂ = 0.0627). Los mosaicos dan el <span class="ui">Turno de máximo IMA</span>, con borde verde, o ámbar y la nota «el IMA aún crece al final de la tabla» si el máximo no se alcanza antes de la edad final; el <span class="ui">IMA máximo</span>, y el <span class="ui">Volumen al turno</span>. Las figuras <span class="ui">Volumen proyectado</span> e <span class="ui">ICA e IMA del volumen</span> muestran la tabla en curvas.</p>
+
+  <h3>La tabla de producción</h3>
+  <p>La tabla se presenta dos veces. La primera es editable: <span class="ui">Edad</span>, <span class="ui">Altura dominante (m)</span>, <span class="ui">N (árb/ha)</span>, <span class="ui">G (m²/ha)</span> y <span class="ui">V (m³/ha)</span>. Su título lo explica: «cambia un valor y se recalculan Dq, ICA, IMA y el turno». Sirve para corregir la proyección con lo que sabes —un aclareo que baja N y G a cierta edad, un volumen medido— o para quitar con <span class="ui">×</span> las edades que no quieres; <span class="ui">+ Agregar fila</span> agrega una edad. La segunda, <span class="ui">Tabla de producción completa</span>, añade el diámetro cuadrático medio <span class="ui">Dq (cm)</span>, el <span class="ui">ICA (m³/ha/año)</span> y el <span class="ui">IMA (m³/ha/año)</span>, con el renglón del turno sombreado, y es la que se descarga.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b5-tabla.png" alt="La tabla de producción editable del pino de ejemplo, de 5 a 39 años"></div>
+    <figcaption><b>Figura 5.5.</b> La tabla de producción editable del pino de ejemplo, de 5 a 39 años cada 2 años: de 1200 árboles y 25.1 m³/ha a los 5 años a 718 árboles y 765.3 m³/ha a los 39.</figcaption>
+  </figure>
+  <p>Cada columna sale de una pieza distinta: la altura dominante, de la curva de sitio de la sección 5.3 con el índice elegido; N, de la supervivencia a tasa anual constante, N = N₀(1 − m)<sup>t − t₀</sup>; G y V, del sistema de Clutter, y Dq = √(40 000·G/(π·N)). En el ejemplo, el IMA llega a 23.74 m³/ha/año a los 19 años y baja a 23.69 a los 21: el máximo es plano, y unos años antes o después del turno el rendimiento medio apenas cambia. La interpretación lo dice así: «Con índice de sitio 21.4 m, el volumen medio anual es máximo a los 19.0 años (23.7 m³/ha/año). El sistema se ajustó con parcelas de 5.0 a 30.0 años: más allá, la tabla es extrapolación.»</p>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Revisa los campos después de cambiar el sitio</div>
+    <p>La app vuelve a ajustar el sistema de Clutter cada vez que cambias la edad base, la familia de curvas o el número de clases de la sección 5.3, y en ese momento devuelve la <span class="ui">Edad inicial (años)</span> a la menor edad medida, aunque la hubieras cambiado. El <span class="ui">Índice de sitio</span>, en cambio, conserva su valor: si cambias la edad base de 20 a 25 años, sigue en 21.4, que era un índice a los 20 años. Después de tocar la sección 5.3, vuelve a escribir en la proyección la edad inicial y un índice expresado a la nueva edad base. Observa también que la tabla avanza desde la edad inicial con el intervalo elegido y no siempre llega a la edad final: con 5, 40 y 2 años, termina a los 39.</p>
+  </div>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>Si</b> el IMA de un árbol es máximo en su última edad medida</td><td><b>entonces</b> el turno es posterior a la serie: usa la curva ajustada y tómalo como estimación.</td></tr>
+      <tr><td><b>Si</b> la edad del IMA máximo de la curva cae muy lejos de los datos</td><td><b>entonces</b> es extrapolación: compárala entre modelos antes de usarla.</td></tr>
+      <tr><td><b>Si</b> la DE del índice entre mediciones pasa de 0.6 m</td><td><b>entonces</b> prueba otra familia de curvas; con remediciones, las polimórficas.</td></tr>
+      <tr><td><b>Si</b> el turno de la tabla cae fuera de las edades con que se ajustó el sistema</td><td><b>entonces</b> la tabla es extrapolación: tómala con cautela.</td></tr>
+      <tr><td><b>Si</b> el mosaico del turno sale en ámbar</td><td><b>entonces</b> sube la edad final: el IMA todavía crece al final de la tabla.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guías para interpretar, no leyes.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>«Hacen falta al menos 5 edades.»</b> El árbol elegido para los modelos tiene una serie demasiado corta: elige otro o cambia de variable si en ésa faltan datos.</p>
+    <p><b>«No se pudo ajustar la familia de curvas…».</b> Las polimórficas necesitan remediciones de las mismas parcelas; con una sola medición por parcela, usa una anamórfica.</p>
+    <p><b>La proyección no aparece.</b> Faltan el área basal o el volumen por hectárea en las remediciones, el índice de sitio no se pudo calcular o hay menos de 6 pares de remediciones.</p>
+  </div>
+</section>
+
+</body>
+</html>

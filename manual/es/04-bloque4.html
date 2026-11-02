@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ForestPro · Manual de usuario · Capítulo 4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+</head>
+<body>
+
+<section class="capitulo" id="cap-4" data-pestana="4" data-orden="4" style="--acento: var(--b4)">
+  <div class="cap-apertura">
+    <div class="cap-num">4</div>
+    <div class="cap-etiqueta">Capítulo cuatro · Bloque 4</div>
+    <h1 data-corto="Biomasa y carbono">Biomasa y carbono</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">El paso del inventario a las toneladas: la biomasa de cada árbol con la ecuación alométrica que le toca y la densidad de su madera, expandida a la hectárea con los factores del Bloque 3 y convertida en carbono y CO₂ equivalente. Cada cifra sale con su incertidumbre —la del muestreo y, con el Monte Carlo, la de las mediciones y la ecuación—, y el bloque suma los demás reservorios (necromasa, hojarasca, suelo) y mide el cambio entre dos inventarios.</p>
+    <div class="cap-franja"><span class="k3"></span><span class="k4"></span><span class="k4"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>4.1</b>Datos y ecuaciones</li>
+      <li><b>4.2</b>Densidad de la madera</li>
+      <li><b>4.3</b>Biomasa y carbono del inventario</li>
+      <li><b>4.4</b>Incertidumbre por Monte Carlo</li>
+      <li><b>4.5</b>Necromasa, hojarasca y suelo</li>
+      <li><b>4.6</b>Reservorios y cambio entre inventarios</li>
+    </ul>
+  </div>
+
+  <p>El Bloque 4 lleva por subtítulo «Ecuaciones alométricas, densidad de la madera, biomasa aérea y de raíces, necromasa, carbono y CO₂e con su incertidumbre.» Trabaja sobre el inventario del Bloque 3: los árboles con su parcela, su diámetro, su altura y su factor de expansión. No hay que volver a cargarlo; si ya abriste un inventario allí, basta con entrar al bloque y pulsar <span class="ui">Usar el inventario del Bloque 3</span>. Las cuatro tarjetas de datos propias del bloque —madera caída, hojarasca, suelo y cambio de existencias— son independientes del inventario y se cargan cada una por su cuenta.</p>
+  <p>Los ejemplos de este capítulo son el <b>cafetal bajo sombra de ejemplo</b> (25 parcelas de 1 000 m², 719 árboles de sombra), que se abre desde el botón <span class="ui">Abrir en Biomasa</span> de su tarjeta en <span class="ruta">Bloque 1<span class="sep">›</span>Datos de ejemplo</span>; el <b>bosque mesófilo de ejemplo</b> para la madera caída, y el <b>pino de ejemplo</b> para el cambio entre dos mediciones (sección I.7). Todos son simulados.</p>
+
+  <!-- 4.1 -->
+  <h2 id="s4-1"><span class="num">4.1</span>Datos y ecuaciones</h2>
+  <p class="lead">La primera tarjeta decide de dónde salen los árboles y con qué ecuación se calcula cada uno. Todo lo demás del bloque depende de estas elecciones: al cambiar cualquiera de ellas, la app recalcula la biomasa, las tablas y los reservorios.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b4-datos.png" alt="La tarjeta Datos y ecuaciones con el cafetal de ejemplo, sus controles y las tres reglas de ecuación">
+      <span class="marca" style="left:1.7%;top:13.7%">1</span>
+      <span class="marca" style="left:1.9%;top:23.9%">2</span>
+      <span class="marca" style="left:25.7%;top:22.6%">3</span>
+      <span class="marca" style="left:49.4%;top:23.9%">4</span>
+      <span class="marca" style="left:73.2%;top:22.6%">5</span>
+      <span class="marca" style="left:1.9%;top:34.6%">6</span>
+      <span class="marca" style="left:25.7%;top:33.5%">7</span>
+      <span class="marca" style="left:1.7%;top:44.3%">8</span>
+      <span class="marca" style="left:1.7%;top:75%">9</span>
+      <span class="marca" style="left:1.8%;top:96.2%">10</span>
+    </div>
+    <figcaption><b>Figura 4.1.</b> <span class="ui">Datos y ecuaciones</span> con el cafetal de ejemplo: 25 parcelas y 719 árboles, la ecuación pantropical de Chave et al. (2014) por omisión, la razón raíz/tallo de los sistemas montañosos tropicales y tres reglas propias del cafetal.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Origen de los árboles.</b> La lista elige entre <span class="ui">Cafetal bajo sombra</span> y <span class="ui">Bosque mesófilo</span>; <span class="ui">Cargar ejemplo</span> abre ese inventario (y sus ajustes) y <span class="ui">Usar el inventario del Bloque 3</span> toma el que ya esté cargado. Debajo, la línea de estado dice el nombre, las parcelas y los árboles.</li>
+    <li><span class="n">2</span><b><span class="ui">Ecuación por omisión</span>.</b> La que se aplica a todo árbol sin regla propia.</li>
+    <li><span class="n">3</span><b><span class="ui">E (estrés ambiental, si la ecuación lo pide)</span>.</b> Sólo lo usa la ecuación 7 de Chave et al. (2014), sin altura.</li>
+    <li><span class="n">4</span><b><span class="ui">Biomasa de raíces</span>.</b> La zona ecológica del IPCC (2006), Cairns et al. (1997) o una razón constante.</li>
+    <li><span class="n">5</span><b><span class="ui">Razón raíz/tallo (si es constante)</span>.</b> 0.24 por omisión; sólo cuenta con <span class="ui">Razón constante</span>.</li>
+    <li><span class="n">6</span><b><span class="ui">Fracción de carbono</span>.</b> 0.47 por omisión.</li>
+    <li><span class="n">7</span><b><span class="ui">Fracción que queda en muertos en pie</span>.</b> De 0 a 1; 1 por omisión.</li>
+    <li><span class="n">8</span><b><span class="ui">Reglas: ecuación por especie o género</span>.</b> Una tabla editable de excepciones.</li>
+    <li><span class="n">9</span><b><span class="ui">Tus ecuaciones</span>.</b> Ecuaciones locales con su forma y coeficientes.</li>
+    <li><span class="n">10</span><b><span class="ui">Ver el catálogo de ecuaciones (31)</span>.</b> Las ecuaciones incluidas, con su fuente.</li>
+  </ul>
+
+  <h3>De dónde salen los árboles</h3>
+  <p>El bloque no tiene tarjeta de datos para los árboles: los toma del Bloque 3, con todo lo que allí se calculó —el factor de expansión de cada árbol según el tamaño de su parcela, las alturas estimadas con la curva de Näslund si se pidió, el estrato y la superficie del predio—. Si todavía no hay inventario, <span class="ui">Usar el inventario del Bloque 3</span> lo avisa: «Todavía no hay inventario: carga uno en el Bloque 3 o un ejemplo aquí.» <span class="ui">Cargar ejemplo</span> abre el inventario de ejemplo como lo haría el Bloque 3 y, de paso, pone la ecuación, la zona de raíces y las reglas que ese ejemplo necesita; así, para el cafetal, quedan las tres reglas de la figura 4.1.</p>
+  <p>Del inventario, cada ecuación usa lo que pide: el diámetro a la altura del pecho (DAP, en cm) siempre; la altura total (m) las ecuaciones «con altura»; la densidad básica de la madera (ρ, g/cm³) casi todas las pantropicales, que la app busca en la tabla de la sección 4.2, y el diámetro a 15 cm del suelo (d₁₅) la ecuación del cafeto. Un árbol al que le falta lo que su ecuación pide no suma biomasa, y la app lo dice con un aviso que nombra lo que faltó.</p>
+
+  <h3>La ecuación de cada árbol</h3>
+  <p>La lista <span class="ui">Ecuación por omisión</span> agrupa las 31 ecuaciones del catálogo según dónde se ajustaron (tabla 4.1). Con <span class="ui">Reglas: ecuación por especie o género</span> se da a ciertos árboles otra ecuación: en la columna <span class="ui">Especie o género</span> se escribe una especie («Cordia alliodora») o un género («Inga») y en <span class="ui">Ecuación</span> se elige la suya; <span class="ui">+ Agregar fila</span> añade una regla y <span class="ui">×</span> la quita. La búsqueda no distingue mayúsculas y, como dice la propia tarjeta, «Una regla de especie gana a una de género».</p>
+
+  <table class="compacta">
+    <caption><b>Tabla 4.1.</b> Los grupos de la lista de ecuaciones</caption>
+    <thead><tr><th style="width:2.2in">Grupo</th><th class="num" style="width:0.6in">Ecuaciones</th><th>Qué hay</th></tr></thead>
+    <tbody>
+      <tr><td>Pantropicales</td><td class="num">2</td><td>Chave et al. (2014): la ec. 4, con altura, y la ec. 7, sin altura y con E</td></tr>
+      <tr><td>Trópico seco · húmedo · muy húmedo</td><td class="num">3 + 3 + 3</td><td>Chave et al. (2005) con y sin altura, y Brown (1997), por tipo de bosque</td></tr>
+      <tr><td>Agroforestería (café y sombra)</td><td class="num">7</td><td>Segura et al. (2006) para la sombra en general, <i>Inga</i>, <i>Cordia alliodora</i>, <i>Juglans olanchana</i> y el cafeto; van Noordwijk et al. (2002) para el café podado y el plátano</td></tr>
+      <tr><td>Pinos</td><td class="num">3</td><td>Brown (1997), Díaz-Franco et al. (2007) y Figueroa-Navarro et al. (2010), éstas para <i>Pinus patula</i></td></tr>
+      <tr><td>Templadas (por grupos de especies)</td><td class="num">10</td><td>Jenkins et al. (2003), una por grupo de especies</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="ui">Ver el catálogo de ecuaciones (31)</span> despliega la tabla completa: el nombre, la <span class="ui">Forma (AGB en kg)</span>, las <span class="ui">Variables</span> que pide, el error residual <span class="ui">σ (ln)</span> cuando la fuente lo publica, el <span class="ui">DAP válido (cm)</span> y la <span class="ui">Fuente</span>; con <span class="ui">⤓ CSV</span> o <span class="ui">⤓ XLSX</span> se descarga. El número entre paréntesis crece cuando agregas ecuaciones propias.</p>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · ecuaciones alométricas</div>
+    <p>Una ecuación alométrica estima la biomasa aérea seca de un árbol (AGB, en kg) a partir de lo que se mide sin cortarlo. Las más generales son las pantropicales de Chave et al. (2014): la ec. 4, AGB = 0.0673 · (ρD²H)<sup>0.976</sup>, usa diámetro, altura y densidad; la ec. 7 prescinde de la altura y la sustituye por E, un índice del estrés ambiental del sitio. Las locales dejan fuera la densidad porque se ajustaron a un solo grupo de árboles. Cada ecuación vale en el intervalo de diámetros con que se ajustó; fuera de él es extrapolación, y la app cuenta cuántos árboles quedan así (sección 4.3). Las ecuaciones de Chave et al. ya incluyen la corrección del sesgo que aparece al regresar de la escala logarítmica, y la app las usa tal como se publicaron.</p>
+  </div>
+
+  <h3>Raíces, carbono y árboles muertos</h3>
+  <p>La biomasa de raíces (BGB) no se mide: se estima a partir de la aérea de cada parcela. <span class="ui">Biomasa de raíces</span> ofrece tres caminos:</p>
+  <ul>
+    <li><b>Las razones raíz/tallo del Cuadro 4.4 del IPCC (2006)</b>, una opción por zona ecológica, de <span class="ui">IPCC 2006: Bosque tropical lluvioso</span> a <span class="ui">IPCC 2006: Boreal</span>. En algunas zonas la razón depende de la biomasa aérea de la parcela, y la app la elige parcela por parcela. El cafetal y el mesófilo usan <span class="ui">IPCC 2006: Sistemas montañosos tropicales</span>, con razón 0.27 en todas sus parcelas.</li>
+    <li><span class="ui">Cairns et al. 1997 (por hectárea)</span>: la ecuación 3 de esos autores, aplicada a la biomasa aérea por hectárea de cada parcela. Con el cafetal de ejemplo da 92.9 Mg/ha de biomasa total, frente a 97.8 Mg/ha con la razón del IPCC.</li>
+    <li><span class="ui">Razón constante</span>: la de <span class="ui">Razón raíz/tallo (si es constante)</span>, igual para todas las parcelas.</li>
+  </ul>
+  <p>El carbono es la biomasa por la <span class="ui">Fracción de carbono</span>: 0.47 por omisión, el valor por defecto del Cuadro 4.3 del IPCC (2006). El CO₂ equivalente es el carbono por 44/12, la razón de las masas molares del CO₂ y del carbono. Los árboles que el inventario marca como muertos en pie se calculan con su misma ecuación, multiplicada por la <span class="ui">Fracción que queda en muertos en pie</span> (con 1, el árbol conserva toda su biomasa; con 0.5, la mitad), y no suman a los vivos: se informan aparte como necromasa.</p>
+
+  <h3>Tus ecuaciones</h3>
+  <p>Una ecuación local ajustada en tu región suele ser mejor que una general. En <span class="ui">Tus ecuaciones</span>, <span class="ui">+ Agregar fila</span> abre un renglón con <span class="ui">Nombre</span>, <span class="ui">Forma</span> (la lista de formas funcionales que reconoce la app), los coeficientes <span class="ui">a</span>, <span class="ui">b</span>, <span class="ui">c</span> y <span class="ui">d</span>, su error residual <span class="ui">σ (ln)</span> si lo conoces, el intervalo <span class="ui">D mín.</span> – <span class="ui">D máx.</span> en que vale y la <span class="ui">Fuente</span>. Las unidades son las del catálogo: el resultado en kg, D en cm, H en m y ρ en g/cm³. La ecuación aparece en seguida en el grupo <span class="ui">Tus ecuaciones</span> de las listas de arriba y en el catálogo; si no le pones nombre, se llama «Mi ecuación 1», «Mi ecuación 2»…</p>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>La ecuación pesa más que cualquier otra elección</div>
+    <p>Con el mismo inventario, cambiar de ecuación mueve la biomasa mucho más que cambiar la fracción de carbono o la razón raíz/tallo. Elige la ecuación por la región y el tipo de vegetación en que se ajustó, no por la cifra que da; anota en el informe cuál usaste para cada grupo de especies, y si una especie importante de tu inventario tiene ecuación propia publicada, dásela con una regla, como hace el cafetal con <i>Inga</i>, <i>Cordia alliodora</i> y <i>Musa</i>.</p>
+  </div>
+
+  <!-- 4.2 -->
+  <h2 id="s4-2"><span class="num">4.2</span>Densidad de la madera</h2>
+  <p class="lead">La densidad básica de la madera —la masa seca entre el volumen verde, en g/cm³— multiplica a casi todas las ecuaciones pantropicales: a igual diámetro y altura, un árbol de madera dura tiene más biomasa que uno de madera ligera. Esta tarjeta dice qué densidad recibe cada especie del inventario y de dónde salió.</p>
+  <p>Arriba está la tabla de referencia, editable: <span class="ui">Especie</span>, <span class="ui">Densidad (g/cm³)</span>, <span class="ui">Nivel</span> y <span class="ui">Fuente</span>. Trae 42 taxones, los de los ejemplos, con valores de la base mundial de densidad de la madera (Zanne et al. 2009); en <span class="ui">Nivel</span> dice si el valor es de la especie o la media de su género. Puedes corregir un valor, agregar tus especies con <span class="ui">+ Agregar fila</span> o quitar renglones con <span class="ui">×</span>; cada cambio recalcula la biomasa. La tabla de referencia también se abre con <span class="ui">Abrir en Biomasa</span> en la tarjeta <span class="ui">Densidades y ecuaciones</span> de <span class="ruta">Bloque 1<span class="sep">›</span>Datos de ejemplo</span>, que lleva directo a ella.</p>
+  <p>Si tienes el archivo completo de la base mundial, <span class="ui">Cargar la base mundial (archivo de la GWDD)…</span> lo lee (CSV, texto o libro de cálculo; en un libro, la hoja <code>Data</code>). La app busca las columnas de especie y de densidad —y, si las hay, la familia y la región— y avisa cuántos registros cargó. Con la base cargada aparece la lista <span class="ui">Región</span>, que restringe los valores a una región de la base o los deja en <span class="ui">Mundo</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b4-densidad.png" alt="La tabla Densidad asignada a cada especie del inventario del cafetal de ejemplo"></div>
+    <figcaption><b>Figura 4.2.</b> La densidad asignada a las diez especies del cafetal de ejemplo. <i>Inga vera</i> (212 árboles) la toma de su especie; <i>Inga jinicuil</i> y <i>Erythrina americana</i>, de su género; <i>Musa</i> sp. no está en la tabla y recibe la media de su parcela, aunque su ecuación no la usa.</figcaption>
+  </figure>
+
+  <h3>El orden de búsqueda</h3>
+  <p>Para cada árbol, la app busca su densidad en este orden y se queda con la primera que encuentra:</p>
+  <ol class="pasos">
+    <li><b>Tu tabla</b>, por el nombre exacto de la especie. El nivel es el que diga la tabla.</li>
+    <li><b>La base mundial, si la cargaste</b>: la media de los registros de la especie; si falta, la media de las medias de las especies del género; si falta y el inventario trae la familia, la media de las medias de los géneros de la familia.</li>
+    <li><b>La media de la parcela</b>: el promedio de las densidades de los demás árboles de la misma parcela.</li>
+    <li><b>La media del inventario</b>, si ni eso existe.</li>
+  </ol>
+  <p>Sin la base mundial cargada, el paso 2 se hace con tu propia tabla: un árbol de una especie que no está, pero cuyo género sí, recibe la media de su género. La tabla de resultados, <span class="ui">Densidad asignada a cada especie del inventario</span>, muestra para cada especie los <span class="ui">Árboles</span>, la <span class="ui">Densidad (g/cm³)</span>, el <span class="ui">Nivel</span> en que se encontró (<span class="ui">especie</span>, <span class="ui">género</span>, <span class="ui">familia</span>, <span class="ui">media de la parcela</span> o <span class="ui">media del inventario</span>) y la <span class="ui">DE para el Monte Carlo</span>: 0.071 g/cm³ si el valor es de la especie, 0.094 si es del género y 0.123 si es de la familia, como en la implementación de referencia, y una propia en los niveles de parcela e inventario (0.110 para <i>Musa</i> sp. en la figura 4.2).</p>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo · una especie que falta</div>
+    <p>En el bosque mesófilo de ejemplo, <i>Cyathea fulva</i> (64 árboles) no está en la tabla ni a nivel de género, y su ecuación —la pantropical— sí usa la densidad. La app lo avisa: «1 especies no están en la tabla ni a nivel de género (Cyathea fulva): reciben la media de su parcela. Agrégalas a la tabla si conoces su densidad.» El aviso sólo aparece cuando la ecuación de esas especies usa la densidad; por eso <i>Musa</i> sp., en el cafetal, no lo dispara.</p>
+  </div>
+
+  <!-- 4.3 -->
+  <h2 id="s4-3"><span class="num">4.3</span>Biomasa y carbono del inventario</h2>
+  <p class="lead">«Por árbol, por parcela y para todo el predio, con el intervalo del muestreo.» Esta tarjeta no tiene controles: se llena sola en cuanto hay inventario y se rehace con cada cambio de las dos anteriores.</p>
+  <p>Cada árbol vivo aporta su biomasa aérea por su factor de expansión; la suma de una parcela, dividida entre mil, son sus megagramos por hectárea (1 Mg = 1 t). A esa biomasa aérea se le agregan las raíces, y la suma es la biomasa total, que se pasa a carbono y CO₂e. La media del predio y su intervalo se calculan con las parcelas como unidades de muestreo, con el mismo estimador del Bloque 3: estratificado cuando las parcelas traen su estrato con superficie, aleatorio simple si no.</p>
+
+  <figure class="w80">
+    <div class="marco"><img src="../img/b4-resultados.png" alt="Los mosaicos de biomasa, carbono y CO2e del cafetal de ejemplo y las gráficas de biomasa por parcela y por especie"></div>
+    <figcaption><b>Figura 4.3.</b> El cafetal de ejemplo: 77.0 Mg/ha de biomasa aérea, 97.8 con raíces, 46.0 Mg C/ha y 168.5 Mg CO₂e/ha, todas con ±23.1 %; 4,596 Mg C en el predio y 35 árboles fuera del intervalo de su ecuación. A la izquierda, cada parcela con su parte aérea y sus raíces; a la derecha, las especies que más biomasa aportan.</figcaption>
+  </figure>
+
+  <p>Los mosaicos dicen, de izquierda a derecha:</p>
+  <ul>
+    <li><span class="ui">Biomasa aérea</span>, <span class="ui">Biomasa total (con raíces)</span>, <span class="ui">Carbono</span> y <span class="ui">CO₂ equivalente</span>, por hectárea, cada uno con la semiamplitud de su intervalo del 95 % y el error de muestreo en porcentaje. Como el carbono y el CO₂e son la biomasa por constantes, los cuatro tienen el mismo error relativo.</li>
+    <li><span class="ui">Carbono del predio</span>: el carbono por hectárea por la superficie del predio que se dio en el Bloque 3, con su intervalo. Sin superficie, el mosaico no aparece.</li>
+    <li><span class="ui">Fuera del intervalo de la ecuación</span>, en ámbar: cuántos árboles vivos tienen un diámetro fuera del que vale su ecuación, y qué porcentaje son. En el cafetal son 35 (5 %): 16 <i>Cordia alliodora</i>, 10 <i>Inga vera</i>, 8 <i>Inga jinicuil</i> y un plátano, casi todos árboles más gruesos que los 44 cm hasta donde valen las ecuaciones de Segura et al. (2006).</li>
+  </ul>
+  <p>Debajo vienen tres figuras —<span class="ui">Biomasa por parcela</span>, apilada en aérea y raíces y ordenada de mayor a menor; <span class="ui">Biomasa aérea por especie</span>, con las diez primeras y el resto como «Otras», y <span class="ui">Biomasa de cada árbol según su ecuación</span> (figura 4.4)— y dos tablas. <span class="ui">Por parcela</span> da para cada parcela su estrato, la biomasa <span class="ui">Aérea (Mg/ha)</span> y de <span class="ui">Raíces (Mg/ha)</span>, la <span class="ui">Raíz/tallo</span> que se usó, el <span class="ui">Carbono (Mg C/ha)</span>, el <span class="ui">CO₂e (Mg/ha)</span> y los <span class="ui">Muertos en pie (Mg/ha)</span>; en el cafetal, la parcela P01 tiene 97.2 Mg/ha de biomasa aérea, 26.2 de raíces y 58.0 Mg C/ha. <span class="ui">Árbol por árbol</span> muestra los primeros 40 árboles con su <span class="ui">DAP (cm)</span>, <span class="ui">Altura (m)</span>, <span class="ui">ρ (g/cm³)</span>, <span class="ui">Ecuación</span>, <span class="ui">AGB (kg)</span>, <span class="ui">Factor de expansión</span> y si está <span class="ui">Vivo</span>; la descarga lleva todos.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b4-arboles.png" alt="Gráfica logarítmica de la biomasa de cada árbol del cafetal contra su diámetro, coloreada por ecuación"></div>
+    <figcaption><b>Figura 4.4.</b> La biomasa de cada árbol del cafetal contra su diámetro, en ejes logarítmicos, con un color por ecuación. Las ecuaciones que sólo usan el diámetro (<i>Inga</i>, <i>Cordia</i>, plátano) dibujan rectas; la pantropical, que usa además la altura y la densidad, deja una nube. Los nombres largos de la leyenda salen recortados.</figcaption>
+  </figure>
+  <p>La figura 4.4 sirve para revisar las ecuaciones de un vistazo: un grupo de puntos muy apartado de los demás para el mismo diámetro indica una ecuación que no conviene a esas especies, o una unidad mal puesta.</p>
+
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">▸</span>Ejemplo resuelto · el carbono del cafetal</div>
+    <p>La interpretación de la tarjeta lo resume así: «El predio guarda 46.0 ± 10.6 Mg C/ha (168.5 Mg CO₂e/ha) en sus árboles vivos, con raíces. <i>Inga vera</i> aporta el 32 % de la biomasa aérea.» Recuerda además que el intervalo sólo refleja el muestreo, y que 35 árboles quedan fuera del intervalo de diámetros de su ecuación. Con el bosque mesófilo de ejemplo (24 parcelas, 1 830 árboles) las cifras son otras: 213.6 Mg/ha de biomasa aérea, 127.5 ± 26.5 Mg C/ha y 145 árboles (8 %) fuera de intervalo; allí la especie que más aporta es <i>Liquidambar styraciflua</i>, con el 15 %.</p>
+  </div>
+
+  <!-- 4.4 -->
+  <h2 id="s4-4"><span class="num">4.4</span>Incertidumbre por Monte Carlo</h2>
+  <p class="lead">El intervalo de la sección anterior sólo dice cuánto podría cambiar la media si se hubieran medido otras parcelas. No dice nada de los errores al medir los diámetros y las alturas, de la densidad prestada de otra especie, ni de lo que la ecuación se equivoca árbol por árbol. Esta tarjeta los propaga por simulación.</p>
+  <p>El método repite el cálculo de toda la biomasa cientos de veces; en cada repetición perturba el diámetro, la altura y la densidad de cada árbol con su error, y la biomasa con el error residual de su ecuación. La dispersión de los resultados es la incertidumbre de las mediciones y del modelo. Los controles:</p>
+  <ul>
+    <li><span class="ui">Iteraciones</span>: 500, 1000 (por omisión), 2000 o 5000.</li>
+    <li><span class="ui">Error del diámetro</span>: <span class="ui">Chave et al. 2004 (95 % pequeño, 5 % grande)</span>, el modelo de errores de medición de esos autores —una desviación de 0.0062·D + 0.0904 cm para el 95 % de los árboles y de 4.64 cm para un 5 % sorteado, que representa los errores gruesos de anotación—; o un coeficiente de variación fijo, <span class="ui">CV 1 %</span> o <span class="ui">CV 2 %</span>; o <span class="ui">Sin error</span>.</li>
+    <li><span class="ui">Error de la altura medida (CV %)</span>, 5 por omisión, y <span class="ui">Error de la altura estimada (CV %)</span>, 15 por omisión, para las alturas que el Bloque 3 completó con una curva altura–diámetro.</li>
+    <li><span class="ui">Error residual de la ecuación</span>, marcado por omisión: suma el error de cada ecuación que publica su σ en escala logarítmica.</li>
+  </ul>
+  <p>El cálculo empieza con <span class="ui">Correr el Monte Carlo</span>, que pide antes la biomasa del inventario. La app usa una semilla fija, así que con los mismos datos y opciones repetir la corrida da los mismos números.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b4-montecarlo.png" alt="La tarjeta Incertidumbre por Monte Carlo del cafetal de ejemplo con sus controles, cuatro mosaicos y el histograma de la biomasa media"></div>
+    <figcaption><b>Figura 4.5.</b> El Monte Carlo del cafetal de ejemplo con los valores por omisión: 77.1 Mg/ha (74.8 – 79.5), ±2.3 Mg/ha por las mediciones y las ecuaciones contra ±17.8 Mg/ha por el muestreo. La incertidumbre combinada, ±17.9 Mg/ha (23.3 %), sale en rojo por pasar de 20 %.</figcaption>
+  </figure>
+
+  <p>Los cuatro mosaicos son la <span class="ui">Biomasa aérea (Monte Carlo)</span> con su intervalo del 95 % (los percentiles 2.5 y 97.5 de las iteraciones); <span class="ui">Mediciones y ecuación</span>, la semiamplitud de ese intervalo; <span class="ui">Muestreo</span>, la de la sección 4.3, y <span class="ui">Total combinada</span>, las dos sumadas en cuadratura —la raíz de la suma de sus cuadrados—, como en el método 1 de propagación del IPCC (2006). El borde de este último es verde si la incertidumbre combinada es menor que 10 % de la media, ámbar entre 10 y 20 % y rojo de 20 % en adelante. El histograma muestra la distribución de la biomasa media del predio en las iteraciones, con el intervalo en líneas punteadas y el cálculo directo en una línea continua, y la tabla <span class="ui">Por parcela (Monte Carlo)</span> da para cada parcela el valor <span class="ui">Directo (Mg/ha)</span>, la <span class="ui">Media MC (Mg/ha)</span>, su <span class="ui">DE</span>, los percentiles <span class="ui">2.5 %</span> y <span class="ui">97.5 %</span> y el <span class="ui">CV (%)</span>.</p>
+
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">θ</span>Teoría en breve · por qué la media casi no se mueve</div>
+    <p>Las ecuaciones publicadas ya predicen la biomasa media: su intercepto incluye la corrección exp(σ²/2) del logaritmo. Por eso el ruido residual se sortea como exp(ε − σ²/2), con media uno, y la media del Monte Carlo queda muy cerca del cálculo directo (en el cafetal, 0.2 % arriba): sólo la curvatura de la ecuación y los límites de los errores la mueven. Los diámetros se sortean de una normal truncada entre 0.1 y 500 cm, las alturas entre 1.3 m y la máxima más 15 m, y las densidades entre 0.08 y 1.39 g/cm³. A diferencia de la implementación de referencia, la app no sortea los coeficientes de la ecuación, porque las fuentes no publican su distribución; en las ecuaciones pantropicales, el error residual domina.</p>
+  </div>
+
+  <p>La interpretación termina diciendo qué fuente de error domina. En el cafetal, «El muestreo domina: más parcelas reducirían el error más que mejores mediciones.» Cuando dominan las mediciones y la ecuación, la app recomienda en cambio una ecuación local o mejores alturas.</p>
+
+  <!-- 4.5 -->
+  <h2 id="s4-5"><span class="num">4.5</span>Necromasa, hojarasca y suelo</h2>
+  <p class="lead">«Los otros reservorios de carbono, cada uno con su propia tabla.» Los árboles vivos no son todo el carbono de un bosque o de un cafetal: la madera muerta en el suelo, la hojarasca y, sobre todo, el suelo guardan otro tanto o más. Cada uno se muestrea a su manera, y por eso cada uno tiene su tarjeta de datos.</p>
+
+  <h3>Madera caída (intersección de líneas)</h3>
+  <p>La madera caída se mide por intersección de líneas: se tienden transectos de longitud conocida y se mide el diámetro de cada pieza en el punto donde la línea la cruza. La tarjeta pide <span class="ui">Transecto</span>*, <span class="ui">Longitud (m)</span>* y <span class="ui">Diámetro en el cruce (cm)</span>*, y, opcional, la <span class="ui">Clase de descomposición (1–3)</span>; una pieza sin clase se cuenta como intermedia. Arriba, tres campos dan la densidad de cada clase: <span class="ui">Densidad clase 1, sana (g/cm³)</span>, 0.45 por omisión; <span class="ui">Clase 2, intermedia</span>, 0.34, y <span class="ui">Clase 3, podrida</span>, 0.23. Son sólo un punto de partida: lo correcto es medirlas en tu sitio.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b4-madera.png" alt="La sección Madera caída con las densidades por clase, la tarjeta de datos del bosque mesófilo y tres mosaicos"></div>
+    <figcaption><b>Figura 4.6.</b> La madera caída del bosque mesófilo de ejemplo: 12 transectos de 30 m con 167 piezas dan 149.2 m³/ha, 53.8 ± 9.3 Mg/ha y 25.3 Mg C/ha.</figcaption>
+  </figure>
+  <p>El volumen por hectárea de cada transecto sale de la fórmula de Van Wagner (1968), V = π²·Σd²/(8L), que con d en cm y L en m da directamente m³/ha; la masa es el volumen de cada pieza por la densidad de su clase. Los mosaicos dan el <span class="ui">Volumen de madera caída</span>, la <span class="ui">Masa</span> con su intervalo (los transectos son las unidades de muestreo) y el <span class="ui">Carbono</span>, con la fracción de carbono de la sección 4.1; la tabla <span class="ui">Por transecto</span> da para cada uno su longitud, las <span class="ui">Piezas</span>, <span class="ui">V (m³/ha)</span> y <span class="ui">Masa (Mg/ha)</span>. En el mesófilo de ejemplo, el transecto T01 cruza 20 piezas y da 199.6 m³/ha.</p>
+
+  <h3>Hojarasca y carbono orgánico del suelo</h3>
+  <p>La hojarasca se recoge en marcos de superficie conocida y se pesa seca. La tarjeta pide <span class="ui">Parcela</span>*, <span class="ui">Peso seco (g)</span>* y <span class="ui">Superficie del marco (m²)</span>*; la masa en Mg/ha es el peso seco en gramos entre la superficie del marco en m², por 0.01. Los mosaicos dan la <span class="ui">Hojarasca</span> con su intervalo y su <span class="ui">Carbono</span>.</p>
+  <p>El carbono orgánico del suelo se calcula capa por capa: Mg C/ha = C % × densidad aparente (g/cm³) × espesor (cm) × (1 − fragmentos gruesos/100), y las capas de cada perfil se suman. La tarjeta pide <span class="ui">Parcela o perfil</span>*, <span class="ui">Carbono orgánico (%)</span>* y <span class="ui">Densidad aparente (g/cm³)</span>*, y los límites de cada capa de una de tres maneras: <span class="ui">Profundidad superior (cm)</span> y <span class="ui">Profundidad inferior (cm)</span>; o la <span class="ui">Capa (p. ej. «0-10»), si no hay profundidades</span>; o el <span class="ui">Espesor (cm), si no hay profundidades ni capa</span>, y entonces las capas de cada perfil se apilan desde la superficie en el orden en que vienen. Opcionales: <span class="ui">Fragmentos gruesos (%)</span>, <span class="ui">Sistema o grupo (opcional)</span> y <span class="ui">Año (opcional)</span>.</p>
+
+  <figure class="w70">
+    <div class="marco"><img src="../img/b4-suelo.png" alt="Las tarjetas de hojarasca y de carbono orgánico del suelo del cafetal de ejemplo con sus mosaicos"></div>
+    <figcaption><b>Figura 4.7.</b> La hojarasca del cafetal de ejemplo (un marco de 0.25 m² por parcela): 25.63 ± 3.00 Mg/ha y 12.05 Mg C/ha. El suelo, con tres capas de 0 a 30 cm en cada una de las 25 parcelas: 87.5 ± 3.2 Mg C/ha.</figcaption>
+  </figure>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Las tablas de suelo de SoilPro</div>
+    <p>La tarjeta del suelo lee el formato de capas de SoilPro, la app de suelos de la suite: sistema, año, repetición, capa escrita como «0-10» o espesor, carbono orgánico, densidad aparente y fragmentos gruesos; los nombres de sus columnas están entre los sinónimos que reconoce. Si la tabla trae varios sistemas o años, aparece una lista <span class="ui">Sistema o grupo</span> para elegir cuál se calcula, uno a la vez. Si ninguna capa tiene límites, la app lo dice: «Ninguna capa tiene profundidades: hacen falta las profundidades superior e inferior, la capa escrita como «0-10» o el espesor.»</p>
+  </div>
+  <p>Compara siempre reservorios de suelo a la misma profundidad: el mosaico la dice («0–30 cm»), y un suelo muestreado a 0–20 cm no se puede sumar ni comparar con otro a 0–30 cm. La tabla <span class="ui">Por perfil</span> da el carbono de cada parcela o perfil.</p>
+
+  <!-- 4.6 -->
+  <h2 id="s4-6"><span class="num">4.6</span>Reservorios y cambio entre inventarios</h2>
+  <p class="lead">«El carbono de todos los reservorios con su error, y cuánto cambió entre dos mediciones.» La última tarjeta reúne lo calculado en el bloque en un solo balance y, con una tabla aparte, mide el cambio de las existencias en el tiempo.</p>
+
+  <h3>El balance de reservorios</h3>
+  <p>El resumen junta, en Mg C/ha, los reservorios que haya: <span class="ui">Árboles vivos: aérea</span> y <span class="ui">Árboles vivos: raíces</span> (de la sección 4.3), <span class="ui">Muertos en pie</span> si el inventario los tiene, <span class="ui">Madera caída</span>, <span class="ui">Hojarasca</span> y <span class="ui">Suelo</span> si cargaste sus tablas, y <span class="ui">Arbustos y otros</span> si escribes un valor en <span class="ui">Arbustos y otros (Mg C/ha)</span> con <span class="ui">Su error estándar</span>, para lo que se midió fuera de la app (arbustos, epífitas, palmas). Sin nada calculado, dice «Calcula la biomasa o carga algún reservorio para ver el resumen.»</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b4-reservorios.png" alt="El balance de reservorios del cafetal de ejemplo con el mosaico del total, la barra apilada por reservorio y la tabla"></div>
+    <figcaption><b>Figura 4.8.</b> Los reservorios del cafetal de ejemplo con su hojarasca y su suelo: 147.1 Mg C/ha en total (± 9.0; 539.3 Mg CO₂e/ha), de los que el suelo aporta 59.5 % y los árboles vivos, con raíces, 31.2 %.</figcaption>
+  </figure>
+  <p>El mosaico <span class="ui">Carbono total del sistema</span> da el total con la semiamplitud de su intervalo y su equivalente en CO₂; la figura <span class="ui">Carbono por reservorio</span> los apila en una sola barra, y la tabla <span class="ui">Reservorios de carbono</span> da cada uno con su <span class="ui">Error estándar</span>, sus límites <span class="ui">Inferior 95 %</span> y <span class="ui">Superior 95 %</span>, el <span class="ui">% del total</span> y los <span class="ui">Mg CO₂e/ha</span>. El total es la suma de las medias y su error estándar, la raíz de la suma de los cuadrados de los errores; el intervalo es ±1.96 veces ese error.</p>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Dos cuidados con el balance</div>
+    <p><b>Que todo sea del mismo sitio.</b> La app suma lo que esté cargado en las tarjetas, sin comprobar que venga del mismo predio. Los ejemplos incluidos no traen madera caída del cafetal: la del mesófilo, si la cargas, entra en el balance del cafetal. Por eso la figura 4.8 se hizo sin ella.</p>
+    <p><b>Que los errores sean independientes.</b> La suma en cuadratura supone que los errores de los reservorios no se relacionan. Eso vale para reservorios medidos con muestras distintas (los transectos, los marcos, los perfiles), pero no para la parte aérea, las raíces y los muertos en pie, que salen de las mismas parcelas: las raíces son la parte aérea por una razón, y sus errores van juntos. En ese caso el error del total sale menor de lo que es; tenlo presente antes de citarlo.</p>
+  </div>
+
+  <h3>Cambio de existencias</h3>
+  <p>Para saber si un predio gana o pierde carbono hay que medirlo dos veces. La tarjeta <span class="ui">Cambio de existencias</span> pide <span class="ui">Parcela</span>*, <span class="ui">Carbono en la 1.ª medición (Mg/ha)</span>* y <span class="ui">Carbono en la 2.ª medición (Mg/ha)</span>*, y, opcionales, <span class="ui">Año o edad 1</span> y <span class="ui">Año o edad 2</span>. Si las columnas de año están completas, el tiempo entre mediciones es su diferencia media; si no, se usa <span class="ui">Años entre mediciones (si no hay columnas de año)</span>, 5 por omisión. Con <span class="ui">Las mismas parcelas (pareado)</span> marcada, el cambio es la media de las diferencias parcela a parcela, con la prueba <i>t</i> pareada; desmarcada, las dos mediciones se tratan como muestras independientes y la diferencia de medias lleva el error de Welch (1947).</p>
+
+  <p>Los mosaicos dan el <span class="ui">Cambio medio</span> con su intervalo del 95 % —borde verde si el intervalo queda por encima de cero, rojo si queda por debajo y ámbar si lo incluye—, la <span class="ui">Tasa anual</span> en Mg C/ha/año con su intervalo y su equivalente en CO₂e, y la <span class="ui">Prueba</span> con su valor <i>p</i> y sus grados de libertad. La interpretación del pino de ejemplo dice que «el intervalo del 95 % no incluye el cero: el cambio es distinguible del error de muestreo», y añade que medir las mismas parcelas quita de la varianza las diferencias permanentes entre ellas. Esa es la razón para remedir parcelas permanentes en lugar de levantar dos muestras nuevas: con las mismas parcelas, un cambio pequeño se distingue con muchas menos parcelas.</p>
+
+  <figure class="w60">
+    <div class="marco"><img src="../img/b4-cambio.png" alt="La tarjeta Cambio de existencias con el carbono del pino de ejemplo, tres mosaicos y la gráfica de cada parcela en las dos mediciones"></div>
+    <figcaption><b>Figura 4.9.</b> El carbono aéreo de las 30 parcelas permanentes del pino de ejemplo en dos mediciones: +12.99 Mg C/ha (11.67 a 14.30) en 7.8 años, +1.66 Mg C/ha/año (6.10 Mg CO₂e/ha/año), con <i>p</i> &lt; 0.001 en la <i>t</i> pareada con 29 gl. Cada línea gris une las dos mediciones de una parcela; el eje horizontal sólo rotula «Medición 2», y la columna de la izquierda es la primera medición.</figcaption>
+  </figure>
+
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Regla de decisión</div>
+    <table class="compacta"><tbody>
+      <tr><td style="width:42%"><b>Si</b> hay muchos árboles fuera del intervalo de su ecuación</td><td><b>entonces</b> busca una ecuación ajustada a árboles de ese tamaño y dásela con una regla; si no existe, dilo en el informe.</td></tr>
+      <tr><td><b>Si</b> una especie con peso en la biomasa recibe la media de la parcela</td><td><b>entonces</b> agrega su densidad a la tabla de la sección 4.2 o carga la base mundial.</td></tr>
+      <tr><td><b>Si</b> el Monte Carlo dice que domina el muestreo</td><td><b>entonces</b> más parcelas reducirán el error más que mejores mediciones.</td></tr>
+      <tr><td><b>Si</b> dominan las mediciones y la ecuación</td><td><b>entonces</b> mide más alturas o usa una ecuación local antes de agregar parcelas.</td></tr>
+      <tr><td><b>Si</b> la incertidumbre combinada pasa de 20 % (mosaico rojo)</td><td><b>entonces</b> el estimado sirve para describir el predio, pero es débil para comprometer créditos de carbono.</td></tr>
+      <tr><td><b>Si</b> el intervalo del cambio incluye el cero</td><td><b>entonces</b> con esas parcelas no puedes afirmar que el carbono subió o bajó.</td></tr>
+    </tbody></table>
+    <p class="regla-pie">Guías para interpretar, no leyes.</p>
+  </div>
+
+  <div class="caja error">
+    <div class="caja-t"><span class="ico">✕</span>Cuando algo sale mal</div>
+    <p><b>Las tarjetas de resultados están vacías.</b> Falta el inventario: carga uno en el Bloque 3 o un ejemplo con <span class="ui">Cargar ejemplo</span>, y pulsa <span class="ui">Usar el inventario del Bloque 3</span>.</p>
+    <p><b>«… árboles no tienen lo que pide su ecuación».</b> Una ecuación con altura y árboles sin altura, o la ecuación del cafeto sin d₁₅. Estima las alturas en el Bloque 3, cambia de ecuación o pon una regla para esas especies.</p>
+    <p><b>La biomasa sale mil veces mayor o menor.</b> Revisa las unidades: el DAP en cm, la altura en m y la densidad en g/cm³ (0.6, no 600). En tus ecuaciones, el resultado debe estar en kg.</p>
+    <p><b>El total de reservorios parece demasiado alto.</b> Mira si hay en las tarjetas datos de otro sitio, como la madera caída del mesófilo junto al cafetal.</p>
+  </div>
+</section>
+
+</body>
+</html>
